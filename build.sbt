@@ -24,4 +24,13 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-core" % "1.2.3"
 )
 
+libraryDependencies ++= Seq(
+  "org.scalactic" %% "scalactic" % "3.0.5",
+  "org.scalatest" %% "scalatest" % "3.0.5" % "test",
+  "com.github.tomakehurst" % "wiremock" % "2.18" % "test"
+)
+
+// http://www.scalatest.org/user_guide/using_scalatest_with_sbt
+logBuffered in Test := false
+
 // addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
