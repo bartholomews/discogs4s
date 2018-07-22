@@ -8,12 +8,17 @@ val http4sVersion = "0.18.14"
 
 libraryDependencies ++= Seq(
   "com.typesafe" % "config" % "1.3.3",
-  "org.http4s" %% "http4s-dsl" % http4sVersion,
+  "org.typelevel" %% "cats-core" % "1.1.0",
+  "org.typelevel" %% "cats-effect" % "0.10.1",
+  "org.http4s" %% "http4s-dsl" % http4sVersion
+    exclude("org.typelevel", "cats-effect_2.12"),
   "org.http4s" %% "http4s-blaze-client" % http4sVersion,
-  "io.circe" % "circe-fs2_2.12" % "0.9.0",
-  // Optional for auto-derivation of JSON codecs
-  "io.circe" %% "circe-generic" % "0.9.3",
-  // Optional for string interpolation to JSON model
+  "io.circe" % "circe-fs2_2.12" % "0.9.0"
+    exclude("org.typelevel", "cats-core_2.12"),
+  // auto-derivation of JSON codecs
+  "io.circe" %% "circe-generic" % "0.9.3"
+    exclude("org.typelevel", "cats-core_2.12"),
+  // string interpolation to JSON model
   // "io.circe" %% "circe-literal" % "0.9.3"
 )
 

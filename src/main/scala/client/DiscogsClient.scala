@@ -4,7 +4,10 @@ import cats.effect.{Effect, IO}
 import entities.{DiscogsEntity, ResponseError}
 import fs2.Stream
 import io.circe.Decoder
-import io.circe.fs2._
+import io.circe.fs2.{
+  byteStreamParser,
+  decoder
+}
 import org.http4s.client.blaze.Http1Client
 import org.http4s.{Method, Request, Status, Uri}
 import utils.Logger
@@ -109,4 +112,5 @@ case class DiscogsClient() extends Logger {
       response => Success(response)
     ))
   }
+
 }
