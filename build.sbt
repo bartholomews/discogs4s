@@ -27,7 +27,7 @@ libraryDependencies ++= Seq(
 libraryDependencies ++= Seq(
   "org.scalactic" %% "scalactic" % "3.0.5",
   "org.scalatest" %% "scalatest" % "3.0.5" % "test",
-  "com.github.tomakehurst" % "wiremock" % "2.18" % "test"
+  "com.github.tomakehurst" % "wiremock" % "2.18.0" % "test"
 )
 
 // http://www.scalatest.org/user_guide/using_scalatest_with_sbt
