@@ -84,8 +84,6 @@ case class DiscogsClient() extends Logger {
   //    }
   //  }
 
-  val GETTO = GET
-
   sealed trait RequestIO[T] {
 
     def process(uri: Uri)(request: Uri => Request[IO])

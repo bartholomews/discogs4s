@@ -19,7 +19,7 @@ object Release {
   implicit val decoder: Decoder[Release] = deriveDecoder[Release]
 }
 
-case class PaginatedReleases(pagination: Pagination, releases: Array[Release])
+case class PaginatedReleases(pagination: Pagination, releases: Seq[Release]) extends DiscogsEntity
 object PaginatedReleases {
   implicit val decoder: Decoder[PaginatedReleases] = deriveDecoder[PaginatedReleases]
 }
