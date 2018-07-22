@@ -12,8 +12,9 @@ class DiscogsClientSpec extends MockServerWordSpec with Matchers with PaginatedR
       def GET: DiscogsClientSpec.client.GET.type = DiscogsClientSpec.client.GET
 
       "getting Artists releases" should {
-        val getArtistsRelease = GET(ArtistsReleases(1, perPage = 1))
-        behave like paginatedReleasesResponse(getArtistsRelease)
+        behave like paginatedReleasesResponse {
+          GET(ArtistsReleases(1, perPage = 1))
+        } (artistRelease = 1, page = 1, perPage = 1)
       }
     }
 }
