@@ -1,0 +1,3 @@
+package entities
+
+trait DiscogsEntity
