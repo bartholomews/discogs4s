@@ -1,0 +1,33 @@
+{
+  "pagination": {
+    "per_page": 1,
+    "items": 103,
+    "page": 1,
+    "urls": {
+      "last": "https://api.discogs.com/artists/1/releases?per_page=1&page=103",
+      "next": "https://api.discogs.com/artists/1/releases?per_page=1&page=2"
+    },
+    "pages": 103
+  },
+  "releases": [
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 286,
+          "in_wantlist": 1130
+        }
+      },
+      "thumb": "",
+      "title": "Kaos",
+      "format": "10\"",
+      "label": "Svek",
+      "role": "Main",
+      "year": 1997,
+      "resource_url": "https://api.discogs.com/releases/20209",
+      "artist": "Stephan-G* & The Persuader",
+      "type": "release",
+      "id": 20209
+    }
+  ]
+}
