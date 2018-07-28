@@ -9,9 +9,9 @@ trait PaginatedReleaseBehaviors extends WordSpec with Matchers {
 
   def paginatedReleasesResponse(request: client.GET[PaginatedReleases])
                                (artistRelease: Int, page: Int, perPage: Int): Unit = {
-    "requested as an IO" when behaveLikePaginatedRelease(request.io.unsafeRunSync())
-    "requested as an IO[Try]" when behaveLikePaginatedRelease(request.ioTry.unsafeRunSync().get)
-    "requested as an IO[Either]" when behaveLikePaginatedRelease(request.ioEither.unsafeRunSync().right.get)
+    "requested as an IO" should behaveLikePaginatedRelease(request.io.unsafeRunSync())
+    "requested as an IO[Try]" should behaveLikePaginatedRelease(request.ioTry.unsafeRunSync().get)
+    "requested as an IO[Either]" should behaveLikePaginatedRelease(request.ioEither.unsafeRunSync().right.get)
 
     def behaveLikePaginatedRelease(release: => PaginatedReleases) {
       "have proper pagination" in {
