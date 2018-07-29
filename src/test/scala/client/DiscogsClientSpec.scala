@@ -1,5 +1,6 @@
 package client
 
+import client.api.ArtistsReleases
 import org.scalatest.Matchers
 import server.MockServerWordSpec
 
@@ -7,16 +8,17 @@ import server.MockServerWordSpec
 // https://www.lewuathe.com/wiremock-in-scala.html
 class DiscogsClientSpec extends MockServerWordSpec with Matchers with PaginatedReleaseBehaviors {
 
-    "Discogs Client" when {
+  "Discogs OAuth Client" when {
 
-      def GET: DiscogsClientSpec.client.GET.type = DiscogsClientSpec.client.GET
+    def GET: DiscogsClientSpec.client.GET.type = DiscogsClientSpec.client.GET
 
-      "getting Artists releases" when {
-        parsed like paginatedReleasesResponse {
-          GET(ArtistsReleases(1, perPage = 1))
-        } (artistRelease = 1, page = 1, perPage = 1)
-      }
+    "getting Artists releases" when {
+      parsed like paginatedReleasesResponse {
+        GET(ArtistsReleases(1, perPage = 1))
+      } (artistRelease = 1, page = 1, perPage = 1)
     }
+
+  }
 }
 
 object DiscogsClientSpec {

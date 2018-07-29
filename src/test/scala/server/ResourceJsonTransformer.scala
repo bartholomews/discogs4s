@@ -7,6 +7,8 @@ import com.github.tomakehurst.wiremock.http.{Request, ResponseDefinition}
 
 case object ResourceJsonTransformer extends ResponseDefinitionTransformer {
 
+  override val applyGlobally = false
+
   override def transform(request: Request,
                          response: ResponseDefinition,
                          files: FileSource,
