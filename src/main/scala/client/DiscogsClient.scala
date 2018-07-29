@@ -53,12 +53,8 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
   def parseJson[F[_] : Effect, T](response: Response[F])
                                  (implicit decode: Decoder[T]): Stream[F, Either[ResponseError, T]] = {
     val status = response.status
-    println(s"STATUS: $status")
     val headers = response.headers
-    println("HEADERS:")
     // TODO if response = plainText don't bother and return Left
-    headers.foreach(println(_))
-    val byteStream = response.body.through(byteStreamParser)
     val jsonStream = response.body.through(byteStreamParser).through(jsonBodyLogger)
     status match {
       case Status.Ok => jsonStream.through(decoder[F, T]).attempt map {
@@ -75,8 +71,9 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
   }
 
   def fetchJson[F[_] : Effect, T](request: Request[F])(implicit decode: Decoder[T]): Stream[F, Either[Throwable, T]] = {
-    fetch(request)(r => parseJson(r))
+    fetch(request)(res => parseJson(Log(res)))
   }
+
   def fetch[F[_] : Effect, T]
   (request: Request[F])(f: Response[F] => Stream[F, Either[Throwable, T]]): Stream[F, Either[Throwable, T]] = {
 

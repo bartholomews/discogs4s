@@ -45,6 +45,11 @@ trait Logger {
     request
   }
 
+  def Log[F[_] : Effect](res: Response[F]): Response[F] = {
+    logger.debug(s"${res.status}\n${res.headers}")
+    res
+  }
+
   def LogError(io: IO[Nothing]): IO[Nothing] = {
     io.attempt.flatMap(either => {
       either.left.map(ex => logger.error(ex.toString))
