@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer
 import org.scalatest.words.BehaveWord
-import org.scalatest.{BeforeAndAfterAll, WordSpec}
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, WordSpec}
 
 trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
 

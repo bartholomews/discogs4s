@@ -37,5 +37,6 @@ libraryDependencies ++= Seq(
 
 // http://www.scalatest.org/user_guide/using_scalatest_with_sbt
 logBuffered in Test := false
+parallelExecution in ThisBuild := false
 
 // addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
