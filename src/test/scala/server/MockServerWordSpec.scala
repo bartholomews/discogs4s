@@ -12,7 +12,7 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
   val server: WireMockServer = new WireMockServer(
     new WireMockConfiguration().extensions(
       UserAgentHeaderTransformer,
-      OAuthRequestTransformer,
+      AuthenticatedRequestTransformer,
       ResourceJsonTransformer
     )
   )
@@ -28,15 +28,6 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
     server.stop()
   }
 
-  /**
-    * TODO: stub PlainText for oauth endpoint
-    *
-    * /oauth/request_token
-    * pure          =>
-    * someWrongKey  => "Invalid consumer."
-    * signed        =>
-    */
-
   private def stubApi(): Unit = {
 
     stubFor(get(anyUrl())
@@ -47,10 +38,17 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
 
     stubFor(get("/oauth/request_token")
       .willReturn(aResponse()
-        .withTransformers(defaultTransformers(OAuthRequestTransformer): _*)
+        .withBody("oauth_token=TOKEN" +
+          "&oauth_token_secret=SECRET" +
+          "&oauth_callback_confirmed=true"
+        )
+        .withTransformers(defaultAuthenticatedTransformers: _*)
       )
     )
   }
+
+  private def defaultAuthenticatedTransformers: Seq[String] =
+    defaultTransformers(AuthenticatedRequestTransformer)
 
   private def defaultTransformers[T <: ResponseDefinitionTransformer]
   (customTransformers: T*): Seq[String] = {

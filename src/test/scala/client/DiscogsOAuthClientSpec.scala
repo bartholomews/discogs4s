@@ -3,23 +3,12 @@ package client
 import org.http4s.Uri
 import org.scalatest.Matchers
 import server.MockServerWordSpec
-import utils.ConsumerConfig
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class DiscogsOAuthClientSpec extends MockServerWordSpec with Matchers with PaginatedReleaseBehaviors {
+class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig with Matchers with PaginatedReleaseBehaviors {
 
   "Discogs OAuth Client" when {
-
-    val validConsumerKey = MockClientConfig.validConsumerKey
-    val validConsumerSecret = MockClientConfig.validConsumerSecret
-
-    def validOAuthClient: DiscogsClient = clientWith()
-    def clientWith(key: String = validConsumerKey, secret: String = validConsumerSecret) =
-      DiscogsClient(Some(mockConsumerConfig(key, secret)))
-
-    def mockConsumerConfig(key: String = validConsumerKey, secret: String = validConsumerSecret) =
-      ConsumerConfig("someApp", Some("1.0"), Some("app.git"), key, secret)
 
     "getting authorization url" when {
 

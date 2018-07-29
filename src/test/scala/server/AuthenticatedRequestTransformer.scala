@@ -8,7 +8,7 @@ import com.github.tomakehurst.wiremock.common.FileSource
 import com.github.tomakehurst.wiremock.extension.{Parameters, ResponseDefinitionTransformer}
 import com.github.tomakehurst.wiremock.http.{Request, ResponseDefinition}
 
-case object OAuthRequestTransformer extends ResponseDefinitionTransformer {
+case object AuthenticatedRequestTransformer extends ResponseDefinitionTransformer with MockClientConfig {
 
   override val applyGlobally = false
 
@@ -34,7 +34,7 @@ case object OAuthRequestTransformer extends ResponseDefinitionTransformer {
 
       case reg(_, key, _, _, _, _, _, verifier) =>
 
-        if(key != MockClientConfig.validConsumerKey) {
+        if (key != validConsumerKey) {
           likeResponse
             .withStatus(400)
             .withBody("Invalid consumer.")
@@ -50,7 +50,7 @@ case object OAuthRequestTransformer extends ResponseDefinitionTransformer {
             URLDecoder.decode(verifier, "UTF-8")
           )
           val secret = new String(decoded, StandardCharsets.UTF_8).split(":")(1)
-          if(secret != MockClientConfig.validConsumerSecret) {
+          if (secret != validConsumerSecret) {
             likeResponse
               .withStatus(400)
               .withBody("Invalid signature. " +
@@ -58,15 +58,7 @@ case object OAuthRequestTransformer extends ResponseDefinitionTransformer {
               .build()
           }
 
-          else {
-            likeResponse
-              .withStatus(200)
-              .withBody(
-                "oauth_token=TOKEN&oauth_token_secret=SECRET&oauth_callback_confirmed=true"
-              )
-              .build()
-          }
-
+          else likeResponse.build()
         }
 
       case _ => likeResponse.withStatus(400).build()

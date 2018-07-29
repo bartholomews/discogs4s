@@ -6,7 +6,7 @@ import server.MockServerWordSpec
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class DiscogsClientSpec extends MockServerWordSpec with Matchers with PaginatedReleaseBehaviors {
+class DiscogsClientSpec extends MockServerWordSpec with MockClientConfig with Matchers with PaginatedReleaseBehaviors {
 
   "Discogs OAuth Client" when {
 
@@ -21,6 +21,6 @@ class DiscogsClientSpec extends MockServerWordSpec with Matchers with PaginatedR
   }
 }
 
-object DiscogsClientSpec {
-  val client: DiscogsClient = DiscogsClient()
+object DiscogsClientSpec extends MockClientConfig {
+  val client: DiscogsClient = validOAuthClient
 }
