@@ -19,7 +19,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with Matchers with Pagin
       DiscogsClient(Some(mockConsumerConfig(key, secret)))
 
     def mockConsumerConfig(key: String = validConsumerKey, secret: String = validConsumerSecret) =
-      ConsumerConfig("someApp", "1.0", "some/app.git", key, secret)
+      ConsumerConfig("someApp", Some("1.0"), Some("app.git"), key, secret)
 
     "getting authorization url" when {
 

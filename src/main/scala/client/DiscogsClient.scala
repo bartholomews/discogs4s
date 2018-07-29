@@ -22,10 +22,10 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
 
   private val consumerConfig = consumerClient.getOrElse(Config.CONSUMER_CONFIG) // todo handle error
   private val consumer = Consumer(consumerConfig.key, consumerConfig.secret)
-  private val USER_AGENT = Headers(Header("User-Agent",
-    s"${consumerConfig.appName}/${consumerConfig.appVersion} " +
-      s"(+${consumerConfig.appUrl})"
-  ))
+
+  private val USER_AGENT = Headers {
+    Header("User-Agent", consumerConfig.userAgent)
+  }
 
   //TODO User-Agent
   // $APP_NAME/$APP_VERSION +$APP_URL
