@@ -15,12 +15,24 @@ trait Logger {
 
   logger.info(s"$logger started.")
 
+  final def plainTextLogger[F[_]]: Pipe[F, Json, String] =
+    stream => {
+      stream
+        .through(decoder[F, String])
+        .map(json => debug(json))
+    }
+
   final def jsonBodyLogger[F[_]]: Pipe[F, Json, Json] =
     stream => {
       stream
         .through(decoder[F, Json])
         .map(json => debug(json))
     }
+
+  private def debug(str: String): String = {
+    logger.debug(str)
+    str
+  }
 
   private def debug(json: Json): Json = {
     logger.debug(json.toString)
@@ -29,6 +41,7 @@ trait Logger {
 
   def Log[F[_] : Effect](request: Request[F]): Request[F] = {
     logger.info(s"${request.method.name} REQUEST: ${request.uri}")
+    logger.info(s"${request.headers.map(_.toString())}")
     request
   }
 
