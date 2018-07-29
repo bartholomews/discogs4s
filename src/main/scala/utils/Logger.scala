@@ -1,10 +1,10 @@
 package utils
 
 import cats.effect.{Effect, IO}
-import fs2.Pipe
+import fs2.{Pipe, Stream}
 import io.circe.Json
 import io.circe.fs2.decoder
-import org.http4s.{EntityBody, Request, Response}
+import org.http4s.{Request, Response}
 import org.log4s.getLogger
 
 import scala.language.higherKinds
@@ -15,46 +15,45 @@ trait Logger {
 
   logger.info(s"$logger started.")
 
-  final def plainTextLogger[F[_]]: Pipe[F, Json, String] =
-    stream => {
-      stream
-        .through(decoder[F, String])
-        .map(json => debug(json))
-    }
+  type EitherT[T] = Either[Throwable, T]
 
-  final def jsonBodyLogger[F[_]]: Pipe[F, Json, Json] =
+  def jsonBodyLogger[F[_] : Effect]: Pipe[F, Json, Json] =
     stream => {
       stream
         .through(decoder[F, Json])
         .map(json => debug(json))
     }
 
-  private def debug(str: String): String = {
-    logger.debug(str)
-    str
+  def withLogger[F[_] : Effect](res: Stream[F, EitherT[String]]): Stream[F, EitherT[String]] = {
+    res.map(debug)
   }
 
-  private def debug(json: Json): Json = {
-    logger.debug(json.toString)
-    json
+  def withLogger[F[_] : Effect, T](f: Response[F] => Stream[F, EitherT[T]])
+                                  (res: Response[F]): Stream[F, EitherT[T]] = {
+
+    val headers = res.headers.mkString("\n\t")
+    val message = s"{\n\t${res.status}\n\t$headers\n}"
+    logger.debug(message)
+    f(res)
   }
 
-  def Log[F[_] : Effect](request: Request[F]): Request[F] = {
+  def withLogger[F[_] : Effect](request: Request[F]): Request[F] = {
     logger.info(s"${request.method.name} REQUEST: ${request.uri}")
     logger.info(s"${request.headers.map(_.toString())}")
     request
   }
 
-  def Log[F[_] : Effect](res: Response[F]): Response[F] = {
-    logger.debug(s"${res.status}\n${res.headers}")
-    res
+  private def debug(either: EitherT[String]): EitherT[String] = {
+    either.fold(
+      throwable => logger.debug(throwable.getMessage),
+      str => logger.debug(str)
+    )
+    either
   }
 
-  def LogError(io: IO[Nothing]): IO[Nothing] = {
-    io.attempt.flatMap(either => {
-      either.left.map(ex => logger.error(ex.toString))
-      io
-    })
+  private def debug(json: Json): Json = {
+    logger.debug(json.toString)
+    json
   }
 
 }

@@ -51,15 +51,15 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
   */
 
   def parseJson[F[_] : Effect, T](response: Response[F])
-                                 (implicit decode: Decoder[T]): Stream[F, Either[ResponseError, T]] = {
+                                 (implicit decode: Decoder[T]): Stream[F, Either[Throwable, T]] = {
     val status = response.status
     val headers = response.headers
     // TODO if response = plainText don't bother and return Left
     val jsonStream = response.body.through(byteStreamParser).through(jsonBodyLogger)
     status match {
-      case Status.Ok => jsonStream.through(decoder[F, T]).attempt map {
-        _.left.map(ResponseError(_, Status.SeeOther))
-      }
+      case Status.Ok => jsonStream.through(decoder[F, T])
+        .attempt
+        .map(_.left.map(ResponseError(_, Status.SeeOther)))
       case _ =>
         jsonStream.map(e => e.toString())
         jsonStream.map(_ => Left(ResponseError(new Exception("Oops"), status)))
@@ -67,11 +67,13 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
   }
 
   def plainText[F[_] : Effect](request: Request[F]): Stream[F, Either[Throwable, String]] = {
-    fetch(request)(resp => Stream.eval(resp.as[String]).attempt)
+    withLogger {
+      fetch(request)(res => Stream.eval(res.as[String]).attempt)
+    }
   }
 
   def fetchJson[F[_] : Effect, T](request: Request[F])(implicit decode: Decoder[T]): Stream[F, Either[Throwable, T]] = {
-    fetch(request)(res => parseJson(Log(res)))
+    fetch(request)(withLogger(res => parseJson(res)))
   }
 
   def fetch[F[_] : Effect, T]
@@ -81,10 +83,9 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
     val pure: Stream[Pure, Request[F]] = Stream(request)
 
     for {
-      client <- Http1Client.stream[F]()
-      req <- signed
-      response <-
-        client.streaming(req)(resp => f(resp))
+      client   <- Http1Client.stream[F]()
+      req      <- signed
+      response <- client.streaming(req)(resp => f(resp))
     } yield response
 
   }
@@ -135,7 +136,7 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
       val invalidSignature = "Invalid signature. (.*)".r
       val emptyResponse = "Response was empty, please check request uri"
 
-      plainText[IO](Log(get(AuthorizeUrl.uri)))
+      plainText[IO](withLogger(get(AuthorizeUrl.uri)))
         .compile
         .last
         .map(opt => opt.toLeft(emptyResponse).joinLeft)
