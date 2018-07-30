@@ -2,16 +2,12 @@ package client
 
 import cats.effect.{Effect, IO}
 import client.api.{AuthorizeUrl, DiscogsApi}
-import entities.{DiscogsEntity, ResponseError}
-import fs2.{Pure, Stream}
+import entities.DiscogsEntity
 import io.circe.Decoder
-import io.circe.fs2._
-import org.http4s.client.blaze.Http1Client
 import org.http4s.client.oauth1.Consumer
-import org.http4s.{Header, Headers, Method, Request, Response, Status, Uri}
+import org.http4s.{Header, Headers, Method, Request, Uri}
 import utils.{Config, ConsumerConfig, Logger}
 
-import scala.language.higherKinds
 import scala.util.{Failure, Success, Try}
 
 // https://http4s.org/v0.19/streaming/
@@ -21,15 +17,30 @@ import scala.util.{Failure, Success, Try}
 case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends Logger {
 
   private val consumerConfig = consumerClient.getOrElse(Config.CONSUMER_CONFIG) // todo handle error
-  private val consumer = Consumer(consumerConfig.key, consumerConfig.secret)
+  private implicit val consumer: Consumer = Consumer(consumerConfig.key, consumerConfig.secret)
 
   private val USER_AGENT = Headers {
     Header("User-Agent", consumerConfig.userAgent)
   }
 
-  //TODO User-Agent
-  // $APP_NAME/$APP_VERSION +$APP_URL
-  // e.g. Bidwish/1.0 (+https://github.com/bartholomews/bidwish)
+  private def get[F[_] : Effect](uri: Uri): Request[F] = Request[F]()
+    .withMethod(Method.GET)
+    .withUri(uri)
+    .withHeaders(USER_AGENT)
+
+  case class GET[T <: DiscogsEntity](private val api: DiscogsApi[T])
+                                    (implicit decoder: Decoder[T]) extends RequestF[T] {
+
+    def io: IO[T] = process(get(api.uri))
+
+    def ioEither: IO[Either[Throwable, T]] = io.attempt
+
+    def ioTry: IO[Try[T]] = ioEither.map(_.fold(
+      throwable => Failure(throwable),
+      response => Success(response)
+    ))
+  }
+
   /*
   TODO extract status
   200 OK - The request was successful, and the requested data is provided in the response body.
@@ -50,83 +61,7 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
   Your application should take our global limit into account and throttle its requests locally.
   */
 
-  def parseJson[F[_] : Effect, T](response: Response[F])
-                                 (implicit decode: Decoder[T]): Stream[F, Either[Throwable, T]] = {
-    val status = response.status
-    val headers = response.headers
-    // TODO if response = plainText don't bother and return Left
-    val jsonStream = response.body.through(byteStreamParser).through(jsonBodyLogger)
-    status match {
-      case Status.Ok => jsonStream.through(decoder[F, T])
-        .attempt
-        .map(_.left.map(ResponseError(_, Status.SeeOther)))
-      case _ =>
-        jsonStream.map(e => e.toString())
-        jsonStream.map(_ => Left(ResponseError(new Exception("Oops"), status)))
-    }
-  }
-
-  def plainText[F[_] : Effect](request: Request[F]): Stream[F, Either[Throwable, String]] = {
-    withLogger {
-      fetch(request)(res => Stream.eval(res.as[String]).attempt)
-    }
-  }
-
-  def fetchJson[F[_] : Effect, T](request: Request[F])(implicit decode: Decoder[T]): Stream[F, Either[Throwable, T]] = {
-    fetch(request)(withLogger(res => parseJson(res)))
-  }
-
-  def fetch[F[_] : Effect, T]
-  (request: Request[F])(f: Response[F] => Stream[F, Either[Throwable, T]]): Stream[F, Either[Throwable, T]] = {
-
-    val signed: Stream[F, Request[F]] = Stream.eval(sign(consumer)(request))
-    val pure: Stream[Pure, Request[F]] = Stream(request)
-
-    for {
-      client   <- Http1Client.stream[F]()
-      req      <- signed
-      response <- client.streaming(req)(resp => f(resp))
-    } yield response
-
-  }
-
-  private def get[F[_] : Effect](uri: Uri): Request[F] = Request[F]()
-    .withMethod(Method.GET)
-    .withUri(uri)
-    .withHeaders(USER_AGENT)
-
-  import org.http4s.client.oauth1._
-
-  private def sign[F[_] : Effect]
-  (consumer: Consumer, token: Option[Token] = None)
-  (req: Request[F]): F[Request[F]] = {
-
-    import java.util.Base64
-    import java.nio.charset.StandardCharsets
-
-    signRequest(
-      req,
-      consumer,
-      callback = None,
-      verifier = Some(Base64.getEncoder.encodeToString(s"${consumer.key}:${consumer.secret}"
-        .getBytes(StandardCharsets.UTF_8))),
-      token
-    )
-  }
-
-  sealed trait RequestIO[T] {
-    def process(request: Request[IO])
-               (implicit decoder: Decoder[T]): IO[T] = {
-
-      fetchJson[IO, T](withLogger(request))
-        .evalMap(IO.fromEither)
-        .compile
-        .toList
-        .map(_.head) // FIXME exception head of empty list :(
-    }
-  }
-
-  case object OAUTH extends RequestIO[Uri] {
+  case object OAUTH extends PlainTextRequest {
 
     def getAuthoriseUrl: IO[Either[String, Uri]] = {
       val oAuthQueryResponse = ("oauth_token=(.*)" +
@@ -149,20 +84,6 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
             Left(if (response.isEmpty) emptyResponse else response)
         }
     }
-  }
-
-  case class GET[T <: DiscogsEntity](private val api: DiscogsApi[T])
-                                    (implicit decoder: Decoder[T]) extends RequestIO[T] {
-
-
-    def io: IO[T] = process(get(api.uri))
-
-    def ioEither: IO[Either[Throwable, T]] = io.attempt
-
-    def ioTry: IO[Try[T]] = ioEither.map(_.fold(
-      throwable => Failure(throwable),
-      response => Success(response)
-    ))
   }
 
 }

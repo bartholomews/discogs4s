@@ -13,26 +13,42 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
     "getting authorization url" when {
 
       "consumer key is invalid" should {
+        val client = clientWith("invalidConsumer")
         "return a Left with appropriate message" in {
-          val response = clientWith("invalidConsumer").OAUTH.getAuthoriseUrl.unsafeRunSync()
+          val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
           response shouldBe Left("Invalid consumer.")
         }
       }
 
       "consumer secret is invalid" should {
+        val client = clientWith(validConsumerKey, "invalidConsumerSecret")
         "return a Left with appropriate message" in {
-          val response = clientWith(validConsumerKey, "invalidConsumerSecret")
-            .OAUTH.getAuthoriseUrl.unsafeRunSync()
+          val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
           response shouldBe Left("Invalid signature. Please double check consumer secret key.")
         }
       }
 
       "consumer key and secret are valid" should {
+        val client = validOAuthClient
         "return a Right with the callback Uri" in {
-          val response = validOAuthClient.OAUTH.getAuthoriseUrl.unsafeRunSync()
+          val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
           response shouldBe Uri.fromString(
             "http://discogs.com/oauth/authorize?oauth_token=TOKEN"
           )
+        }
+      }
+
+      "custom config has neither consumer application version nor url" should {
+        val client = clientWith(appName = "some app", appVersion = None, appUrl = None)
+        "have a proper USER-AGENT header" in {
+          /*
+            case class processUri() extends RequestF[OAuthRequest[Uri]] {
+                 process(Request[IO]()).unsafeRunSync()
+            }
+           */
+          // TODO: this should be done after wrapping every response in a new type
+          // TODO: e.g. case class DiscogsResponse[T :< DiscogsEntity](status: Status, headers: Headers, entity: T)
+          // TODO: having additional info like Headers(max-requests, user-agents), Status etc.
         }
       }
     }

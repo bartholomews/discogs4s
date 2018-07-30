@@ -6,14 +6,14 @@ trait MockClientConfig {
 
   def validOAuthClient: DiscogsClient = clientWith()
 
-  def clientWith(key: String = validConsumerKey, secret: String = validConsumerSecret) =
-    DiscogsClient(Some(mockConsumerConfig(key, secret)))
+  def clientWith(key: String = validConsumerKey,
+                 secret: String = validConsumerSecret,
+                 appName: String = "someApp",
+                 appVersion: Option[String] = Some("1.0"),
+                 appUrl: Option[String] = Some("app.git")): DiscogsClient =
 
-  def mockConsumerConfig(key: String = validConsumerKey, secret: String = validConsumerSecret) =
-    ConsumerConfig("someApp", Some("1.0"), Some("app.git"), key, secret)
+    DiscogsClient(Some(ConsumerConfig(appName, appVersion, appUrl, key, secret)))
 
   val validConsumerKey = "VALID_CONSUMER_KEY"
   val validConsumerSecret = "VALID_CONSUMER_SECRET"
 }
-
-
