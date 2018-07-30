@@ -1,6 +1,6 @@
 package utils
 
-import cats.effect.{Effect, IO}
+import cats.effect.Effect
 import fs2.{Pipe, Stream}
 import io.circe.Json
 import io.circe.fs2.decoder

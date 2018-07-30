@@ -118,7 +118,7 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
     def process(request: Request[IO])
                (implicit decoder: Decoder[T]): IO[T] = {
 
-      fetchJson[IO, T](request)
+      fetchJson[IO, T](withLogger(request))
         .evalMap(IO.fromEither)
         .compile
         .toList
