@@ -3,6 +3,7 @@ package client
 import cats.effect.{Effect, IO}
 import client.api.{AuthorizeUrl, DiscogsApi}
 import entities.DiscogsEntity
+import fs2.Pipe
 import io.circe.Decoder
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Header, Headers, Method, Request, Uri}
@@ -61,9 +62,9 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
   Your application should take our global limit into account and throttle its requests locally.
   */
 
-  case object OAUTH extends PlainTextRequest {
+  case object OAUTH extends RequestF[Uri] {
 
-    def getAuthoriseUrl: IO[Either[String, Uri]] = {
+    def getAuthoriseUrl: IO[Either[Throwable, Uri]] = {
       val oAuthQueryResponse = ("oauth_token=(.*)" +
         "&oauth_token_secret=(.*)" +
         "&oauth_callback_confirmed=(.*)").r
@@ -71,18 +72,28 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
       val invalidSignature = "Invalid signature. (.*)".r
       val emptyResponse = "Response was empty, please check request uri"
 
-      plainText[IO](withLogger(get(AuthorizeUrl.uri)))
+      val pipe: Pipe[IO, Either[Throwable, String], Either[Throwable, Uri]] = stream => {
+        stream
+          .last
+          .map(opt => opt.toLeft(emptyResponse).joinLeft)
+          .map {
+            case Right(oAuthQueryResponse(token, _, _)) =>
+              Right(AuthorizeUrl.response(token))
+            // TODO case Left after plainText handles properly response on Status
+            case Right(invalidSignature(_)) =>
+              Left(new Exception("Invalid signature. Please double check consumer secret key."))
+            // TODO case Left after plainText handles properly response on Status
+            case Right(response) =>
+              Left(new Exception(if (response.isEmpty) emptyResponse else response))
+          }
+      }
+
+      plainTextRequest[IO](withLogger(get(AuthorizeUrl.uri)))(pipe)
         .compile
         .last
-        .map(opt => opt.toLeft(emptyResponse).joinLeft)
-        .map {
-          case Right(oAuthQueryResponse(token, _, _)) =>
-            Right(AuthorizeUrl.response(token))
-          case Right(invalidSignature(_)) =>
-            Left("Invalid signature. Please double check consumer secret key.")
-          case Right(response) =>
-            Left(if (response.isEmpty) emptyResponse else response)
-        }
+        .map(opt => opt.toRight(
+          new Exception("Response was empty. Please check request logs."
+        )).joinRight)
     }
   }
 

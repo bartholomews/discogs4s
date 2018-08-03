@@ -2,7 +2,7 @@ package client
 
 import cats.effect.{Effect, IO}
 import entities.ResponseError
-import fs2.{Pure, Stream}
+import fs2.{Pipe, Pure, Stream}
 import io.circe.Decoder
 import io.circe.fs2.{byteStreamParser, decoder}
 import org.http4s.{Request, Response, Status}
@@ -11,6 +11,13 @@ import org.http4s.client.oauth1.Consumer
 import utils.Logger
 
 trait RequestF[T] extends Logger {
+
+  def plainTextRequest[F[_] : Effect](request: Request[F])
+                              (pipe: Pipe[F, Either[Throwable, String], Either[Throwable, T]])
+                              (implicit consumer: Consumer): Stream[F, Either[Throwable, T]] = {
+     fetch(request)(res =>
+       withLogger(Stream.eval(res.as[String]).attempt).through(pipe))
+  }
 
   def fetch[F[_] : Effect](request: Request[F])
                           (f: Response[F] => Stream[F, Either[Throwable, T]])
