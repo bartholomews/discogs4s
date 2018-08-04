@@ -16,7 +16,8 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         val client = clientWith("invalidConsumer")
         "return a Left with appropriate message" in {
           val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
-          response shouldBe Left("Invalid consumer.")
+          response shouldBe 'left
+          response.left.get.getMessage shouldBe "Invalid consumer."
         }
       }
 
@@ -24,7 +25,9 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         val client = clientWith(validConsumerKey, "invalidConsumerSecret")
         "return a Left with appropriate message" in {
           val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
-          response shouldBe Left("Invalid signature. Please double check consumer secret key.")
+          response shouldBe 'left
+          response.left.get.getMessage shouldBe
+            "Invalid signature. Please double check consumer secret key."
         }
       }
 
