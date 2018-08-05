@@ -3,11 +3,12 @@ package client
 import cats.effect.{Effect, IO}
 import entities.ResponseError
 import fs2.{Pipe, Pure, Stream}
-import io.circe.Decoder
 import io.circe.fs2.{byteStreamParser, decoder}
+import io.circe.{Decoder, Json}
 import org.http4s.client.blaze.Http1Client
 import org.http4s.client.oauth1.Consumer
-import org.http4s.{Headers, Request, Response, Status}
+import org.http4s.util.CaseInsensitiveString
+import org.http4s.{Request, Response, Status}
 import utils.Logger
 
 trait RequestF[T] extends Logger {
@@ -22,29 +23,33 @@ trait RequestF[T] extends Logger {
 
   def fetchJson(request: Request[IO])(implicit consumer: Consumer, decode: Decoder[T]): IO[T] = {
 
-    def parseJson[F[_] : Effect](response: Response[F]): Stream[F, Either[ResponseError, T]] = {
-      val headers: Headers = response.headers
+    def streamJson(request: Request[IO]): Stream[IO, Either[ResponseError, T]] = {
+      fetch(request)(withLogger(res => validateContentType(parseJson)(res)))
+    }
 
-      val status = headers.find(_.name == "Content-Type").map(contentType => {
-        if (contentType.value == "application/json") Status.Ok else Status.BadRequest
-      }).getOrElse(response.status)
-
-      val jsonStream = response.body.through(byteStreamParser).through(jsonBodyLogger)
-
-      status match {
-        case Status.Ok => jsonStream.through(decoder[F, T])
-          .attempt
-          .map(_.left.map(ResponseError(_)))
-        case _ =>
-          jsonStream.map(json => Left(ResponseError(new Exception(json.spaces2), status)))
+    def validateContentType(f: Response[IO] => Stream[IO, Either[ResponseError, T]])
+                           (response: Response[IO]): Stream[IO, Either[ResponseError, T]] = {
+      response.headers.get(CaseInsensitiveString("Content-Type")).map(_.value) match {
+        case None | Some("application/json") => f(response)
+        case Some(contentType) =>
+          val str: Stream[IO, ResponseError] = Stream.eval(IO.pure(ResponseError(
+            new Exception(s"$contentType: unexpected Content-Type"), Status.UnsupportedMediaType)))
+          str.map(error => Left(error))
       }
     }
 
-    def streamJson[F[_] : Effect](request: Request[F]): Stream[F, Either[ResponseError, T]] = {
-      fetch(request)(withLogger(res => parseJson(res)))
+    def parseJson(response: Response[IO]): Stream[IO, Either[ResponseError, T]] = {
+      val jsonStream: Stream[IO, Json] = response.body.through(byteStreamParser).through(jsonBodyLogger)
+      response.status match {
+        case Status.Ok => jsonStream.through(decoder[IO, T])
+          .attempt
+          .map(_.left.map(ResponseError(_)))
+        case _ =>
+          jsonStream.map(json => Left(ResponseError(new Exception(json.spaces2), response.status)))
+      }
     }
 
-    streamJson[IO](withLogger(request))
+    streamJson(withLogger(request))
       .evalMap(IO.fromEither)
       .compile
       .toList
@@ -81,7 +86,11 @@ trait RequestF[T] extends Logger {
       req,
       consumer,
       callback = None,
-      verifier = Some(Base64.getEncoder.encodeToString(s"${consumer.key}:${consumer.secret}"
+      verifier = Some(Base64.getEncoder.encodeToString(s"${
+        consumer.key
+      }:${
+        consumer.secret
+      }"
         .getBytes(StandardCharsets.UTF_8))),
       token
     )

@@ -38,6 +38,7 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
 
     stubFor(get("/oauth/request_token")
       .willReturn(aResponse()
+        .withHeader("Content-Type", "text/plain")
         .withBody("oauth_token=TOKEN" +
           "&oauth_token_secret=SECRET" +
           "&oauth_callback_confirmed=true"

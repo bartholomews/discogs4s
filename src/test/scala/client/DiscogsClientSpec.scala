@@ -16,40 +16,34 @@ class DiscogsClientSpec extends MockServerWordSpec with MockClientConfig with Ma
 
     def GET: DiscogsClientSpec.client.GET.type = DiscogsClientSpec.client.GET
 
-    "receiving an unexpected Content-type header" when {
-      "expecting a json response" should {
-        "return a ResponseError with 500 Status" in {
+    "receiving an unexpected Content-type header while expecting application/json" when {
 
-          implicit val consumer: Consumer = validConsumer
+      implicit val consumer: Consumer = validConsumer
 
-          val requestWithPlainTextResponse: Request[IO] = Request[IO]()
-            .withMethod(Method.GET)
-            .withUri(AuthorizeUrl.uri)
+      val requestWithPlainTextResponse: Request[IO] = Request[IO]()
+        .withMethod(Method.GET)
+        .withUri(AuthorizeUrl.uri)
 
-          val io = fetchJson(requestWithPlainTextResponse)
-            .attempt
-            .unsafeRunSync()
+      val io = fetchJson(requestWithPlainTextResponse).attempt
 
-          io.isLeft shouldBe true
-          val throwable = io.left.get
-          throwable.isInstanceOf[ResponseError] shouldBe true
-          val responseError: ResponseError = throwable match {
-            case e: ResponseError => e
-          }
-          responseError.status shouldBe Status.InternalServerError
-          responseError.getMessage shouldBe
-            "There was a problem decoding or parsing this response, please check the error logs."
+      "return a ResponseError" should {
+        "with UnsupportedMediaType Status and the right error message" in {
+          val error = io.unsafeRunSync().left.get.asInstanceOf[ResponseError]
+          error.status shouldBe Status.UnsupportedMediaType
+          error.getMessage shouldBe
+            "text/plain: unexpected Content-Type"
         }
       }
     }
 
-    "getting Artists releases" when {
-      parsed like paginatedReleasesResponse {
-        GET(ArtistsReleases(1, perPage = 1))
-      } (artistRelease = 1, page = 1, perPage = 1)
-    }
-
+  "getting Artists releases" when {
+    parsed like paginatedReleasesResponse {
+      GET(ArtistsReleases(1, perPage = 1))
+    }(artistRelease = 1, page = 1, perPage = 1)
   }
+
+}
+
 }
 
 object DiscogsClientSpec extends MockClientConfig {
