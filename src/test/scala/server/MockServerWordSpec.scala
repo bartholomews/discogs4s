@@ -5,7 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer
 import org.scalatest.words.BehaveWord
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, WordSpec}
+import org.scalatest.{BeforeAndAfterAll, WordSpec}
 
 trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
 
@@ -29,7 +29,6 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
   }
 
   private def stubApi(): Unit = {
-
     stubFor(get(anyUrl())
       .willReturn(aResponse()
         .withHeader("Content-Type", "application/json")

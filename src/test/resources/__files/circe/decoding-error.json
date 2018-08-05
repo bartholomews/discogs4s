@@ -1,0 +1,3 @@
+{
+  "KABOOM!" : "this json object is unexpected, it is used to test circe decoding failure"
+}
