@@ -5,23 +5,27 @@ import entities.ResponseError
 import fs2.{Pipe, Pure, Stream}
 import io.circe.Decoder
 import io.circe.fs2.{byteStreamParser, decoder}
-import org.http4s.{Request, Response, Status}
 import org.http4s.client.blaze.Http1Client
 import org.http4s.client.oauth1.Consumer
+import org.http4s.{Headers, Request, Response, Status}
 import utils.Logger
 
 trait RequestF[T] extends Logger {
 
+  def errorPipe[F[_] : Effect, U]: Pipe[F, Either[Throwable, U], Either[ResponseError, U]] = stream =>
+    stream.map(_.left.map(ResponseError(_)))
+
   def plainTextRequest[F[_] : Effect](request: Request[F])
-                              (pipe: Pipe[F, Either[Throwable, String], Either[Throwable, T]])
-                              (implicit consumer: Consumer): Stream[F, Either[Throwable, T]] = {
-     fetch(request)(res =>
-       withLogger(Stream.eval(res.as[String]).attempt).through(pipe))
+                                     (pipe: Pipe[F, Either[ResponseError, String], Either[ResponseError, T]])
+                                     (implicit consumer: Consumer): Stream[F, Either[ResponseError, T]] = {
+
+    fetch(request)(res =>
+      withLogger(Stream.eval(res.as[String]).attempt.through(errorPipe)).through(pipe))
   }
 
   def fetch[F[_] : Effect](request: Request[F])
-                          (f: Response[F] => Stream[F, Either[Throwable, T]])
-                          (implicit consumer: Consumer): Stream[F, Either[Throwable, T]] = {
+                          (f: Response[F] => Stream[F, Either[ResponseError, T]])
+                          (implicit consumer: Consumer): Stream[F, Either[ResponseError, T]] = {
 
     val signed: Stream[F, Request[F]] = Stream.eval(sign(consumer)(request))
     val pure: Stream[Pure, Request[F]] = Stream(request)
@@ -35,22 +39,25 @@ trait RequestF[T] extends Logger {
 
   def process(request: Request[IO])(implicit consumer: Consumer, decode: Decoder[T]): IO[T] = {
 
-    def parseJson[F[_] : Effect](response: Response[F]): Stream[F, Either[Throwable, T]] = {
-      val status = response.status
-      val headers = response.headers
-      // TODO if response = plainText don't bother and return Left
+    def parseJson[F[_] : Effect](response: Response[F]): Stream[F, Either[ResponseError, T]] = {
+      val headers: Headers = response.headers
+
+      val status = headers.find(_.name == "Content-Type").map(contentType => {
+        if (contentType.value == "application/json") Status.Ok else Status.BadRequest
+      }).getOrElse(response.status)
+
       val jsonStream = response.body.through(byteStreamParser).through(jsonBodyLogger)
+
       status match {
         case Status.Ok => jsonStream.through(decoder[F, T])
           .attempt
-          .map(_.left.map(ResponseError(_, Status.SeeOther)))
+          .map(_.left.map(ResponseError(_)))
         case _ =>
-          jsonStream.map(e => e.toString())
-          jsonStream.map(_ => Left(ResponseError(new Exception("Oops"), status)))
+          jsonStream.map(json => Left(ResponseError(new Exception(json.spaces2), status)))
       }
     }
 
-    def fetchJson[F[_] : Effect](request: Request[F]): Stream[F, Either[Throwable, T]] = {
+    def fetchJson[F[_] : Effect](request: Request[F]): Stream[F, Either[ResponseError, T]] = {
       fetch(request)(withLogger(res => parseJson(res)))
     }
 
@@ -67,8 +74,8 @@ trait RequestF[T] extends Logger {
   (consumer: Consumer, token: Option[Token] = None)
   (req: Request[F]): F[Request[F]] = {
 
-    import java.util.Base64
     import java.nio.charset.StandardCharsets
+    import java.util.Base64
 
     signRequest(
       req,

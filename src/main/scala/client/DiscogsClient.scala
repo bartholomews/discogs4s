@@ -2,11 +2,11 @@ package client
 
 import cats.effect.{Effect, IO}
 import client.api.{AuthorizeUrl, DiscogsApi}
-import entities.DiscogsEntity
+import entities.{DiscogsEntity, ResponseError}
 import fs2.Pipe
 import io.circe.Decoder
 import org.http4s.client.oauth1.Consumer
-import org.http4s.{Header, Headers, Method, Request, Uri}
+import org.http4s.{Header, Headers, Method, Request, Status, Uri}
 import utils.{Config, ConsumerConfig, Logger}
 
 import scala.util.{Failure, Success, Try}
@@ -64,7 +64,7 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
 
   case object OAUTH extends RequestF[Uri] {
 
-    def getAuthoriseUrl: IO[Either[Throwable, Uri]] = {
+    def getAuthoriseUrl: IO[Either[ResponseError, Uri]] = {
       val oAuthQueryResponse = ("oauth_token=(.*)" +
         "&oauth_token_secret=(.*)" +
         "&oauth_callback_confirmed=(.*)").r
@@ -72,7 +72,7 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
       val invalidSignature = "Invalid signature. (.*)".r
       val emptyResponse = "Response was empty, please check request uri"
 
-      val pipe: Pipe[IO, Either[Throwable, String], Either[Throwable, Uri]] = stream => {
+      val pipe: Pipe[IO, Either[ResponseError, String], Either[ResponseError, Uri]] = stream => {
         stream
           .last
           .map(opt => opt.toLeft(emptyResponse).joinLeft)
@@ -81,10 +81,16 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
               Right(AuthorizeUrl.response(token))
             // TODO case Left after plainText handles properly response on Status
             case Right(invalidSignature(_)) =>
-              Left(new Exception("Invalid signature. Please double check consumer secret key."))
+              Left(ResponseError(
+                new Exception("Invalid signature. Please double check consumer secret key."),
+                Status.Unauthorized
+              ))
             // TODO case Left after plainText handles properly response on Status
             case Right(response) =>
-              Left(new Exception(if (response.isEmpty) emptyResponse else response))
+              Left(ResponseError(
+                new Exception(if (response.isEmpty) emptyResponse else response),
+                Status.BadRequest
+              ))
           }
       }
 
@@ -92,8 +98,11 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
         .compile
         .last
         .map(opt => opt.toRight(
-          new Exception("Response was empty. Please check request logs."
-        )).joinRight)
+          ResponseError(
+            new Exception("Response was empty. Please check request logs."),
+            Status.BadRequest
+          )
+        ).joinRight)
     }
   }
 

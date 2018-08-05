@@ -1,6 +1,7 @@
 package utils
 
 import cats.effect.Effect
+import entities.ResponseError
 import fs2.{Pipe, Stream}
 import io.circe.Json
 import io.circe.fs2.decoder
@@ -15,7 +16,7 @@ trait Logger {
 
   logger.info(s"$logger started.")
 
-  type ThrowableOr[T] = Either[Throwable, T]
+  type ErrorOr[T] = Either[ResponseError, T]
 
   def jsonBodyLogger[F[_] : Effect]: Pipe[F, Json, Json] =
     stream => {
@@ -24,12 +25,12 @@ trait Logger {
         .map(json => debug(json))
     }
 
-  def withLogger[F[_] : Effect](res: Stream[F, ThrowableOr[String]]): Stream[F, ThrowableOr[String]] = {
+  def withLogger[F[_] : Effect](res: Stream[F, ErrorOr[String]]): Stream[F, ErrorOr[String]] = {
     res.map(debug)
   }
 
-  def withLogger[F[_] : Effect, T](f: Response[F] => Stream[F, ThrowableOr[T]])
-                                  (res: Response[F]): Stream[F, ThrowableOr[T]] = {
+  def withLogger[F[_] : Effect, T](f: Response[F] => Stream[F, ErrorOr[T]])
+                                  (res: Response[F]): Stream[F, ErrorOr[T]] = {
 
     val headers = res.headers.mkString("\n\t")
     val message = s"{\n\t${res.status}\n\t$headers\n}"
@@ -43,7 +44,12 @@ trait Logger {
     request
   }
 
-  private def debug(either: ThrowableOr[String]): ThrowableOr[String] = {
+  def logError(throwable: Throwable): Throwable = {
+    logger.error(throwable.getMessage, throwable)
+    throwable
+  }
+
+  private def debug(either: ErrorOr[String]): ErrorOr[String] = {
     either.fold(
       throwable => logger.debug(throwable.getMessage),
       str => logger.debug(str)
