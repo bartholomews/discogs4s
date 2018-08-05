@@ -3,7 +3,10 @@ package entities
 import org.http4s.Status
 import utils.Logger
 
-trait ResponseError extends Throwable
+trait ResponseError extends Throwable {
+  val status: Status
+  override def getMessage: String
+}
 
 object ResponseError extends Logger {
 

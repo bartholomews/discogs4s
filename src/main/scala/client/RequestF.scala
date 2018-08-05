@@ -12,9 +12,6 @@ import utils.Logger
 
 trait RequestF[T] extends Logger {
 
-  def errorPipe[F[_] : Effect, U]: Pipe[F, Either[Throwable, U], Either[ResponseError, U]] = stream =>
-    stream.map(_.left.map(ResponseError(_)))
-
   def plainTextRequest[F[_] : Effect](request: Request[F])
                                      (pipe: Pipe[F, Either[ResponseError, String], Either[ResponseError, T]])
                                      (implicit consumer: Consumer): Stream[F, Either[ResponseError, T]] = {
@@ -23,21 +20,7 @@ trait RequestF[T] extends Logger {
       withLogger(Stream.eval(res.as[String]).attempt.through(errorPipe)).through(pipe))
   }
 
-  def fetch[F[_] : Effect](request: Request[F])
-                          (f: Response[F] => Stream[F, Either[ResponseError, T]])
-                          (implicit consumer: Consumer): Stream[F, Either[ResponseError, T]] = {
-
-    val signed: Stream[F, Request[F]] = Stream.eval(sign(consumer)(request))
-    val pure: Stream[Pure, Request[F]] = Stream(request)
-
-    for {
-      client <- Http1Client.stream[F]()
-      req <- signed
-      response <- client.streaming(req)(resp => f(resp))
-    } yield response
-  }
-
-  def process(request: Request[IO])(implicit consumer: Consumer, decode: Decoder[T]): IO[T] = {
+  def fetchJson(request: Request[IO])(implicit consumer: Consumer, decode: Decoder[T]): IO[T] = {
 
     def parseJson[F[_] : Effect](response: Response[F]): Stream[F, Either[ResponseError, T]] = {
       val headers: Headers = response.headers
@@ -57,16 +40,33 @@ trait RequestF[T] extends Logger {
       }
     }
 
-    def fetchJson[F[_] : Effect](request: Request[F]): Stream[F, Either[ResponseError, T]] = {
+    def streamJson[F[_] : Effect](request: Request[F]): Stream[F, Either[ResponseError, T]] = {
       fetch(request)(withLogger(res => parseJson(res)))
     }
 
-    fetchJson[IO](withLogger(request))
+    streamJson[IO](withLogger(request))
       .evalMap(IO.fromEither)
       .compile
       .toList
       .map(_.head) // FIXME exception head of empty list :(
   }
+
+  private def fetch[F[_] : Effect](request: Request[F])
+                                  (f: Response[F] => Stream[F, Either[ResponseError, T]])
+                                  (implicit consumer: Consumer): Stream[F, Either[ResponseError, T]] = {
+
+    val signed: Stream[F, Request[F]] = Stream.eval(sign(consumer)(request))
+    val pure: Stream[Pure, Request[F]] = Stream(request)
+
+    for {
+      client <- Http1Client.stream[F]()
+      req <- signed
+      response <- client.streaming(req)(resp => f(resp))
+    } yield response
+  }
+
+  private def errorPipe[F[_] : Effect, U]: Pipe[F, Either[Throwable, U], Either[ResponseError, U]] = stream =>
+    stream.map(_.left.map(ResponseError(_)))
 
   import org.http4s.client.oauth1._
 

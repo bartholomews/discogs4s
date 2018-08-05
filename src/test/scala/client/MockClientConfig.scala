@@ -1,5 +1,6 @@
 package client
 
+import org.http4s.client.oauth1.Consumer
 import utils.ConsumerConfig
 
 trait MockClientConfig {
@@ -16,4 +17,6 @@ trait MockClientConfig {
 
   val validConsumerKey = "VALID_CONSUMER_KEY"
   val validConsumerSecret = "VALID_CONSUMER_SECRET"
+
+  val validConsumer = Consumer(validConsumerKey, validConsumerSecret)
 }
