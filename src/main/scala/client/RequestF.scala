@@ -13,6 +13,11 @@ import utils.Logger
 
 trait RequestF[T] extends Logger {
 
+  val emptyResponse: ResponseError = ResponseError(
+    new Exception("Response was empty. Please check request logs."),
+    Status.BadRequest
+  )
+
   def plainTextRequest[F[_] : Effect](request: Request[F])
                                      (pipe: Pipe[F, Either[ResponseError, String], Either[ResponseError, T]])
                                      (implicit consumer: Consumer): Stream[F, Either[ResponseError, T]] = {
@@ -39,21 +44,30 @@ trait RequestF[T] extends Logger {
     }
 
     def parseJson(response: Response[IO]): Stream[IO, Either[ResponseError, T]] = {
-      val jsonStream: Stream[IO, Json] = response.body.through(byteStreamParser).through(jsonBodyLogger)
+      val jsonStream: Stream[IO, Json] = response
+        .body
+        .through(byteStreamParser)
+        .through(jsonBodyLogger)
+
       response.status match {
-        case Status.Ok => jsonStream.through(decoder[IO, T])
+        case Status.Ok => jsonStream
+          .through(decoder[IO, T])
           .attempt
           .map(_.left.map(ResponseError(_)))
         case _ =>
-          jsonStream.map(json => Left(ResponseError(new Exception(json.spaces2), response.status)))
+          jsonStream.map(json =>
+            Left(ResponseError(new Exception(json.spaces2), response.status)))
       }
     }
 
     streamJson(withLogger(request))
       .evalMap(IO.fromEither)
       .compile
-      .toList
-      .map(_.head) // FIXME exception head of empty list :(
+      .last
+      .flatMap(_.toRight(emptyResponse).fold(
+        empty => IO.raiseError(empty),
+        value => IO.pure(value)
+      ))
   }
 
   private def fetch[F[_] : Effect](request: Request[F])
@@ -86,11 +100,7 @@ trait RequestF[T] extends Logger {
       req,
       consumer,
       callback = None,
-      verifier = Some(Base64.getEncoder.encodeToString(s"${
-        consumer.key
-      }:${
-        consumer.secret
-      }"
+      verifier = Some(Base64.getEncoder.encodeToString(s"${consumer.key}:${consumer.secret}"
         .getBytes(StandardCharsets.UTF_8))),
       token
     )

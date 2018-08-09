@@ -13,7 +13,7 @@ trait PaginatedReleaseBehaviors extends WordSpec with Matchers {
     "requested as an IO[Try]" should behaveLikePaginatedRelease(request.ioTry.unsafeRunSync().get)
     "requested as an IO[Either]" should behaveLikePaginatedRelease(request.ioEither.unsafeRunSync().right.get)
 
-    def behaveLikePaginatedRelease(release: => PaginatedReleases) {
+    def behaveLikePaginatedRelease(release: => PaginatedReleases): Unit = {
       "have proper pagination" in {
         release.pagination.page shouldBe page
       }

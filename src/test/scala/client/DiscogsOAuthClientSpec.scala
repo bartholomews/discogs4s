@@ -55,5 +55,8 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         }
       }
     }
+
+    // TODO mock OAUTH to return empty response and assert returning ResponseError with that message
+    // TODO mock OAUTH to return a 400 or something and assert returning ResponseError with that message
   }
 }

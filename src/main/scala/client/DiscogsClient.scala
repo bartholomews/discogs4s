@@ -70,39 +70,33 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
         "&oauth_callback_confirmed=(.*)").r
 
       val invalidSignature = "Invalid signature. (.*)".r
-      val emptyResponse = "Response was empty, please check request uri"
+      val emptyResponseMessage = "Response was empty, please check request uri"
 
       val pipe: Pipe[IO, Either[ResponseError, String], Either[ResponseError, Uri]] = stream => {
         stream
           .last
-          .map(opt => opt.toLeft(emptyResponse).joinLeft)
+          .map(opt => opt.toLeft(emptyResponseMessage).joinLeft)
           .map {
             case Right(oAuthQueryResponse(token, _, _)) =>
               Right(AuthorizeUrl.response(token))
-            // TODO case Left after plainText handles properly response on Status
             case Right(invalidSignature(_)) =>
               Left(ResponseError(
                 new Exception("Invalid signature. Please double check consumer secret key."),
                 Status.Unauthorized
               ))
-            // TODO case Left after plainText handles properly response on Status
-            case Right(response) =>
-              Left(ResponseError(
-                new Exception(if (response.isEmpty) emptyResponse else response),
+            case Right(response) => Left(
+              if (response.isEmpty) emptyResponse else ResponseError(
+                new Exception(response),
                 Status.BadRequest
               ))
+            case Left(responseError) => Left(responseError)
           }
       }
 
       plainTextRequest[IO](withLogger(get(AuthorizeUrl.uri)))(pipe)
         .compile
         .last
-        .map(opt => opt.toRight(
-          ResponseError(
-            new Exception("Response was empty. Please check request logs."),
-            Status.BadRequest
-          )
-        ).joinRight)
+        .map(opt => opt.toRight(emptyResponse).joinRight)
     }
   }
 
