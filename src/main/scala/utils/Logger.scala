@@ -18,12 +18,7 @@ trait Logger {
 
   type ErrorOr[T] = Either[ResponseError, T]
 
-  def jsonBodyLogger[F[_] : Effect]: Pipe[F, Json, Json] =
-    stream => {
-      stream
-        .through(decoder[F, Json])
-        .map(json => debug(json))
-    }
+  def jsonLogPipe[F[_] : Effect]: Pipe[F, Json, Json] = _.map(debug)
 
   def withLogger[F[_] : Effect](res: Stream[F, ErrorOr[String]]): Stream[F, ErrorOr[String]] = {
     res.map(debug)
