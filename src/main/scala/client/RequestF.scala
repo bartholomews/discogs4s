@@ -9,30 +9,33 @@ import org.http4s.client.blaze.Http1Client
 import org.http4s.client.oauth1.Consumer
 import org.http4s.util.CaseInsensitiveString
 import org.http4s.{Request, Response, Status}
-import utils.Logger
+import utils.{Logger, Types}
 
-trait RequestF[T] extends Logger {
+trait RequestF[T] extends Types with Logger {
 
   val emptyResponse: ResponseError = ResponseError(
     new Exception("Response was empty. Please check request logs."),
     Status.BadRequest
   )
 
-  def jsonRequest[F[_] : Effect](request: Request[F])(implicit consumer: Consumer,
-                                                      decoder: Decoder[T]): Stream[F, Either[ResponseError, T]] = {
-    fetch(request)(withLogger(res => validateContentType(parseJson[F])(res)))
+  def jsonRequest[F[_] : Effect](request: Request[F])
+                                (implicit consumer: Consumer,
+                                 decoder: Decoder[T]): StreamResponse[F, T] = {
+    fetch(request)(withLogger {
+      res => validateContentType(parseJson[F])(res)
+    })
   }
 
   def plainTextRequest[F[_] : Effect](request: Request[F])
-                                     (pipe: Pipe[F, Either[ResponseError, String], Either[ResponseError, T]])
-                                     (implicit consumer: Consumer): Stream[F, Either[ResponseError, T]] = {
-
+                                     (implicit plainTextToDomainPipe: PipeTransform[F, String, T],
+                                      consumer: Consumer): StreamResponse[F, T] = {
     fetch(request)(res =>
-      withLogger(Stream.eval(res.as[String]).attempt.through(errorPipe)).through(pipe))
+      withLogger(Stream.eval(res.as[String]).attempt.through(errorPipe))
+        .through(plainTextToDomainPipe))
   }
 
-  private def validateContentType[F[_] : Effect](f: Response[F] => Stream[F, Either[ResponseError, T]])
-                                        (response: Response[F]): Stream[F, Either[ResponseError, T]] = {
+  private def validateContentType[F[_] : Effect](f: Response[F] => StreamResponse[F, T])
+                                        (response: Response[F]): StreamResponse[F, T] = {
     response.headers.get(CaseInsensitiveString("Content-Type")).map(_.value) match {
       case None | Some("application/json") => f(response)
       case Some(contentType) =>
@@ -44,7 +47,7 @@ trait RequestF[T] extends Logger {
   }
 
   private def parseJson[F[_] : Effect](response: Response[F])
-                                      (implicit decode: Decoder[T]): Stream[F, Either[ResponseError, T]] = {
+                                      (implicit decode: Decoder[T]): StreamResponse[F, T] = {
     val jsonStream: Stream[F, Json] = response
       .body
       .through(byteStreamParser)
@@ -62,27 +65,26 @@ trait RequestF[T] extends Logger {
   }
 
   private def fetch[F[_] : Effect](request: Request[F])
-                                  (f: Response[F] => Stream[F, Either[ResponseError, T]])
-                                  (implicit consumer: Consumer): Stream[F, Either[ResponseError, T]] = {
+                                  (f: Response[F] => StreamResponse[F, T])
+                                  (implicit consumer: Consumer): StreamResponse[F, T] = {
 
     val signed: Stream[F, Request[F]] = Stream.eval(sign(consumer)(request))
     val pure: Stream[Pure, Request[F]] = Stream(request)
 
     for {
-      client <- Http1Client.stream[F]()
-      req <- signed
+      client   <- Http1Client.stream[F]()
+      req      <- signed
       response <- client.streaming(req)(resp => f(resp))
     } yield response
   }
 
-  private def errorPipe[F[_] : Effect, U]: Pipe[F, Either[Throwable, U], Either[ResponseError, U]] = stream =>
-    stream.map(_.left.map(ResponseError(_)))
+  private def errorPipe[F[_] : Effect, U]: Pipe[F, Either[Throwable, U], ErrorOr[U]] =
+    _.map(_.left.map(ResponseError(_)))
 
   import org.http4s.client.oauth1._
 
-  private def sign[F[_] : Effect]
-  (consumer: Consumer, token: Option[Token] = None)
-  (req: Request[F]): F[Request[F]] = {
+  private def sign[F[_] : Effect](consumer: Consumer, token: Option[Token] = None)
+                                 (req: Request[F]): F[Request[F]] = {
 
     import java.nio.charset.StandardCharsets
     import java.util.Base64

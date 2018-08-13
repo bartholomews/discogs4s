@@ -1,22 +1,18 @@
 package utils
 
 import cats.effect.Effect
-import entities.ResponseError
 import fs2.{Pipe, Stream}
 import io.circe.Json
-import io.circe.fs2.decoder
 import org.http4s.{Request, Response}
 import org.log4s.getLogger
 
 import scala.language.higherKinds
 
-trait Logger {
+trait Logger extends Types {
 
   private[this] val logger = getLogger("discogs4s").logger
 
   logger.info(s"$logger started.")
-
-  type ErrorOr[T] = Either[ResponseError, T]
 
   def jsonLogPipe[F[_] : Effect]: Pipe[F, Json, Json] = _.map(debug)
 
