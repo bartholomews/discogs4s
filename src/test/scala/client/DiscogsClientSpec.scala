@@ -15,7 +15,7 @@ class DiscogsClientSpec extends MockServerWordSpec
   with MockClientConfig
   with Matchers
   with PaginatedReleaseBehaviors
-  with RequestF[String] {
+  with IOClient[String] {
 
   "Discogs OAuth Client" when {
 
@@ -66,9 +66,7 @@ class DiscogsClientSpec extends MockServerWordSpec
         GET(ArtistsReleases(1, perPage = 1))
       }(artistRelease = 1, page = 1, perPage = 1)
     }
-
   }
-
 }
 
 object DiscogsClientSpec extends MockClientConfig {
