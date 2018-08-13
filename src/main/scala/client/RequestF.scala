@@ -1,10 +1,10 @@
 package client
 
-import cats.effect.{Effect, IO}
+import cats.effect.Effect
 import entities.ResponseError
 import fs2.{Pipe, Pure, Stream}
-import io.circe.fs2.{byteStreamParser, decoder}
 import io.circe.{Decoder, Json}
+import io.circe.fs2.{byteStreamParser, decoder}
 import org.http4s.client.blaze.Http1Client
 import org.http4s.client.oauth1.Consumer
 import org.http4s.util.CaseInsensitiveString
@@ -18,6 +18,11 @@ trait RequestF[T] extends Logger {
     Status.BadRequest
   )
 
+  def jsonRequest[F[_] : Effect](request: Request[F])(implicit consumer: Consumer,
+                                                      decoder: Decoder[T]): Stream[F, Either[ResponseError, T]] = {
+    fetch(request)(withLogger(res => validateContentType(parseJson[F])(res)))
+  }
+
   def plainTextRequest[F[_] : Effect](request: Request[F])
                                      (pipe: Pipe[F, Either[ResponseError, String], Either[ResponseError, T]])
                                      (implicit consumer: Consumer): Stream[F, Either[ResponseError, T]] = {
@@ -26,48 +31,34 @@ trait RequestF[T] extends Logger {
       withLogger(Stream.eval(res.as[String]).attempt.through(errorPipe)).through(pipe))
   }
 
-  def fetchJson(request: Request[IO])(implicit consumer: Consumer, decode: Decoder[T]): IO[T] = {
-
-    def streamJson(request: Request[IO]): Stream[IO, Either[ResponseError, T]] = {
-      fetch(request)(withLogger(res => validateContentType(parseJson)(res)))
+  private def validateContentType[F[_] : Effect](f: Response[F] => Stream[F, Either[ResponseError, T]])
+                                        (response: Response[F]): Stream[F, Either[ResponseError, T]] = {
+    response.headers.get(CaseInsensitiveString("Content-Type")).map(_.value) match {
+      case None | Some("application/json") => f(response)
+      case Some(contentType) =>
+        val str: Stream[F, ResponseError] = Stream.emit(ResponseError(
+          new Exception(s"$contentType: unexpected Content-Type"), Status.UnsupportedMediaType)
+        )
+        str.map(error => Left(error))
     }
+  }
 
-    def validateContentType(f: Response[IO] => Stream[IO, Either[ResponseError, T]])
-                           (response: Response[IO]): Stream[IO, Either[ResponseError, T]] = {
-      response.headers.get(CaseInsensitiveString("Content-Type")).map(_.value) match {
-        case None | Some("application/json") => f(response)
-        case Some(contentType) =>
-          val str: Stream[IO, ResponseError] = Stream.eval(IO.pure(ResponseError(
-            new Exception(s"$contentType: unexpected Content-Type"), Status.UnsupportedMediaType)))
-          str.map(error => Left(error))
-      }
+  private def parseJson[F[_] : Effect](response: Response[F])
+                                      (implicit decode: Decoder[T]): Stream[F, Either[ResponseError, T]] = {
+    val jsonStream: Stream[F, Json] = response
+      .body
+      .through(byteStreamParser)
+      .through(jsonLogPipe)
+
+    response.status match {
+      case Status.Ok => jsonStream
+        .through(decoder[F, T])
+        .attempt
+        .map(_.left.map(ResponseError(_)))
+      case _ =>
+        jsonStream.map(json =>
+          Left(ResponseError(new Exception(json.spaces2), response.status)))
     }
-
-    def parseJson(response: Response[IO]): Stream[IO, Either[ResponseError, T]] = {
-      val jsonStream: Stream[IO, Json] = response
-        .body
-        .through(byteStreamParser)
-        .through(jsonBodyLogger)
-
-      response.status match {
-        case Status.Ok => jsonStream
-          .through(decoder[IO, T])
-          .attempt
-          .map(_.left.map(ResponseError(_)))
-        case _ =>
-          jsonStream.map(json =>
-            Left(ResponseError(new Exception(json.spaces2), response.status)))
-      }
-    }
-
-    streamJson(withLogger(request))
-      .evalMap(IO.fromEither)
-      .compile
-      .last
-      .flatMap(_.toRight(emptyResponse).fold(
-        empty => IO.raiseError(empty),
-        value => IO.pure(value)
-      ))
   }
 
   private def fetch[F[_] : Effect](request: Request[F])
