@@ -3,35 +3,57 @@ package client
 import cats.effect.Effect
 import entities.ResponseError
 import fs2.{Pipe, Pure, Stream}
-import io.circe.{Decoder, Json}
 import io.circe.fs2.{byteStreamParser, decoder}
+import io.circe.{Decoder, Json}
 import org.http4s.client.blaze.Http1Client
 import org.http4s.client.oauth1.Consumer
 import org.http4s.util.CaseInsensitiveString
-import org.http4s.{Request, Response, Status}
+import org.http4s.{Headers, Request, Response, Status}
 import utils.{Logger, Types}
 
 trait RequestF[T] extends Types with Logger {
 
   val emptyResponse: ResponseError = ResponseError(
-    new Exception("Response was empty. Please check request logs."),
-    Status.BadRequest
+      new Exception("Response was empty. Please check request logs."),
+      Status.BadRequest
+  )
+
+  val emptyHttpResponse: HttpResponse[Nothing] = HttpResponse(
+    Status.BadRequest,
+    Headers.empty,
+    Left(emptyResponse)
   )
 
   def jsonRequest[F[_] : Effect](request: Request[F])
                                 (implicit consumer: Consumer,
-                                 decoder: Decoder[T]): StreamResponse[F, T] = {
-    fetch(request)(withLogger {
-      res => validateContentType(parseJson[F])(res)
-    })
+                                 decoder: Decoder[T]): Stream[F, HttpResponse[T]] = {
+
+    fetchResponse(request)(res => validateContentType(parseJson[F])(res))
   }
 
   def plainTextRequest[F[_] : Effect](request: Request[F])
-                                     (implicit plainTextToDomainPipe: PipeTransform[F, String, T],
-                                      consumer: Consumer): StreamResponse[F, T] = {
-    fetch(request)(res =>
-      withLogger(Stream.eval(res.as[String]).attempt.through(errorPipe))
-        .through(plainTextToDomainPipe))
+                                     (plainTextToDomainPipe: PipeTransform[F, String, T])
+                                     (implicit consumer: Consumer): Stream[F, HttpResponse[T]] = {
+
+    fetchResponse(request)(res =>
+      Stream.eval(res.as[String]).attempt.through(errorPipe).through(plainTextToDomainPipe)
+    )
+  }
+
+  private def fetchResponse[F[_] : Effect](request: Request[F])
+                                  (f: Response[F] => Stream[F, ErrorOr[T]])
+                                  (implicit consumer: Consumer): Stream[F, HttpResponse[T]] = {
+
+    val signed: Stream[F, Request[F]] = Stream.eval(sign(consumer)(request))
+    val pure: Stream[Pure, Request[F]] = Stream(request)
+
+    for {
+      client   <- Http1Client.stream[F]()
+      req      <- signed
+      response <- client.streaming(req)(withLogger { res =>
+        f(res).map(HttpResponse(res.status, res.headers, _))
+      })
+    } yield response
   }
 
   private def validateContentType[F[_] : Effect](f: Response[F] => StreamResponse[F, T])
@@ -78,7 +100,7 @@ trait RequestF[T] extends Types with Logger {
     } yield response
   }
 
-  private def errorPipe[F[_] : Effect, U]: Pipe[F, Either[Throwable, U], ErrorOr[U]] =
+  private def errorPipe[F[_], U]: Pipe[F, Either[Throwable, U], ErrorOr[U]] =
     _.map(_.left.map(ResponseError(_)))
 
   import org.http4s.client.oauth1._
@@ -100,3 +122,7 @@ trait RequestF[T] extends Types with Logger {
   }
 
 }
+
+case class HttpResponse[T](status: Status,
+                           headers: Headers,
+                           entity: Either[ResponseError, T])

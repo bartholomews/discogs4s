@@ -5,7 +5,7 @@ import client.api.AuthorizeUrl
 import entities.ResponseError
 import org.http4s.{Status, Uri}
 
-trait AuthClient extends RequestF[Uri] {
+trait OAuthClient extends RequestF[Uri] {
 
   private val oAuthQueryResponse = ("oauth_token=(.*)" +
     "&oauth_token_secret=(.*)" +

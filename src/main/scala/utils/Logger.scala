@@ -1,6 +1,7 @@
 package utils
 
 import cats.effect.Effect
+import client.HttpResponse
 import fs2.{Pipe, Stream}
 import io.circe.Json
 import org.http4s.{Request, Response}
@@ -20,8 +21,8 @@ trait Logger extends Types {
     res.map(debug)
   }
 
-  def withLogger[F[_] : Effect, T](f: Response[F] => Stream[F, ErrorOr[T]])
-                                  (res: Response[F]): Stream[F, ErrorOr[T]] = {
+  def withLogger[F[_] : Effect, T](f: Response[F] => Stream[F, HttpResponse[T]])
+                                  (res: Response[F]): Stream[F, HttpResponse[T]] = {
 
     val headers = res.headers.mkString("\n\t")
     val message = s"{\n\t${res.status}\n\t$headers\n}"

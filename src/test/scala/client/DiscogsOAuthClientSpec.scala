@@ -12,12 +12,14 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
     "getting authorization url" when {
 
+      // TODO assert headers and status of HttpResponse
+
       "consumer key is invalid" should {
         val client = clientWith("invalidConsumer")
         "return a Left with appropriate message" in {
           val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
-          response shouldBe 'left
-          response.left.get.getMessage shouldBe "Invalid consumer."
+          response.entity shouldBe 'left
+          response.entity.left.get.getMessage shouldBe "Invalid consumer."
         }
       }
 
@@ -25,8 +27,8 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         val client = clientWith(validConsumerKey, "invalidConsumerSecret")
         "return a Left with appropriate message" in {
           val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
-          response shouldBe 'left
-          response.left.get.getMessage shouldBe
+          response.entity shouldBe 'left
+          response.entity.left.get.getMessage shouldBe
             "Invalid signature. Please double check consumer secret key."
         }
       }
@@ -35,7 +37,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         val client = validOAuthClient
         "return a Right with the callback Uri" in {
           val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
-          response shouldBe Uri.fromString(
+          response.entity shouldBe Uri.fromString(
             "http://discogs.com/oauth/authorize?oauth_token=TOKEN"
           )
         }

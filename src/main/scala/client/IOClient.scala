@@ -9,8 +9,9 @@ trait IOClient[T] extends RequestF[T] {
 
   def fetchJson(request: Request[IO])
                (implicit consumer: Consumer, decode: Decoder[T]): IO[T] = {
+
     jsonRequest(withLogger(request))
-      .evalMap(IO.fromEither)
+      .evalMap(res => IO.fromEither(res.entity))
       .compile
       .last
       .flatMap(_.toRight(emptyResponse).fold(
