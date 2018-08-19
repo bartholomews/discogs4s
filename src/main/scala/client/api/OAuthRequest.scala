@@ -16,7 +16,13 @@ case object AuthorizeUrl extends OAuthRequest[Uri] {
       .withQueryParam("oauth_token", token)
 }
 
-case object AccessTokenRequest extends OAuthRequest[Token] {
+case class OAuthResponse(token: Token) {
+  val callback: Uri = (Uri.unsafeFromString(
+    s"${Config.SCHEME}://${Config.DISCOGS_DOMAIN}") / AuthorizeUrl.path / "authorize")
+    .withQueryParam("oauth_token", token.value)
+}
+
+case class AccessTokenRequest(token: Token, verifier: String) extends OAuthRequest[Token] {
   override val uri: Uri = basePath / "access_token"
 }
 

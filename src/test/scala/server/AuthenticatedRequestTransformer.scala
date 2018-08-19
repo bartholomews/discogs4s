@@ -1,7 +1,5 @@
 package server
 
-import java.net.URLDecoder
-
 import client.MockClientConfig
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import com.github.tomakehurst.wiremock.common.FileSource
@@ -26,13 +24,17 @@ case object AuthenticatedRequestTransformer extends ResponseDefinitionTransforme
         "oauth_timestamp=\"(.*)\"," +
         "oauth_nonce=\"(.*)\"," +
         "oauth_version=\"(.*)\"," +
-        "oauth_callback=\"(.*)\"," +
-        "oauth_verifier=\"(.*)\""
+        "oauth_callback=\"(.*)\"" +
+        "([,oauth_verifier=\"(.*)\"])?"
       ).r
 
-    request.getHeader("Authorization") match {
+    val headers = request.getHeader("Authorization")
 
-      case reg(_, key, _, _, _, _, _, verifier) =>
+    headers match {
+
+      case reg(signature, key, _, _, _, _, _, verifier) =>
+
+        println(verifier)
 
         if (key != validConsumerKey) {
           likeResponse
@@ -43,14 +45,8 @@ case object AuthenticatedRequestTransformer extends ResponseDefinitionTransforme
 
         else {
 
-          import java.nio.charset.StandardCharsets
-          import java.util.Base64
-
-          val decoded = Base64.getDecoder.decode(
-            URLDecoder.decode(verifier, "UTF-8")
-          )
-          val secret = new String(decoded, StandardCharsets.UTF_8).split(":")(1)
-          if (secret != validConsumerSecret) {
+          // TODO decode signature
+          if ("TODO: decode signature" == validConsumerSecret) {
             likeResponse
               .withStatus(400)
               .withBody("Invalid signature. " +

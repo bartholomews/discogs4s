@@ -42,17 +42,11 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
           "&oauth_token_secret=SECRET" +
           "&oauth_callback_confirmed=true"
         )
-        .withTransformers(defaultAuthenticatedTransformers: _*)
+        .withTransformers(defaultTransformers(AuthenticatedRequestTransformer): _*)
       )
     )
   }
 
-  private def defaultAuthenticatedTransformers: Seq[String] =
-    defaultTransformers(AuthenticatedRequestTransformer)
-
   private def defaultTransformers[T <: ResponseDefinitionTransformer]
-  (customTransformers: T*): Seq[String] = {
-    Seq(UserAgentHeaderTransformer.getName) ++ customTransformers.map(_.getName)
-  }
-
+  (customTransformers: T*): Seq[String] = Seq.empty ++ customTransformers.map(_.getName)
 }
