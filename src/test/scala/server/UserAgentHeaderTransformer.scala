@@ -6,6 +6,9 @@ import com.github.tomakehurst.wiremock.extension.{Parameters, ResponseDefinition
 import com.github.tomakehurst.wiremock.http.{Request, ResponseDefinition}
 
 case object UserAgentHeaderTransformer extends ResponseDefinitionTransformer {
+
+  override val applyGlobally = true
+
   override def transform(request: Request,
                          response: ResponseDefinition,
                          files: FileSource,
