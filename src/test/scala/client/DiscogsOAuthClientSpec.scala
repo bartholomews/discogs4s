@@ -16,9 +16,12 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
       // TODO assert headers and status of HttpResponse
 
-      "consumer key is invalid" when {
+      "consumer key is invalid" should {
+
         val client = clientWith("invalidConsumer")
+
         def response: HttpResponse[OAuthResponse] = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
+
         "return a Left with appropriate message" in {
           response.entity shouldBe 'left
           response.entity.left.get.getMessage shouldBe "Invalid consumer."
@@ -26,19 +29,22 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
       }
 
       // TODO decode signature
-//      "consumer secret is invalid" should {
-//        val client = clientWith(validConsumerKey, "invalidConsumerSecret")
-//        "return a Left with appropriate message" in {
-//          val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
-//          response.entity shouldBe 'left
-//          response.entity.left.get.getMessage shouldBe
-//            "Invalid signature. Please double check consumer secret key."
-//        }
-//      }
+      //      "consumer secret is invalid" should {
+      //        val client = clientWith(validConsumerKey, "invalidConsumerSecret")
+      //        "return a Left with appropriate message" in {
+      //          val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
+      //          response.entity shouldBe 'left
+      //          response.entity.left.get.getMessage shouldBe
+      //            "Invalid signature. Please double check consumer secret key."
+      //        }
+      //      }
 
-      "consumer key and secret are valid" when {
+      "consumer key and secret are valid" should {
+
         val client = validOAuthClient
+
         def response: HttpResponse[OAuthResponse] = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
+
         "return a Right with the response Token" in {
           response.entity shouldBe 'right
           response.entity.right.get.token shouldBe Token("TOKEN", "SECRET")
@@ -52,8 +58,10 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         }
       }
 
-      "custom config has neither consumer application version nor url" when {
+      "custom config has neither consumer application version nor url" should {
+
         val client = clientWith(appName = "some app", appVersion = None, appUrl = None)
+
         "have a proper USER-AGENT header" in {
           /*
             case class processUri() extends RequestF[OAuthRequest[Uri]] {
@@ -68,13 +76,18 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
     }
 
     "getting auth token" when {
+
       val client = validOAuthClient
+
       // TODO mock OAUTH to return empty response and assert returning ResponseError with that message
       // TODO mock OAUTH to return a 400 or something and assert returning ResponseError with that message
       // TODO handle other errors, look at ValidateTokenRequestBodyTransformer
-      "request has an invalid verifier" when {
+
+      "request has an invalid verifier" should {
         val request = AccessTokenRequest(Token(validToken, validSecret), "invalidVerifier")
+
         def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
+
         "return an error with the right code" in {
           response.entity shouldBe 'left
           response.entity.left.get.status shouldBe Status.BadRequest
@@ -85,9 +98,12 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
             "Unable to retrieve access token. Your request token may have expired."
         }
 
-        "request is valid" when {
+        "request is valid" should {
+
           val request = AccessTokenRequest(Token(validToken, validSecret), validVerifier)
+
           def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
+
           "return a response with Token and empty callbackConfirmed" in {
             response.entity shouldBe 'right
             val oAuthResponse = response.entity.right.get
