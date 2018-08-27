@@ -6,12 +6,16 @@ import entities.ResponseError
 import org.http4s.Status
 import org.http4s.client.oauth1.Token
 
+import scala.util.Try
+
 trait OAuthClient extends IOClient[OAuthResponse] {
 
-  private val oAuthQueryResponse = ("oauth_token=(.*)" +
+  private val authorizeUrlResponse = ("oauth_token=(.*)" +
     "&oauth_token_secret=(.*)" +
-    "([&oauth_callback_confirmed=(.*)])?"
+    "&oauth_callback_confirmed=(.*)"
     ).r
+
+  private val accessTokenResponse = "oauth_token=(.*)&oauth_token_secret=(.*)".r
 
   private val invalidSignature = "Invalid signature. (.*)".r
   private val emptyResponseMessage = "Response was empty, please check request uri"
@@ -21,7 +25,11 @@ trait OAuthClient extends IOClient[OAuthResponse] {
     .map(_.toLeft(emptyResponseMessage).joinLeft)
     .map {
 
-      case Right(oAuthQueryResponse(token, secret, _)) =>
+      case Right(authorizeUrlResponse(token, secret, flag)) =>
+        val callbackConfirmed = Try(flag.toBoolean).toOption
+        Right(OAuthResponse(Token(token, secret), callbackConfirmed))
+
+      case Right(accessTokenResponse(token, secret)) =>
         Right(OAuthResponse(Token(token, secret)))
 
       case Right(invalidSignature(_)) => Left {

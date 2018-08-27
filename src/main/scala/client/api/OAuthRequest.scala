@@ -16,7 +16,7 @@ case object AuthorizeUrl extends OAuthRequest[Uri] {
       .withQueryParam("oauth_token", token)
 }
 
-case class OAuthResponse(token: Token) {
+case class OAuthResponse(token: Token, callbackConfirmed: Option[Boolean] = None) {
   val callback: Uri = (Uri.unsafeFromString(
     s"${Config.SCHEME}://${Config.DISCOGS_DOMAIN}") / AuthorizeUrl.path / "authorize")
     .withQueryParam("oauth_token", token.value)

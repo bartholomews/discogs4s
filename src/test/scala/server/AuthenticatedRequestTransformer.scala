@@ -34,7 +34,7 @@ case object AuthenticatedRequestTransformer extends ResponseDefinitionTransforme
 
       case reg(signature, key, _, _, _, _, _, verifier) =>
 
-        println(verifier)
+        // TODO verifier is null for requests
 
         if (key != validConsumerKey) {
           likeResponse
