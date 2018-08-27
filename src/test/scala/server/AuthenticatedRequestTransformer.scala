@@ -1,12 +1,12 @@
 package server
 
 import client.MockClientConfig
-import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import com.github.tomakehurst.wiremock.common.FileSource
 import com.github.tomakehurst.wiremock.extension.{Parameters, ResponseDefinitionTransformer}
 import com.github.tomakehurst.wiremock.http.{Request, ResponseDefinition}
 
-case object AuthenticatedRequestTransformer extends ResponseDefinitionTransformer with MockClientConfig {
+case object AuthenticatedRequestTransformer extends ResponseDefinitionTransformer
+  with OAuthServer with MockClientConfig {
 
   override val applyGlobally = false
 
@@ -15,48 +15,21 @@ case object AuthenticatedRequestTransformer extends ResponseDefinitionTransforme
                          files: FileSource,
                          parameters: Parameters): ResponseDefinition = {
 
-    val likeResponse = ResponseDefinitionBuilder.like(response).but()
+    implicit val res: ResponseDefinition = response
 
-    val reg = (
-      "OAuth oauth_signature=\"(.*)\"," +
-        "oauth_consumer_key=\"(.*)\"," +
-        "oauth_signature_method=\"(.*)\"," +
-        "oauth_timestamp=\"(.*)\"," +
-        "oauth_nonce=\"(.*)\"," +
-        "oauth_version=\"(.*)\"," +
-        "oauth_callback=\"(.*)\"" +
-        "([,oauth_verifier=\"(.*)\"])?"
-      ).r
+    oAuthResponseHeaders(request) match {
 
-    val headers = request.getHeader("Authorization")
-
-    headers match {
-
-      case reg(signature, key, _, _, _, _, _, verifier) =>
+      case accessTokenResponseRegex(signature, key, _, _, _, _, _) =>
 
         // TODO verifier is null for requests
 
-        if (key != validConsumerKey) {
-          likeResponse
-            .withStatus(400)
-            .withBody("Invalid consumer.")
-            .build()
-        }
-
+        if (key != validConsumerKey) error(400, ErrorMessage.invalidConsumer)
         else {
-
           // TODO decode signature
-          if ("TODO: decode signature" == validConsumerSecret) {
-            likeResponse
-              .withStatus(400)
-              .withBody("Invalid signature. " +
-                "This additional text shouldn't be shown.")
-              .build()
-          }
-
+          if ("TODO: decode signature" == validConsumerSecret)
+            error(400, ErrorMessage.invalidSignature)
           else likeResponse.build()
         }
-
       case _ => likeResponse.withStatus(400).build()
     }
   }

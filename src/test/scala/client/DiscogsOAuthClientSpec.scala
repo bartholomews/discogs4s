@@ -1,6 +1,7 @@
 package client
 
-import org.http4s.Uri
+import client.api.{AccessTokenRequest, OAuthResponse}
+import org.http4s.{Status, Uri}
 import org.http4s.client.oauth1.Token
 import org.scalatest.Matchers
 import server.MockServerWordSpec
@@ -17,8 +18,8 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
       "consumer key is invalid" should {
         val client = clientWith("invalidConsumer")
+        def response: HttpResponse[OAuthResponse] = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
         "return a Left with appropriate message" in {
-          val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
           response.entity shouldBe 'left
           response.entity.left.get.getMessage shouldBe "Invalid consumer."
         }
@@ -37,12 +38,15 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
       "consumer key and secret are valid" should {
         val client = validOAuthClient
+        def response: HttpResponse[OAuthResponse] = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
+        "return a Right with the response Token" in {
+          response.entity shouldBe 'right
+          response.entity.right.get.token shouldBe Token("TOKEN", "SECRET")
+        }
         "return a Right with the callback Uri" in {
           val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
           response.entity shouldBe 'right
-          val oAuthResponse = response.entity.right.get
-          oAuthResponse.token shouldBe Token("TOKEN", "SECRET")
-          oAuthResponse.callback shouldBe Uri.unsafeFromString(
+          response.entity.right.get.callback shouldBe Uri.unsafeFromString(
             "http://discogs.com/oauth/authorize?oauth_token=TOKEN"
           )
         }
@@ -63,7 +67,42 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
       }
     }
 
-    // TODO mock OAUTH to return empty response and assert returning ResponseError with that message
-    // TODO mock OAUTH to return a 400 or something and assert returning ResponseError with that message
+    "getting auth token" when {
+      val client = validOAuthClient
+      // TODO mock OAUTH to return empty response and assert returning ResponseError with that message
+      // TODO mock OAUTH to return a 400 or something and assert returning ResponseError with that message
+      // TODO handle other errors, look at ValidateTokenRequestBodyTransformer
+      "request has an invalid verifier" should {
+        val request = AccessTokenRequest(Token(validToken, validSecret), "invalidVerifier")
+        def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
+        "return an error with the right code" in {
+          response.entity shouldBe 'left
+          response.entity.left.get.status shouldBe Status.BadRequest
+        }
+        "return an error with the right message" in {
+          response.entity shouldBe 'left
+          response.entity.left.get.getMessage shouldBe
+            "Unable to retrieve access token. Your request token may have expired."
+        }
+
+        "request is valid" should {
+          val request = AccessTokenRequest(Token(validToken, validSecret), validVerifier)
+          def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
+          "return a response with Token and empty callbackConfirmed" in {
+            response.entity shouldBe 'right
+            val oAuthResponse = response.entity.right.get
+            oAuthResponse.token shouldBe Token(validToken, validSecret)
+            oAuthResponse.callbackConfirmed shouldBe None
+          }
+          "return a response with the right callback Uri" in {
+            response.entity shouldBe 'right
+            response.entity.right.get.callback shouldBe Uri.unsafeFromString(
+              "http://discogs.com/oauth/authorize?oauth_token=TOKEN"
+            )
+          }
+        }
+
+      }
+    }
   }
 }

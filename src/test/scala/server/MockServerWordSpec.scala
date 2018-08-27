@@ -1,5 +1,6 @@
 package server
 
+import client.MockClientConfig
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
@@ -7,12 +8,13 @@ import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer
 import org.scalatest.words.BehaveWord
 import org.scalatest.{BeforeAndAfterAll, WordSpec}
 
-trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
+trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll with MockClientConfig {
 
   val server: WireMockServer = new WireMockServer(
     new WireMockConfiguration().extensions(
       UserAgentHeaderTransformer,
       AuthenticatedRequestTransformer,
+      ValidateTokenRequestBodyTransformer,
       ResourceJsonTransformer
     )
   )
@@ -38,11 +40,26 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll {
     stubFor(get("/oauth/request_token")
       .willReturn(aResponse()
         .withHeader("Content-Type", "text/plain")
-        .withBody("oauth_token=TOKEN" +
-          "&oauth_token_secret=SECRET" +
-          "&oauth_callback_confirmed=true"
+        .withBody(s"oauth_token=$validToken" +
+          s"&oauth_token_secret=$validSecret" +
+          s"&oauth_callback_confirmed=true"
         )
-        .withTransformers(defaultTransformers(AuthenticatedRequestTransformer): _*)
+        .withTransformers(defaultTransformers(
+          AuthenticatedRequestTransformer
+        ): _*)
+      )
+    )
+
+    stubFor(post("/oauth/access_token")
+      .willReturn(aResponse()
+        .withHeader("Content-Type", "text/plain")
+        .withBody(s"oauth_token=$validToken" +
+          s"&oauth_token_secret=$validSecret"
+        )
+        .withTransformers(defaultTransformers(
+          AuthenticatedRequestTransformer,
+          ValidateTokenRequestBodyTransformer
+        ): _*)
       )
     )
   }
