@@ -16,7 +16,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
       // TODO assert headers and status of HttpResponse
 
-      "consumer key is invalid" should {
+      "consumer key is invalid" when {
         val client = clientWith("invalidConsumer")
         def response: HttpResponse[OAuthResponse] = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
         "return a Left with appropriate message" in {
@@ -36,7 +36,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 //        }
 //      }
 
-      "consumer key and secret are valid" should {
+      "consumer key and secret are valid" when {
         val client = validOAuthClient
         def response: HttpResponse[OAuthResponse] = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
         "return a Right with the response Token" in {
@@ -52,7 +52,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         }
       }
 
-      "custom config has neither consumer application version nor url" should {
+      "custom config has neither consumer application version nor url" when {
         val client = clientWith(appName = "some app", appVersion = None, appUrl = None)
         "have a proper USER-AGENT header" in {
           /*
@@ -72,7 +72,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
       // TODO mock OAUTH to return empty response and assert returning ResponseError with that message
       // TODO mock OAUTH to return a 400 or something and assert returning ResponseError with that message
       // TODO handle other errors, look at ValidateTokenRequestBodyTransformer
-      "request has an invalid verifier" should {
+      "request has an invalid verifier" when {
         val request = AccessTokenRequest(Token(validToken, validSecret), "invalidVerifier")
         def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
         "return an error with the right code" in {
@@ -85,7 +85,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
             "Unable to retrieve access token. Your request token may have expired."
         }
 
-        "request is valid" should {
+        "request is valid" when {
           val request = AccessTokenRequest(Token(validToken, validSecret), validVerifier)
           def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
           "return a response with Token and empty callbackConfirmed" in {

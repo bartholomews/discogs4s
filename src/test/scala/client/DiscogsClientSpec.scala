@@ -32,7 +32,7 @@ class DiscogsClientSpec extends MockServerWordSpec
       val io = fetchJson(requestWithPlainTextResponse).attempt
 
       "return a ResponseError" should {
-        "with UnsupportedMediaType Status and the right error message" in {
+        "have UnsupportedMediaType Status and the right error message" in {
           val error = io.unsafeRunSync().left.get.asInstanceOf[ResponseError]
           error.status shouldBe Status.UnsupportedMediaType
           error.getMessage shouldBe
@@ -52,7 +52,7 @@ class DiscogsClientSpec extends MockServerWordSpec
       val io = fetchJson(requestWithBadJsonResponse).attempt
 
       "return a ResponseError" should {
-        "with 500 Status and the right error message" in {
+        "should have 500 Status and the right error message" in {
           val error = io.unsafeRunSync().left.get.asInstanceOf[ResponseError]
           error.status shouldBe Status.InternalServerError
           error.getMessage shouldBe

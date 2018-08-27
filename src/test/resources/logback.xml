@@ -29,7 +29,7 @@
     <logger name="org.eclipse.jetty.server.handler.ContextHandler" level="ERROR"/>
     <logger name="org.eclipse.jetty.server.NetworkTrafficServerConnector" level="ERROR"/>
 
-    <logger name="discogs4s" level="DEBUG"/>
+    <logger name="discogs4s" level="OFF"/>
 
     <!-- wiremock logs -->
     <logger name="/__admin" level="OFF"/>
