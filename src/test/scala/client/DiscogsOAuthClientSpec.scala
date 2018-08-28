@@ -97,28 +97,29 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
           response.entity.left.get.getMessage shouldBe
             "Unable to retrieve access token. Your request token may have expired."
         }
-
-        "request is valid" should {
-
-          val request = AccessTokenRequest(Token(validToken, validSecret), validVerifier)
-
-          def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
-
-          "return a response with Token and empty callbackConfirmed" in {
-            response.entity shouldBe 'right
-            val oAuthResponse = response.entity.right.get
-            oAuthResponse.token shouldBe Token(validToken, validSecret)
-            oAuthResponse.callbackConfirmed shouldBe None
-          }
-          "return a response with the right callback Uri" in {
-            response.entity shouldBe 'right
-            response.entity.right.get.callback shouldBe Uri.unsafeFromString(
-              "http://discogs.com/oauth/authorize?oauth_token=TOKEN"
-            )
-          }
-        }
-
       }
+
+      "request is valid" should {
+
+        val request = AccessTokenRequest(Token(validToken, validSecret), validVerifier)
+
+        def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
+
+        "return a response with Token and empty callbackConfirmed" in {
+          response.entity shouldBe 'right
+          val oAuthResponse = response.entity.right.get
+          oAuthResponse.token shouldBe Token(validToken, validSecret)
+          oAuthResponse.callbackConfirmed shouldBe None
+        }
+        "return a response with the right callback Uri" in {
+          response.entity shouldBe 'right
+          response.entity.right.get.callback shouldBe Uri.unsafeFromString(
+            "http://discogs.com/oauth/authorize?oauth_token=TOKEN"
+          )
+        }
+      }
+
     }
   }
+
 }

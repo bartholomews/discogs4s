@@ -21,7 +21,7 @@ class DiscogsClientSpec extends MockServerWordSpec
 
     def GET: DiscogsClientSpec.client.GET.type = DiscogsClientSpec.client.GET
 
-    "receiving an unexpected Content-type header while expecting application/json" when {
+    "receiving an unexpected Content-type header while expecting application/json" should {
 
       implicit val consumer: Consumer = validConsumer
 
@@ -41,7 +41,7 @@ class DiscogsClientSpec extends MockServerWordSpec
       }
     }
 
-    "receiving an unexpected json body in the response" when {
+    "receiving an unexpected json body in the response" should {
 
       implicit val consumer: Consumer = validConsumer
 

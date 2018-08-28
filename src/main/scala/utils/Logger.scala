@@ -17,10 +17,6 @@ trait Logger extends Types {
 
   def jsonLogPipe[F[_] : Effect]: Pipe[F, Json, Json] = _.map(debug)
 
-  def withLogger[F[_] : Effect](res: Stream[F, ErrorOr[String]]): Stream[F, ErrorOr[String]] = {
-    res.map(debug)
-  }
-
   def withLogger[F[_] : Effect, T](f: Response[F] => Stream[F, HttpResponse[T]])
                                   (res: Response[F]): Stream[F, HttpResponse[T]] = {
 
@@ -39,14 +35,6 @@ trait Logger extends Types {
   def logError(throwable: Throwable): Throwable = {
     logger.error(throwable.getMessage, throwable)
     throwable
-  }
-
-  private def debug(either: ErrorOr[String]): ErrorOr[String] = {
-    either.fold(
-      throwable => logger.debug(throwable.getMessage),
-      str => logger.debug(str)
-    )
-    either
   }
 
   private def debug(json: Json): Json = {
