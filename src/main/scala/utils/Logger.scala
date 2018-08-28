@@ -32,11 +32,6 @@ trait Logger extends Types {
     request
   }
 
-  def logError(throwable: Throwable): Throwable = {
-    logger.error(throwable.getMessage, throwable)
-    throwable
-  }
-
   private def debug(json: Json): Json = {
     logger.debug(json.toString)
     json
