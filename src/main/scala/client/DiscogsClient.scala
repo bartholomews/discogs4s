@@ -1,20 +1,21 @@
 package client
 
 import cats.effect.{Effect, IO}
-import client.api.{AccessTokenRequest, AuthorizeUrl, DiscogsApi, OAuthResponse}
-import entities.DiscogsEntity
+import client.api.{AccessTokenRequest, AuthorizeUrl, DiscogsApi}
+import entities.{AccessTokenResponse, DiscogsEntity, RequestTokenResponse}
 import io.circe.Decoder
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Header, Headers, Method, Request, Uri}
-import utils.{Config, ConsumerConfig, Types}
+import utils.{Config, ConsumerConfig, HttpResponseUtils}
 
+import scala.language.higherKinds
 import scala.util.{Failure, Success, Try}
 
 // https://http4s.org/v0.19/streaming/
 // TODO
 // DiscogsAuthClient which has oauth_token and secret vals, can be created only via:
 // https://www.discogs.com/developers/#page:authentication
-case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends Types {
+case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends HttpResponseUtils {
 
   private val consumerConfig = consumerClient.getOrElse(Config.CONSUMER_CONFIG) // todo handle error
   private implicit val consumer: Consumer = Consumer(consumerConfig.key, consumerConfig.secret)
@@ -46,13 +47,14 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
     ))
   }
 
-  case object OAUTH extends OAuthClient {
-
-    def getAuthoriseUrl: IOResponse[OAuthResponse] =
-      fetchPlainText(get(AuthorizeUrl.uri))
-
-    def accessToken(request: AccessTokenRequest): IOResponse[OAuthResponse] =
+  case object AccessToken extends OAuthClient with IOClient[AccessTokenResponse] {
+    def request(request: AccessTokenRequest): IOResponse[AccessTokenResponse] =
       fetchPlainText(post(request.uri), Some(request))
+  }
+
+  case object RequestToken extends OAuthClient with IOClient[RequestTokenResponse] {
+    def request: IOResponse[RequestTokenResponse] =
+      fetchPlainText(get(AuthorizeUrl.uri))
   }
 
 }

@@ -1,6 +1,7 @@
 package client
 
-import client.api.{AccessTokenRequest, OAuthResponse}
+import client.api.AccessTokenRequest
+import entities.{AccessTokenResponse, RequestTokenResponse}
 import org.http4s.{Status, Uri}
 import org.http4s.client.oauth1.Token
 import org.scalatest.Matchers
@@ -20,7 +21,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
         val client = clientWith("invalidConsumer")
 
-        def response: HttpResponse[OAuthResponse] = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
+        def response: HttpResponse[RequestTokenResponse] = client.RequestToken.request.unsafeRunSync()
 
         "return a Left with appropriate message" in {
           response.entity shouldBe 'left
@@ -43,14 +44,13 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
         val client = validOAuthClient
 
-        def response: HttpResponse[OAuthResponse] = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
+        def response: HttpResponse[RequestTokenResponse] = client.RequestToken.request.unsafeRunSync()
 
         "return a Right with the response Token" in {
           response.entity shouldBe 'right
           response.entity.right.get.token shouldBe Token("TOKEN", "SECRET")
         }
         "return a Right with the callback Uri" in {
-          val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
           response.entity shouldBe 'right
           response.entity.right.get.callback shouldBe Uri.unsafeFromString(
             "http://discogs.com/oauth/authorize?oauth_token=TOKEN"
@@ -86,7 +86,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
       "request has an invalid verifier" should {
         val request = AccessTokenRequest(Token(validToken, validSecret), "invalidVerifier")
 
-        def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
+        def response: HttpResponse[AccessTokenResponse] = client.AccessToken.request(request).unsafeRunSync()
 
         "return an error with the right code" in {
           response.entity shouldBe 'left
@@ -101,21 +101,17 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
       "request is valid" should {
 
-        val request = AccessTokenRequest(Token(validToken, validSecret), validVerifier)
+        def response: HttpResponse[AccessTokenResponse] = client.AccessToken.request(
+          AccessTokenRequest(Token(validToken, validSecret), validVerifier)
+        ).unsafeRunSync()
 
-        def response: HttpResponse[OAuthResponse] = client.OAUTH.accessToken(request).unsafeRunSync()
-
-        "return a response with Token and empty callbackConfirmed" in {
+        "return a response with Token" in {
           response.entity shouldBe 'right
           val oAuthResponse = response.entity.right.get
           oAuthResponse.token shouldBe Token(validToken, validSecret)
-          oAuthResponse.callbackConfirmed shouldBe None
         }
         "return a response with the right callback Uri" in {
           response.entity shouldBe 'right
-          response.entity.right.get.callback shouldBe Uri.unsafeFromString(
-            "http://discogs.com/oauth/authorize?oauth_token=TOKEN"
-          )
         }
       }
 

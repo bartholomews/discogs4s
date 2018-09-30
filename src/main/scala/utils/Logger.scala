@@ -9,7 +9,7 @@ import org.log4s.getLogger
 
 import scala.language.higherKinds
 
-trait Logger extends Types {
+trait Logger extends HttpResponseUtils {
 
   private[this] val logger = getLogger("discogs4s").logger
 

@@ -5,7 +5,7 @@ import org.http4s.client.oauth1.Token
 import utils.Config
 
 sealed trait OAuthRequest[T] extends DiscogsApi[T] {
-  private[client] val path: String = "oauth"
+  val path: String = "oauth"
   private[client] val basePath: Uri = baseUrl / path
 }
 
@@ -14,12 +14,6 @@ case object AuthorizeUrl extends OAuthRequest[Uri] {
   def response(token: String): Uri =
     (Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_DOMAIN}") / path / "authorize")
       .withQueryParam("oauth_token", token)
-}
-
-case class OAuthResponse(token: Token, callbackConfirmed: Option[Boolean] = None) {
-  val callback: Uri = (Uri.unsafeFromString(
-    s"${Config.SCHEME}://${Config.DISCOGS_DOMAIN}") / AuthorizeUrl.path / "authorize")
-    .withQueryParam("oauth_token", token.value)
 }
 
 case class AccessTokenRequest(token: Token, verifier: String) extends OAuthRequest[Token] {
