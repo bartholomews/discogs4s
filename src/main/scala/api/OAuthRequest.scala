@@ -1,12 +1,12 @@
-package client.api
+package api
 
 import org.http4s.Uri
 import org.http4s.client.oauth1.Token
-import utils.Config
+import client.utils.Config
 
 sealed trait OAuthRequest[T] extends DiscogsApi[T] {
   val path: String = "oauth"
-  private[client] val basePath: Uri = baseUrl / path
+  private[api] val basePath: Uri = baseUrl / path
 }
 
 case object AuthorizeUrl extends OAuthRequest[Uri] {

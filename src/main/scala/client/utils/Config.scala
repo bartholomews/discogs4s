@@ -1,4 +1,4 @@
-package utils
+package client.utils
 
 import com.typesafe.config.ConfigFactory
 

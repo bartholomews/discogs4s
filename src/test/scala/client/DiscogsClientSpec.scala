@@ -1,7 +1,8 @@
 package client
 
 import cats.effect.IO
-import client.api.{ArtistsReleases, AuthorizeUrl}
+import api.{ArtistsReleases, AuthorizeUrl}
+import client.http.IOClient
 import entities.ResponseError
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Method, Request, Status, Uri}

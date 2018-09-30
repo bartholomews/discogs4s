@@ -1,7 +1,7 @@
 package entities
 
 import org.http4s.Status
-import utils.Logger
+import client.utils.Logger
 
 trait ResponseError extends Throwable {
   val status: Status
@@ -23,4 +23,9 @@ object ResponseError extends Logger {
       case _ => ResponseErrorImpl(status, throwable, throwable.getMessage)
     }
   }
+
+  def empty = ResponseError.apply(
+    new Exception("Response was empty. Please check request logs."),
+    Status.BadRequest
+  )
 }

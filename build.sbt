@@ -1,4 +1,4 @@
-name := "discogs4s"
+name := "discogs"
 
 version := "0.1"
 

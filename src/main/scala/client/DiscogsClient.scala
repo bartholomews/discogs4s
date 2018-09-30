@@ -1,12 +1,13 @@
 package client
 
 import cats.effect.{Effect, IO}
-import client.api.{AccessTokenRequest, AuthorizeUrl, DiscogsApi}
-import entities.{AccessTokenResponse, DiscogsEntity, RequestTokenResponse}
+import api.{AccessTokenRequest, ArtistsReleases, AuthorizeUrl, DiscogsApi}
+import client.http.{IOClient, OAuthClient}
+import entities.{AccessTokenResponse, DiscogsEntity, PaginatedReleases, RequestTokenResponse}
 import io.circe.Decoder
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Header, Headers, Method, Request, Uri}
-import utils.{Config, ConsumerConfig, HttpResponseUtils}
+import client.utils.{Config, ConsumerConfig, HttpTypes}
 
 import scala.language.higherKinds
 import scala.util.{Failure, Success, Try}
@@ -15,7 +16,12 @@ import scala.util.{Failure, Success, Try}
 // TODO
 // DiscogsAuthClient which has oauth_token and secret vals, can be created only via:
 // https://www.discogs.com/developers/#page:authentication
-case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends HttpResponseUtils {
+
+case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends HttpTypes {
+
+  // ===================================================================================================================
+  // CONFIG
+  // ===================================================================================================================
 
   private val consumerConfig = consumerClient.getOrElse(Config.CONSUMER_CONFIG) // todo handle error
   private implicit val consumer: Consumer = Consumer(consumerConfig.key, consumerConfig.secret)
@@ -28,16 +34,34 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
     .withUri(uri)
     .withHeaders(USER_AGENT)
 
-  private def post[F[_] : Effect](uri: Uri): Request[F] =
+  private def postRequest[F[_] : Effect](uri: Uri): Request[F] =
     request(uri).withMethod(Method.POST)
 
-  private def get[F[_] : Effect](uri: Uri): Request[F] =
+  private def getRequest[F[_] : Effect](uri: Uri): Request[F] =
     request(uri).withMethod(Method.GET)
+
+  // ===================================================================================================================
+  // OAUTH
+  // ===================================================================================================================
+
+  case object AccessToken extends OAuthClient with IOClient[AccessTokenResponse] {
+    def get(request: AccessTokenRequest): IOResponse[AccessTokenResponse] =
+      fetchPlainText(postRequest(request.uri), Some(request))
+  }
+
+  case object RequestToken extends OAuthClient with IOClient[RequestTokenResponse] {
+    def get: IOResponse[RequestTokenResponse] =
+      fetchPlainText(getRequest(AuthorizeUrl.uri))
+  }
+
+  // ===================================================================================================================
+  // GET
+  // ===================================================================================================================
 
   case class GET[T <: DiscogsEntity](private val api: DiscogsApi[T])
                                     (implicit decode: Decoder[T]) extends IOClient[T] {
 
-    def io: IO[T] = fetchJson(get(api.uri))
+    def io: IO[T] = fetchJson(getRequest(api.uri))
 
     def ioEither: IO[Either[Throwable, T]] = io.attempt
 
@@ -47,14 +71,13 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
     ))
   }
 
-  case object AccessToken extends OAuthClient with IOClient[AccessTokenResponse] {
-    def request(request: AccessTokenRequest): IOResponse[AccessTokenResponse] =
-      fetchPlainText(post(request.uri), Some(request))
+  // ===================================================================================================================
+  // ARTISTS API
+  // ===================================================================================================================
+
+  def getArtistsReleases(artistId: Int, page: Int = 1, perPage: Int = 2): IO[PaginatedReleases] = {
+    GET(ArtistsReleases(artistId, page, perPage)).io
   }
 
-  case object RequestToken extends OAuthClient with IOClient[RequestTokenResponse] {
-    def request: IOResponse[RequestTokenResponse] =
-      fetchPlainText(get(AuthorizeUrl.uri))
-  }
-
+  // ===================================================================================================================
 }

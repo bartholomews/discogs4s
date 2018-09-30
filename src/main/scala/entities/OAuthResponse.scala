@@ -1,9 +1,9 @@
 package entities
 
-import client.api.AuthorizeUrl
+import api.AuthorizeUrl
 import org.http4s.Uri
 import org.http4s.client.oauth1.Token
-import utils.Config
+import client.utils.Config
 
 trait OAuthResponse {
   val token: Token

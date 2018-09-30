@@ -1,7 +1,7 @@
-package client
+package client.http
 
 import cats.effect.Effect
-import client.api.AccessTokenRequest
+import api.AccessTokenRequest
 import entities.ResponseError
 import fs2.{Pipe, Pure, Stream}
 import io.circe.fs2.{byteStreamParser, decoder}
@@ -10,24 +10,18 @@ import org.http4s.client.blaze.Http1Client
 import org.http4s.client.oauth1.{Consumer, Token}
 import org.http4s.util.CaseInsensitiveString
 import org.http4s.{Headers, Request, Response, Status}
-import utils.{Logger, HttpResponseUtils}
+import client.utils.{HttpTypes, Logger}
 
-trait RequestF[T] extends HttpResponseUtils with Logger {
+trait RequestF[T] extends HttpTypes with Logger {
 
-  val emptyHttpResponse: HttpResponse[Nothing] = HttpResponse(
-    Status.BadRequest,
-    Headers.empty,
-    Left(emptyResponse)
-  )
-
-  def jsonRequest[F[_] : Effect](request: Request[F], token: Option[Token] = None)
+  private[client] def jsonRequest[F[_] : Effect](request: Request[F], token: Option[Token] = None)
                                 (implicit consumer: Consumer,
                                  decoder: Decoder[T]): Stream[F, HttpResponse[T]] = {
 
     fetchResponse(request, None)(res => validateContentType(parseJson[F])(res))
   }
 
-  def plainTextRequest[F[_] : Effect](request: Request[F], accessTokenRequest: Option[AccessTokenRequest] = None)
+  private[client] def plainTextRequest[F[_] : Effect](request: Request[F], accessTokenRequest: Option[AccessTokenRequest] = None)
                                      (plainTextToDomainPipe: PipeTransform[F, String, T])
                                      (implicit consumer: Consumer): Stream[F, HttpResponse[T]] = {
 
@@ -107,6 +101,13 @@ trait RequestF[T] extends HttpResponseUtils with Logger {
       accessTokenRequest.map(_.token)
     )
   }
+}
+
+object RequestF {
+  private[client] val emptyResponse: ResponseError = ResponseError(
+    new Exception("Response was empty. Please check request logs."),
+    Status.BadRequest
+  )
 }
 
 case class HttpResponse[T](status: Status,

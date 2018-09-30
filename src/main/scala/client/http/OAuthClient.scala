@@ -1,14 +1,14 @@
-package client
+package client.http
 
 import cats.effect.IO
+import client.utils.HttpTypes
 import entities.{AccessTokenResponse, RequestTokenResponse, ResponseError}
 import org.http4s.Status
 import org.http4s.client.oauth1.Token
-import utils.HttpResponseUtils
 
 import scala.util.Try
 
-trait OAuthClient extends HttpResponseUtils {
+trait OAuthClient extends HttpTypes {
 
   private val requestTokenStringResponse = ("oauth_token=(.*)" +
     "&oauth_token_secret=(.*)" +
@@ -30,7 +30,7 @@ trait OAuthClient extends HttpResponseUtils {
     }
 
     case Right(response) => Left {
-      if (response.isEmpty) emptyResponse else ResponseError(
+      if (response.isEmpty) RequestF.emptyResponse else ResponseError(
         new Exception(s"Unexpected response: $response"),
         Status.BadRequest
       )
@@ -39,19 +39,19 @@ trait OAuthClient extends HttpResponseUtils {
     case Left(responseError) => Left(responseError)
   }
 
-  implicit val plainTextToRequestTokenResponse: PipeTransform[IO, String, RequestTokenResponse] = _
+  private[client] implicit val plainTextToRequestTokenResponse: PipeTransform[IO, String, RequestTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)
     .map {
 
       case Right(requestTokenStringResponse(token, secret, flag)) =>
         val callbackConfirmed = Try(flag.toBoolean).getOrElse(false)
-        Right(entities.RequestTokenResponse(Token(token, secret), callbackConfirmed))
+        Right(RequestTokenResponse(Token(token, secret), callbackConfirmed))
 
       case other => handleInvalidCase(other)
     }
 
-  implicit val plainTextToAccessTokenResponse: PipeTransform[IO, String, AccessTokenResponse] = _
+  private[client] implicit val plainTextToAccessTokenResponse: PipeTransform[IO, String, AccessTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)
     .map {
@@ -61,5 +61,4 @@ trait OAuthClient extends HttpResponseUtils {
 
       case other => handleInvalidCase(other)
     }
-
 }

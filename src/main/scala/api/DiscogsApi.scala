@@ -1,10 +1,10 @@
-package client.api
+package api
 
 import org.http4s.Uri
-import utils.Config
+import client.utils.Config
 
 trait DiscogsApi[T] {
   val uri: Uri
-  private[client] val baseUrl =
+  private[api] val baseUrl =
     Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}")
 }

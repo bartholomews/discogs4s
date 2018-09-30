@@ -1,6 +1,7 @@
 package client
 
-import client.api.AccessTokenRequest
+import api.AccessTokenRequest
+import client.http.HttpResponse
 import entities.{AccessTokenResponse, RequestTokenResponse}
 import org.http4s.{Status, Uri}
 import org.http4s.client.oauth1.Token
@@ -21,7 +22,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
         val client = clientWith("invalidConsumer")
 
-        def response: HttpResponse[RequestTokenResponse] = client.RequestToken.request.unsafeRunSync()
+        def response: HttpResponse[RequestTokenResponse] = client.RequestToken.get.unsafeRunSync()
 
         "return a Left with appropriate message" in {
           response.entity shouldBe 'left
@@ -44,7 +45,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
         val client = validOAuthClient
 
-        def response: HttpResponse[RequestTokenResponse] = client.RequestToken.request.unsafeRunSync()
+        def response: HttpResponse[RequestTokenResponse] = client.RequestToken.get.unsafeRunSync()
 
         "return a Right with the response Token" in {
           response.entity shouldBe 'right
@@ -86,7 +87,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
       "request has an invalid verifier" should {
         val request = AccessTokenRequest(Token(validToken, validSecret), "invalidVerifier")
 
-        def response: HttpResponse[AccessTokenResponse] = client.AccessToken.request(request).unsafeRunSync()
+        def response: HttpResponse[AccessTokenResponse] = client.AccessToken.get(request).unsafeRunSync()
 
         "return an error with the right code" in {
           response.entity shouldBe 'left
@@ -101,7 +102,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
       "request is valid" should {
 
-        def response: HttpResponse[AccessTokenResponse] = client.AccessToken.request(
+        def response: HttpResponse[AccessTokenResponse] = client.AccessToken.get(
           AccessTokenRequest(Token(validToken, validSecret), validVerifier)
         ).unsafeRunSync()
 
