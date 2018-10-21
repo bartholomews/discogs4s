@@ -34,6 +34,9 @@ class DiscogsClientSpec extends MockServerWordSpec
 
       "return a ResponseError" should {
         "have UnsupportedMediaType Status and the right error message" in {
+          io.unsafeRunSync() shouldBe 'left
+          val throwable = io.unsafeRunSync().left.get
+          throwable.isInstanceOf[ResponseError] shouldBe true
           val error = io.unsafeRunSync().left.get.asInstanceOf[ResponseError]
           error.status shouldBe Status.UnsupportedMediaType
           error.getMessage shouldBe
@@ -63,9 +66,17 @@ class DiscogsClientSpec extends MockServerWordSpec
     }
 
     "getting Artists releases" when {
+
       parsed like paginatedReleasesResponse {
         GET(ArtistsReleases(1, perPage = 1))
       }(artistRelease = 1, page = 1, perPage = 1)
+
+      "requested with wrong arguments" when {
+        val invalidRequest = GET(ArtistsReleases(-10000, perPage = 0)).ioTry
+        "should materialize a throwable" in {
+          invalidRequest.unsafeRunSync().isFailure shouldBe true
+        }
+      }
     }
   }
 }

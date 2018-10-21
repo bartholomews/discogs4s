@@ -10,6 +10,7 @@ trait PaginatedReleaseBehaviors extends WordSpec with Matchers {
   def paginatedReleasesResponse(request: client.GET[PaginatedReleases])
                                (artistRelease: Int, page: Int, perPage: Int): Unit = {
     "requested as an IO" should behaveLikePaginatedRelease(request.io.unsafeRunSync())
+    "called from the API" should behaveLikePaginatedRelease(client.getArtistsReleases(artistRelease, page, perPage).unsafeRunSync())
     "requested as an IO[Try]" should behaveLikePaginatedRelease(request.ioTry.unsafeRunSync().get)
     "requested as an IO[Either]" should behaveLikePaginatedRelease(request.ioEither.unsafeRunSync().right.get)
 

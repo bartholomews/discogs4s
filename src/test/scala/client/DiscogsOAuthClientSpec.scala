@@ -14,7 +14,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
   "Discogs OAuth Client" when {
 
-    "getting authorization url" when {
+    "getting a request token" when {
 
       // TODO assert headers and status of HttpResponse
 
@@ -76,7 +76,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
       }
     }
 
-    "getting auth token" when {
+    "getting an auth token" when {
 
       val client = validOAuthClient
 
