@@ -2,7 +2,7 @@ package client
 
 import cats.effect.{Effect, IO}
 import api.{AccessTokenRequest, ArtistsReleases, AuthorizeUrl, DiscogsApi}
-import client.http.{IOClient, OAuthClient}
+import client.http.{HttpResponse, IOClient, OAuthClient}
 import entities.{AccessTokenResponse, DiscogsEntity, PaginatedReleases, RequestTokenResponse}
 import io.circe.Decoder
 import org.http4s.client.oauth1.Consumer
@@ -61,14 +61,14 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
   private case class GET[T <: DiscogsEntity](private val api: DiscogsApi[T])
                                     (implicit decode: Decoder[T]) extends IOClient[T] {
 
-    def io: IO[T] = fetchJson(getRequest(api.uri))
+    def io: IO[HttpResponse[T]] = fetchJson(getRequest(api.uri))
   }
 
   // ===================================================================================================================
   // ARTISTS API
   // ===================================================================================================================
 
-  def getArtistsReleases(artistId: Int, page: Int = 1, perPage: Int = 2): IO[PaginatedReleases] = {
+  def getArtistsReleases(artistId: Int, page: Int = 1, perPage: Int = 2): IO[HttpResponse[PaginatedReleases]] = {
     GET(ArtistsReleases(artistId, page, perPage)).io
   }
 

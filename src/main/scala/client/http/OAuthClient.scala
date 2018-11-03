@@ -30,7 +30,7 @@ trait OAuthClient extends HttpTypes {
     }
 
     case Right(response) => Left {
-      if (response.isEmpty) RequestF.emptyResponse else ResponseError(
+      if (response.isEmpty) ResponseError.empty else ResponseError(
         new Exception(s"Unexpected response: $response"),
         Status.BadRequest
       )

@@ -19,7 +19,8 @@ object ValidateTokenRequestBodyTransformer extends ResponseDefinitionTransformer
 
     def validateVerifier: ResponseDefinition = oAuthResponseHeaders(request) match {
       case requestTokenResponseRegex(a, b, _, _, _, _, _, verifier) =>
-        if (verifier == validVerifier) likeResponse(res).build()
+        if(verifier == emptyResponse) likeResponse(res).withBody("").build()
+        else if (verifier == validVerifier) likeResponse(res).build()
         else error(401, ErrorMessage.invalidVerifier)
 
       case _ => error(401, ErrorMessage.invalidSignature)

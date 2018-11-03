@@ -21,6 +21,7 @@ trait MockClientConfig {
   val validToken = "TOKEN"
   val validSecret = "SECRET"
   val validVerifier = "VERIFIER"
+  val emptyResponse = "EMPTY_RESPONSE"
 
   val validConsumer = Consumer(validConsumerKey, validConsumerSecret)
 }

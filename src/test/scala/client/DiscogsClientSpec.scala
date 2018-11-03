@@ -29,14 +29,14 @@ class DiscogsClientSpec extends MockServerWordSpec
         .withMethod(Method.GET)
         .withUri(AuthorizeUrl.uri)
 
-      val io = fetchJson(requestWithPlainTextResponse).attempt
+      val io = fetchJson(requestWithPlainTextResponse)
 
       "return a ResponseError" should {
         "have UnsupportedMediaType Status and the right error message" in {
-          io.unsafeRunSync() shouldBe 'left
-          val throwable = io.unsafeRunSync().left.get
+          io.unsafeRunSync().entity shouldBe 'left
+          val throwable = io.unsafeRunSync().entity.left.get
           throwable.isInstanceOf[ResponseError] shouldBe true
-          val error = io.unsafeRunSync().left.get.asInstanceOf[ResponseError]
+          val error = io.unsafeRunSync().entity.left.get
           error.status shouldBe Status.UnsupportedMediaType
           error.getMessage shouldBe
             "text/plain: unexpected Content-Type"
@@ -70,11 +70,11 @@ class DiscogsClientSpec extends MockServerWordSpec
         .withMethod(Method.GET)
         .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/circe/decoding-error"))
 
-      val io = fetchJson(requestWithBadJsonResponse).attempt
+      val io = fetchJson(requestWithBadJsonResponse)
 
       "return a ResponseError" should {
         "should have 500 Status and the right error message" in {
-          val error = io.unsafeRunSync().left.get.asInstanceOf[ResponseError]
+          val error = io.unsafeRunSync().entity.left.get
           error.status shouldBe Status.InternalServerError
           error.getMessage shouldBe
             "There was a problem decoding or parsing this response, please check the error logs."

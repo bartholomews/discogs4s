@@ -16,8 +16,6 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
     "getting a request token" when {
 
-      // TODO assert headers and status of HttpResponse
-
       "consumer key is invalid" should {
 
         val client = clientWith("invalidConsumer")
@@ -30,6 +28,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         }
       }
 
+      // TODO handle invalidSignature
       // TODO decode signature
       //      "consumer secret is invalid" should {
       //        val client = clientWith(validConsumerKey, "invalidConsumerSecret")
@@ -80,9 +79,23 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
       val client = validOAuthClient
 
-      // TODO mock OAUTH to return empty response and assert returning ResponseError with that message
-      // TODO mock OAUTH to return a 400 or something and assert returning ResponseError with that message
-      // TODO handle other errors, look at ValidateTokenRequestBodyTransformer
+      "request is empty" should {
+
+        val request = AccessTokenRequest(Token(validToken, validSecret), emptyResponse)
+
+        def response: HttpResponse[AccessTokenResponse] = client.AccessToken.get(request).unsafeRunSync()
+
+        "return an error with the right code" in {
+          response.entity shouldBe 'left
+          response.entity.left.get.status shouldBe Status.BadRequest
+        }
+        "return an error with the right message" in {
+          response.entity shouldBe 'left
+          response.entity.left.get.getMessage shouldBe
+            "Response was empty. Please check request logs."
+        }
+
+      }
 
       "request has an invalid verifier" should {
         val request = AccessTokenRequest(Token(validToken, validSecret), "invalidVerifier")

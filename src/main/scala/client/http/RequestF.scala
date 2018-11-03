@@ -15,15 +15,15 @@ import client.utils.{HttpTypes, Logger}
 trait RequestF[T] extends HttpTypes with Logger {
 
   private[client] def jsonRequest[F[_] : Effect](request: Request[F], token: Option[Token] = None)
-                                (implicit consumer: Consumer,
-                                 decoder: Decoder[T]): Stream[F, HttpResponse[T]] = {
+                                                (implicit consumer: Consumer,
+                                                 decoder: Decoder[T]): Stream[F, HttpResponse[T]] = {
 
     fetchResponse(request, None)(res => validateContentType(parseJson[F])(res))
   }
 
   private[client] def plainTextRequest[F[_] : Effect](request: Request[F], accessTokenRequest: Option[AccessTokenRequest] = None)
-                                     (plainTextToDomainPipe: PipeTransform[F, String, T])
-                                     (implicit consumer: Consumer): Stream[F, HttpResponse[T]] = {
+                                                     (plainTextToDomainPipe: PipeTransform[F, String, T])
+                                                     (implicit consumer: Consumer): Stream[F, HttpResponse[T]] = {
 
     fetchResponse(request, accessTokenRequest)(res =>
       Stream.eval(res.as[String])
@@ -44,7 +44,7 @@ trait RequestF[T] extends HttpTypes with Logger {
       client <- Http1Client.stream[F]()
       req <- signed
       response <- client.streaming(req)(withLogger { res =>
-        f(res).map(HttpResponse(res.status, res.headers, _))
+        f(res).map(HttpResponse(res.headers, _))
       })
     } yield response
   }
@@ -103,13 +103,8 @@ trait RequestF[T] extends HttpTypes with Logger {
   }
 }
 
-object RequestF {
-  private[client] val emptyResponse: ResponseError = ResponseError(
-    new Exception("Response was empty. Please check request logs."),
-    Status.BadRequest
-  )
-}
+case class HttpResponse[T](headers: Headers,
+                           entity: Either[ResponseError, T]) {
 
-case class HttpResponse[T](status: Status,
-                           headers: Headers,
-                           entity: Either[ResponseError, T])
+  val status: Status = entity.fold(_.status, _ => Status.Ok)
+}
