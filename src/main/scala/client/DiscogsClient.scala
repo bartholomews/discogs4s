@@ -58,17 +58,10 @@ case class DiscogsClient(consumerClient: Option[ConsumerConfig] = None) extends 
   // GET
   // ===================================================================================================================
 
-  case class GET[T <: DiscogsEntity](private val api: DiscogsApi[T])
+  private case class GET[T <: DiscogsEntity](private val api: DiscogsApi[T])
                                     (implicit decode: Decoder[T]) extends IOClient[T] {
 
     def io: IO[T] = fetchJson(getRequest(api.uri))
-
-    def ioEither: IO[Either[Throwable, T]] = io.attempt
-
-    def ioTry: IO[Try[T]] = ioEither.map(_.fold(
-      throwable => Failure(throwable),
-      response => Success(response)
-    ))
   }
 
   // ===================================================================================================================

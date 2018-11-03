@@ -11,7 +11,7 @@ import scala.language.higherKinds
 
 trait Logger extends HttpTypes {
 
-  private[this] val logger = getLogger("discogs").logger
+  private[this] val logger = getLogger("discogs4s").logger
 
   logger.info(s"$logger started.")
 

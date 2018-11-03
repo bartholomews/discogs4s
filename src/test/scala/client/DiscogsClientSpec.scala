@@ -1,26 +1,25 @@
 package client
 
+import api.AuthorizeUrl
 import cats.effect.IO
-import api.{ArtistsReleases, AuthorizeUrl}
 import client.http.IOClient
+import client.utils.Config
 import entities.ResponseError
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Method, Request, Status, Uri}
 import org.scalatest.Matchers
 import server.MockServerWordSpec
-import utils.Config
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
 class DiscogsClientSpec extends MockServerWordSpec
   with MockClientConfig
   with Matchers
-  with PaginatedReleaseBehaviors
   with IOClient[String] {
 
-  "Discogs OAuth Client" when {
+  val client: DiscogsClient = validOAuthClient
 
-    def GET: DiscogsClientSpec.client.GET.type = DiscogsClientSpec.client.GET
+  "Discogs Client" when {
 
     "receiving an unexpected Content-type header while expecting application/json" should {
 
@@ -45,6 +44,24 @@ class DiscogsClientSpec extends MockServerWordSpec
       }
     }
 
+    "receiving an empty response" should {
+
+      implicit val consumer: Consumer = validConsumer
+
+      val requestWithEmptyResponse: Request[IO] = Request[IO]()
+        .withMethod(Method.GET)
+        .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/empty-response"))
+
+      val io = fetchJson(requestWithEmptyResponse).attempt
+
+      "return a ResponseError" in {
+        val error = io.unsafeRunSync().left.get.asInstanceOf[ResponseError]
+        error.status shouldBe Status.BadRequest
+        error.getMessage shouldBe
+          "Response was empty. Please check request logs."
+      }
+    }
+
     "receiving an unexpected json body in the response" should {
 
       implicit val consumer: Consumer = validConsumer
@@ -64,23 +81,5 @@ class DiscogsClientSpec extends MockServerWordSpec
         }
       }
     }
-
-    "getting Artists releases" when {
-
-      parsed like paginatedReleasesResponse {
-        GET(ArtistsReleases(1, perPage = 1))
-      }(artistRelease = 1, page = 1, perPage = 1)
-
-      "requested with wrong arguments" when {
-        val invalidRequest = GET(ArtistsReleases(-10000, perPage = 0)).ioTry
-        "should materialize a throwable" in {
-          invalidRequest.unsafeRunSync().isFailure shouldBe true
-        }
-      }
-    }
   }
-}
-
-object DiscogsClientSpec extends MockClientConfig {
-  val client: DiscogsClient = validOAuthClient
 }
