@@ -8,7 +8,6 @@ import org.http4s.client.oauth1.Token
 
 import scala.util.Try
 
-// TODO tidy-up
 trait OAuthClient extends HttpTypes {
 
   private val requestTokenStringResponse = ("oauth_token=(.*)" +
@@ -18,7 +17,7 @@ trait OAuthClient extends HttpTypes {
 
   private val accessTokenStringResponse = "oauth_token=(.*)&oauth_token_secret=(.*)".r
 
-  private val invalidSignature = "Invalid signature. (.*)".r
+  private val invalidSignature = "Invalid signature"
   private val emptyResponseMessage = "Response was empty, please check request uri"
 
   private def invalidSignatureError = Left(ResponseError(
@@ -27,43 +26,35 @@ trait OAuthClient extends HttpTypes {
   ))
 
   private def handleInvalidCase(either: Either[ResponseError, String]): Either[ResponseError, Nothing] = either match {
-
-    case Right(invalidSignature(_)) => invalidSignatureError
-
     case Right(response) => Left {
       if (response.isEmpty) ResponseError.empty else ResponseError(
         new Exception(s"Unexpected response: $response"),
         Status.BadRequest
       )
     }
-
     case Left(responseError) =>
-      if (responseError.getMessage.startsWith("Invalid signature")) invalidSignatureError
+      if (responseError.getMessage.startsWith(invalidSignature)) invalidSignatureError
       else Left(responseError)
   }
 
-  // TODO tidy-up
   private[client] implicit val plainTextToRequestTokenResponse: PipeTransform[IO, String, RequestTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)
     .map {
 
-      case Right(requestTokenStringResponse(token, secret, flag)) =>
-        val callbackConfirmed = Try(flag.toBoolean).getOrElse(false)
-        Right(RequestTokenResponse(Token(token, secret), callbackConfirmed))
+        case Right(requestTokenStringResponse(token, secret, flag)) =>
+          val callbackConfirmed = Try(flag.toBoolean).getOrElse(false)
+          Right(RequestTokenResponse(Token(token, secret), callbackConfirmed))
 
-      case other => handleInvalidCase(other)
-    }
+        case other => handleInvalidCase(other)
+  }
 
-  // TODO tidy-up
   private[client] implicit val plainTextToAccessTokenResponse: PipeTransform[IO, String, AccessTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)
     .map {
 
-      case Right(accessTokenStringResponse(token, secret)) =>
-        Right(AccessTokenResponse(Token(token, secret)))
-
+      case Right(accessTokenStringResponse(token, secret)) => Right(AccessTokenResponse(Token(token, secret)))
       case other => handleInvalidCase(other)
     }
 }

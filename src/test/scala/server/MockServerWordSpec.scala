@@ -33,9 +33,10 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll with MockClient
   private def stubApi(): Unit = {
     stubFor(get(anyUrl())
       .willReturn(aResponse()
-        .withHeader("Content-Type", "application/json")
         .withStatus(200)
-         .withTransformers(defaultTransformers(ResourceJsonTransformer): _*)
+         .withTransformers(defaultTransformers(
+           AuthenticatedRequestTransformer, ResourceJsonTransformer
+         ): _*)
       ))
 
     stubFor(get("/empty-response")
@@ -46,7 +47,6 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll with MockClient
 
     stubFor(get("/oauth/request_token")
       .willReturn(aResponse()
-        .withHeader("Content-Type", "text/plain")
         .withBody(s"oauth_token=$validToken" +
           s"&oauth_token_secret=$validSecret" +
           s"&oauth_callback_confirmed=true"
@@ -59,7 +59,6 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll with MockClient
 
     stubFor(post("/oauth/access_token")
       .willReturn(aResponse()
-        .withHeader("Content-Type", "text/plain")
         .withBody(s"oauth_token=$validToken" +
           s"&oauth_token_secret=$validSecret"
         )

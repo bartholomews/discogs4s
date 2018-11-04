@@ -16,12 +16,14 @@ case object ResourceJsonTransformer extends ResponseDefinitionTransformer {
 
     val requestUrl: String = {
       val url = request.getUrl
-      if(url.startsWith("/")) url.drop(1) else url
+      if (url.startsWith("/")) url.drop(1) else url
     }
 
-    ResponseDefinitionBuilder
-      .like(response).but()
-      .withStatus(200)
+    val res = ResponseDefinitionBuilder.like(response)
+
+    if (response.getStatus != 200) res.build()
+    else res.but()
+      .withHeader("Content-Type", "application/json")
       .withBodyFile(s"$requestUrl.json")
       .build()
   }

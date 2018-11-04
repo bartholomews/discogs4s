@@ -53,11 +53,10 @@ trait RequestF[T] extends HttpTypes with Logger {
                                                 (response: Response[F]): StreamResponse[F, T] = {
     response.headers.get(CaseInsensitiveString("Content-Type")).map(_.value) match {
       case None | Some("application/json") => f(response)
-      case Some(contentType) =>
-        val str: Stream[F, ResponseError] = Stream.emit(ResponseError(
-          new Exception(s"$contentType: unexpected Content-Type"), Status.UnsupportedMediaType)
-        )
-        str.map(error => Left(error))
+      case Some("text/plain") if response.status != Status.Ok =>
+        Stream.eval(response.as[String]).map(str => Left(ResponseError(new Exception(str), response.status)))
+      case Some(contentType) => Stream.emit(ResponseError(
+        new Exception(s"$contentType: unexpected Content-Type"), Status.UnsupportedMediaType)).map(Left(_))
     }
   }
 

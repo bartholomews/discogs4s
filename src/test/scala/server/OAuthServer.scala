@@ -24,18 +24,20 @@ trait OAuthServer {
   def likeResponse(implicit response: ResponseDefinition): ResponseDefinitionBuilder =
     ResponseDefinitionBuilder.like(response).but()
 
-  def error(code: Int, message: String)
-           (implicit response: ResponseDefinition): ResponseDefinition =
-    likeResponse(response)
+  def error(code: Int, message: String)(implicit response: ResponseDefinition): ResponseDefinition =
+    likeResponse
+      .withHeader("Content-Type", "text/plain")
       .withStatus(code)
       .withBody(message)
       .build()
 
   object ErrorMessage {
     def invalidRequestToken(token: String) = s"Invalid request token: $token"
+
     val invalidConsumer = "Invalid consumer."
     val invalidSignature = "Invalid signature. This additional text shouldn't be shown."
     val invalidVerifier: String = "Unable to retrieve access token. " +
       "Your request token may have expired."
   }
+
 }

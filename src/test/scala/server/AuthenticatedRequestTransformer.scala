@@ -1,6 +1,7 @@
 package server
 
 import client.MockClientConfig
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import com.github.tomakehurst.wiremock.common.FileSource
 import com.github.tomakehurst.wiremock.extension.{Parameters, ResponseDefinitionTransformer}
 import com.github.tomakehurst.wiremock.http.{Request, ResponseDefinition}
@@ -15,17 +16,21 @@ case object AuthenticatedRequestTransformer extends ResponseDefinitionTransforme
                          files: FileSource,
                          parameters: Parameters): ResponseDefinition = {
 
-    implicit val res: ResponseDefinition = response
+    implicit val responseDefinition: ResponseDefinition = response
+
+    val res: ResponseDefinitionBuilder = likeResponse
+      .withHeader("Content-Type", "text/plain")
 
     oAuthResponseHeaders(request) match {
 
       case accessTokenResponseRegex(_, key, _, _, _, _, _) =>
-        if(key == validConsumerKey) likeResponse.build()
+        if(key == validConsumerKey) res.withStatus(200).build()
         else if (key == consumerWithInvalidSignature) error(401, ErrorMessage.invalidSignature)
-        else if (key == consumerGettingUnexpectedResponse) likeResponse.withBody(unexpectedResponse).build()
+          // FIXME this won't work chained with another transformer which will change the body (e.g. json response):
+        else if (key == consumerGettingUnexpectedResponse) res.withBody(unexpectedResponse).build()
         else error(401, ErrorMessage.invalidConsumer)
 
-      case _ => likeResponse.withStatus(400).build()
+      case _ => res.withStatus(400).build()
     }
   }
 

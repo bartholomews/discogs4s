@@ -11,9 +11,6 @@ sealed trait OAuthRequest[T] extends DiscogsApi[T] {
 
 case object AuthorizeUrl extends OAuthRequest[Uri] {
   override val uri: Uri = basePath / "request_token"
-  def response(token: String): Uri =
-    (Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_DOMAIN}") / path / "authorize")
-      .withQueryParam("oauth_token", token)
 }
 
 case class AccessTokenRequest(token: Token, verifier: String) extends OAuthRequest[Token] {
