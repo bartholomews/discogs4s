@@ -17,11 +17,15 @@ trait MockClientConfig {
 
   val validConsumerKey = "VALID_CONSUMER_KEY"
   val validConsumerSecret = "VALID_CONSUMER_SECRET"
+  val consumerWithInvalidSignature = "INVALID_SIGNATURE_CONSUMER"
+  val consumerGettingUnexpectedResponse = "UNEXPECTED_RESPONSE_CONSUMER"
 
   val validToken = "TOKEN"
   val validSecret = "SECRET"
   val validVerifier = "VERIFIER"
-  val emptyResponse = "EMPTY_RESPONSE"
+  val emptyResponseMock = "EMPTY_RESPONSE"
+
+  val unexpectedResponse = "Something went wrong."
 
   val validConsumer = Consumer(validConsumerKey, validConsumerSecret)
 }

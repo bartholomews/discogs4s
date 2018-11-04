@@ -5,6 +5,7 @@ import client.http.HttpResponse
 import entities.{AccessTokenResponse, RequestTokenResponse}
 import org.http4s.{Status, Uri}
 import org.http4s.client.oauth1.Token
+import org.http4s.util.CaseInsensitiveString
 import org.scalatest.Matchers
 import server.MockServerWordSpec
 
@@ -28,17 +29,17 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         }
       }
 
-      // TODO handle invalidSignature
-      // TODO decode signature
-      //      "consumer secret is invalid" should {
-      //        val client = clientWith(validConsumerKey, "invalidConsumerSecret")
-      //        "return a Left with appropriate message" in {
-      //          val response = client.OAUTH.getAuthoriseUrl.unsafeRunSync()
-      //          response.entity shouldBe 'left
-      //          response.entity.left.get.getMessage shouldBe
-      //            "Invalid signature. Please double check consumer secret key."
-      //        }
-      //      }
+      "consumer secret is invalid" should {
+        val client = clientWith(consumerWithInvalidSignature, "_")
+
+        def response: HttpResponse[RequestTokenResponse] = client.RequestToken.get.unsafeRunSync()
+
+        "return a Left with appropriate message" in {
+          response.entity shouldBe 'left
+          response.entity.left.get.getMessage shouldBe
+            "Invalid signature. Please double check consumer secret key."
+        }
+      }
 
       "consumer key and secret are valid" should {
 
@@ -58,19 +59,29 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         }
       }
 
+      "getting an unexpected response" should {
+
+        val client = clientWith(consumerGettingUnexpectedResponse, "_")
+
+        def response: HttpResponse[RequestTokenResponse] = client.RequestToken.get.unsafeRunSync()
+
+        "return a Left with appropriate message" in {
+          response.entity shouldBe 'left
+          response.status shouldBe Status.BadRequest
+          response.entity.left.get.getMessage shouldBe
+           s"Unexpected response: $unexpectedResponse"
+        }
+      }
+
       "custom config has neither consumer application version nor url" should {
 
         val client = clientWith(appName = "some app", appVersion = None, appUrl = None)
 
         "have a proper USER-AGENT header" in {
-          /*
-            case class processUri() extends RequestF[OAuthRequest[Uri]] {
-                 process(Request[IO]()).unsafeRunSync()
-            }
-           */
-          // TODO: this should be done after wrapping every response in a new type
-          // TODO: e.g. case class DiscogsResponse[T :< DiscogsEntity](status: Status, headers: Headers, entity: T)
-          // TODO: having additional info like Headers(max-requests, user-agents), Status etc.
+          client.RequestToken.get.unsafeRunSync()
+            .headers
+            .get(CaseInsensitiveString("User-Agent"))
+            .map(_.value) shouldBe Some("some app")
         }
       }
     }
@@ -81,7 +92,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
       "request is empty" should {
 
-        val request = AccessTokenRequest(Token(validToken, validSecret), emptyResponse)
+        val request = AccessTokenRequest(Token(validToken, validSecret), emptyResponseMock)
 
         def response: HttpResponse[AccessTokenResponse] = client.AccessToken.get(request).unsafeRunSync()
 

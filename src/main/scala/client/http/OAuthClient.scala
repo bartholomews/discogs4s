@@ -8,6 +8,7 @@ import org.http4s.client.oauth1.Token
 
 import scala.util.Try
 
+// TODO tidy-up
 trait OAuthClient extends HttpTypes {
 
   private val requestTokenStringResponse = ("oauth_token=(.*)" +
@@ -20,14 +21,14 @@ trait OAuthClient extends HttpTypes {
   private val invalidSignature = "Invalid signature. (.*)".r
   private val emptyResponseMessage = "Response was empty, please check request uri"
 
+  private def invalidSignatureError = Left(ResponseError(
+    new Exception("Invalid signature. Please double check consumer secret key."),
+    Status.Unauthorized
+  ))
+
   private def handleInvalidCase(either: Either[ResponseError, String]): Either[ResponseError, Nothing] = either match {
 
-    case Right(invalidSignature(_)) => Left {
-      ResponseError(
-        new Exception("Invalid signature. Please double check consumer secret key."),
-        Status.Unauthorized
-      )
-    }
+    case Right(invalidSignature(_)) => invalidSignatureError
 
     case Right(response) => Left {
       if (response.isEmpty) ResponseError.empty else ResponseError(
@@ -36,9 +37,12 @@ trait OAuthClient extends HttpTypes {
       )
     }
 
-    case Left(responseError) => Left(responseError)
+    case Left(responseError) =>
+      if (responseError.getMessage.startsWith("Invalid signature")) invalidSignatureError
+      else Left(responseError)
   }
 
+  // TODO tidy-up
   private[client] implicit val plainTextToRequestTokenResponse: PipeTransform[IO, String, RequestTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)
@@ -51,6 +55,7 @@ trait OAuthClient extends HttpTypes {
       case other => handleInvalidCase(other)
     }
 
+  // TODO tidy-up
   private[client] implicit val plainTextToAccessTokenResponse: PipeTransform[IO, String, AccessTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)

@@ -16,7 +16,7 @@ case object UserAgentHeaderTransformer extends ResponseDefinitionTransformer {
 
     ResponseDefinitionBuilder
       .like(response).but()
-      .withHeader("User-Agent", "TODO")
+      .withHeader("User-Agent", request.header("User-Agent").firstValue())
       .build()
   }
 

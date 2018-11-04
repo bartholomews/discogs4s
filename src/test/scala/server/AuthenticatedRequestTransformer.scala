@@ -19,17 +19,12 @@ case object AuthenticatedRequestTransformer extends ResponseDefinitionTransforme
 
     oAuthResponseHeaders(request) match {
 
-      case accessTokenResponseRegex(signature, key, _, _, _, _, _) =>
+      case accessTokenResponseRegex(_, key, _, _, _, _, _) =>
+        if(key == validConsumerKey) likeResponse.build()
+        else if (key == consumerWithInvalidSignature) error(401, ErrorMessage.invalidSignature)
+        else if (key == consumerGettingUnexpectedResponse) likeResponse.withBody(unexpectedResponse).build()
+        else error(401, ErrorMessage.invalidConsumer)
 
-        // TODO verifier is null for requests
-
-        if (key != validConsumerKey) error(400, ErrorMessage.invalidConsumer)
-        else {
-          // TODO decode signature
-          if ("TODO: decode signature" == validConsumerSecret)
-            error(400, ErrorMessage.invalidSignature)
-          else likeResponse.build()
-        }
       case _ => likeResponse.withStatus(400).build()
     }
   }

@@ -18,8 +18,8 @@ object ValidateTokenRequestBodyTransformer extends ResponseDefinitionTransformer
     implicit val res: ResponseDefinition = response
 
     def validateVerifier: ResponseDefinition = oAuthResponseHeaders(request) match {
-      case requestTokenResponseRegex(a, b, _, _, _, _, _, verifier) =>
-        if(verifier == emptyResponse) likeResponse(res).withBody("").build()
+      case requestTokenResponseRegex(_, _, _, _, _, _, _, verifier) =>
+        if(verifier == emptyResponseMock) likeResponse(res).withBody("").build()
         else if (verifier == validVerifier) likeResponse(res).build()
         else error(401, ErrorMessage.invalidVerifier)
 

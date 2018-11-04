@@ -32,6 +32,6 @@ trait IOClient[T] extends RequestF[T] {
 
     jsonRequest(withLogger(request), token)
       //.evalMap(res => IO.fromEither(res.entity))
-      .io
+    .io
   }
 }
