@@ -39,12 +39,6 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll with MockClient
          ): _*)
       ))
 
-    stubFor(get("/empty-response")
-      .willReturn(aResponse()
-        .withHeader("Content-Type", "application/json")
-        .withStatus(200)
-      ))
-
     stubFor(get("/oauth/request_token")
       .willReturn(aResponse()
         .withBody(s"oauth_token=$validToken" +

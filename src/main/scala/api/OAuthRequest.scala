@@ -17,6 +17,6 @@ case class AccessTokenRequest(token: Token, verifier: String) extends OAuthReque
   override val uri: Uri = basePath / "access_token"
 }
 
-case object Identity extends OAuthRequest[String] { // FIXME Identity proper entity json type
-  override val uri: Uri = basePath / "identity"
-}
+//case object Identity extends OAuthRequest[String] { // TODO and FIXME => Identity proper entity json type
+//  override val uri: Uri = basePath / "identity"
+//}

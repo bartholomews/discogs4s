@@ -27,5 +27,8 @@ trait MockClientConfig {
 
   val unexpectedResponse = "Something went wrong."
 
+  val emptyResponseEndpoint = "empty-response"
+  val notFoundResponseEndpoint = "not-found"
+
   val validConsumer = Consumer(validConsumerKey, validConsumerSecret)
 }

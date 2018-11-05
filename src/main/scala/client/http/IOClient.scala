@@ -4,7 +4,7 @@ import api.AccessTokenRequest
 import cats.effect.IO
 import entities.ResponseError
 import io.circe.Decoder
-import org.http4s.Request
+import org.http4s.{Headers, Request}
 import org.http4s.client.oauth1.{Consumer, Token}
 
 trait IOClient[T] extends RequestF[T] {
@@ -14,7 +14,7 @@ trait IOClient[T] extends RequestF[T] {
       .compile
       .last
       .flatMap(_.toRight(ResponseError.empty).fold(
-        empty => IO.raiseError(empty),
+        empty => IO.pure(HttpResponse(Headers(), Left(empty))),
         value => IO.pure(value)
       ))
   }

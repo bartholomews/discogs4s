@@ -5,6 +5,7 @@ import cats.effect.IO
 import client.http.IOClient
 import client.utils.Config
 import entities.ResponseError
+import io.circe.Json
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Method, Request, Status, Uri}
 import org.scalatest.Matchers
@@ -50,15 +51,31 @@ class DiscogsClientSpec extends MockServerWordSpec
 
       val requestWithEmptyResponse: Request[IO] = Request[IO]()
         .withMethod(Method.GET)
-        .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/empty-response"))
+        .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/$emptyResponseEndpoint"))
 
-      val io = fetchJson(requestWithEmptyResponse).attempt
+      val io = fetchJson(requestWithEmptyResponse)
+
+      "raise an error" in {
+        val res = io.unsafeRunSync()
+        res.status shouldBe Status.BadRequest
+        res.entity.left.get.getMessage shouldBe
+          "Response was empty. Please check request logs."
+      }
+    }
+
+    "receiving a bad status response" should {
+
+      implicit val consumer: Consumer = validConsumer
+
+      val requestWithEmptyResponse: Request[IO] = Request[IO]()
+        .withMethod(Method.GET)
+        .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/$notFoundResponseEndpoint"))
+
+      val io = fetchJson(requestWithEmptyResponse)
 
       "return a ResponseError" in {
-        val error = io.unsafeRunSync().left.get.asInstanceOf[ResponseError]
-        error.status shouldBe Status.BadRequest
-        error.getMessage shouldBe
-          "Response was empty. Please check request logs."
+        val res = io.unsafeRunSync()
+        res.status shouldBe Status.NotFound
       }
     }
 
