@@ -1,6 +1,6 @@
 name := "discogs"
 
-version := "0.1"
+version := "0.0.1-SNAPSHOT"
 
 scalaVersion := "2.12.6"
 
@@ -33,7 +33,6 @@ libraryDependencies ++= Seq(
   "org.scalactic" %% "scalactic" % "3.0.5" % "test",
   "org.scalatest" %% "scalatest" % "3.0.5" % "test",
   "com.github.tomakehurst" % "wiremock" % "2.18.0" % "test",
-  "org.pegdown" % "pegdown" % "1.6.0" % "test",
 )
 
 // http://www.scalatest.org/user_guide/using_scalatest_with_sbt
@@ -41,15 +40,3 @@ logBuffered in Test := false
 parallelExecution in ThisBuild := false
 
 // addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
-
-addCommandAlias("testFeatures", "testOnly * --")
-// TODO sbt "testFeatures -n TagToInclude -l TagToExclude"
-// TODO sbt "testOnly * -- -n TagToInclude -l TagToExclude"
-testOptions in Test ++= Seq(
-  //  Tests.Argument(TestFrameworks.ScalaTest, "-u", "target/test-reports"),
-  Tests.Argument(TestFrameworks.ScalaTest,
-    // http://www.scalatest.org/user_guide/using_the_runner#filtering
-    // TODO: http://jackcoughonsoftware.blogspot.com/2010/02/sbt-and-test-arguments.html
-    "-h", "target/test-reports"
-  )
-)
