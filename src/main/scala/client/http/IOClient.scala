@@ -1,11 +1,11 @@
 package client.http
 
-import api.AccessTokenRequest
+import api.{AccessTokenRequest, OAuthAccessToken}
 import cats.effect.IO
 import entities.ResponseError
 import io.circe.Decoder
+import org.http4s.client.oauth1.Consumer
 import org.http4s.{Headers, Request}
-import org.http4s.client.oauth1.{Consumer, Token}
 
 trait IOClient[T] extends RequestF[T] {
 
@@ -27,7 +27,7 @@ trait IOClient[T] extends RequestF[T] {
       .io
   }
 
-  private[client] def fetchJson(request: Request[IO], token: Option[Token] = None)
+  private[client] def fetchJson(request: Request[IO], token: Option[OAuthAccessToken] = None)
                                (implicit consumer: Consumer, decode: Decoder[T]): IO[HttpResponse[T]] = {
 
     jsonRequest(withLogger(request), token)

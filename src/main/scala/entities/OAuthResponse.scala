@@ -1,13 +1,9 @@
 package entities
 
-import api.AuthorizeUrl
+import api.{AuthorizeUrl, OAuthAccessToken}
 import org.http4s.Uri
 import org.http4s.client.oauth1.Token
 import client.utils.Config
-
-trait OAuthResponse {
-  val token: Token
-}
 
 case class RequestTokenResponse(token: Token, callbackConfirmed: Boolean) {
   val callback: Uri = (Uri.unsafeFromString(
@@ -15,4 +11,4 @@ case class RequestTokenResponse(token: Token, callbackConfirmed: Boolean) {
     .withQueryParam("oauth_token", token.value)
 }
 
-case class AccessTokenResponse(token: Token) extends OAuthResponse
+case class AccessTokenResponse(token: Token) extends OAuthAccessToken

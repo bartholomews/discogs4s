@@ -13,7 +13,7 @@ trait MockClientConfig {
                  appVersion: Option[String] = Some("1.0"),
                  appUrl: Option[String] = Some("app.git")): DiscogsClient =
 
-    DiscogsClient(Some(ConsumerConfig(appName, appVersion, appUrl, key, secret)))
+    new DiscogsClient(Some(ConsumerConfig(appName, appVersion, appUrl, key, secret)))
 
   val validConsumerKey = "VALID_CONSUMER_KEY"
   val validConsumerSecret = "VALID_CONSUMER_SECRET"

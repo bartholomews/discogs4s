@@ -98,5 +98,14 @@ class DiscogsClientSpec extends MockServerWordSpec
         }
       }
     }
+
+    // FIXME move this out
+//    "Calling `Identity` without being authorized" should {
+//      "respond with an error" in {
+//        val error = client.Me().unsafeRunSync().entity.left.get
+//        error.getMessage shouldBe "ASDda"
+//      }
+//    }
+
   }
 }

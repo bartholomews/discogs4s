@@ -1,24 +1,24 @@
 package client.http
 
+import api.{AccessTokenRequest, OAuthAccessToken}
 import cats.effect.Effect
-import api.AccessTokenRequest
+import client.utils.{HttpTypes, Logger}
 import entities.ResponseError
 import fs2.{Pipe, Pure, Stream}
 import io.circe.fs2.{byteStreamParser, decoder}
 import io.circe.{Decoder, Json}
 import org.http4s.client.blaze.Http1Client
-import org.http4s.client.oauth1.{Consumer, Token}
+import org.http4s.client.oauth1.Consumer
 import org.http4s.util.CaseInsensitiveString
 import org.http4s.{Headers, Request, Response, Status}
-import client.utils.{HttpTypes, Logger}
 
 trait RequestF[T] extends HttpTypes with Logger {
 
-  private[client] def jsonRequest[F[_] : Effect](request: Request[F], token: Option[Token] = None)
+  private[client] def jsonRequest[F[_] : Effect](request: Request[F], accessToken: Option[OAuthAccessToken] = None)
                                                 (implicit consumer: Consumer,
                                                  decoder: Decoder[T]): Stream[F, HttpResponse[T]] = {
 
-    fetchResponse(request, None)(res => validateContentType(parseJson[F])(res))
+    fetchResponse(request, accessToken)(res => validateContentType(parseJson[F])(res))
   }
 
   private[client] def plainTextRequest[F[_] : Effect](request: Request[F], accessTokenRequest: Option[AccessTokenRequest] = None)
@@ -33,11 +33,11 @@ trait RequestF[T] extends HttpTypes with Logger {
     )
   }
 
-  private def fetchResponse[F[_] : Effect](request: Request[F], accessTokenRequest: Option[AccessTokenRequest] = None)
+  private def fetchResponse[F[_] : Effect](request: Request[F], accessToken: Option[OAuthAccessToken] = None)
                                           (f: Response[F] => Stream[F, ErrorOr[T]])
                                           (implicit consumer: Consumer): Stream[F, HttpResponse[T]] = {
 
-    val signed: Stream[F, Request[F]] = Stream.eval(sign(consumer, accessTokenRequest)(request))
+    val signed: Stream[F, Request[F]] = Stream.eval(sign(consumer, accessToken)(request))
     val pure: Stream[Pure, Request[F]] = Stream(request)
 
     for {
@@ -90,14 +90,14 @@ trait RequestF[T] extends HttpTypes with Logger {
 
   import org.http4s.client.oauth1._
 
-  private def sign[F[_] : Effect](consumer: Consumer, accessTokenRequest: Option[AccessTokenRequest] = None)
+  private def sign[F[_] : Effect](consumer: Consumer, accessToken: Option[OAuthAccessToken] = None)
                                  (req: Request[F]): F[Request[F]] = {
     signRequest(
       req,
       consumer,
       callback = None,
-      verifier = accessTokenRequest.map(_.verifier),
-      accessTokenRequest.map(_.token)
+      verifier = accessToken.flatMap(_.verifier),
+      accessToken.map(_.token)
     )
   }
 }
