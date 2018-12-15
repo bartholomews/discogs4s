@@ -4,6 +4,7 @@ import api.{AccessTokenRequest, OAuthAccessToken}
 import cats.effect.IO
 import entities.ResponseError
 import io.circe.Decoder
+import org.http4s.client.Client
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Headers, Request}
 
@@ -19,19 +20,18 @@ trait IOClient[T] extends RequestF[T] {
       ))
   }
 
-  private[client] def fetchPlainText(request: Request[IO], accessTokenRequest: Option[AccessTokenRequest] = None)
-                                    (implicit pipeTransform: PipeTransform[IO, String, T],
-                                     consumer: Consumer): IO[HttpResponse[T]] = {
+  private[client] def fetchPlainText(client: Client[IO])(request: Request[IO], accessTokenRequest: Option[AccessTokenRequest] = None)
+                                    (implicit consumer: Consumer, pipeTransform: PipeTransform[IO, String, T]): IO[HttpResponse[T]] = {
 
-    plainTextRequest[IO](withLogger(request), accessTokenRequest)(pipeTransform)
+    plainTextRequest[IO](client)(withLogger(request), accessTokenRequest)(pipeTransform)
       .io
   }
 
-  private[client] def fetchJson(request: Request[IO], token: Option[OAuthAccessToken] = None)
+  private[client] def fetchJson(client: Client[IO])(request: Request[IO], token: Option[OAuthAccessToken] = None)
                                (implicit consumer: Consumer, decode: Decoder[T]): IO[HttpResponse[T]] = {
 
-    jsonRequest(withLogger(request), token)
+    jsonRequest(client)(withLogger(request), token)
       //.evalMap(res => IO.fromEither(res.entity))
-    .io
+      .io
   }
 }

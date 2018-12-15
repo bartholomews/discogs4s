@@ -7,25 +7,27 @@ import entities.ResponseError
 import fs2.{Pipe, Pure, Stream}
 import io.circe.fs2.{byteStreamParser, decoder}
 import io.circe.{Decoder, Json}
-import org.http4s.client.blaze.Http1Client
+import org.http4s.client.Client
 import org.http4s.client.oauth1.Consumer
 import org.http4s.util.CaseInsensitiveString
 import org.http4s.{Headers, Request, Response, Status}
 
+// TODO remove discogs dependencies so it could be moved to a different more general http module/library
 trait RequestF[T] extends HttpTypes with Logger {
 
-  private[client] def jsonRequest[F[_] : Effect](request: Request[F], accessToken: Option[OAuthAccessToken] = None)
-                                                (implicit consumer: Consumer,
+  private[client] def jsonRequest[F[_] : Effect](client: Client[F])(request: Request[F], accessToken: Option[OAuthAccessToken] = None)
+                                                (implicit
+                                                 consumer: Consumer,
                                                  decoder: Decoder[T]): Stream[F, HttpResponse[T]] = {
 
-    fetchResponse(request, accessToken)(res => validateContentType(parseJson[F])(res))
+    fetchResponse(client)(request, accessToken)(res => validateContentType(parseJson[F])(res))
   }
 
-  private[client] def plainTextRequest[F[_] : Effect](request: Request[F], accessTokenRequest: Option[AccessTokenRequest] = None)
+  private[client] def plainTextRequest[F[_] : Effect](client: Client[F])(request: Request[F], accessTokenRequest: Option[AccessTokenRequest] = None)
                                                      (plainTextToDomainPipe: PipeTransform[F, String, T])
                                                      (implicit consumer: Consumer): Stream[F, HttpResponse[T]] = {
 
-    fetchResponse(request, accessTokenRequest)(res =>
+    fetchResponse(client)(request, accessTokenRequest)(res =>
       Stream.eval(res.as[String])
         .attempt
         .through(errorPipe(res.status))
@@ -33,7 +35,7 @@ trait RequestF[T] extends HttpTypes with Logger {
     )
   }
 
-  private def fetchResponse[F[_] : Effect](request: Request[F], accessToken: Option[OAuthAccessToken] = None)
+  private def fetchResponse[F[_] : Effect](client: Client[F])(request: Request[F], accessToken: Option[OAuthAccessToken] = None)
                                           (f: Response[F] => Stream[F, ErrorOr[T]])
                                           (implicit consumer: Consumer): Stream[F, HttpResponse[T]] = {
 
@@ -41,12 +43,10 @@ trait RequestF[T] extends HttpTypes with Logger {
     val pure: Stream[Pure, Request[F]] = Stream(request)
 
     for {
-      client <- Http1Client.stream[F]()
-      req <- signed
-      response <- client.streaming(req)(withLogger { res =>
-        f(res).map(HttpResponse(res.headers, _))
-      })
-    } yield response
+      request <- signed
+      response <- client.stream(request)
+      httpRes <- f(response).map(HttpResponse(response.headers, _))
+    } yield httpRes
   }
 
   private def validateContentType[F[_] : Effect](f: Response[F] => StreamResponse[F, T])

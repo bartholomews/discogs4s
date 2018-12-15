@@ -5,12 +5,13 @@ import client.http.{IOClient, OAuthClient}
 import client.utils.ConsumerConfig
 import entities.AccessTokenResponse
 
+import scala.concurrent.ExecutionContext
+
 class DiscogsOAuthClient(consumerClient: Option[ConsumerConfig] = None,
-                         accessToken: AccessTokenResponse) extends DiscogsClient(consumerClient) {
+                         accessToken: AccessTokenResponse)(ec: ExecutionContext) extends DiscogsClient(consumerClient)(ec) {
 
   case object Me extends OAuthClient with IOClient[String] {
     def apply(): IOResponse[String] =
-      fetchJson(getRequest(Identity.uri), Some(accessToken))
+      resource.use(fetchJson(_)(getRequest(Identity.uri), Some(accessToken)))
   }
-
 }

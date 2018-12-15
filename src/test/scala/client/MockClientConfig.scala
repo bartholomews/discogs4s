@@ -1,9 +1,20 @@
 package client
 
+import cats.effect.{ContextShift, IO}
+import org.http4s.client.{Client, JavaNetClientBuilder}
 import org.http4s.client.oauth1.Consumer
 import utils.ConsumerConfig
 
 trait MockClientConfig {
+
+  import scala.concurrent.ExecutionContext
+  import java.util.concurrent._
+
+  // https://http4s.org/v0.20/client/
+  import scala.concurrent.ExecutionContext.Implicits.global
+  implicit val ioContextShift: ContextShift[IO] = IO.contextShift(global)
+  private val blockingEC = ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(5))
+  val blockingClientIO: Client[IO] = JavaNetClientBuilder[IO](blockingEC).create
 
   def validOAuthClient: DiscogsClient = clientWith()
 
@@ -13,7 +24,7 @@ trait MockClientConfig {
                  appVersion: Option[String] = Some("1.0"),
                  appUrl: Option[String] = Some("app.git")): DiscogsClient =
 
-    new DiscogsClient(Some(ConsumerConfig(appName, appVersion, appUrl, key, secret)))
+    new DiscogsClient(Some(ConsumerConfig(appName, appVersion, appUrl, key, secret)))(global)
 
   val validConsumerKey = "VALID_CONSUMER_KEY"
   val validConsumerSecret = "VALID_CONSUMER_SECRET"

@@ -30,7 +30,7 @@ class DiscogsClientSpec extends MockServerWordSpec
         .withMethod(Method.GET)
         .withUri(AuthorizeUrl.uri)
 
-      val io = fetchJson(requestWithPlainTextResponse)
+      val io = fetchJson(blockingClientIO)(requestWithPlainTextResponse)
 
       "return a ResponseError" should {
         "have UnsupportedMediaType Status and the right error message" in {
@@ -53,7 +53,7 @@ class DiscogsClientSpec extends MockServerWordSpec
         .withMethod(Method.GET)
         .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/$emptyResponseEndpoint"))
 
-      val io = fetchJson(requestWithEmptyResponse)
+      val io = fetchJson(blockingClientIO)(requestWithEmptyResponse)
 
       "raise an error" in {
         val res = io.unsafeRunSync()
@@ -71,7 +71,7 @@ class DiscogsClientSpec extends MockServerWordSpec
         .withMethod(Method.GET)
         .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/$notFoundResponseEndpoint"))
 
-      val io = fetchJson(requestWithEmptyResponse)
+      val io = fetchJson(blockingClientIO)(requestWithEmptyResponse)
 
       "return a ResponseError" in {
         val res = io.unsafeRunSync()
@@ -87,7 +87,7 @@ class DiscogsClientSpec extends MockServerWordSpec
         .withMethod(Method.GET)
         .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/circe/decoding-error"))
 
-      val io = fetchJson(requestWithBadJsonResponse)
+      val io = fetchJson(blockingClientIO)(requestWithBadJsonResponse)
 
       "return a ResponseError" should {
         "should have 500 Status and the right error message" in {
