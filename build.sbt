@@ -1,7 +1,7 @@
 import CompilerOptions._
 import Dependencies._
 
-name := "discogs"
+name := "discogs4s"
 
 version := "0.0.1-SNAPSHOT"
 
