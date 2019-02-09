@@ -5,20 +5,19 @@ import cats.effect.IO
 import client.http.IOClient
 import client.utils.Config
 import entities.ResponseError
-import io.circe.Json
 import org.http4s.client.oauth1.Consumer
-import org.http4s.{Method, Request, Status, Uri}
+import org.http4s.{Method, Request, Status}
 import org.scalatest.Matchers
 import server.MockServerWordSpec
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class DiscogsClientSpec extends MockServerWordSpec
+class DiscogsSimpleClientSpec extends MockServerWordSpec
   with MockClientConfig
   with Matchers
   with IOClient[String] {
 
-  val client: DiscogsClient = validOAuthClient
+  val client: DiscogsSimpleClient = validOAuthClient
 
   "Discogs Client" when {
 
@@ -51,7 +50,7 @@ class DiscogsClientSpec extends MockServerWordSpec
 
       val requestWithEmptyResponse: Request[IO] = Request[IO]()
         .withMethod(Method.GET)
-        .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/$emptyResponseEndpoint"))
+        .withUri(Config.discogs.apiUri / emptyResponseEndpoint)
 
       val io = fetchJson(blockingClientIO)(requestWithEmptyResponse)
 
@@ -69,7 +68,7 @@ class DiscogsClientSpec extends MockServerWordSpec
 
       val requestWithEmptyResponse: Request[IO] = Request[IO]()
         .withMethod(Method.GET)
-        .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/$notFoundResponseEndpoint"))
+        .withUri(Config.discogs.apiUri / notFoundResponseEndpoint)
 
       val io = fetchJson(blockingClientIO)(requestWithEmptyResponse)
 
@@ -85,7 +84,7 @@ class DiscogsClientSpec extends MockServerWordSpec
 
       val requestWithBadJsonResponse: Request[IO] = Request[IO]()
         .withMethod(Method.GET)
-        .withUri(Uri.unsafeFromString(s"${Config.SCHEME}://${Config.DISCOGS_API}/circe/decoding-error"))
+        .withUri(Config.discogs.apiUri / "circe" / "decoding-error")
 
       val io = fetchJson(blockingClientIO)(requestWithBadJsonResponse)
 
@@ -100,12 +99,12 @@ class DiscogsClientSpec extends MockServerWordSpec
     }
 
     // FIXME move this out
-//    "Calling `Identity` without being authorized" should {
-//      "respond with an error" in {
-//        val error = client.Me().unsafeRunSync().entity.left.get
-//        error.getMessage shouldBe "ASDda"
-//      }
-//    }
+    //    "Calling `Identity` without being authorized" should {
+    //      "respond with an error" in {
+    //        val error = client.Me().unsafeRunSync().entity.left.get
+    //        error.getMessage shouldBe "ASDda"
+    //      }
+    //    }
 
   }
 }

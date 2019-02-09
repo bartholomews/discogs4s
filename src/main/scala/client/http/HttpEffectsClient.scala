@@ -16,12 +16,12 @@ trait HttpEffectsClient[F[_], T] extends RequestF[T] {
   private[client] def fetchPlainText(client: Client[F])(request: Request[F], accessTokenRequest: Option[AccessTokenRequest] = None)
                                     (implicit effect: Effect[F], consumer: Consumer): F[HttpResponse[T]] =
 
-    run(plainTextRequest[F](client)(withLogger(request), accessTokenRequest)(pipeTransform)(effect, consumer))
+    run(plainTextRequest[F](client)(request, accessTokenRequest)(pipeTransform)(effect, consumer))
 
   private[client] def fetchJson(client: Client[F])(request: Request[F], token: Option[OAuthAccessToken] = None)
                                (implicit effect: Effect[F],
                                 consumer: Consumer,
                                 decode: Decoder[T]): F[HttpResponse[T]] =
 
-    run(jsonRequest(client)(withLogger(request), token))
+    run(jsonRequest(client)(request, token))
 }

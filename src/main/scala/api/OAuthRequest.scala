@@ -10,7 +10,7 @@ trait OAuthAccessToken {
 
 sealed trait OAuthRequest[T] extends DiscogsApi[T] {
   val path: String = "oauth"
-  private[api] val basePath: Uri = baseUrl / path
+  private[api] val basePath: Uri = apiUri / path
 }
 
 case object AuthorizeUrl extends OAuthRequest[Uri] {

@@ -54,7 +54,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
         "return a Right with the callback Uri" in {
           response.entity shouldBe 'right
           response.entity.right.get.callback shouldBe Uri.unsafeFromString(
-            "http://discogs.com/oauth/authorize?oauth_token=TOKEN"
+            "http://127.0.0.1:8080/oauth/authorize?oauth_token=TOKEN"
           )
         }
       }

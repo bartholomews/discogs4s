@@ -1,9 +1,9 @@
 package client
 
 import cats.effect.{ContextShift, IO}
+import client.utils.Config.ConsumerConfig
 import org.http4s.client.{Client, JavaNetClientBuilder}
 import org.http4s.client.oauth1.Consumer
-import utils.ConsumerConfig
 
 trait MockClientConfig {
 
@@ -16,15 +16,16 @@ trait MockClientConfig {
   private val blockingEC = ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(5))
   val blockingClientIO: Client[IO] = JavaNetClientBuilder[IO](blockingEC).create
 
-  def validOAuthClient: DiscogsClient = clientWith()
+  // FIXME should be OAuthClient
+  def validOAuthClient: DiscogsSimpleClient = clientWith()
 
   def clientWith(key: String = validConsumerKey,
                  secret: String = validConsumerSecret,
                  appName: String = "someApp",
                  appVersion: Option[String] = Some("1.0"),
-                 appUrl: Option[String] = Some("app.git")): DiscogsClient =
+                 appUrl: Option[String] = Some("app.git")): DiscogsSimpleClient =
 
-    new DiscogsClient(Some(ConsumerConfig(appName, appVersion, appUrl, key, secret)))(global)
+    new DiscogsSimpleClient(ConsumerConfig(appName, appVersion, appUrl, key, secret))(global)
 
   val validConsumerKey = "VALID_CONSUMER_KEY"
   val validConsumerSecret = "VALID_CONSUMER_SECRET"

@@ -20,6 +20,7 @@ trait RequestF[T] extends HttpTypes with Logger {
                                                  consumer: Consumer,
                                                  decoder: Decoder[T]): Stream[F, HttpResponse[T]] = {
 
+    // TODO try with .through pipes instead of composed functions, create and log `ErrorResponse.apply` once
     fetchResponse(client)(request, accessToken)(res => validateContentType(parseJson[F])(res))
   }
 
@@ -31,6 +32,7 @@ trait RequestF[T] extends HttpTypes with Logger {
       Stream.eval(res.as[String])
         .attempt
         .through(errorPipe(res.status))
+        .through(plainTextResponseLogPipe)
         .through(plainTextToDomainPipe)
     )
   }
@@ -44,8 +46,8 @@ trait RequestF[T] extends HttpTypes with Logger {
 
     for {
       request <- signed
-      response <- client.stream(request)
-      httpRes <- f(response).map(HttpResponse(response.headers, _))
+      response <- client.stream(logRequestHeaders(request))
+      httpRes <- f(logResponseHeaders(response)).map(HttpResponse(response.headers, _))
     } yield httpRes
   }
 

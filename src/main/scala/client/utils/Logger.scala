@@ -1,8 +1,8 @@
 package client.utils
 
+import cats.Show
 import cats.effect.Effect
-import client.http.HttpResponse
-import fs2.{Pipe, Stream}
+import fs2.Pipe
 import io.circe.Json
 import org.http4s.{Request, Response}
 import org.log4s.getLogger
@@ -15,26 +15,34 @@ trait Logger extends HttpTypes {
 
   logger.info(s"$logger started.")
 
-  private[client] def jsonLogPipe[F[_] : Effect]: Pipe[F, Json, Json] = _.map(debug)
+  private[client] def jsonLogPipe[F[_] : Effect]: Pipe[F, Json, Json] = _.map(entity => {
+    logger.debug(entity.toString)
+    entity
+  })
 
-  private[client] def withLogger[F[_] : Effect, T](f: Response[F] => Stream[F, HttpResponse[T]])
-                                  (res: Response[F]): Stream[F, HttpResponse[T]] = {
+  private[client] def plainTextResponseLogPipe[F[_] : Effect]: Pipe[F, ErrorOr[String], ErrorOr[String]] =
+    _.map(response => {
+      logger.debug(s"RESPONSE:\n${response.fold(_.toString, _.toString)}")
+      response
+    })
 
-    val headers = res.headers.mkString("\n\t")
-    val message = s"{\n\t${res.status}\n\t$headers\n}"
-    logger.debug(message)
-    f(res)
-  }
-
-  private[client] def withLogger[F[_] : Effect](request: Request[F]): Request[F] = {
-    logger.info(s"${request.method.name} REQUEST: ${request.uri}")
+  private[client] def logRequestHeaders[F[_] : Effect](request: Request[F]): Request[F] = {
+    logger.info(s"${request.method.name} REQUEST: [${request.uri}]")
     logger.info(s"${request.headers.map(_.toString())}")
     request
   }
 
-  private def debug(json: Json): Json = {
-    logger.debug(json.toString)
-    json
+  private[client] def logResponseHeaders[F[_] : Effect, T](res: Response[F]): Response[F] = {
+    val headers = res.headers.mkString("\n\t")
+    val message = s"{\n\t${res.status}\n\t$headers\n}"
+    logger.debug(message)
+    res
   }
+
+//  TODO log once in pipe which create an instance of `ResponseError`
+//  def logError(throwable: Throwable): Throwable = {
+//    logger.error(throwable.getMessage)
+//    throwable
+//  }
 
 }

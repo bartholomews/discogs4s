@@ -23,14 +23,14 @@ trait IOClient[T] extends RequestF[T] {
   private[client] def fetchPlainText(client: Client[IO])(request: Request[IO], accessTokenRequest: Option[AccessTokenRequest] = None)
                                     (implicit consumer: Consumer, pipeTransform: PipeTransform[IO, String, T]): IO[HttpResponse[T]] = {
 
-    plainTextRequest[IO](client)(withLogger(request), accessTokenRequest)(pipeTransform)
+    plainTextRequest[IO](client)(request, accessTokenRequest)(pipeTransform)
       .io
   }
 
   private[client] def fetchJson(client: Client[IO])(request: Request[IO], token: Option[OAuthAccessToken] = None)
                                (implicit consumer: Consumer, decode: Decoder[T]): IO[HttpResponse[T]] = {
 
-    jsonRequest(client)(withLogger(request), token)
+    jsonRequest(client)(request, token)
       //.evalMap(res => IO.fromEither(res.entity))
       .io
   }

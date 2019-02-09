@@ -42,18 +42,17 @@ trait OAuthClient extends HttpTypes {
     .map(_.toLeft(emptyResponseMessage).joinLeft)
     .map {
 
-        case Right(requestTokenStringResponse(token, secret, flag)) =>
-          val callbackConfirmed = Try(flag.toBoolean).getOrElse(false)
-          Right(RequestTokenResponse(Token(token, secret), callbackConfirmed))
+      case Right(requestTokenStringResponse(token, secret, flag)) =>
+        val callbackConfirmed = Try(flag.toBoolean).getOrElse(false)
+        Right(RequestTokenResponse(Token(token, secret), callbackConfirmed))
 
-        case other => handleInvalidCase(other)
-  }
+      case other => handleInvalidCase(other)
+    }
 
   private[client] implicit val plainTextToAccessTokenResponse: PipeTransform[IO, String, AccessTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)
     .map {
-
       case Right(accessTokenStringResponse(token, secret)) => Right(AccessTokenResponse(Token(token, secret)))
       case other => handleInvalidCase(other)
     }
