@@ -10,7 +10,9 @@ object Config {
   import cats.implicits._
 
   private[utils] case class Discogs(api: String, domain: String, scheme: String)
+
   private[utils] case class DiscogsConfig(discogs: Discogs)
+
   private[utils] case class DiscogsReference(apiUri: Uri, baseUri: Uri)
 
   lazy val discogs: DiscogsReference = {
@@ -24,13 +26,15 @@ object Config {
     either.valueOr(throw _)
   }
 
-  lazy val consumer: ConsumerConfig = pureconfig.loadConfigOrThrow[ConsumerConfig]
+  lazy val consumer: DiscogsConsumer = pureconfig.loadConfigOrThrow[DiscogsConsumerConfig].discogsConsumer
 
-  case class ConsumerConfig(appName: String,
-                            appVersion: Option[String],
-                            appUrl: Option[String],
-                            key: String,
-                            secret: String) {
+  private[utils] case class DiscogsConsumerConfig(discogsConsumer: DiscogsConsumer)
+
+  case class DiscogsConsumer(appName: String,
+                             appVersion: Option[String],
+                             appUrl: Option[String],
+                             key: String,
+                             secret: String) {
 
     private val version = appVersion.map(version => s"/$version").getOrElse("")
     private val url = appUrl.map(url => s" (+$url)").getOrElse("")
@@ -38,6 +42,7 @@ object Config {
     // "name/version +(url)"
     def userAgent: String = s"$appName$version$url"
   }
+
 }
 
 //object Config {

@@ -1,10 +1,10 @@
 package client
 
 import cats.effect.Effect
-import client.utils.Config.ConsumerConfig
+import client.utils.Config.DiscogsConsumer
 import org.http4s.{Header, Headers, Method, Request, Uri}
 
-class DiscogsRest(consumerConfig: ConsumerConfig) {
+class DiscogsRest(consumerConfig: DiscogsConsumer) {
 
 //  self: ConsumerConfig =>
 

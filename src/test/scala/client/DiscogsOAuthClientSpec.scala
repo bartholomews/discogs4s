@@ -43,7 +43,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
       "consumer key and secret are valid" should {
 
-        val client = validOAuthClient
+        val client = validClient
 
         def response: HttpResponse[RequestTokenResponse] = client.RequestToken.get.unsafeRunSync()
 
@@ -88,7 +88,7 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
 
     "getting an auth token" when {
 
-      val client = validOAuthClient
+      val client = validClient
 
       "request is empty" should {
 
@@ -139,6 +139,14 @@ class DiscogsOAuthClientSpec extends MockServerWordSpec with MockClientConfig wi
           response.entity shouldBe 'right
         }
       }
+
+      // FIXME move this out
+      //    "Calling `Identity` without being authorized" should {
+      //      "respond with an error" in {
+      //        val error = client.Me().unsafeRunSync().entity.left.get
+      //        error.getMessage shouldBe "ASDda"
+      //      }
+      //    }
 
     }
   }

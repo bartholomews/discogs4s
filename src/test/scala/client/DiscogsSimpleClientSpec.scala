@@ -1,12 +1,9 @@
 package client
 
-import api.AuthorizeUrl
-import cats.effect.IO
+import api.AccessTokenRequest
 import client.http.IOClient
-import client.utils.Config
-import entities.ResponseError
-import org.http4s.client.oauth1.Consumer
-import org.http4s.{Method, Request, Status}
+import client.utils.Config.DiscogsConsumer
+import org.http4s.Status
 import org.scalatest.Matchers
 import server.MockServerWordSpec
 
@@ -17,94 +14,80 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
   with Matchers
   with IOClient[String] {
 
-  val client: DiscogsSimpleClient = validOAuthClient
+  "DiscogsSimpleClient" when {
 
-  "Discogs Client" when {
+    "initialised with an implicit configuration" should {
+      "read the consumer values from resource folder" in {
+        val client = new DiscogsSimpleClient()
+        client.consumer.key shouldBe "mock-consumer-key"
+        client.consumer.secret shouldBe "mock-consumer-secret"
+      }
+    }
 
-    "receiving an unexpected Content-type header while expecting application/json" should {
+    "initialised with an explicit configuration" should {
 
-      implicit val consumer: Consumer = validConsumer
+      val config = DiscogsConsumer(
+        appName = "mock-app-name",
+        appVersion = None,
+        appUrl = None,
+        key = "consumer-key",
+        secret = "consumer-secret"
+      )
 
-      val requestWithPlainTextResponse: Request[IO] = Request[IO]()
-        .withMethod(Method.GET)
-        .withUri(AuthorizeUrl.uri)
+      "read the consumer values from the injected configuration" in {
+        val client = new DiscogsSimpleClient(config)
+        client.consumer.key shouldBe "consumer-key"
+        client.consumer.secret shouldBe "consumer-secret"
+      }
+    }
 
-      val io = fetchJson(blockingClientIO)(requestWithPlainTextResponse)
+    "the client has valid consumer keys" when {
 
-      "return a ResponseError" should {
-        "have UnsupportedMediaType Status and the right error message" in {
-          io.unsafeRunSync().entity shouldBe 'left
-          val throwable = io.unsafeRunSync().entity.left.get
-          throwable.isInstanceOf[ResponseError] shouldBe true
-          val error = io.unsafeRunSync().entity.left.get
-          error.status shouldBe Status.UnsupportedMediaType
-          error.getMessage shouldBe
-            "text/plain: unexpected Content-Type"
+      val client: DiscogsSimpleClient = validClient
+
+      "get a request token" should {
+        "succeed" in {
+          val res = client.RequestToken.get.unsafeRunSync()
+          res.status shouldBe Status.Ok
+        }
+      }
+
+      "get a oAuth client" should {
+
+        "succeed" in {
+          val oAuthClient = for {
+            requestToken <- client.RequestToken.get.unsafeRunSync().entity
+            res <- client.getOAuthClient(AccessTokenRequest(requestToken.token, validVerifier)).unsafeRunSync()
+          } yield res
+
+          oAuthClient shouldBe 'right
+          oAuthClient.right.get.consumer shouldBe client.consumer
         }
       }
     }
 
-    "receiving an empty response" should {
+    "the client has invalid consumer keys" when {
 
-      implicit val consumer: Consumer = validConsumer
+      val client: DiscogsSimpleClient = clientWith("invalid-key")
 
-      val requestWithEmptyResponse: Request[IO] = Request[IO]()
-        .withMethod(Method.GET)
-        .withUri(Config.discogs.apiUri / emptyResponseEndpoint)
-
-      val io = fetchJson(blockingClientIO)(requestWithEmptyResponse)
-
-      "raise an error" in {
-        val res = io.unsafeRunSync()
-        res.status shouldBe Status.BadRequest
-        res.entity.left.get.getMessage shouldBe
-          "Response was empty. Please check request logs."
+      "get a request token" should {
+        "fail" in {
+          val res = client.RequestToken.get.unsafeRunSync()
+          res.status shouldBe Status.BadRequest
+        }
       }
-    }
 
-    "receiving a bad status response" should {
-
-      implicit val consumer: Consumer = validConsumer
-
-      val requestWithEmptyResponse: Request[IO] = Request[IO]()
-        .withMethod(Method.GET)
-        .withUri(Config.discogs.apiUri / notFoundResponseEndpoint)
-
-      val io = fetchJson(blockingClientIO)(requestWithEmptyResponse)
-
-      "return a ResponseError" in {
-        val res = io.unsafeRunSync()
-        res.status shouldBe Status.NotFound
-      }
-    }
-
-    "receiving an unexpected json body in the response" should {
-
-      implicit val consumer: Consumer = validConsumer
-
-      val requestWithBadJsonResponse: Request[IO] = Request[IO]()
-        .withMethod(Method.GET)
-        .withUri(Config.discogs.apiUri / "circe" / "decoding-error")
-
-      val io = fetchJson(blockingClientIO)(requestWithBadJsonResponse)
-
-      "return a ResponseError" should {
-        "should have 500 Status and the right error message" in {
-          val error = io.unsafeRunSync().entity.left.get
-          error.status shouldBe Status.InternalServerError
-          error.getMessage shouldBe
-            "There was a problem decoding or parsing this response, please check the error logs."
+      "get a oAuth client" should {
+        "fail" in {
+          val oAuthClient = for {
+            requestToken <- client.RequestToken.get.unsafeRunSync().entity
+            res <- client.getOAuthClient(AccessTokenRequest(requestToken.token, validVerifier)).unsafeRunSync()
+          } yield res
+          oAuthClient shouldBe 'left
         }
       }
     }
-
-    // FIXME move this out
-    //    "Calling `Identity` without being authorized" should {
-    //      "respond with an error" in {
-    //        val error = client.Me().unsafeRunSync().entity.left.get
-    //        error.getMessage shouldBe "ASDda"
-    //      }
-    //    }
 
   }
+
 }

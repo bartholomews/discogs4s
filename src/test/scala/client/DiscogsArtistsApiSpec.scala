@@ -15,7 +15,7 @@ class DiscogsArtistsApiSpec extends MockServerWordSpec
 
     "client is valid" should {
 
-      val client = validOAuthClient
+      val client = validClient
 
       "getting Artists releases" should {
 

@@ -4,7 +4,7 @@ import api._
 import cats.data.EitherT
 import cats.effect.{ContextShift, IO, Resource}
 import client.http.{HttpResponse, IOClient, OAuthClient}
-import client.utils.Config.ConsumerConfig
+import client.utils.Config.DiscogsConsumer
 import client.utils.{Config, HttpTypes}
 import entities._
 import io.circe.Decoder
@@ -20,9 +20,10 @@ import scala.language.higherKinds
 // DiscogsAuthClient which has oauth_token and secret vals, can be created only via:
 // https://www.discogs.com/developers/#page:authentication
 
-class DiscogsSimpleClient(consumerConfig: ConsumerConfig)(ec: ExecutionContext) extends DiscogsRest(consumerConfig) with HttpTypes {
+class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
+                         (implicit ec: ExecutionContext) extends DiscogsRest(consumerConfig) with HttpTypes {
 
-  def this(ec: ExecutionContext) = this(Config.consumer)(ec)
+  def this()(implicit ec: ExecutionContext) = this(Config.consumer)
 
   implicit val ioContextShift: ContextShift[IO] = IO.contextShift(ec)
   implicit val resource: Resource[IO, Client[IO]] = BlazeClientBuilder[IO](ec).resource
@@ -55,7 +56,7 @@ class DiscogsSimpleClient(consumerConfig: ConsumerConfig)(ec: ExecutionContext) 
 
   def getOAuthClient(request: AccessTokenRequest): IO[Either[ResponseError, DiscogsOAuthClient]] = (for {
     accessToken <- EitherT(AccessToken.get(request).map(_.entity))
-    res <- EitherT.right[ResponseError](IO.pure(new DiscogsOAuthClient(consumerConfig, accessToken)(ec)))
+    res <- EitherT.right[ResponseError](IO.pure(new DiscogsOAuthClient(consumerConfig, accessToken)))
   } yield res).value
 
   // ===================================================================================================================
