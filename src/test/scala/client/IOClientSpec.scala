@@ -58,7 +58,7 @@ class IOClientSpec extends MockServerWordSpec
           val res = io.unsafeRunSync()
           res.status shouldBe Status.BadRequest
           res.entity.left.get.getMessage shouldBe
-            "Response was empty. Please check request logs."
+            "Response was empty. Please check request logs"
         }
       }
 
@@ -93,7 +93,7 @@ class IOClientSpec extends MockServerWordSpec
             val error = io.unsafeRunSync().entity.left.get
             error.status shouldBe Status.InternalServerError
             error.getMessage shouldBe
-              "There was a problem decoding or parsing this response, please check the error logs."
+              "There was a problem decoding or parsing this response, please check the error logs"
           }
         }
       }

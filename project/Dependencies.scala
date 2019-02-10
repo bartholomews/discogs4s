@@ -30,8 +30,9 @@ object Dependencies {
     "org.typelevel" %% "cats-effect" % Versions.cats_effect,
     "org.http4s" %% "http4s-dsl" % Versions.http4sVersion,
     "org.http4s" %% "http4s-blaze-client" % Versions.http4sVersion,
+    "org.http4s" %% "http4s-circe" % Versions.http4sVersion,
     "io.circe" %% "circe-fs2" % Versions.circe_fs2,
-    "io.circe" %% "circe-generic" % Versions.circe, // auto-derivation of JSON codecs
+    "io.circe" %% "circe-generic" % Versions.circe,
     "io.circe" %% "circe-literal" % Versions.circe // string interpolation to JSON model
   )
 

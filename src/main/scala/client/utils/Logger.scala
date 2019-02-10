@@ -40,9 +40,9 @@ trait Logger extends HttpTypes {
   }
 
 //  TODO log once in pipe which create an instance of `ResponseError`
-//  def logError(throwable: Throwable): Throwable = {
-//    logger.error(throwable.getMessage)
-//    throwable
-//  }
+  def logError[E <: Throwable](err: E): Throwable = {
+    logger.error(err.getMessage)
+    err
+  }
 
 }

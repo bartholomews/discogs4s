@@ -17,15 +17,19 @@ object ResponseError extends Logger {
 
   def apply(throwable: Throwable, status: Status = Status.InternalServerError): ResponseError = {
     throwable match {
-      case circeError: io.circe.Error => ResponseErrorImpl(Status.InternalServerError, circeError,
-        "There was a problem decoding or parsing this response, please check the error logs."
-      )
+      case circeError: io.circe.Error =>
+        logError(circeError)
+        ResponseErrorImpl(
+          Status.InternalServerError,
+          circeError,
+          "There was a problem decoding or parsing this response, please check the error logs"
+        )
       case _ => ResponseErrorImpl(status, throwable, throwable.getMessage)
     }
   }
 
   def empty = ResponseError.apply(
-    new Exception("Response was empty. Please check request logs."),
+    new Exception("Response was empty. Please check request logs"),
     Status.BadRequest
   )
 }

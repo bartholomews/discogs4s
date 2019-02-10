@@ -1,3 +1,6 @@
 {
-  "message": "You must authenticate to access this resource."
+  "id": 1,
+  "username": "example",
+  "resource_url": "https://api.discogs.com/users/example",
+  "consumer_name": "Your Application Name"
 }
