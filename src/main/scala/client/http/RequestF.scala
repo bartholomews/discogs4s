@@ -41,7 +41,7 @@ trait RequestF[T] extends HttpTypes with Logger {
       Stream.eval(res.as[String])
         .attempt
         .through(errorPipe(res.status))
-        .through(plainTextResponseLogPipe)
+        .through(responseLogPipe)
         .through(plainTextResponseDecoder)
     )
   }
@@ -59,7 +59,7 @@ trait RequestF[T] extends HttpTypes with Logger {
           response
             .body
             .through(byteStreamParser)
-            .through(jsonLogPipe)
+            .through(responseLogPipe)
             .attempt
             .map(_.fold(
               err => ResponseError(new Exception(err.getMessage), response.status).asLeft[T],
@@ -83,7 +83,7 @@ trait RequestF[T] extends HttpTypes with Logger {
   private def jsonResponseDecoder[F[_] : Effect](implicit decode: Decoder[T]): Pipe[F, Response[F], ErrorOr[T]] = _.flatMap(
     _.body
       .through(byteStreamParser)
-      .through(jsonLogPipe)
+      .through(responseLogPipe)
       .through(decoder[F, T])
       .attempt
       .map(_.leftMap(ResponseError(_)))
