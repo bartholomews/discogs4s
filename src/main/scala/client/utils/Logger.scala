@@ -2,7 +2,6 @@ package client.utils
 
 import cats.effect.Effect
 import fs2.Pipe
-import io.circe.Json
 import org.http4s.{Request, Response}
 import org.log4s.getLogger
 
@@ -14,16 +13,11 @@ trait Logger extends HttpTypes {
 
   logger.info(s"$logger started.")
 
-  private[client] def jsonLogPipe[F[_] : Effect]: Pipe[F, Json, Json] = _.map(entity => {
-    logger.debug(entity.toString)
+  // TODO: consider `Show` instead of `toString`
+  private[client] def errorLogPipe[T, F[_] : Effect]: Pipe[F, T, T] = _.map(entity => {
+    logger.error(entity.toString)
     entity
   })
-
-  private[client] def plainTextResponseLogPipe[F[_] : Effect]: Pipe[F, ErrorOr[String], ErrorOr[String]] =
-    _.map(response => {
-      logger.debug(s"RESPONSE:\n${response.fold(_.toString, _.toString)}")
-      response
-    })
 
   private[client] def logRequestHeaders[F[_] : Effect](request: Request[F]): Request[F] = {
     logger.info(s"${request.method.name} REQUEST: [${request.uri}]")
@@ -31,17 +25,15 @@ trait Logger extends HttpTypes {
     request
   }
 
+  private[client] def responseLogPipe[F[_] : Effect, T]: Pipe[F, T, T] = _.map(entity => {
+    logger.debug(s"RESPONSE:\n${entity.toString}")
+    entity
+  })
+
   private[client] def logResponseHeaders[F[_] : Effect, T](res: Response[F]): Response[F] = {
     val headers = res.headers.mkString("\n\t")
     val message = s"{\n\t${res.status}\n\t$headers\n}"
     logger.debug(message)
     res
   }
-
-//  TODO log once in pipe which create an instance of `ResponseError`
-  def logError[E <: Throwable](err: E): Throwable = {
-    logger.error(err.getMessage)
-    err
-  }
-
 }

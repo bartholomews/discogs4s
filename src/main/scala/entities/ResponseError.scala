@@ -18,7 +18,6 @@ object ResponseError extends Logger {
   def apply(throwable: Throwable, status: Status = Status.InternalServerError): ResponseError = {
     throwable match {
       case circeError: io.circe.Error =>
-        logError(circeError)
         ResponseErrorImpl(
           Status.InternalServerError,
           circeError,
