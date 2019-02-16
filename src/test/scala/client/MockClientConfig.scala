@@ -40,6 +40,9 @@ trait MockClientConfig {
 
   val emptyResponseEndpoint = "empty-response"
   val notFoundResponseEndpoint = "not-found"
+  val unsupportedMediaTypeBadRequestEndpoint = "unsupported-media-type-400"
+  val unsupportedMediaTypeOkEndpoint = "unsupported-media-type-200"
+  val noHeadersBadRequest = "no-content-type-bad-request"
 
   val validConsumer = Consumer(validConsumerKey, validConsumerSecret)
 }

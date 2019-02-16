@@ -1,6 +1,5 @@
 package client
 
-import api.AuthorizeUrl
 import cats.effect.IO
 import client.http.IOClient
 import client.utils.Config
@@ -23,13 +22,13 @@ class IOClientSpec extends MockServerWordSpec
 
     "fetching json" when {
 
-      "receiving an unexpected Content-type header while expecting application/json" should {
+      "receiving a not Ok response with unexpected Content-type header while expecting application/json" should {
 
-        val requestWithPlainTextResponse: Request[IO] = Request[IO]()
+        val requestWithHtmlBadRequestResponse: Request[IO] = Request[IO]()
           .withMethod(Method.GET)
-          .withUri(AuthorizeUrl.uri)
+          .withUri(Config.discogs.apiUri / unsupportedMediaTypeBadRequestEndpoint)
 
-        val io = fetchJson(blockingClientIO)(requestWithPlainTextResponse)
+        val io = fetchJson(blockingClientIO)(requestWithHtmlBadRequestResponse)
 
         "return a ResponseError" should {
           "have UnsupportedMediaType Status and the right error message" in {
@@ -39,7 +38,28 @@ class IOClientSpec extends MockServerWordSpec
             val error = io.unsafeRunSync().entity.left.get
             error.status shouldBe Status.UnsupportedMediaType
             error.getMessage shouldBe
-              "text/plain: unexpected Content-Type"
+              "text/html: unexpected `Content-Type`"
+          }
+        }
+      }
+
+      "receiving a not Ok response without `Content-type header` while expecting application/json" should {
+
+        val requestWithHtmlBadRequestResponse: Request[IO] = Request[IO]()
+          .withMethod(Method.GET)
+          .withUri(Config.discogs.apiUri / noHeadersBadRequest)
+
+        val io = fetchJson(blockingClientIO)(requestWithHtmlBadRequestResponse)
+
+        "return a ResponseError" should {
+          "have UnsupportedMediaType Status and the right error message" in {
+            io.unsafeRunSync().entity shouldBe 'left
+            val throwable = io.unsafeRunSync().entity.left.get
+            throwable.isInstanceOf[ResponseError] shouldBe true
+            val error = io.unsafeRunSync().entity.left.get
+            error.status shouldBe Status.UnsupportedMediaType
+            error.getMessage shouldBe
+              "`Content-Type` not provided"
           }
         }
       }

@@ -27,10 +27,10 @@ trait IOClient[T] extends RequestF[T] {
       .io
   }
 
-  private[client] def fetchJson(client: Client[IO])(request: Request[IO], token: Option[OAuthAccessToken] = None)
+  private[client] def fetchJson(client: Client[IO])(request: Request[IO], oAuthAccessToken: Option[OAuthAccessToken] = None)
                                (implicit consumer: Consumer, decode: Decoder[T]): IO[HttpResponse[T]] = {
 
-    jsonRequest(client)(request, token)
+    jsonRequest(client)(request, oAuthAccessToken)
       //.evalMap(res => IO.fromEither(res.entity))
       .io
   }

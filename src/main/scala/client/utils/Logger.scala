@@ -1,6 +1,5 @@
 package client.utils
 
-import cats.Show
 import cats.effect.Effect
 import fs2.Pipe
 import io.circe.Json

@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.extension.ResponseDefinitionTransformer
+import com.github.tomakehurst.wiremock.http.HttpHeaders
 import org.scalatest.words.BehaveWord
 import org.scalatest.{BeforeAndAfterAll, WordSpec}
 
@@ -34,10 +35,31 @@ trait MockServerWordSpec extends WordSpec with BeforeAndAfterAll with MockClient
     stubFor(get(anyUrl())
       .willReturn(aResponse()
         .withStatus(200)
-         .withTransformers(defaultTransformers(
-           AuthenticatedRequestTransformer, ResourceJsonTransformer
-         ): _*)
+        .withTransformers(defaultTransformers(
+          AuthenticatedRequestTransformer, ResourceJsonTransformer
+        ): _*)
       ))
+
+    stubFor(get(s"/$noHeadersBadRequest")
+      .willReturn(aResponse()
+        .withStatus(400)
+        .withHeaders(HttpHeaders.noHeaders())
+      )
+    )
+
+    stubFor(get(s"/$unsupportedMediaTypeBadRequestEndpoint")
+      .willReturn(aResponse()
+        .withStatus(400)
+        .withHeader("Content-Type", "text/html")
+      )
+    )
+
+    stubFor(get(s"/$unsupportedMediaTypeOkEndpoint")
+      .willReturn(aResponse()
+        .withStatus(200)
+        .withHeader("Content-Type", "html")
+      )
+    )
 
     stubFor(get("/oauth/request_token")
       .willReturn(aResponse()
