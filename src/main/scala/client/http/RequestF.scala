@@ -21,15 +21,17 @@ trait RequestF[T] extends HttpTypes with Logger {
                                                  consumer: Consumer,
                                                  decoder: Decoder[T]): Stream[F, HttpResponse[T]] =
 
-    fetchResponse(client)(request, accessToken)(res => {
-      res.status match {
+    fetchResponse(client)(request, accessToken)(response => {
+      response.status match {
         case Status.Ok =>
-          Stream.emit(res)
+          Stream.emit(response)
             .through(jsonResponseDecoder)
+            .through(responseLogPipe)
 
         case _ =>
-          Stream.emit(res)
+          Stream.emit(response)
             .through(errorHandler)
+            .through(responseLogPipe)
       }
     })
 
@@ -37,45 +39,46 @@ trait RequestF[T] extends HttpTypes with Logger {
                                                      (plainTextResponseDecoder: PipeTransform[F, String, T])
                                                      (implicit consumer: Consumer): Stream[F, HttpResponse[T]] = {
 
-    fetchResponse(client)(request, accessTokenRequest)(res =>
-      Stream.eval(res.as[String])
-        .attempt
-        .through(errorPipe(res.status))
-        .through(responseLogPipe)
-        .through(plainTextResponseDecoder)
-    )
+    fetchResponse(client)(request, accessTokenRequest)(response =>
+
+      response.status match {
+
+        case Status.Ok =>
+          Stream.eval(response.as[String])
+            .attempt
+            .through(responseErrorPipe(Status.UnprocessableEntity))
+            .through(responseLogPipe)
+            .through(plainTextResponseDecoder)
+
+        case _ =>
+          Stream.emit(response)
+            .through(errorHandler)
+            .through(responseLogPipe)
+            .through(plainTextResponseDecoder)
+      })
   }
 
-  // TODO try with .through pipes instead of composed functions, create and log `ErrorResponse.apply` once
-  //    Stream.eval(fetchResponse(client)(request, accessToken))
-  //      .through(parseJsonPipe)
-  //    (res => validateContentType(parseJson[F])(res)
-  //    )
+  // TODO log.ERROR
 
-  private def errorHandler[F[_] : Effect]: Pipe[F, Response[F], ErrorOr[T]] = _.flatMap(
+  private def errorHandler[F[_] : Effect]: Pipe[F, Response[F], ErrorOr[Nothing]] = _.flatMap(
     response => {
       response.headers.get(`Content-Type`).map(_.value) match {
         case Some("application/json") =>
           response
             .body
             .through(byteStreamParser)
-            .through(responseLogPipe)
             .attempt
-            .map(_.fold(
-              err => ResponseError(new Exception(err.getMessage), response.status).asLeft[T],
-              json => ResponseError(new Exception(json.spaces2), response.status).asLeft[T])
-            )
+            .through(responseErrorLeftPipe(response.status, _.spaces2))
+
         case Some("text/plain") => Stream.eval(response.as[String])
           .attempt
-          .map(_.fold(
-            err => ResponseError(new Exception(err.getMessage), response.status).asLeft[T],
-            text => ResponseError(new Exception(text), response.status).asLeft[T])
-          )
+          .through(responseErrorLeftPipe(response.status))
+
         case Some(unexpectedContentType) => Stream.emit(ResponseError(
-          new Exception(s"$unexpectedContentType: unexpected `Content-Type`"), Status.UnsupportedMediaType).asLeft[T]
+          new Exception(s"$unexpectedContentType: unexpected `Content-Type`"), Status.UnsupportedMediaType).asLeft
         )
         case None =>
-          Stream.emit(ResponseError(new Exception("`Content-Type` not provided"), Status.UnsupportedMediaType).asLeft[T])
+          Stream.emit(ResponseError(new Exception("`Content-Type` not provided"), Status.UnsupportedMediaType).asLeft)
       }
     }
   )
@@ -83,10 +86,9 @@ trait RequestF[T] extends HttpTypes with Logger {
   private def jsonResponseDecoder[F[_] : Effect](implicit decode: Decoder[T]): Pipe[F, Response[F], ErrorOr[T]] = _.flatMap(
     _.body
       .through(byteStreamParser)
-      .through(responseLogPipe)
       .through(decoder[F, T])
       .attempt
-      .map(_.leftMap(ResponseError(_)))
+      .through(responseErrorPipe(Status.UnprocessableEntity))
   )
 
   private def fetchResponse[F[_] : Effect](client: Client[F])(request: Request[F], accessToken: Option[OAuthAccessToken] = None)
@@ -103,15 +105,24 @@ trait RequestF[T] extends HttpTypes with Logger {
     } yield httpRes
   }
 
-  private def errorPipe[F[_], U](status: Status): Pipe[F, Either[Throwable, U], ErrorOr[U]] =
-    _.map {
+  // -------------------------------------------------------------------------------------------------------------------
 
-      case Right(res) =>
-        if (status == Status.Ok) Right(res)
-        else Left(ResponseError(new Exception(res.toString), Status.BadRequest))
+  private[client] def responseErrorPipe[F[_] : Effect, A](status: Status): Pipe[F, Either[Throwable, A], ErrorOr[A]] =
+    _.map(
+      _.fold(
+        err => Left(ResponseError(err, status)),
+        res => Right(res)
+      )
+    )
 
-      case Left(throwable) => Left(ResponseError(throwable, status))
-    }
+  private[client] def responseErrorLeftPipe[A, F[_] : Effect]
+  (status: Status, f: A => String = (res: A) => res.toString): Pipe[F, Either[Throwable, A], ErrorOr[Nothing]] =
+    _.map(_.fold(
+      err => ResponseError(err, status).asLeft,
+      res => ResponseError(new Exception(f(res)), status).asLeft
+    ))
+
+  // -------------------------------------------------------------------------------------------------------------------
 
   import org.http4s.client.oauth1._
 

@@ -169,7 +169,7 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
 
           "return an error with the right code" in {
             response.entity shouldBe 'left
-            response.entity.left.get.status shouldBe Status.BadRequest
+            response.entity.left.get.status shouldBe Status.Unauthorized
           }
           "return an error with the right message" in {
             response.entity shouldBe 'left
@@ -202,7 +202,7 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
         "getting a request token" should {
           "fail" in {
             val res = client.RequestToken.get.unsafeRunSync()
-            res.status shouldBe Status.BadRequest
+            res.status shouldBe Status.Unauthorized
           }
         }
 
