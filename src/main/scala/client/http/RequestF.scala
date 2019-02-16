@@ -58,8 +58,6 @@ trait RequestF[T] extends HttpTypes with Logger {
       })
   }
 
-  // TODO log.ERROR
-
   private def errorHandler[F[_] : Effect]: Pipe[F, Response[F], ErrorOr[Nothing]] = _.flatMap(
     response => {
       response.headers.get(`Content-Type`).map(_.value) match {
@@ -74,11 +72,13 @@ trait RequestF[T] extends HttpTypes with Logger {
           .attempt
           .through(responseErrorLeftPipe(response.status))
 
-        case Some(unexpectedContentType) => Stream.emit(ResponseError(
-          new Exception(s"$unexpectedContentType: unexpected `Content-Type`"), Status.UnsupportedMediaType).asLeft
-        )
+        case Some(unexpectedContentType) =>
+          Stream.emit(new Exception(s"$unexpectedContentType: unexpected `Content-Type`").asLeft)
+            .through(responseErrorLeftPipe(Status.UnsupportedMediaType))
+
         case None =>
-          Stream.emit(ResponseError(new Exception("`Content-Type` not provided"), Status.UnsupportedMediaType).asLeft)
+          Stream.emit(new Exception("`Content-Type` not provided").asLeft)
+            .through(responseErrorLeftPipe(Status.UnsupportedMediaType))
       }
     }
   )
@@ -113,14 +113,14 @@ trait RequestF[T] extends HttpTypes with Logger {
         err => Left(ResponseError(err, status)),
         res => Right(res)
       )
-    )
+    ).through(errorLogPipe)
 
   private[client] def responseErrorLeftPipe[A, F[_] : Effect]
   (status: Status, f: A => String = (res: A) => res.toString): Pipe[F, Either[Throwable, A], ErrorOr[Nothing]] =
     _.map(_.fold(
       err => ResponseError(err, status).asLeft,
       res => ResponseError(new Exception(f(res)), status).asLeft
-    ))
+    )).through(errorLogPipe)
 
   // -------------------------------------------------------------------------------------------------------------------
 

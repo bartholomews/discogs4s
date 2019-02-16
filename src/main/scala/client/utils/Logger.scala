@@ -13,12 +13,6 @@ trait Logger extends HttpTypes {
 
   logger.info(s"$logger started.")
 
-  // TODO: consider `Show` instead of `toString`
-  private[client] def errorLogPipe[T, F[_] : Effect]: Pipe[F, T, T] = _.map(entity => {
-    logger.error(entity.toString)
-    entity
-  })
-
   private[client] def logRequestHeaders[F[_] : Effect](request: Request[F]): Request[F] = {
     logger.info(s"${request.method.name} REQUEST: [${request.uri}]")
     logger.info(s"${request.headers.map(_.toString())}")
@@ -27,6 +21,12 @@ trait Logger extends HttpTypes {
 
   private[client] def responseLogPipe[F[_] : Effect, T]: Pipe[F, T, T] = _.map(entity => {
     logger.debug(s"RESPONSE:\n${entity.toString}")
+    entity
+  })
+
+  // TODO: consider `Show` instead of `toString`
+  private[client] def errorLogPipe[T, F[_] : Effect]: Pipe[F, T, T] = _.map(entity => {
+    logger.error(entity.toString)
     entity
   })
 
