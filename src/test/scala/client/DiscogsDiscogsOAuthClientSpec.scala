@@ -3,8 +3,8 @@ package client
 import discogs.api.AccessTokenRequest
 import cats.data.EitherT
 import cats.effect.IO
+import client.effect4s.IOClient
 import client.effect4s.entities.ResponseError
-import client.io.IOClient
 import discogs.{DiscogsOAuthClient, DiscogsSimpleClient}
 import org.http4s.Uri
 import org.scalatest.Matchers
@@ -16,7 +16,7 @@ class DiscogsDiscogsOAuthClientSpec
   extends MockServerWordSpec
     with MockClientConfig
     with Matchers
-    with IOClient[String] {
+    with IOClient {
   {
 
     "Discogs OAuth Client" when {

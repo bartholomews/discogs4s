@@ -18,5 +18,4 @@ trait OAuthSignature {
       accessToken.map(_.token)
     )
   }
-
 }

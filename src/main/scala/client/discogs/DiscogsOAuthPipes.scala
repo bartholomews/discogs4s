@@ -38,7 +38,7 @@ trait DiscogsOAuthPipes extends HttpTypes {
       else Left(responseError)
   }
 
-  private[client] implicit val plainTextToRequestTokenResponse: PipeTransform[IO, String, RequestTokenResponse] = _
+  private[client] implicit val plainTextToRequestTokenResponse: HttpPipe[IO, String, RequestTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)
     .map {
@@ -50,7 +50,7 @@ trait DiscogsOAuthPipes extends HttpTypes {
       case other => handleInvalidCase(other)
     }
 
-  private[client] implicit val plainTextToAccessTokenResponse: PipeTransform[IO, String, AccessTokenResponse] = _
+  private[client] implicit val plainTextToAccessTokenResponse: HttpPipe[IO, String, AccessTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)
     .map {

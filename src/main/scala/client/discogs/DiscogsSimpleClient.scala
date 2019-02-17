@@ -2,13 +2,12 @@ package client.discogs
 
 import cats.data.EitherT
 import cats.effect.{ContextShift, IO, Resource}
-import client.effect4s.HttpTypes
-import client.effect4s.entities.{HttpResponse, ResponseError}
-import client.io.IOClient
 import client.discogs.api._
 import client.discogs.entities._
 import client.discogs.utils.Config
 import client.discogs.utils.Config.DiscogsConsumer
+import client.effect4s.{HttpTypes, IOClient}
+import client.effect4s.entities.{HttpResponse, ResponseError}
 import io.circe.Decoder
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
@@ -23,7 +22,11 @@ import scala.language.higherKinds
 // https://www.discogs.com/developers/#page:authentication
 
 class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
-                         (implicit ec: ExecutionContext) extends DiscogsRest(consumerConfig) with HttpTypes {
+                         (implicit ec: ExecutionContext) extends DiscogsRest(consumerConfig)
+
+  with IOClient
+  with DiscogsOAuthPipes
+  with HttpTypes {
 
   def this()(implicit ec: ExecutionContext) = this(Config.consumer)
 
@@ -36,9 +39,7 @@ class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
   // GET FIXME: OAuthClient need to call `fetchJson` with extra Token param
   // ===================================================================================================================
 
-  private case class GET[T <: DiscogsEntity](private val api: DiscogsApi[T])
-                                            (implicit decode: Decoder[T]) extends IOClient[T] {
-
+  private case class GET[T <: DiscogsEntity](private val api: DiscogsApi[T])(implicit decode: Decoder[T]) {
     def io: IO[HttpResponse[T]] = resource.use(fetchJson(_)(getRequest(api.uri)))
   }
 
@@ -46,14 +47,14 @@ class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
   // OAUTH
   // ===================================================================================================================
 
-  case object RequestToken extends DiscogsOAuthPipes with IOClient[RequestTokenResponse] {
+  case object RequestToken {
     def get: IOResponse[RequestTokenResponse] =
-      resource.use(fetchPlainText(_)(getRequest(AuthorizeUrl.uri)))
+      resource.use(fetchPlainText[RequestTokenResponse](_)(getRequest(AuthorizeUrl.uri)))
   }
 
-  private[client] case object AccessToken extends DiscogsOAuthPipes with IOClient[AccessTokenResponse] {
+  private[client] case object AccessToken {
     def get(request: AccessTokenRequest): IOResponse[AccessTokenResponse] =
-      resource.use(fetchPlainText(_)(postRequest(request.uri), Some(request)))
+      resource.use(fetchPlainText[AccessTokenResponse](_)(postRequest(request.uri), Some(request)))
   }
 
   def getOAuthClient(request: AccessTokenRequest): IO[Either[ResponseError, DiscogsOAuthClient]] = (for {

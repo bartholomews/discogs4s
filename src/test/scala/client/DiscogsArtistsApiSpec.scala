@@ -1,7 +1,7 @@
 package client
 
+import client.effect4s.IOClient
 import client.effect4s.entities.{HttpResponse, ResponseError}
-import client.io.IOClient
 import discogs.entities.PaginatedReleases
 import org.http4s.Status
 import org.scalatest.Matchers
@@ -10,7 +10,7 @@ import server.MockServerWordSpec
 class DiscogsArtistsApiSpec extends MockServerWordSpec
   with MockClientConfig
   with Matchers
-  with IOClient[String] {
+  with IOClient {
 
   "Discogs OAuth Client" when {
 

@@ -1,7 +1,7 @@
 package client
 
+import client.effect4s.IOClient
 import client.effect4s.entities.HttpResponse
-import client.io.IOClient
 import discogs.api.AccessTokenRequest
 import discogs.DiscogsSimpleClient
 import discogs.utils.Config.DiscogsConsumer
@@ -17,7 +17,7 @@ import server.MockServerWordSpec
 class DiscogsSimpleClientSpec extends MockServerWordSpec
   with MockClientConfig
   with Matchers
-  with IOClient[String] {
+  with IOClient {
 
   "DiscogsSimpleClient" when {
 

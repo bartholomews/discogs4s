@@ -1,20 +1,21 @@
 package client
 
 import cats.effect.IO
+import client.effect4s.IOClient
 import client.effect4s.entities.ResponseError
-import client.io.IOClient
 import discogs.utils.Config
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Method, Request, Status}
 import org.scalatest.Matchers
 import server.MockServerWordSpec
+import io.circe.Json
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
 class IOClientSpec extends MockServerWordSpec
   with MockClientConfig
   with Matchers
-  with IOClient[String] {
+  with IOClient {
 
   "IOClient" when {
 
@@ -28,7 +29,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / unsupportedMediaTypeBadRequestEndpoint)
 
-        val io = fetchJson(blockingClientIO)(requestWithHtmlBadRequestResponse)
+        val io = fetchJson[Json](blockingClientIO)(requestWithHtmlBadRequestResponse)
 
         "return a ResponseError" should {
           "have UnsupportedMediaType Status and the right error message" in {
@@ -49,7 +50,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / noHeadersBadRequest)
 
-        val io = fetchJson(blockingClientIO)(requestWithHtmlBadRequestResponse)
+        val io = fetchJson[Json](blockingClientIO)(requestWithHtmlBadRequestResponse)
 
         "return a ResponseError" should {
           "have UnsupportedMediaType Status and the right error message" in {
@@ -72,7 +73,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / emptyResponseEndpoint)
 
-        val io = fetchJson(blockingClientIO)(requestWithEmptyResponse)
+        val io = fetchJson[Json](blockingClientIO)(requestWithEmptyResponse)
 
         "raise an error" in {
           val res = io.unsafeRunSync()
@@ -90,7 +91,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / notFoundResponseEndpoint)
 
-        val io = fetchJson(blockingClientIO)(requestWithEmptyResponse)
+        val io = fetchJson[Json](blockingClientIO)(requestWithEmptyResponse)
 
         "return a ResponseError" in {
           val res = io.unsafeRunSync()
@@ -106,7 +107,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / "circe" / "decoding-error")
 
-        val io = fetchJson(blockingClientIO)(requestWithBadJsonResponse)
+        val io = fetchJson[Map[String, Boolean]](blockingClientIO)(requestWithBadJsonResponse)
 
         "return a ResponseError" should {
           "should have 500 Status and the right error message" in {
