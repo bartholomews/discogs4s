@@ -12,24 +12,24 @@ trait HttpEffectsClient[F[_]] extends RequestF {
 
   def run[A]: fs2.Stream[F, HttpResponse[A]] => F[HttpResponse[A]]
 
-  def fetchPlainText[A](request: Request[F],
-                        accessTokenRequest: Option[AccessTokenRequest] = None)
-                       (implicit
-                        effect: Effect[F],
-                        consumer: Consumer,
-                        resource: Resource[F, Client[F]],
-                        plainTextToDomainPipe: HttpPipe[F, String, A]): F[HttpResponse[A]] =
+  def getPlainText[A](request: Request[F],
+                      accessTokenRequest: Option[AccessTokenRequest] = None)
+                     (implicit
+                      effect: Effect[F],
+                      consumer: Consumer,
+                      resource: Resource[F, Client[F]],
+                      plainTextToDomainPipe: HttpPipe[F, String, A]): F[HttpResponse[A]] =
 
     resource.use(client => run(plainTextRequest[F, A](client)(request, accessTokenRequest)))
 
 
-  def fetchJson[A](request: Request[F],
-                   token: Option[OAuthAccessToken] = None)
-                  (implicit
-                   effect: Effect[F],
-                   consumer: Consumer,
-                   resource: Resource[F, Client[F]],
-                   decode: Decoder[A]): F[HttpResponse[A]] =
+  def getJson[A](request: Request[F],
+                 token: Option[OAuthAccessToken] = None)
+                (implicit
+                 effect: Effect[F],
+                 consumer: Consumer,
+                 resource: Resource[F, Client[F]],
+                 decode: Decoder[A]): F[HttpResponse[A]] =
 
     resource.use(client => run(jsonRequest(client)(request, token)))
 }

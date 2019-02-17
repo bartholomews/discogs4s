@@ -6,7 +6,7 @@ import client.discogs.api._
 import client.discogs.entities._
 import client.discogs.utils.Config
 import client.discogs.utils.Config.DiscogsConsumer
-import client.effect4s.IOClient
+import client.effect4s.{HttpRest, IOClient}
 import client.effect4s.entities.{HttpResponse, ResponseError}
 import io.circe.Decoder
 import org.http4s.client.Client
@@ -18,7 +18,7 @@ import scala.language.higherKinds
 
 // https://http4s.org/v0.19/streaming/
 class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
-                         (implicit ec: ExecutionContext) extends DiscogsRest(consumerConfig)
+                         (implicit ec: ExecutionContext) extends HttpRest(consumerConfig)
   with IOClient
   with DiscogsOAuthPipes {
 
@@ -34,7 +34,7 @@ class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
   // ===================================================================================================================
 
   private case class GET[T <: DiscogsEntity](private val endpoint: DiscogsEndpoint[T])(implicit decode: Decoder[T]) {
-    def io: IOResponse[T] = fetchJson(getRequest(endpoint.uri))
+    def io: IOResponse[T] = getJson(getRequest(endpoint.uri))
   }
 
   // ===================================================================================================================
@@ -43,12 +43,12 @@ class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
 
   case object RequestToken {
     def get: IOResponse[RequestTokenResponse] =
-      fetchPlainText(getRequest(AuthorizeUrl.uri))
+      getPlainText(getRequest(AuthorizeUrl.uri))
   }
 
   private[client] case object AccessToken {
     def get(request: AccessTokenRequest): IOResponse[AccessTokenResponse] =
-      fetchPlainText(postRequest(request.uri), Some(request))
+      getPlainText(postRequest(request.uri), Some(request))
   }
 
   def getOAuthClient(request: AccessTokenRequest): IO[Either[ResponseError, DiscogsOAuthClient]] = (for {
