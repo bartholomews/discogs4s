@@ -4,7 +4,7 @@ import io.circe.Decoder
 import org.http4s.Uri
 import org.http4s.circe.decodeUri
 
-case class UserIdentity(id: Long, username: String, resourceUrl: Uri, consumerName: String)
+case class UserIdentity(id: Long, username: String, resourceUrl: Uri, consumerName: String) extends DiscogsEntity
 
 object UserIdentity {
   // FIXME: `decodeUri` seems to accept any String to create a valid Uri, double check `Uri.fromString`

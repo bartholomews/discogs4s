@@ -1,7 +1,7 @@
 package client.effect4s
 
+import cats.effect.{Effect, Resource}
 import client.discogs.api.AccessTokenRequest
-import cats.effect.Effect
 import client.effect4s.entities.{HttpResponse, OAuthAccessToken}
 import io.circe.Decoder
 import org.http4s.Request
@@ -12,19 +12,24 @@ trait HttpEffectsClient[F[_]] extends RequestF {
 
   def run[A]: fs2.Stream[F, HttpResponse[A]] => F[HttpResponse[A]]
 
-  def fetchPlainText[A](client: Client[F])(request: Request[F], accessTokenRequest: Option[AccessTokenRequest] = None)
-                                         (implicit
-                                          effect: Effect[F],
-                                          consumer: Consumer,
-                                          plainTextToDomainPipe: HttpPipe[F, String, A]): F[HttpResponse[A]] =
+  def fetchPlainText[A](request: Request[F],
+                        accessTokenRequest: Option[AccessTokenRequest] = None)
+                       (implicit
+                        effect: Effect[F],
+                        consumer: Consumer,
+                        resource: Resource[F, Client[F]],
+                        plainTextToDomainPipe: HttpPipe[F, String, A]): F[HttpResponse[A]] =
 
-    run(plainTextRequest[F, A](client)(request, accessTokenRequest))
+    resource.use(client => run(plainTextRequest[F, A](client)(request, accessTokenRequest)))
 
 
-  def fetchJson[A](client: Client[F])(request: Request[F], token: Option[OAuthAccessToken] = None)
-                                    (implicit effect: Effect[F],
-                                     consumer: Consumer,
-                                     decode: Decoder[A]): F[HttpResponse[A]] =
+  def fetchJson[A](request: Request[F],
+                   token: Option[OAuthAccessToken] = None)
+                  (implicit
+                   effect: Effect[F],
+                   consumer: Consumer,
+                   resource: Resource[F, Client[F]],
+                   decode: Decoder[A]): F[HttpResponse[A]] =
 
-    run(jsonRequest(client)(request, token))
+    resource.use(client => run(jsonRequest(client)(request, token)))
 }

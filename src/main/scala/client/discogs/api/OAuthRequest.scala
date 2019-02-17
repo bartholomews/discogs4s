@@ -1,5 +1,6 @@
 package client.discogs.api
 
+import client.discogs.entities.UserIdentity
 import client.effect4s.entities.OAuthAccessToken
 import org.http4s.Uri
 import org.http4s.client.oauth1.Token
@@ -18,7 +19,6 @@ case class AccessTokenRequest(token: Token, oAuthVerifier: String) extends OAuth
   override val uri: Uri = basePath / "access_token"
 }
 
-case object Identity extends OAuthRequest[String] {
-  // TODO and FIXME => Identity proper entity json type
+case object Identity extends OAuthRequest[UserIdentity] {
   override val uri: Uri = basePath / "identity"
 }

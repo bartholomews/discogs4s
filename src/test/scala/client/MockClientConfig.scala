@@ -1,21 +1,20 @@
 package client
 
-import cats.effect.{ContextShift, IO}
-import discogs.DiscogsSimpleClient
-import discogs.utils.Config.DiscogsConsumer
-import org.http4s.client.{Client, JavaNetClientBuilder}
+import cats.effect.{ContextShift, IO, Resource}
+import client.discogs.DiscogsSimpleClient
+import client.discogs.utils.Config.DiscogsConsumer
+import org.http4s.client.Client
+import org.http4s.client.blaze.BlazeClientBuilder
 import org.http4s.client.oauth1.Consumer
 
 trait MockClientConfig {
 
   import scala.concurrent.ExecutionContext
-  import java.util.concurrent._
 
   // https://http4s.org/v0.20/client/
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
   implicit val ioContextShift: ContextShift[IO] = IO.contextShift(ec)
-  private val blockingEC = ExecutionContext.fromExecutorService(Executors.newFixedThreadPool(5))
-  val blockingClientIO: Client[IO] = JavaNetClientBuilder[IO](blockingEC).create
+  implicit val resource: Resource[IO, Client[IO]] = BlazeClientBuilder[IO](ec).resource
 
   def validClient: DiscogsSimpleClient = clientWith()
 

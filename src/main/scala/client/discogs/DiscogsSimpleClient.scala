@@ -17,13 +17,8 @@ import scala.concurrent.ExecutionContext
 import scala.language.higherKinds
 
 // https://http4s.org/v0.19/streaming/
-// TODO
-// DiscogsAuthClient which has oauth_token and secret vals, can be created only via:
-// https://www.discogs.com/developers/#page:authentication
-
 class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
                          (implicit ec: ExecutionContext) extends DiscogsRest(consumerConfig)
-
   with IOClient
   with DiscogsOAuthPipes {
 
@@ -39,7 +34,7 @@ class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
   // ===================================================================================================================
 
   private case class GET[T <: DiscogsEntity](private val endpoint: DiscogsEndpoint[T])(implicit decode: Decoder[T]) {
-    def io: IO[HttpResponse[T]] = resource.use(fetchJson(_)(getRequest(endpoint.uri)))
+    def io: IOResponse[T] = fetchJson(getRequest(endpoint.uri))
   }
 
   // ===================================================================================================================
@@ -48,12 +43,12 @@ class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
 
   case object RequestToken {
     def get: IOResponse[RequestTokenResponse] =
-      resource.use(fetchPlainText[RequestTokenResponse](_)(getRequest(AuthorizeUrl.uri)))
+      fetchPlainText(getRequest(AuthorizeUrl.uri))
   }
 
   private[client] case object AccessToken {
     def get(request: AccessTokenRequest): IOResponse[AccessTokenResponse] =
-      resource.use(fetchPlainText[AccessTokenResponse](_)(postRequest(request.uri), Some(request)))
+      fetchPlainText(postRequest(request.uri), Some(request))
   }
 
   def getOAuthClient(request: AccessTokenRequest): IO[Either[ResponseError, DiscogsOAuthClient]] = (for {

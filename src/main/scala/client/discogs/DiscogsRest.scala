@@ -4,6 +4,7 @@ import cats.effect.Effect
 import client.discogs.utils.Config.DiscogsConsumer
 import org.http4s.{Header, Headers, Method, Request, Uri}
 
+// TODO: try to move this to `effect4s`, that is taking a `HttpConfig` generic Confif type instead of `DiscogsConsumer`
 class DiscogsRest(consumerConfig: DiscogsConsumer) {
 
 //  self: ConsumerConfig =>

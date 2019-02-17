@@ -29,7 +29,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / unsupportedMediaTypeBadRequestEndpoint)
 
-        val io = fetchJson[Json](blockingClientIO)(requestWithHtmlBadRequestResponse)
+        val io = fetchJson[Json](requestWithHtmlBadRequestResponse)
 
         "return a ResponseError" should {
           "have UnsupportedMediaType Status and the right error message" in {
@@ -50,7 +50,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / noHeadersBadRequest)
 
-        val io = fetchJson[Json](blockingClientIO)(requestWithHtmlBadRequestResponse)
+        val io = fetchJson[Json](requestWithHtmlBadRequestResponse)
 
         "return a ResponseError" should {
           "have UnsupportedMediaType Status and the right error message" in {
@@ -73,7 +73,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / emptyResponseEndpoint)
 
-        val io = fetchJson[Json](blockingClientIO)(requestWithEmptyResponse)
+        val io = fetchJson[Json](requestWithEmptyResponse)
 
         "raise an error" in {
           val res = io.unsafeRunSync()
@@ -91,7 +91,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / notFoundResponseEndpoint)
 
-        val io = fetchJson[Json](blockingClientIO)(requestWithEmptyResponse)
+        val io = fetchJson[Json](requestWithEmptyResponse)
 
         "return a ResponseError" in {
           val res = io.unsafeRunSync()
@@ -107,7 +107,7 @@ class IOClientSpec extends MockServerWordSpec
           .withMethod(Method.GET)
           .withUri(Config.discogs.apiUri / "circe" / "decoding-error")
 
-        val io = fetchJson[Map[String, Boolean]](blockingClientIO)(requestWithBadJsonResponse)
+        val io = fetchJson[Map[String, Boolean]](requestWithBadJsonResponse)
 
         "return a ResponseError" should {
           "should have 500 Status and the right error message" in {
