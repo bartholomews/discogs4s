@@ -1,6 +1,6 @@
 //package client.http
 //
-//import api.{AccessTokenRequest, OAuthAccessToken}
+//import client.discogs.api.{AccessTokenRequest, OAuthAccessToken}
 //import cats.effect.Effect
 //import io.circe.Decoder
 //import org.http4s.Request

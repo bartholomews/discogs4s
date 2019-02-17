@@ -1,15 +1,23 @@
-package client.utils
+package client.effect4s
 
 import cats.effect.Effect
 import fs2.Pipe
 import org.http4s.{Request, Response}
 import org.log4s.getLogger
 
-import scala.language.higherKinds
-
 trait Logger extends HttpTypes {
 
-  private[this] val logger = getLogger("discogs4s").logger
+  import pureconfig.generic.auto._
+
+  private[effect4s] case class LoggerConfig(logger: Logger)
+  private[effect4s] case class Logger(name: String)
+
+  val loggerName: String = pureconfig
+    .loadConfig[LoggerConfig]
+    .map(_.logger.name)
+    .getOrElse("http-effect4s-logger")
+
+  private[this] val logger = getLogger(loggerName).logger
 
   logger.info(s"$logger started.")
 

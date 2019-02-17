@@ -1,10 +1,9 @@
-package client.http
+package client.effect4s
 
-import api.{AccessTokenRequest, OAuthAccessToken}
+import client.discogs.api.AccessTokenRequest
 import cats.effect.Effect
 import cats.implicits._
-import client.utils.{HttpTypes, Logger}
-import entities.ResponseError
+import client.effect4s.entities.{HttpResponse, OAuthAccessToken, ResponseError}
 import fs2.{Pipe, Pure, Stream}
 import io.circe.Decoder
 import io.circe.fs2.{byteStreamParser, decoder}
@@ -13,8 +12,8 @@ import org.http4s.client.oauth1.Consumer
 import org.http4s.headers.`Content-Type`
 import org.http4s.{Headers, Request, Response, Status}
 
-// TODO remove discogs dependencies so it could be moved to a different more general http module/library
-trait RequestF[T] extends HttpTypes with Logger {
+// TODO remove client.discogs dependencies so it could be moved to a different more general http module/library
+trait RequestF[T] extends HttpTypes with OAuthSignature with Logger {
 
   private[client] def jsonRequest[F[_] : Effect](client: Client[F])(request: Request[F], accessToken: Option[OAuthAccessToken] = None)
                                                 (implicit
@@ -124,22 +123,4 @@ trait RequestF[T] extends HttpTypes with Logger {
 
   // -------------------------------------------------------------------------------------------------------------------
 
-  import org.http4s.client.oauth1._
-
-  private def sign[F[_] : Effect](consumer: Consumer, accessToken: Option[OAuthAccessToken] = None)
-                                 (req: Request[F]): F[Request[F]] = {
-    signRequest(
-      req,
-      consumer,
-      callback = None,
-      verifier = accessToken.flatMap(_.verifier),
-      accessToken.map(_.token)
-    )
-  }
-}
-
-case class HttpResponse[T](headers: Headers,
-                           entity: Either[ResponseError, T]) {
-
-  val status: Status = entity.fold(_.status, _ => Status.Ok)
 }

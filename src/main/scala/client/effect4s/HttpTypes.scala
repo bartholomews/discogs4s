@@ -1,8 +1,7 @@
-package client.utils
+package client.effect4s
 
 import cats.effect.IO
-import client.http.HttpResponse
-import entities.ResponseError
+import client.effect4s.entities.{HttpResponse, ResponseError}
 import fs2.{Pipe, Stream}
 
 trait HttpTypes {

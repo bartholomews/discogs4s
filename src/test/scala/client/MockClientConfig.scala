@@ -1,7 +1,8 @@
 package client
 
 import cats.effect.{ContextShift, IO}
-import client.utils.Config.DiscogsConsumer
+import discogs.DiscogsSimpleClient
+import discogs.utils.Config.DiscogsConsumer
 import org.http4s.client.{Client, JavaNetClientBuilder}
 import org.http4s.client.oauth1.Consumer
 

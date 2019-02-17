@@ -1,9 +1,9 @@
 package client
 
 import cats.effect.IO
-import client.http.IOClient
-import client.utils.Config
-import entities.ResponseError
+import client.effect4s.entities.ResponseError
+import client.io.IOClient
+import discogs.utils.Config
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Method, Request, Status}
 import org.scalatest.Matchers

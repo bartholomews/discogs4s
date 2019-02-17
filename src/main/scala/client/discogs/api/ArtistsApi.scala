@@ -1,6 +1,6 @@
-package api
+package client.discogs.api
 
-import entities.{DiscogsEntity, PaginatedReleases}
+import client.discogs.entities.{DiscogsEntity, PaginatedReleases}
 import io.circe.Decoder
 import org.http4s.Uri
 

@@ -1,4 +1,4 @@
-package entities
+package client.discogs.entities
 
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder

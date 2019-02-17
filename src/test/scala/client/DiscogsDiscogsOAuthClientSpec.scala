@@ -1,17 +1,18 @@
 package client
 
-import api.AccessTokenRequest
+import discogs.api.AccessTokenRequest
 import cats.data.EitherT
 import cats.effect.IO
-import client.http.IOClient
-import entities.ResponseError
+import client.effect4s.entities.ResponseError
+import client.io.IOClient
+import discogs.{DiscogsOAuthClient, DiscogsSimpleClient}
 import org.http4s.Uri
 import org.scalatest.Matchers
 import server.MockServerWordSpec
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class DiscogsOAuthClientSpec
+class DiscogsDiscogsOAuthClientSpec
   extends MockServerWordSpec
     with MockClientConfig
     with Matchers

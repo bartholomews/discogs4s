@@ -1,9 +1,11 @@
 package client
 
-import api.AccessTokenRequest
-import client.http.{HttpResponse, IOClient}
-import client.utils.Config.DiscogsConsumer
-import entities.{AccessTokenResponse, RequestTokenResponse}
+import client.effect4s.entities.HttpResponse
+import client.io.IOClient
+import discogs.api.AccessTokenRequest
+import discogs.DiscogsSimpleClient
+import discogs.utils.Config.DiscogsConsumer
+import discogs.entities.{AccessTokenResponse, RequestTokenResponse}
 import org.http4s.{Status, Uri}
 import org.http4s.client.oauth1.Token
 import org.http4s.util.CaseInsensitiveString

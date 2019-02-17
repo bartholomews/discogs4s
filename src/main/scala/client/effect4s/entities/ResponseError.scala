@@ -1,7 +1,7 @@
-package entities
+package client.effect4s.entities
 
+import client.effect4s.Logger
 import org.http4s.Status
-import client.utils.Logger
 
 trait ResponseError extends Throwable {
   val status: Status

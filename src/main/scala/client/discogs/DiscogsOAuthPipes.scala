@@ -1,14 +1,15 @@
-package client.http
+package client.discogs
 
 import cats.effect.IO
-import client.utils.HttpTypes
-import entities.{AccessTokenResponse, RequestTokenResponse, ResponseError}
+import client.discogs.entities.{AccessTokenResponse, RequestTokenResponse}
+import client.effect4s.HttpTypes
+import client.effect4s.entities.ResponseError
 import org.http4s.Status
 import org.http4s.client.oauth1.Token
 
 import scala.util.Try
 
-trait OAuthClient extends HttpTypes {
+trait DiscogsOAuthPipes extends HttpTypes {
 
   private val requestTokenStringResponse = ("oauth_token=(.*)" +
     "&oauth_token_secret=(.*)" +

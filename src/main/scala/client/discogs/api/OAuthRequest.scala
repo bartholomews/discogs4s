@@ -1,12 +1,8 @@
-package api
+package client.discogs.api
 
+import client.effect4s.entities.OAuthAccessToken
 import org.http4s.Uri
 import org.http4s.client.oauth1.Token
-
-trait OAuthAccessToken {
-  val token: Token
-  val verifier: Option[String] = None
-}
 
 sealed trait OAuthRequest[T] extends DiscogsApi[T] {
   val path: String = "oauth"

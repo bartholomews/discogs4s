@@ -1,7 +1,7 @@
-package api
+package client.discogs.api
 
 import org.http4s.Uri
-import client.utils.Config
+import client.discogs.utils.Config
 
 trait DiscogsApi[T] {
   val uri: Uri

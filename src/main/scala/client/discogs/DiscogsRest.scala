@@ -1,7 +1,7 @@
-package client
+package client.discogs
 
 import cats.effect.Effect
-import client.utils.Config.DiscogsConsumer
+import client.discogs.utils.Config.DiscogsConsumer
 import org.http4s.{Header, Headers, Method, Request, Uri}
 
 class DiscogsRest(consumerConfig: DiscogsConsumer) {

@@ -1,4 +1,4 @@
-package client.utils
+package client.discogs.utils
 
 import org.http4s.Uri
 

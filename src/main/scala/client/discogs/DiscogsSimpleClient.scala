@@ -1,12 +1,14 @@
-package client
+package client.discogs
 
-import api._
 import cats.data.EitherT
 import cats.effect.{ContextShift, IO, Resource}
-import client.http.{HttpResponse, IOClient, OAuthClient}
-import client.utils.Config.DiscogsConsumer
-import client.utils.{Config, HttpTypes}
-import entities._
+import client.effect4s.HttpTypes
+import client.effect4s.entities.{HttpResponse, ResponseError}
+import client.io.IOClient
+import client.discogs.api._
+import client.discogs.entities._
+import client.discogs.utils.Config
+import client.discogs.utils.Config.DiscogsConsumer
 import io.circe.Decoder
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
@@ -44,12 +46,12 @@ class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
   // OAUTH
   // ===================================================================================================================
 
-  case object RequestToken extends OAuthClient with IOClient[RequestTokenResponse] {
+  case object RequestToken extends DiscogsOAuthPipes with IOClient[RequestTokenResponse] {
     def get: IOResponse[RequestTokenResponse] =
       resource.use(fetchPlainText(_)(getRequest(AuthorizeUrl.uri)))
   }
 
-  private[client] case object AccessToken extends OAuthClient with IOClient[AccessTokenResponse] {
+  private[client] case object AccessToken extends DiscogsOAuthPipes with IOClient[AccessTokenResponse] {
     def get(request: AccessTokenRequest): IOResponse[AccessTokenResponse] =
       resource.use(fetchPlainText(_)(postRequest(request.uri), Some(request)))
   }

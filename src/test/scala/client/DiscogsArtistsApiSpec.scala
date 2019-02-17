@@ -1,7 +1,8 @@
 package client
 
-import client.http.{HttpResponse, IOClient}
-import entities.{PaginatedReleases, ResponseError}
+import client.effect4s.entities.{HttpResponse, ResponseError}
+import client.io.IOClient
+import discogs.entities.PaginatedReleases
 import org.http4s.Status
 import org.scalatest.Matchers
 import server.MockServerWordSpec

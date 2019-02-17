@@ -1,8 +1,9 @@
-package client.http
+package client.io
 
-import api.{AccessTokenRequest, OAuthAccessToken}
 import cats.effect.IO
-import entities.ResponseError
+import client.effect4s.RequestF
+import client.effect4s.entities.{HttpResponse, OAuthAccessToken, ResponseError}
+import client.discogs.api.AccessTokenRequest
 import io.circe.Decoder
 import org.http4s.client.Client
 import org.http4s.client.oauth1.Consumer

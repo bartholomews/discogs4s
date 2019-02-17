@@ -1,7 +1,8 @@
-package entities
+package client.discogs.entities
 
-import api.{AuthorizeUrl, OAuthAccessToken}
-import client.utils.Config
+import client.discogs.api.AuthorizeUrl
+import client.effect4s.entities.OAuthAccessToken
+import client.discogs.utils.Config
 import org.http4s.Uri
 import org.http4s.client.oauth1.Token
 
