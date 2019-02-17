@@ -17,9 +17,28 @@ trait DiscogsOAuthPipes extends HttpTypes {
     ).r
 
   private val accessTokenStringResponse = "oauth_token=(.*)&oauth_token_secret=(.*)".r
-
   private val invalidSignature = "Invalid signature"
   private val emptyResponseMessage = "Response was empty, please check request uri"
+
+  implicit val plainTextToRequestTokenResponse: HttpPipe[IO, String, RequestTokenResponse] = _
+    .last
+    .map(_.toLeft(emptyResponseMessage).joinLeft)
+    .map {
+
+      case Right(requestTokenStringResponse(token, secret, flag)) =>
+        val callbackConfirmed = Try(flag.toBoolean).getOrElse(false)
+        Right(RequestTokenResponse(Token(token, secret), callbackConfirmed))
+
+      case other => handleInvalidCase(other)
+    }
+
+  implicit val plainTextToAccessTokenResponse: HttpPipe[IO, String, AccessTokenResponse] = _
+    .last
+    .map(_.toLeft(emptyResponseMessage).joinLeft)
+    .map {
+      case Right(accessTokenStringResponse(token, secret)) => Right(AccessTokenResponse(Token(token, secret)))
+      case other => handleInvalidCase(other)
+    }
 
   private def invalidSignatureError = Left(ResponseError(
     new Exception("Invalid signature. Please double check consumer secret key."),
@@ -37,24 +56,4 @@ trait DiscogsOAuthPipes extends HttpTypes {
       if (responseError.getMessage.startsWith(invalidSignature)) invalidSignatureError
       else Left(responseError)
   }
-
-  private[client] implicit val plainTextToRequestTokenResponse: HttpPipe[IO, String, RequestTokenResponse] = _
-    .last
-    .map(_.toLeft(emptyResponseMessage).joinLeft)
-    .map {
-
-      case Right(requestTokenStringResponse(token, secret, flag)) =>
-        val callbackConfirmed = Try(flag.toBoolean).getOrElse(false)
-        Right(RequestTokenResponse(Token(token, secret), callbackConfirmed))
-
-      case other => handleInvalidCase(other)
-    }
-
-  private[client] implicit val plainTextToAccessTokenResponse: HttpPipe[IO, String, AccessTokenResponse] = _
-    .last
-    .map(_.toLeft(emptyResponseMessage).joinLeft)
-    .map {
-      case Right(accessTokenStringResponse(token, secret)) => Right(AccessTokenResponse(Token(token, secret)))
-      case other => handleInvalidCase(other)
-    }
 }

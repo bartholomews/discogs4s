@@ -6,7 +6,7 @@ import client.discogs.api._
 import client.discogs.entities._
 import client.discogs.utils.Config
 import client.discogs.utils.Config.DiscogsConsumer
-import client.effect4s.{HttpTypes, IOClient}
+import client.effect4s.IOClient
 import client.effect4s.entities.{HttpResponse, ResponseError}
 import io.circe.Decoder
 import org.http4s.client.Client
@@ -25,8 +25,7 @@ class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
                          (implicit ec: ExecutionContext) extends DiscogsRest(consumerConfig)
 
   with IOClient
-  with DiscogsOAuthPipes
-  with HttpTypes {
+  with DiscogsOAuthPipes {
 
   def this()(implicit ec: ExecutionContext) = this(Config.consumer)
 
@@ -39,8 +38,8 @@ class DiscogsSimpleClient(consumerConfig: DiscogsConsumer)
   // GET FIXME: OAuthClient need to call `fetchJson` with extra Token param
   // ===================================================================================================================
 
-  private case class GET[T <: DiscogsEntity](private val api: DiscogsApi[T])(implicit decode: Decoder[T]) {
-    def io: IO[HttpResponse[T]] = resource.use(fetchJson(_)(getRequest(api.uri)))
+  private case class GET[T <: DiscogsEntity](private val endpoint: DiscogsEndpoint[T])(implicit decode: Decoder[T]) {
+    def io: IO[HttpResponse[T]] = resource.use(fetchJson(_)(getRequest(endpoint.uri)))
   }
 
   // ===================================================================================================================
