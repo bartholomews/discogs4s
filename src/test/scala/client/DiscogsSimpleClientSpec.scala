@@ -1,14 +1,13 @@
 package client
 
-import client.effect4s.IOClient
+import client.discogs.DiscogsSimpleClient
+import client.discogs.api.AccessTokenRequest
+import client.discogs.entities.{AccessTokenResponse, RequestTokenResponse}
+import client.effect4s.config.OAuthConsumer
 import client.effect4s.entities.HttpResponse
-import discogs.api.AccessTokenRequest
-import discogs.DiscogsSimpleClient
-import discogs.utils.Config.DiscogsConsumer
-import discogs.entities.{AccessTokenResponse, RequestTokenResponse}
-import org.http4s.{Status, Uri}
 import org.http4s.client.oauth1.Token
 import org.http4s.util.CaseInsensitiveString
+import org.http4s.{Status, Uri}
 import org.scalatest.Matchers
 import server.MockServerWordSpec
 
@@ -16,22 +15,21 @@ import server.MockServerWordSpec
 // https://www.lewuathe.com/wiremock-in-scala.html
 class DiscogsSimpleClientSpec extends MockServerWordSpec
   with MockClientConfig
-  with Matchers
-  with IOClient {
+  with Matchers {
 
   "DiscogsSimpleClient" when {
 
     "initialised with an implicit configuration" should {
       "read the consumer values from resource folder" in {
         val client = new DiscogsSimpleClient()
-        client.consumer.key shouldBe "mock-consumer-key"
-        client.consumer.secret shouldBe "mock-consumer-secret"
+        client.oAuthConsumer.key shouldBe "mock-consumer-key"
+        client.oAuthConsumer.secret shouldBe "mock-consumer-secret"
       }
     }
 
     "initialised with an explicit configuration" should {
 
-      val config = DiscogsConsumer(
+      val config = OAuthConsumer(
         appName = "mock-app-name",
         appVersion = None,
         appUrl = None,
@@ -41,8 +39,8 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
 
       "read the consumer values from the injected configuration" in {
         val client = new DiscogsSimpleClient(config)
-        client.consumer.key shouldBe "consumer-key"
-        client.consumer.secret shouldBe "consumer-secret"
+        client.oAuthConsumer.key shouldBe "consumer-key"
+        client.oAuthConsumer.secret shouldBe "consumer-secret"
       }
     }
 
@@ -66,7 +64,7 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
           } yield res
 
           oAuthClient shouldBe 'right
-          oAuthClient.right.get.consumer shouldBe client.consumer
+          oAuthClient.right.get.oAuthConsumer shouldBe client.oAuthConsumer
         }
       }
 

@@ -13,7 +13,7 @@ libraryDependencies ++= dependencies ++ testDependencies
 logBuffered in Test := false
 parallelExecution in ThisBuild := false
 
-// addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 
 scalacOptions ++= compilerOptions
 

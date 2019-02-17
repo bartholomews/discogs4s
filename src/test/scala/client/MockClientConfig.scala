@@ -2,7 +2,7 @@ package client
 
 import cats.effect.{ContextShift, IO, Resource}
 import client.discogs.DiscogsSimpleClient
-import client.discogs.utils.Config.DiscogsConsumer
+import client.effect4s.config.OAuthConsumer
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
 import org.http4s.client.oauth1.Consumer
@@ -24,7 +24,7 @@ trait MockClientConfig {
                  appVersion: Option[String] = Some("1.0"),
                  appUrl: Option[String] = Some("app.git")): DiscogsSimpleClient =
 
-    new DiscogsSimpleClient(DiscogsConsumer(appName, appVersion, appUrl, key, secret))
+    new DiscogsSimpleClient(OAuthConsumer(appName, appVersion, appUrl, key, secret))
 
   val validConsumerKey = "VALID_CONSUMER_KEY"
   val validConsumerSecret = "VALID_CONSUMER_SECRET"

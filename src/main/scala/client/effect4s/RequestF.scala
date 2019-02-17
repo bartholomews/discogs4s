@@ -1,7 +1,6 @@
 package client.effect4s
 
 import cats.effect.Effect
-import client.discogs.api.AccessTokenRequest
 import client.effect4s.entities.{HttpResponse, OAuthAccessToken}
 import fs2.{Pipe, Pure, Stream}
 import io.circe.Decoder
@@ -23,11 +22,11 @@ trait RequestF extends HttpPipes with HttpTypes with OAuthSignature with Logger 
 
   private[effect4s] def plainTextRequest[F[_] : Effect, A](client: Client[F])
                                         (request: Request[F],
-                                         accessTokenRequest: Option[AccessTokenRequest] = None)
+                                         accessToken: Option[OAuthAccessToken] = None)
                                         (implicit consumer: Consumer,
                                          decoder: HttpPipe[F, String, A]): Stream[F, HttpResponse[A]] = {
 
-    processHttpRequest(client)(request, accessTokenRequest, decodeTextPlainResponse, decoder)
+    processHttpRequest(client)(request, accessToken, decodeTextPlainResponse, decoder)
   }
 
   private def processHttpRequest[F[_] : Effect, A](client: Client[F])

@@ -3,7 +3,6 @@ package client
 import discogs.api.AccessTokenRequest
 import cats.data.EitherT
 import cats.effect.IO
-import client.effect4s.IOClient
 import client.effect4s.entities.ResponseError
 import discogs.{DiscogsOAuthClient, DiscogsSimpleClient}
 import org.http4s.Uri
@@ -15,9 +14,7 @@ import server.MockServerWordSpec
 class DiscogsDiscogsOAuthClientSpec
   extends MockServerWordSpec
     with MockClientConfig
-    with Matchers
-    with IOClient {
-  {
+    with Matchers {
 
     "Discogs OAuth Client" when {
 
@@ -40,8 +37,8 @@ class DiscogsDiscogsOAuthClientSpec
 
           "read the consumer values passed in" in {
             val oAuthClient = validOAuthClient
-            oAuthClient.consumer.key shouldBe validConsumerKey
-            oAuthClient.consumer.secret shouldBe validConsumerSecret
+            oAuthClient.oAuthConsumer.key shouldBe validConsumerKey
+            oAuthClient.oAuthConsumer.secret shouldBe validConsumerSecret
           }
 
           "call `Identity` successfully" in {
@@ -53,6 +50,4 @@ class DiscogsDiscogsOAuthClientSpec
         }
       }
     }
-  }
-
 }
