@@ -36,9 +36,7 @@
         </filter>
     </appender>
 
-    <logger name="org.http4s.client.PoolManager" level="ERROR"/>
-    <logger name="org.http4s.blaze.pipeline.Stage" level="ERROR"/>
-
+    <logger name="org.http4s" level="ERROR"/>
     <logger name="discogs4s" level="DEBUG" />
 
     <root level="INFO">

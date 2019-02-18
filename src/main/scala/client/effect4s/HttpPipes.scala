@@ -14,19 +14,21 @@ trait HttpPipes extends HttpTypes with Logger {
   private[effect4s] def doNothing[F[_] : Effect, A]: Pipe[F, A, A] = _.map(identity)
 
   private[effect4s] def leftMapToResponseError[F[_] : Effect, A](status: Status): Pipe[F, Either[Throwable, A], ErrorOr[A]] =
-    _.map(
-      _.fold(
-        err => Left(ResponseError(err, status)),
-        res => Right(res)
+    _.through(errorLogPipe)
+      .map(
+        _.fold(
+          err => Left(ResponseError(err, status)),
+          res => Right(res)
+        )
       )
-    ).through(errorLogPipe)
 
   private[effect4s] def foldToResponseError[F[_] : Effect, A]
   (status: Status, f: A => String = (res: A) => res.toString): Pipe[F, Either[Throwable, A], ErrorOr[Nothing]] =
-    _.map(_.fold(
-      err => ResponseError(err, status).asLeft,
-      res => ResponseError(new Exception(f(res)), status).asLeft
-    )).through(errorLogPipe)
+    _.through(errorLogPipe)
+      .map(e => e.fold(
+        err => ResponseError(err, status).asLeft,
+        res => ResponseError(new Exception(f(res)), status).asLeft
+      ))
 
   private[effect4s] def decodeJsonResponse[F[_] : Effect, A]
   (implicit decode: Decoder[A]): Pipe[F, Response[F], ErrorOr[A]] = _.flatMap(
@@ -54,6 +56,7 @@ trait HttpPipes extends HttpTypes with Logger {
             .body
             .through(byteStreamParser)
             .attempt
+            // FIXME: could try to parse a { "message": "[value]" } instead of _.spaces2
             .through(foldToResponseError(response.status, _.spaces2))
 
         case Some("text/plain") => Stream.eval(response.as[String])

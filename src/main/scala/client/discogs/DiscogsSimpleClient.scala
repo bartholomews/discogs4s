@@ -32,8 +32,8 @@ class DiscogsSimpleClient(consumerConfig: OAuthConsumer)
   // GET FIXME: OAuthClient need to call `fetchJson` with extra Token param
   // ===================================================================================================================
 
-  private case class GET[T <: DiscogsEntity](private val endpoint: DiscogsEndpoint[T])(implicit decode: Decoder[T]) {
-    def io: IOResponse[T] = fetchJson(endpoint.uri)
+  private case class DiscogsIO[T <: DiscogsEntity](private val endpoint: DiscogsEndpoint[T])(implicit decode: Decoder[T]) {
+    def apply: IOResponse[T] = fetchJson(endpoint.uri, endpoint.method)
   }
 
   // ===================================================================================================================
@@ -59,7 +59,39 @@ class DiscogsSimpleClient(consumerConfig: OAuthConsumer)
   // ARTISTS API
   // ===================================================================================================================
 
+  /**
+    * https://www.discogs.com/developers/#page:database,header:database-artist-releases
+    *
+    * Get an artist’s releases
+    *
+    * @param artistId The Artist ID
+    *                 TODO Sort items by this field: `year`, `title`, `format`
+    * @param page
+    * @param perPage
+    * @return
+    */
   def getArtistsReleases(artistId: Int, page: Int = 1, perPage: Int = 2): IO[HttpResponse[PaginatedReleases]] = {
-    GET(ArtistsReleases(artistId, page, perPage)).io
+    DiscogsIO(ArtistsReleases(artistId, page, perPage)).apply
+  }
+
+  // ===================================================================================================================
+  // USER API // https://www.discogs.com/developers/#page:user-identity
+  // ===================================================================================================================
+
+  /**
+    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
+    *
+    * Retrieve a user by username.
+    * If authenticated as the requested user, the email key will be visible,
+    * and the num_list count will include the user’s private lists.
+    *
+    * If authenticated as the requested user or the user’s collection/wantlist is public,
+    * the num_collection / num_wantlist keys will be visible.
+    *
+    * @param username The username of whose profile you are requesting.
+    * @return `String`
+    */
+  def getUserProfile(username: String): IO[HttpResponse[SimpleUser]] = {
+    DiscogsIO(GetSimpleUserProfile(username)).apply
   }
 }

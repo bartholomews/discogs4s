@@ -5,6 +5,7 @@ object Versions {
   val cats_effect = "1.2.0"
   val circe = "0.11.1"
   val circe_fs2 = "0.11.0"
+  val circe_magnolia = "0.4.0"
   val http4sVersion = "0.20.0-M5"
   val lightbendConfig = "1.3.3"
   val logback = "1.2.3"
@@ -32,7 +33,7 @@ object Dependencies {
     "org.http4s" %% "http4s-blaze-client" % Versions.http4sVersion,
     "org.http4s" %% "http4s-circe" % Versions.http4sVersion,
     "io.circe" %% "circe-fs2" % Versions.circe_fs2,
-    "io.circe" %% "circe-generic" % Versions.circe,
+    "io.circe" %% "circe-generic-extras" % Versions.circe,
     "io.circe" %% "circe-literal" % Versions.circe // string interpolation to JSON model
   )
 

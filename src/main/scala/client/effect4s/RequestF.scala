@@ -45,14 +45,14 @@ trait RequestF extends HttpPipes with HttpTypes with OAuthSignature with Logger 
       httpRes <- (response.status match {
         case Status.Ok =>
           Stream.emit(response)
-            .through(responseLogPipe[F, Response[F]])
             .through(decodeRight)
+            .through(responseLogPipe)
 
         case _ =>
           Stream.emit(response)
             .through(errorHandler)
-            .through(responseLogPipe)
             .through(decodeLeft)
+            .through(responseLogPipe)
 
       }).map(HttpResponse(response.headers, _))
 

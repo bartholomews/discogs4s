@@ -10,15 +10,17 @@ sealed trait OAuthRequest[T] extends DiscogsEndpoint[T] {
   private[api] val basePath: Uri = apiUri / path
 }
 
-case object AuthorizeUrl extends OAuthRequest[Uri] {
+case object AuthorizeUrl extends OAuthRequest[Uri] with HttpMethod.GET {
   override val uri: Uri = basePath / "request_token"
 }
 
-case class AccessTokenRequest(token: Token, oAuthVerifier: String) extends OAuthRequest[Token] with OAuthAccessToken {
+case class AccessTokenRequest(token: Token, oAuthVerifier: String)
+  extends OAuthRequest[Token] with OAuthAccessToken with HttpMethod.POST {
+
   override val verifier = Some(oAuthVerifier)
   override val uri: Uri = basePath / "access_token"
 }
 
-case object Identity extends OAuthRequest[UserIdentity] {
+case object Identity extends OAuthRequest[UserIdentity] with HttpMethod.GET {
   override val uri: Uri = basePath / "identity"
 }

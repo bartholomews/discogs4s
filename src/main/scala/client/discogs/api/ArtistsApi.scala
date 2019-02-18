@@ -1,7 +1,6 @@
 package client.discogs.api
 
 import client.discogs.entities.{DiscogsEntity, PaginatedReleases}
-import io.circe.Decoder
 import org.http4s.Uri
 
 sealed trait ArtistsApi[T <: DiscogsEntity] extends DiscogsEndpoint[T] {
@@ -10,7 +9,7 @@ sealed trait ArtistsApi[T <: DiscogsEntity] extends DiscogsEndpoint[T] {
 }
 
 case class ArtistsReleases(artistId: Int, page: Int = 1, perPage: Int = 2)
-                          (implicit decoder: Decoder[PaginatedReleases]) extends ArtistsApi[PaginatedReleases] {
+  extends ArtistsApi[PaginatedReleases] with HttpMethod.GET {
   override val uri: Uri =
     (basePath / "releases")
       .withQueryParam("page", page)

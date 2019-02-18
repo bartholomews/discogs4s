@@ -4,8 +4,9 @@ import cats.effect.Effect
 import fs2.Pipe
 import org.http4s.{Request, Response}
 import org.log4s.getLogger
+import cats.implicits._
 
-trait Logger {
+trait Logger extends HttpTypes {
 
   import pureconfig.generic.auto._
 
@@ -37,16 +38,15 @@ trait Logger {
       res
     })
 
-  private[effect4s] def responseLogPipe[F[_] : Effect, A]: Pipe[F, A, A] =
+  private[effect4s] def responseLogPipe[F[_] : Effect, A]: Pipe[F, ErrorOr[A], ErrorOr[A]] =
     _.map(entity => {
-      logger.debug(s"RESPONSE:\n${entity.toString}")
+      logger.debug(s"RESPONSE:\n$entity")
       entity
     })
 
-  // TODO: consider `Show` instead of `toString`
-  private[effect4s] def errorLogPipe[F[_] : Effect, A]: Pipe[F, A, A] =
-    _.map(entity => {
-      logger.error(entity.toString)
-      entity
-    })
+  private[effect4s] def errorLogPipe[F[_] : Effect, A]: Pipe[F, Either[Throwable, A], Either[Throwable, A]] =
+    _.map(_.leftMap(throwable => {
+      logger.error(throwable.getMessage)
+      throwable
+    }))
 }
