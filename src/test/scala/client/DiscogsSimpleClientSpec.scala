@@ -1,7 +1,7 @@
 package client
 
 import client.discogs.DiscogsSimpleClient
-import client.discogs.api.AccessTokenRequest
+import client.discogs.api.AccessTokenApi
 import client.discogs.entities.{AccessTokenResponse, RequestTokenResponse}
 import client.effect4s.config.OAuthConsumer
 import client.effect4s.entities.HttpResponse
@@ -60,7 +60,7 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
         "succeed" in {
           val oAuthClient = for {
             requestToken <- client.RequestToken.get.unsafeRunSync().entity
-            res <- client.getOAuthClient(AccessTokenRequest(requestToken.token, validVerifier)).unsafeRunSync()
+            res <- client.getOAuthClient(AccessTokenApi(requestToken.token, validVerifier)).unsafeRunSync()
           } yield res
 
           oAuthClient shouldBe 'right
@@ -146,7 +146,7 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
 
         "request is empty" should {
 
-          val request = AccessTokenRequest(Token(validToken, validSecret), emptyResponseMock)
+          val request = AccessTokenApi(Token(validToken, validSecret), emptyResponseMock)
 
           def response: HttpResponse[AccessTokenResponse] = client.AccessToken.get(request).unsafeRunSync()
 
@@ -163,7 +163,7 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
         }
 
         "request has an invalid verifier" should {
-          val request = AccessTokenRequest(Token(validToken, validSecret), "invalidVerifier")
+          val request = AccessTokenApi(Token(validToken, validSecret), "invalidVerifier")
 
           def response: HttpResponse[AccessTokenResponse] = client.AccessToken.get(request).unsafeRunSync()
 
@@ -181,7 +181,7 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
         "request is valid" should {
 
           def response: HttpResponse[AccessTokenResponse] = client.AccessToken.get(
-            AccessTokenRequest(Token(validToken, validSecret), validVerifier)
+            AccessTokenApi(Token(validToken, validSecret), validVerifier)
           ).unsafeRunSync()
 
           "return a response with Token" in {
@@ -210,7 +210,7 @@ class DiscogsSimpleClientSpec extends MockServerWordSpec
           "fail" in {
             val oAuthClient = for {
               requestToken <- client.RequestToken.get.unsafeRunSync().entity
-              res <- client.getOAuthClient(AccessTokenRequest(requestToken.token, validVerifier)).unsafeRunSync()
+              res <- client.getOAuthClient(AccessTokenApi(requestToken.token, validVerifier)).unsafeRunSync()
             } yield res
             oAuthClient shouldBe 'left
           }

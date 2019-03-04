@@ -5,7 +5,7 @@ import client.effect4s.config.OAuthConsumer
 import client.effect4s.entities.{HttpResponse, ResponseError}
 import org.http4s.Headers
 
-class IOClient(override val oAuthConsumer: OAuthConsumer) extends HttpEffectsClient[IO] {
+class IOClient(override val oAuthConsumer: OAuthConsumer) extends HttpEffectClient[IO] {
 
   override def run[A]: fs2.Stream[IO, HttpResponse[A]] => IO[HttpResponse[A]] = stream =>
     stream

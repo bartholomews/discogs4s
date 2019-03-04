@@ -1,6 +1,6 @@
 package client
 
-import discogs.api.AccessTokenRequest
+import discogs.api.AccessTokenApi
 import cats.data.EitherT
 import cats.effect.IO
 import client.effect4s.entities.ResponseError
@@ -21,7 +21,7 @@ class DiscogsDiscogsOAuthClientSpec
       def getOAuthClient(client: DiscogsSimpleClient, verifier: String): IO[Either[ResponseError, DiscogsOAuthClient]] = {
         (for {
           req <- EitherT(client.RequestToken.get.map(_.entity))
-          res <- EitherT(client.getOAuthClient(AccessTokenRequest(req.token, verifier)))
+          res <- EitherT(client.getOAuthClient(AccessTokenApi(req.token, verifier)))
         } yield res).value
       }
 

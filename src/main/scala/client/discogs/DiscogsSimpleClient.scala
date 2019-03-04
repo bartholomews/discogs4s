@@ -46,11 +46,11 @@ class DiscogsSimpleClient(consumerConfig: OAuthConsumer)
   }
 
   private[client] case object AccessToken {
-    def get(request: AccessTokenRequest): IOResponse[AccessTokenResponse] =
+    def get(request: AccessTokenApi): IOResponse[AccessTokenResponse] =
       fetchPlainText(request.uri, Method.POST, accessToken = Some(request))
   }
 
-  def getOAuthClient(request: AccessTokenRequest): IO[Either[ResponseError, DiscogsOAuthClient]] = (for {
+  def getOAuthClient(request: AccessTokenApi): IO[Either[ResponseError, DiscogsOAuthClient]] = (for {
     accessToken <- EitherT(AccessToken.get(request).map(_.entity))
     res <- EitherT.right[ResponseError](IO.pure(new DiscogsOAuthClient(consumerConfig, accessToken)))
   } yield res).value

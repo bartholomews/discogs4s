@@ -20,6 +20,11 @@ trait DiscogsOAuthPipes extends HttpTypes {
   private val invalidSignature = "Invalid signature"
   private val emptyResponseMessage = "Response was empty, please check request uri"
 
+  private lazy val invalidSignatureError = Left(ResponseError(
+    new Exception("Invalid signature. Please double check consumer secret key."),
+    Status.Unauthorized
+  ))
+
   implicit val plainTextToRequestTokenResponse: HttpPipe[IO, String, RequestTokenResponse] = _
     .last
     .map(_.toLeft(emptyResponseMessage).joinLeft)
@@ -39,11 +44,6 @@ trait DiscogsOAuthPipes extends HttpTypes {
       case Right(accessTokenStringResponse(token, secret)) => Right(AccessTokenResponse(Token(token, secret)))
       case other => handleInvalidCase(other)
     }
-
-  private def invalidSignatureError = Left(ResponseError(
-    new Exception("Invalid signature. Please double check consumer secret key."),
-    Status.Unauthorized
-  ))
 
   private def handleInvalidCase(either: Either[ResponseError, String]): Either[ResponseError, Nothing] = either match {
     case Right(response) => Left {

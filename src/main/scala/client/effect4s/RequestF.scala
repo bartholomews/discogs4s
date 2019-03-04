@@ -8,9 +8,9 @@ import org.http4s.client.Client
 import org.http4s.client.oauth1.Consumer
 import org.http4s.{Request, Response, Status}
 
-trait RequestF extends HttpPipes with HttpTypes with OAuthSignature with Logger {
+private[effect4s] trait RequestF extends HttpPipes with HttpTypes with OAuthSignature with Logger {
 
-  private[effect4s] def jsonRequest[F[_] : Effect, A](client: Client[F])
+  def jsonRequest[F[_] : Effect, A](client: Client[F])
                                    (request: Request[F],
                                     accessToken: Option[OAuthAccessToken] = None)
                                    (implicit
@@ -20,7 +20,7 @@ trait RequestF extends HttpPipes with HttpTypes with OAuthSignature with Logger 
     processHttpRequest(client)(request, accessToken, decodeJsonResponse, doNothing)
   }
 
-  private[effect4s] def plainTextRequest[F[_] : Effect, A](client: Client[F])
+  def plainTextRequest[F[_] : Effect, A](client: Client[F])
                                         (request: Request[F],
                                          accessToken: Option[OAuthAccessToken] = None)
                                         (implicit consumer: Consumer,
