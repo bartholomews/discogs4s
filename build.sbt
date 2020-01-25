@@ -1,11 +1,18 @@
 import CompilerOptions._
 import Dependencies._
 
+organization := "io.bartholomews"
+
 name := "discogs4s"
 
 version := "0.0.1-SNAPSHOT"
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.13.1"
+
+resolvers += Resolver.bintrayRepo("bartholomews", "maven")
+
+coverageMinimum := 3 // FIXME
+coverageFailOnMinimum := true
 
 libraryDependencies ++= dependencies ++ testDependencies
 
@@ -13,8 +20,23 @@ libraryDependencies ++= dependencies ++ testDependencies
 logBuffered in Test := false
 parallelExecution in ThisBuild := false
 
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
-
 scalacOptions ++= compilerOptions
 
-coverageEnabled := true
+val standardOutputReporter = Seq(
+  "-oU"
+)
+
+val xmlReporter = Seq(
+  "-u",
+  "target/test-reports"
+)
+
+addCommandAlias("test-fast", "sbt testOnly * -l org.scalatest.tags.Slow")
+
+//// TODO move into TestSettings
+testOptions in Test ++= Seq(
+  Tests.Argument(
+    TestFrameworks.ScalaTest,
+    standardOutputReporter ++ xmlReporter :_*
+  )
+)
