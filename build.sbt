@@ -31,7 +31,8 @@ val xmlReporter = Seq(
   "target/test-reports"
 )
 
-addCommandAlias("test-fast", "sbt testOnly * -l org.scalatest.tags.Slow")
+addCommandAlias("test-coverage", ";coverage ;test ;coverageReport")
+addCommandAlias("test-fast", "testOnly * -l org.scalatest.tags.Slow")
 
 //// TODO move into TestSettings
 testOptions in Test ++= Seq(
