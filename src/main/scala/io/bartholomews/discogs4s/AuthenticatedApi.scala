@@ -1,20 +1,22 @@
 package io.bartholomews.discogs4s
 
-import fsclient.config.{FsClientConfig, UserAgent}
-import fsclient.entities.AuthEnabled
-import fsclient.entities.AuthVersion.V1
-import fsclient.utils.HttpTypes.IOResponse
+import fsclient.entities.HttpResponse
 import io.bartholomews.discogs4s.entities.{AuthenticatedUser, UserIdentity}
-import org.http4s.client.oauth1.{Consumer, Token}
 
-import scala.concurrent.ExecutionContext
-
-trait AuthenticatedApi {
+// https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
+trait AuthenticatedApi[F[_]] {
 
   /**
-   * @return
+   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity
+   *
+   * Retrieve basic information about the authenticated user.
+   * You can use this resource to find out who you’re authenticated as,
+   * and it also doubles as a good sanity check to ensure that you’re using OAuth correctly.
+   * For more detailed information, make another request for the user’s Profile.
+   *
+   * @return `UserIdentity`
    */
-  def me(): IOResponse[UserIdentity]
+  def me(): F[HttpResponse[UserIdentity]]
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
@@ -27,26 +29,31 @@ trait AuthenticatedApi {
    * the num_collection / num_wantlist keys will be visible.
    *
    * @param username The username of whose profile you are requesting.
-   * @return `String`
+   * @return `AuthenticatedUser`
    */
-  def getUserProfile(username: String): IOResponse[AuthenticatedUser]
+  def getUserProfile(username: String): F[HttpResponse[AuthenticatedUser]]
 
   /**
-   * @param username
-   * @param location
-   * @return
+   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post
+   *
+   * Edit a user’s profile data.
+   *
+   * @param username The username of the user.
+   * @param name The real name of the user.
+   * @param location The geographical location of the user.
+   * @param homePage The user’s website.
+   * @param profile Biographical information about the user.
+   * @param currAbbr Currency for marketplace data. Must be one of the following:
+   *                USD GBP EUR CAD AUD JPY CHF MXN BRL NZD SEK ZAR
+   *
+   * @return `AuthenticatedUser`
+   *  FIXME: Use at least value classes (or see if you can do better than that)
+   *   and double check query params etc
    */
-  def updateUserProfile(username: String, location: String): IOResponse[AuthenticatedUser]
-}
-
-object AuthenticatedApi {
-
-  // FIXME
-  def apply(userAgent: UserAgent, accessToken: V1.AccessToken)(implicit ec: ExecutionContext): AuthenticatedApi =
-    new DiscogsClient(FsClientConfig(userAgent, AuthEnabled(accessToken))).authEndpoints(accessToken)
-
-  def apply(
-    userAgent: UserAgent,
-    token: Token
-  )(implicit consumer: Consumer, ec: ExecutionContext): AuthenticatedApi = apply(userAgent, V1.AccessToken(token))
+  def updateUserProfile(username: String,
+                        name: Option[String],
+                        homePage: Option[String],
+                        location: Option[String],
+                        profile: Option[String],
+                        currAbbr: Option[String]): F[HttpResponse[AuthenticatedUser]]
 }

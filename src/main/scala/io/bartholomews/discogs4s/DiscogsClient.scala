@@ -1,5 +1,6 @@
 package io.bartholomews.discogs4s
 
+import cats.effect.IO
 import fsclient.client.io_client.IOAuthClient
 import fsclient.config.FsClientConfig
 import fsclient.entities.AuthEnabled
@@ -27,7 +28,6 @@ class DiscogsClient(val config: FsClientConfig[AuthEnabled])(implicit ec: Execut
 
   implicit val consumer: Consumer = config.authInfo.signer.consumer
 
-  // Why you need this? Fsclient could extract these fields from `config` no?
   private val client = new IOAuthClient(config.userAgent, V1.BasicSignature(config.authInfo.signer.consumer))
 
   // ===================================================================================================================
@@ -65,7 +65,7 @@ class DiscogsClient(val config: FsClientConfig[AuthEnabled])(implicit ec: Execut
    */
   def getUserProfile(username: String): IOResponse[SimpleUser] = GetSimpleUserProfile(username).runWith(client)
 
-  def authEndpoints(implicit accessToken: V1.AccessToken): AuthenticatedApi = new AuthenticatedApi {
+  def authEndpoints(implicit accessToken: V1.AccessToken): AuthenticatedApi[IO] = new AuthenticatedApi[IO] {
 
     import fsclient.implicits._
 
