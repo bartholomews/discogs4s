@@ -12,11 +12,11 @@ import scala.util.Try
 object DiscogsOAuthPipes {
 
   implicit val plainTextToRequestTokenResponse: Pipe[IO, String, RequestTokenResponse] =
-    plainTextRegexDecoderPipe3("oauth_token=(.*)&oauth_token_secret=(.*)&oauth_callback_confirmed=(.*)".r) {
-      (token, secret, flag) =>
+    plainTextDecoderPipe({
+      case Right(s"oauth_token=$token&oauth_token_secret=$secret&oauth_callback_confirmed=$flag") =>
         val callbackConfirmed = Try(flag.toBoolean).getOrElse(false)
         RequestTokenResponse(Token(token, secret), callbackConfirmed)
-    }
+    })
 
   implicit def plainTextToAccessTokenResponse(implicit consumer: Consumer): Pipe[IO, String, V1.AccessToken] =
     plainTextRegexDecoderPipe2("oauth_token=(.*)&oauth_token_secret=(.*)".r) { (token, secret) =>

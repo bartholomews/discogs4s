@@ -1,11 +1,13 @@
 package io.bartholomews.discogs4s
 
 import cats.implicits._
+import com.github.tomakehurst.wiremock.client.WireMock._
+import com.softwaremill.diffx.scalatest.DiffMatcher
 import fsclient.config.{FsClientConfig, UserAgent}
 import fsclient.entities.AuthVersion.V1
 import fsclient.entities.{AuthEnabled, HttpResponse}
 import io.bartholomews.discogs4s.entities.RequestTokenResponse
-import io.bartholomews.discogs4s.server.MockServerWordSpec
+import io.bartholomews.discogs4s.wiremock.MockServer
 import org.http4s.client.oauth1.{Consumer, Token}
 import org.http4s.util.CaseInsensitiveString
 import org.http4s.{Status, Uri}
@@ -13,7 +15,7 @@ import org.scalatest.{Inside, Matchers}
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class DiscogsClientSpec extends MockServerWordSpec with MockClientConfig with Matchers with Inside {
+class DiscogsClientSpec extends MockServer with MockClientConfig with Matchers with DiffMatcher with Inside {
 
   "DiscogsSimpleClient" when {
 
@@ -115,7 +117,7 @@ class DiscogsClientSpec extends MockServerWordSpec with MockClientConfig with Ma
 
         "request is empty" should {
 
-          "return an error with the right code" ignore {}
+          "return an error with the right code" in {}
 
           "return an error with the right message" in {}
         }
@@ -129,7 +131,27 @@ class DiscogsClientSpec extends MockServerWordSpec with MockClientConfig with Ma
 
         "request is valid" should {
 
-          "return a response with Token" in {}
+          "return a response with Token" in {
+
+            stubFor(
+              get(urlMatching("/oauth/request_token"))
+                .willReturn(
+                  aResponse()
+                    .withStatus(200)
+                    .withBody("oauth_token=TK1&oauth_token_secret=fafafafafaffafaffafafa&oauth_callback_confirmed=1")
+                )
+            )
+
+            inside(client.getRequestToken.unsafeRunSync()) {
+              case _ @HttpResponse(_, Right(response)) =>
+                response should matchTo(
+                  RequestTokenResponse(
+                    token = Token("TK1", "fafafafafaffafaffafafa"),
+                    callbackConfirmed = true
+                  )
+                )
+            }
+          }
 
           "return a response with the right callback Uri" in {}
         }
