@@ -7,13 +7,7 @@ import fsclient.entities.AuthEnabled
 import fsclient.entities.AuthVersion.V1
 import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.api._
-import io.bartholomews.discogs4s.entities.{
-  AuthenticatedUser,
-  PaginatedReleases,
-  RequestTokenResponse,
-  SimpleUser,
-  UserIdentity
-}
+import io.bartholomews.discogs4s.entities.{AuthenticatedUser, PaginatedReleases, RequestTokenResponse, SimpleUser, UserIdentity}
 import org.http4s.client.oauth1.Consumer
 
 import scala.concurrent.ExecutionContext
@@ -74,7 +68,13 @@ class DiscogsClient(val config: FsClientConfig[AuthEnabled])(implicit ec: Execut
     override def getUserProfile(username: String): IOResponse[AuthenticatedUser] =
       GetAuthenticatedUserProfile(username).runWith(client)
 
-    override def updateUserProfile(username: String, location: String): IOResponse[AuthenticatedUser] =
-      UpdateUserProfile(username, location).runWith(client)
+    // FIXME
+    override def updateUserProfile(username: String,
+                                   name: Option[String],
+                                   homePage: Option[String],
+                                   location: Option[String],
+                                   profile: Option[String],
+                                   currAbbr: Option[String]): IOResponse[AuthenticatedUser] =
+      UpdateUserProfile(username, name, homePage, location, profile, currAbbr).runWith(client)
   }
 }

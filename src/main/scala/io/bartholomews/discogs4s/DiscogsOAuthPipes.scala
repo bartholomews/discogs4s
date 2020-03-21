@@ -19,7 +19,8 @@ object DiscogsOAuthPipes {
     })
 
   implicit def plainTextToAccessTokenResponse(implicit consumer: Consumer): Pipe[IO, String, V1.AccessToken] =
-    plainTextRegexDecoderPipe2("oauth_token=(.*)&oauth_token_secret=(.*)".r) { (token, secret) =>
-      V1.AccessToken(Token(token, secret))
-    }
+    plainTextDecoderPipe({
+      case Right(s"oauth_token=$token&oauth_token_secret=$secret") =>
+        V1.AccessToken(Token(token, secret))
+    })
 }

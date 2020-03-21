@@ -71,12 +71,10 @@ class ArtistsApiSpec extends MockServer with MockClientConfig with Matchers with
 
     "client is invalid" should {
 
-      val client = clientWith("invalid-key")
-
       "get an error response" ignore {
 
         def res: HttpResponse[PaginatedReleases] =
-          client
+          sampleClient
             .getArtistsReleases(artistId = 1, page = 1, perPage = 1)
             .unsafeRunSync()
 

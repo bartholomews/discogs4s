@@ -9,12 +9,12 @@ version := "0.0.1-SNAPSHOT"
 
 scalaVersion := "2.13.1"
 
-resolvers += Resolver.bintrayRepo("bartholomews", "maven")
+resolvers += "Sonatype OSS Snapshots".at("https://oss.sonatype.org/content/repositories/snapshots")
+
+libraryDependencies ++= dependencies ++ testDependencies
 
 coverageMinimum := 3 // FIXME
 coverageFailOnMinimum := true
-
-libraryDependencies ++= dependencies ++ testDependencies
 
 // http://www.scalatest.org/user_guide/using_scalatest_with_sbt
 logBuffered in Test := false
@@ -38,6 +38,6 @@ addCommandAlias("test-fast", "testOnly * -l org.scalatest.tags.Slow")
 testOptions in Test ++= Seq(
   Tests.Argument(
     TestFrameworks.ScalaTest,
-    standardOutputReporter ++ xmlReporter :_*
+    standardOutputReporter ++ xmlReporter: _*
   )
 )

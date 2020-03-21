@@ -19,13 +19,18 @@ case class GetAuthenticatedUserProfile(username: String) extends UserApi with Js
 }
 
 // TODO
-case class UpdateUserProfile(username: String, location: String)
-    extends UserApi
+case class UpdateUserProfile(
+  username: String,
+  name: Option[String],
+  homePage: Option[String],
+  location: Option[String],
+  profile: Option[String],
+  currAbbr: Option[String]
+) extends UserApi
     with FsAuthRequest.Post[Nothing, Json, AuthenticatedUser] {
-
   final override val body: Option[Nothing] = None
   final override val uri: Uri = {
     (basePath / username)
-      .withQueryParam("location", location)
+      .withOptionQueryParam("location", location)
   }
 }

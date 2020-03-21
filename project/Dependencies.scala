@@ -10,7 +10,8 @@ object Versions {
 object Dependencies {
 
   val dependencies: Seq[ModuleID] = Seq(
-    "io.bartholomews" %% "fsclient" % "0.0.1"
+    // https://mvnrepository.com/artifact/com.github.bartholomews/spotify-scala-client
+    "io.bartholomews" %% "fsclient" % "0.0.1-SNAPSHOT"
   )
 
   lazy val testDependencies: Seq[ModuleID] = Seq(
