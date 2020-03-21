@@ -5,23 +5,18 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import com.softwaremill.diffx.scalatest.DiffMatcher
 import fsclient.config.{FsClientConfig, UserAgent}
 import fsclient.entities.AuthVersion.V1
-import fsclient.entities.{AuthEnabled, HttpResponse}
+import fsclient.entities.AuthVersion.V1.RequestToken
+import fsclient.entities.{AuthEnabled, AuthVersion, HttpResponse}
 import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.entities.RequestTokenResponse
 import io.bartholomews.discogs4s.wiremock.MockServer
 import org.http4s.client.oauth1.{Consumer, Token}
 import org.http4s.{Status, Uri}
-import org.scalatest.{Inside, Matchers}
+import org.scalatest.{Matchers, WordSpec}
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class DiscogsClientSpec
-    extends MockServer
-    with MockClientConfig
-    with Matchers
-    with DiffMatcher
-    with Inside
-    with StubbedCall {
+class DiscogsClientSpec extends WordSpec with StubbedIO with MockClient with MockServer with Matchers with DiffMatcher {
 
   "DiscogsSimpleClient" when {
 
@@ -41,15 +36,15 @@ class DiscogsClientSpec
 
       val config = FsClientConfig(
         userAgent = sampleUserAgent,
-        authInfo = AuthEnabled(V1.BasicSignature(Consumer(key = "consumer-key", secret = "consumer-secret")))
+        authInfo = AuthEnabled(V1.BasicSignature(sampleConsumer))
       )
 
       "read the consumer values from the injected configuration" in {
         val discogs = new DiscogsClient(config)
         discogs.config.userAgent shouldBe sampleUserAgent
         discogs.config.authInfo.signer.consumer shouldBe Consumer(
-          key = "consumer-key",
-          secret = "consumer-secret"
+          key = sampleConsumer.key,
+          secret = sampleConsumer.secret
         )
       }
     }
@@ -58,9 +53,9 @@ class DiscogsClientSpec
 
       def request: IOResponse[RequestTokenResponse] = sampleClient.getRequestToken
 
-      "the server response is an error" should {
+      "the server responds with an error" should {
 
-        def setupMocks: StubMapping =
+        def stub: StubMapping =
           stubFor(
             get(urlMatching("/oauth/request_token"))
               .willReturn(
@@ -70,16 +65,16 @@ class DiscogsClientSpec
               )
           )
 
-        "return a Left with appropriate message" in insideResponse(setupMocks, request) {
+        "return a Left with appropriate message" in matchResponse(stub, request) {
           case _ @HttpResponse(_, Left(error)) =>
             error.status shouldBe Status.Unauthorized
             error.getMessage shouldBe "Invalid consumer."
         }
       }
 
-      "the server response is the expected string message" should {
+      "the server responds with the expected string message" should {
 
-        def setupMocks(): StubMapping =
+        def stub: StubMapping =
           stubFor(
             get(urlMatching("/oauth/request_token"))
               .willReturn(
@@ -91,7 +86,7 @@ class DiscogsClientSpec
               )
           )
 
-        "return a Right with the response Token" in insideResponse(setupMocks(), request) {
+        "return a Right with the response Token" in matchResponse(stub, request) {
           case _ @HttpResponse(_, Right(response)) =>
             response should matchTo(
               RequestTokenResponse(
@@ -101,7 +96,7 @@ class DiscogsClientSpec
             )
         }
 
-        "return a Right with the callback Uri" in insideResponse(setupMocks(), request) {
+        "return a Right with the callback Uri" in matchResponse(stub, request) {
           case _ @HttpResponse(_, Right(tokenResponse)) =>
             tokenResponse.callback shouldBe Uri.unsafeFromString(
               "http://127.0.0.1:8080/oauth/authorize?oauth_token=TK1"
@@ -111,7 +106,7 @@ class DiscogsClientSpec
 
       "the server response is unexpected" should {
 
-        def setupMocks(): StubMapping =
+        def stub: StubMapping =
           stubFor(
             get(urlMatching("/oauth/request_token"))
               .willReturn(
@@ -123,7 +118,7 @@ class DiscogsClientSpec
               )
           )
 
-        "return a Left with appropriate message" in insideResponse(setupMocks(), request) {
+        "return a Left with appropriate message" in matchResponse(stub, request) {
           case res @ HttpResponse(_, Left(error)) =>
             res.status shouldBe Status.UnprocessableEntity
             error.getMessage shouldBe "Unexpected response: WAT"
@@ -133,20 +128,77 @@ class DiscogsClientSpec
 
     "getAccessToken" when {
 
-      "request is empty" should {
+      // FIXME: The implicit consumer passed here seems to be ignore,
+      //  the actual token result will have the client consumer ???
+      //  (should maybe pass the client instead of consumer?)
+      def request: IOResponse[V1.AccessToken] = sampleClient.getAccessToken(
+        RequestToken(sampleToken, tokenVerifier = "TOKEN_VERIFIER")(sampleConsumer)
+      )
 
-        "return an error with the right code" in {}
+      "the server responds with an error" should {
 
-        "return an error with the right message" in {}
+        def stub: StubMapping =
+          stubFor(
+            post(urlMatching("/oauth/access_token"))
+              .willReturn(
+                aResponse()
+                  .withStatus(401)
+                  .withBody("Invalid consumer.")
+              )
+          )
+
+        "return a Left with appropriate message" in matchResponse(stub, request) {
+          case _ @HttpResponse(_, Left(error)) =>
+            error.status shouldBe Status.Unauthorized
+            error.getMessage shouldBe "Invalid consumer."
+        }
       }
 
-      "request has an invalid verifier" should {
+      "the server responds with the expected string message" should {
 
-        "return an error with the right code" in {}
+        def stub: StubMapping =
+          stubFor(
+            post(urlMatching("/oauth/access_token"))
+              .willReturn(
+                aResponse()
+                  .withStatus(200)
+                  .withBody(
+                    "oauth_token=OATH_TK1&oauth_token_secret=TK_SECRET"
+                  )
+              )
+          )
 
-        "return an error with the right message" in {}
+        "return a Right with the response Token" in matchResponse(stub, request) {
+
+          case _ @HttpResponse(_, Right(response)) =>
+            response should matchTo(
+              AuthVersion.V1.AccessToken(
+                Token(value = "OATH_TK1", secret = "TK_SECRET")
+              )(sampleConsumer)
+            )
+        }
+      }
+
+      "the server response is unexpected" should {
+
+        def stub: StubMapping =
+          stubFor(
+            post(urlMatching("/oauth/access_token"))
+              .willReturn(
+                aResponse()
+                  .withStatus(200)
+                  .withBody(
+                    "WAT"
+                  )
+              )
+          )
+
+        "return a Left with appropriate message" in matchResponse(stub, request) {
+          case res @ HttpResponse(_, Left(error)) =>
+            res.status shouldBe Status.UnprocessableEntity
+            error.getMessage shouldBe "Unexpected response: WAT"
+        }
       }
     }
   }
-
 }

@@ -6,22 +6,28 @@ import fsclient.entities.AuthEnabled
 import fsclient.entities.AuthVersion.V1
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
-import org.http4s.client.oauth1.Consumer
+import org.http4s.client.oauth1.{Consumer, Token}
 
-trait MockClientConfig {
+import scala.concurrent.ExecutionContext
 
-  import scala.concurrent.ExecutionContext
+trait MockClient {
 
   // https://http4s.org/v0.20/client/
-  implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+  implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
   implicit val ioContextShift: ContextShift[IO] = IO.contextShift(ec)
   implicit val resource: Resource[IO, Client[IO]] = BlazeClientBuilder[IO](ec).resource
+
+  val sampleConsumer: Consumer =
+    Consumer(key = "SAMPLE_CONSUMER_KEY", secret = "SAMPLE_CONSUMER_SECRET")
+
+  val sampleToken: Token =
+    Token(value = "SAMPLE_TOKEN_VALUE", secret = "SAMPLE_TOKEN_SECRET")
 
   val sampleClient =
     new DiscogsClient(
       FsClientConfig(
         UserAgent("discogs-test", appVersion = None, appUrl = None),
-        AuthEnabled(V1.BasicSignature(Consumer("key", "secret")))
+        AuthEnabled(V1.BasicSignature(sampleConsumer))
       )
     )
 }

@@ -32,8 +32,8 @@
     <logger name="discogs4s-test" level="DEBUG"/>
 
     <!-- wiremock logs -->
-<!--    <logger name="/__admin" level="OFF"/>-->
-<!--    <logger name="/" level="OFF"/>-->
+    <logger name="/__admin" level="OFF"/>
+    <logger name="/" level="OFF"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

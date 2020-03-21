@@ -6,12 +6,12 @@ import fsclient.entities.AuthVersion.V1
 import fsclient.entities.{AuthEnabled, HttpResponse}
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release}
 import io.bartholomews.discogs4s.wiremock.MockServer
-import io.bartholomews.discogs4s.{DiscogsClient, MockClientConfig}
+import io.bartholomews.discogs4s.{DiscogsClient, MockClient, StubbedIO}
 import org.http4s.Status
 import org.http4s.client.oauth1.Consumer
-import org.scalatest.{Inside, Matchers}
+import org.scalatest.{Matchers, WordSpec}
 
-class ArtistsApiSpec extends MockServer with MockClientConfig with Matchers with DiffMatcher with Inside {
+class ArtistsApiSpec extends WordSpec with StubbedIO with MockServer with MockClient with Matchers with DiffMatcher {
 
   "Discogs OAuth Client" when {
 

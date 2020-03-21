@@ -1,11 +1,13 @@
 package io.bartholomews.discogs4s.wiremock
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, get, anyUrl, stubFor}
+import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, anyUrl, get, stubFor}
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEachTestData, TestData, WordSpec}
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEachTestData, Suite, TestData}
 
-trait MockServer extends WordSpec with BeforeAndAfterAll with BeforeAndAfterEachTestData {
+trait MockServer extends BeforeAndAfterAll with BeforeAndAfterEachTestData {
+
+  self: Suite =>
 
   private val server: WireMockServer = new WireMockServer(
     new WireMockConfiguration().extensions(ResourceFileTransformer)
