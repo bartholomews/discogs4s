@@ -1,4 +1,4 @@
-package io.bartholomews.discogs4s.wiremock
+package io.bartholomews.discogs4s.server
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, anyUrl, get, stubFor}

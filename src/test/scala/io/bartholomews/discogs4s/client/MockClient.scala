@@ -2,8 +2,8 @@ package io.bartholomews.discogs4s.client
 
 import cats.effect.{ContextShift, IO, Resource}
 import fsclient.config.{FsClientConfig, UserAgent}
-import fsclient.entities.AuthEnabled
-import fsclient.entities.AuthVersion.V1
+import fsclient.entities.OAuthEnabled
+import fsclient.entities.OAuthVersion.V1
 import io.bartholomews.discogs4s.DiscogsClient
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
@@ -28,7 +28,7 @@ trait MockClient {
     new DiscogsClient(
       FsClientConfig(
         UserAgent("discogs-test", appVersion = None, appUrl = None),
-        AuthEnabled(V1.BasicSignature(sampleConsumer))
+        OAuthEnabled(V1.BasicSignature(sampleConsumer))
       )
     )
 }

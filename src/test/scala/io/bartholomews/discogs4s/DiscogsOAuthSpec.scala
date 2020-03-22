@@ -4,13 +4,13 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import com.softwaremill.diffx.scalatest.DiffMatcher
 import fsclient.config.{FsClientConfig, UserAgent}
-import fsclient.entities.AuthVersion.V1
-import fsclient.entities.AuthVersion.V1.RequestToken
-import fsclient.entities.{AuthEnabled, AuthVersion, HttpResponse}
+import fsclient.entities.OAuthVersion.V1
+import fsclient.entities.OAuthVersion.V1.RequestToken
+import fsclient.entities.{HttpResponse, OAuthEnabled}
 import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.client.{MockClient, StubbedIO}
 import io.bartholomews.discogs4s.entities.RequestTokenResponse
-import io.bartholomews.discogs4s.wiremock.MockServer
+import io.bartholomews.discogs4s.server.MockServer
 import org.http4s.client.oauth1.{Consumer, Token}
 import org.http4s.{Status, Uri}
 import org.scalatest.{Matchers, WordSpec}
@@ -37,7 +37,7 @@ class DiscogsOAuthSpec extends WordSpec with StubbedIO with MockClient with Mock
 
       val config = FsClientConfig(
         userAgent = sampleUserAgent,
-        authInfo = AuthEnabled(V1.BasicSignature(sampleConsumer))
+        authInfo = OAuthEnabled(V1.BasicSignature(sampleConsumer))
       )
 
       "read the consumer values from the injected configuration" in {
@@ -52,7 +52,7 @@ class DiscogsOAuthSpec extends WordSpec with StubbedIO with MockClient with Mock
 
     "getRequestToken" when {
 
-      def request: IOResponse[RequestTokenResponse] = sampleClient.getRequestToken
+      def request: IOResponse[RequestTokenResponse] = sampleClient.auth.getRequestToken
 
       "the server responds with an error" should {
 
@@ -132,8 +132,8 @@ class DiscogsOAuthSpec extends WordSpec with StubbedIO with MockClient with Mock
       // FIXME: The implicit consumer passed here seems to be ignore,
       //  the actual token result will have the client consumer ???
       //  (should maybe pass the client instead of consumer?)
-      def request: IOResponse[V1.AccessToken] = sampleClient.getAccessToken(
-        RequestToken(sampleToken, tokenVerifier = "TOKEN_VERIFIER")(sampleConsumer)
+      def request: IOResponse[V1.AccessToken] = sampleClient.auth.getAccessToken(
+        RequestToken(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
       )
 
       "the server responds with an error" should {
@@ -173,9 +173,7 @@ class DiscogsOAuthSpec extends WordSpec with StubbedIO with MockClient with Mock
 
           case _ @HttpResponse(_, Right(response)) =>
             response should matchTo(
-              AuthVersion.V1.AccessToken(
-                Token(value = "OATH_TK1", secret = "TK_SECRET")
-              )(sampleConsumer)
+              V1.AccessToken(Token(value = "OATH_TK1", secret = "TK_SECRET"), sampleConsumer)
             )
         }
       }

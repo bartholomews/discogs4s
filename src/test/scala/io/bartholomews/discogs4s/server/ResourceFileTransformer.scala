@@ -1,4 +1,4 @@
-package io.bartholomews.discogs4s.wiremock
+package io.bartholomews.discogs4s.server
 
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import com.github.tomakehurst.wiremock.common.FileSource
