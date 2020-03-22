@@ -3,6 +3,7 @@ package io.bartholomews.discogs4s.wiremock
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, anyUrl, get, stubFor}
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
+import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEachTestData, Suite, TestData}
 
 trait MockServer extends BeforeAndAfterAll with BeforeAndAfterEachTestData {
@@ -24,7 +25,7 @@ trait MockServer extends BeforeAndAfterAll with BeforeAndAfterEachTestData {
   override def afterAll: Unit =
     server.stop()
 
-  def stubWithResourceFile(): Unit =
+  def stubWithResourceFile: StubMapping =
     stubFor(
       get(anyUrl())
         .willReturn(

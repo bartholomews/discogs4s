@@ -24,11 +24,7 @@
 
     <logger name="org.http4s.client.PoolManager" level="ERROR"/>
     <logger name="org.http4s.blaze.pipeline.Stage" level="ERROR"/>
-    <logger name="org.eclipse.jetty.util.thread.QueuedThreadPool" level="ERROR"/>
-    <logger name="org.eclipse.jetty.io.bartholomews.discogs4s.server.handler.ContextHandler" level="ERROR"/>
-    <logger name="org.eclipse.jetty.io.bartholomews.discogs4s.server.NetworkTrafficServerConnector" level="ERROR"/>
-    <logger name="org.eclipse.jetty.io.bartholomews.discogs4s.server.Server" level="ERROR"/>
-
+    <logger name="org.eclipse.jetty" level="ERROR"/>
     <logger name="discogs4s-test" level="DEBUG"/>
 
     <!-- wiremock logs -->
