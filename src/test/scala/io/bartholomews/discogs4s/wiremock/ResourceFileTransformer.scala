@@ -15,6 +15,7 @@ case object ResourceFileTransformer extends ResponseDefinitionTransformer {
                          parameters: Parameters): ResponseDefinition = {
 
     val requestUrl: String = request.getUrlStripSlashes
+
     println("~" * 50)
     println(requestUrl)
     println("~" * 50)

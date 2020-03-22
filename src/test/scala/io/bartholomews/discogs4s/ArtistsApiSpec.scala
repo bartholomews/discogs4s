@@ -1,12 +1,12 @@
-package io.bartholomews.discogs4s.api
+package io.bartholomews.discogs4s
 
 import com.softwaremill.diffx.scalatest.DiffMatcher
 import fsclient.config.{FsClientConfig, UserAgent}
 import fsclient.entities.AuthVersion.V1
 import fsclient.entities.{AuthEnabled, HttpResponse}
+import io.bartholomews.discogs4s.client.{MockClient, StubbedIO}
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release}
 import io.bartholomews.discogs4s.wiremock.MockServer
-import io.bartholomews.discogs4s.{DiscogsClient, MockClient, StubbedIO}
 import org.http4s.Status
 import org.http4s.client.oauth1.Consumer
 import org.scalatest.{Matchers, WordSpec}

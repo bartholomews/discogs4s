@@ -8,6 +8,7 @@ import fsclient.entities.AuthVersion.V1
 import fsclient.entities.AuthVersion.V1.RequestToken
 import fsclient.entities.{AuthEnabled, AuthVersion, HttpResponse}
 import fsclient.utils.HttpTypes.IOResponse
+import io.bartholomews.discogs4s.client.{MockClient, StubbedIO}
 import io.bartholomews.discogs4s.entities.RequestTokenResponse
 import io.bartholomews.discogs4s.wiremock.MockServer
 import org.http4s.client.oauth1.{Consumer, Token}
@@ -16,7 +17,7 @@ import org.scalatest.{Matchers, WordSpec}
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class DiscogsClientSpec extends WordSpec with StubbedIO with MockClient with MockServer with Matchers with DiffMatcher {
+class DiscogsOAuthSpec extends WordSpec with StubbedIO with MockClient with MockServer with Matchers with DiffMatcher {
 
   "DiscogsSimpleClient" when {
 

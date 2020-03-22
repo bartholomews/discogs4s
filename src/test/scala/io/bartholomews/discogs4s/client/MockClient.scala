@@ -1,9 +1,10 @@
-package io.bartholomews.discogs4s
+package io.bartholomews.discogs4s.client
 
 import cats.effect.{ContextShift, IO, Resource}
 import fsclient.config.{FsClientConfig, UserAgent}
 import fsclient.entities.AuthEnabled
 import fsclient.entities.AuthVersion.V1
+import io.bartholomews.discogs4s.DiscogsClient
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
 import org.http4s.client.oauth1.{Consumer, Token}

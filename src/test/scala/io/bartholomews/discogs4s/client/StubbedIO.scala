@@ -1,4 +1,4 @@
-package io.bartholomews.discogs4s
+package io.bartholomews.discogs4s.client
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import fsclient.entities.HttpResponse

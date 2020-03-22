@@ -61,8 +61,6 @@ class DiscogsClient(val config: FsClientConfig[AuthEnabled])(implicit ec: Execut
 
   def authEndpoints(implicit accessToken: V1.AccessToken): AuthenticatedApi[IO] = new AuthenticatedApi[IO] {
 
-    import fsclient.implicits._
-
     override def me(): IOResponse[UserIdentity] = Identity.runWith(client)
 
     override def getUserProfile(username: String): IOResponse[AuthenticatedUser] =

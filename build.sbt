@@ -13,7 +13,7 @@ resolvers += "Sonatype OSS Snapshots".at("https://oss.sonatype.org/content/repos
 
 libraryDependencies ++= dependencies ++ testDependencies
 
-coverageMinimum := 23 // FIXME
+coverageMinimum := 35 // FIXME
 coverageFailOnMinimum := true
 
 // http://www.scalatest.org/user_guide/using_scalatest_with_sbt
