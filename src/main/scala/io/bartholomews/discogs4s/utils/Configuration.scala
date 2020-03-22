@@ -16,7 +16,6 @@ object Configuration {
     baseUri <- Uri.fromString(s"${conf.discogs.scheme}://${conf.discogs.domain}")
   } yield DiscogsReference(apiUri, baseUri)).valueOr(throw _)
 
-
   private[discogs4s] case class Config(discogs: Discogs)
 
   private[discogs4s] case class Discogs(api: String, domain: String, scheme: String)

@@ -3,6 +3,7 @@ package io.bartholomews.discogs4s
 import fsclient.client.io_client.IOAuthClient
 import fsclient.config.FsClientConfig
 import fsclient.entities.OAuthInfo.OAuthV1
+import fsclient.entities.OAuthVersion
 import fsclient.entities.OAuthVersion.V1
 import io.bartholomews.discogs4s.api.{ArtistsApi, AuthApi, UsersApi}
 
@@ -13,7 +14,7 @@ class DiscogsClient(val config: FsClientConfig[OAuthV1])(implicit ec: ExecutionC
 
   def this()(implicit ec: ExecutionContext) = this(FsClientConfig.v1("discogs"))
 
-  private val client =
+  private val client: IOAuthClient[OAuthVersion.V1.type] =
     new IOAuthClient(config.userAgent, V1.BasicSignature(config.authInfo.signer.consumer))
 
   object auth extends AuthApi(client)

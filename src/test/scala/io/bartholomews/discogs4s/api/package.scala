@@ -1,10 +1,10 @@
-package io.bartholomews
+package io.bartholomews.discogs4s
 
 import com.softwaremill.diffx.{Diff, DiffResult, DiffResultObject, Identical}
 import fsclient.entities.OAuthVersion.V1
 import org.http4s.client.oauth1.{Consumer, Token}
 
-package object discogs4s {
+package object api {
 
   def fromObject[T](value: T, diffResultObject: DiffResultObject): DiffResult =
     diffResultObject.fields.values

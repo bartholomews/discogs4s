@@ -1,17 +1,14 @@
-package io.bartholomews.discogs4s
+package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import com.softwaremill.diffx.scalatest.DiffMatcher
 import fsclient.entities.HttpResponse
 import fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.discogs4s.client.{MockClient, StubbedIO}
+import io.bartholomews.discogs4s.StubbedWordSpec
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release, SortBy, SortOrder}
-import io.bartholomews.discogs4s.server.MockServer
 import org.http4s.Status
-import org.scalatest.{Matchers, WordSpec}
 
-class ArtistsApiSpec extends WordSpec with StubbedIO with MockServer with MockClient with Matchers with DiffMatcher {
+class ArtistsApiSpec extends StubbedWordSpec {
 
   "Discogs OAuth Client" when {
 
