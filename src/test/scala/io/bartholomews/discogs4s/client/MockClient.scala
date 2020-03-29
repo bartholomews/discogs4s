@@ -1,8 +1,7 @@
 package io.bartholomews.discogs4s.client
 
 import cats.effect.{ContextShift, IO, Resource}
-import fsclient.config.{FsClientConfig, UserAgent}
-import fsclient.entities.OAuthEnabled
+import fsclient.config.UserAgent
 import fsclient.entities.OAuthVersion.V1
 import io.bartholomews.discogs4s.DiscogsClient
 import org.http4s.client.Client
@@ -26,9 +25,7 @@ trait MockClient {
 
   val sampleClient =
     new DiscogsClient(
-      FsClientConfig(
-        UserAgent("discogs-test", appVersion = None, appUrl = None),
-        OAuthEnabled(V1.BasicSignature(sampleConsumer))
-      )
+      UserAgent("discogs-test", appVersion = None, appUrl = None),
+      V1.BasicSignature(sampleConsumer)
     )
 }
