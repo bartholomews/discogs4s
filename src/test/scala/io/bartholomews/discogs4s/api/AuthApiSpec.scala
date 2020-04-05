@@ -3,11 +3,10 @@ package io.bartholomews.discogs4s.api
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import fsclient.entities.HttpResponse
-import fsclient.entities.OAuthVersion.V1
-import fsclient.entities.OAuthVersion.V1.RequestToken
+import fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, RequestTokenV1}
 import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.StubbedWordSpec
-import io.bartholomews.discogs4s.entities.RequestTokenResponse
+import io.bartholomews.discogs4s.entities.RequestToken
 import org.http4s.client.oauth1.Token
 import org.http4s.{Status, Uri}
 
@@ -17,7 +16,7 @@ class AuthApiSpec extends StubbedWordSpec {
 
   "getRequestToken" when {
 
-    def request: IOResponse[RequestTokenResponse] = sampleClient.auth.getRequestToken
+    def request: IOResponse[RequestToken] = sampleClient.auth.getRequestToken
 
     "the server responds with an error" should {
 
@@ -55,7 +54,7 @@ class AuthApiSpec extends StubbedWordSpec {
       "return a Right with the response Token" in matchResponse(stub, request) {
         case _ @HttpResponse(_, Right(response)) =>
           response should matchTo(
-            RequestTokenResponse(
+            RequestToken(
               token = Token("TK1", "fafafafafaffafaffafafa"),
               callbackConfirmed = true
             )
@@ -94,8 +93,8 @@ class AuthApiSpec extends StubbedWordSpec {
 
   "getAccessToken" when {
 
-    def request: IOResponse[V1.AccessToken] = sampleClient.auth.getAccessToken(
-      RequestToken(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
+    def request: IOResponse[AccessTokenV1] = sampleClient.auth.getAccessToken(
+      RequestTokenV1(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
     )
 
     "the server responds with an error" should {
@@ -135,7 +134,7 @@ class AuthApiSpec extends StubbedWordSpec {
 
         case _ @HttpResponse(_, Right(response)) =>
           response should matchTo(
-            V1.AccessToken(Token(value = "OATH_TK1", secret = "TK_SECRET"), sampleConsumer)
+            AccessTokenV1(Token(value = "OATH_TK1", secret = "TK_SECRET"), sampleConsumer)
           )
       }
     }

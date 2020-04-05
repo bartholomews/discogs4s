@@ -2,7 +2,7 @@ package io.bartholomews.discogs4s.client
 
 import cats.effect.{ContextShift, IO, Resource}
 import fsclient.config.UserAgent
-import fsclient.entities.OAuthVersion.V1
+import fsclient.entities.OAuthVersion.Version1.BasicSignature
 import io.bartholomews.discogs4s.DiscogsClient
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
@@ -26,6 +26,6 @@ trait MockClient {
   val sampleClient =
     new DiscogsClient(
       UserAgent("discogs-test", appVersion = None, appUrl = None),
-      V1.BasicSignature(sampleConsumer)
+      BasicSignature(sampleConsumer)
     )
 }

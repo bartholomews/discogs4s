@@ -1,7 +1,7 @@
 package io.bartholomews.discogs4s
 
 import com.softwaremill.diffx.{Diff, DiffResult, DiffResultObject, Identical}
-import fsclient.entities.OAuthVersion.V1
+import fsclient.entities.OAuthVersion.Version1.AccessTokenV1
 import org.http4s.client.oauth1.{Consumer, Token}
 
 package object api {
@@ -11,8 +11,8 @@ package object api {
       .collectFirst({ case result if !result.isIdentical => diffResultObject })
       .getOrElse(Identical(value))
 
-  implicit val diffAccessTokenV1: Diff[V1.AccessToken] =
-    (left: V1.AccessToken, right: V1.AccessToken, _) => {
+  implicit val diffAccessTokenV1: Diff[AccessTokenV1] =
+    (left: AccessTokenV1, right: AccessTokenV1, _) => {
       fromObject(
         left,
         DiffResultObject(

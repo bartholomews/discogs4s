@@ -4,11 +4,11 @@ import cats.effect.Effect
 import fs2.Pipe
 import fsclient.client.effect.HttpEffectClient
 import fsclient.entities.OAuthInfo.OAuthV1
-import fsclient.entities.OAuthVersion.V1
+import fsclient.entities.OAuthVersion.Version1._
 import fsclient.entities._
-import fsclient.requests.AccessTokenRequestV1
+import fsclient.requests.OAuthV1AuthorizationFramework.AccessTokenRequest
 import io.bartholomews.discogs4s.endpoints.{AccessTokenEndpoint, AuthorizeUrl, Identity}
-import io.bartholomews.discogs4s.entities.{RequestTokenResponse, UserIdentity}
+import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import org.http4s.client.oauth1.Token
 
 // https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
@@ -16,15 +16,15 @@ class AuthApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
 
   import fsclient.implicits.{emptyEntityEncoder, plainTextDecoderPipe, rawJsonPipe, rawPlainTextPipe}
 
-  def getRequestToken: F[HttpResponse[RequestTokenResponse]] =
+  def getRequestToken: F[HttpResponse[RequestToken]] =
     AuthorizeUrl.runWith(client)
 
-  def getAccessToken(implicit requestToken: V1.RequestToken): F[HttpResponse[V1.AccessToken]] = {
-    implicit val decoderPipe: Pipe[F, String, V1.AccessToken] = plainTextDecoderPipe({
+  def getAccessToken(implicit requestToken: RequestTokenV1): F[HttpResponse[AccessTokenV1]] = {
+    implicit val decoderPipe: Pipe[F, String, AccessTokenV1] = plainTextDecoderPipe({
       case Right(s"oauth_token=$token&oauth_token_secret=$secret") =>
-        V1.AccessToken(Token(token, secret), requestToken.consumer)
+        AccessTokenV1(Token(token, secret), requestToken.consumer)
     })
-    AccessTokenRequestV1(AccessTokenEndpoint.uri).runWith[F, V1.type, OAuthV1](client)
+    AccessTokenRequest(AccessTokenEndpoint.uri).runWith(client)
   }
 
   /**
@@ -37,5 +37,5 @@ class AuthApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
    *
    * @return `UserIdentity`
    */
-  def me(implicit token: Signer[V1.type]): F[HttpResponse[UserIdentity]] = Identity.runWith(client)
+  def me(implicit token: SignerV1): F[HttpResponse[UserIdentity]] = Identity.runWith(client)
 }

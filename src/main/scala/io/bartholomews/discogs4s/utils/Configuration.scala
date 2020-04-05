@@ -17,9 +17,6 @@ object Configuration {
   } yield DiscogsReference(apiUri, baseUri)).valueOr(throw _)
 
   private[discogs4s] case class Config(discogs: Discogs)
-
   private[discogs4s] case class Discogs(api: String, domain: String, scheme: String)
-
   private[discogs4s] case class DiscogsReference(apiUri: Uri, baseUri: Uri)
-
 }

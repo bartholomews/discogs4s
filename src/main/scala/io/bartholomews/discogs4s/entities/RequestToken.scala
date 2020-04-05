@@ -11,16 +11,16 @@ import org.http4s.client.oauth1.Token
 
 import scala.util.Try
 
-case class RequestTokenResponse(token: Token, callbackConfirmed: Boolean) {
+case class RequestToken(token: Token, callbackConfirmed: Boolean) {
   val callback: Uri = (Configuration.discogs.baseUri / AuthorizeUrl.path / "authorize")
     .withQueryParam("oauth_token", token.value)
 }
 
-object RequestTokenResponse extends FsJsonResponsePipe[RequestTokenResponse] {
-  implicit def plainTextToRequestTokenResponse[F[_]: Effect]: Pipe[F, String, RequestTokenResponse] =
+object RequestToken extends FsJsonResponsePipe[RequestToken] {
+  implicit def plainTextToRequestToken[F[_]: Effect]: Pipe[F, String, RequestToken] =
     plainTextDecoderPipe({
       case Right(s"oauth_token=$token&oauth_token_secret=$secret&oauth_callback_confirmed=$flag") =>
         val callbackConfirmed = Try(flag.toBoolean).getOrElse(false)
-        RequestTokenResponse(Token(token, secret), callbackConfirmed)
+        RequestToken(Token(token, secret), callbackConfirmed)
     })
 }

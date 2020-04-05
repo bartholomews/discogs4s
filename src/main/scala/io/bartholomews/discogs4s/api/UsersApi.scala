@@ -3,8 +3,7 @@ package io.bartholomews.discogs4s.api
 import cats.effect.Effect
 import fsclient.client.effect.HttpEffectClient
 import fsclient.entities.OAuthInfo.OAuthV1
-import fsclient.entities.OAuthVersion.V1
-import fsclient.entities.{HttpResponse, Signer}
+import fsclient.entities.{HttpResponse, SignerV1}
 import io.bartholomews.discogs4s.endpoints.{GetAuthenticatedUserProfile, GetSimpleUserProfile, UpdateUserProfile}
 import io.bartholomews.discogs4s.entities.{
   AuthenticatedUser,
@@ -36,7 +35,7 @@ class UsersApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
    */
   def getAuthenticateUserProfile(
     username: Username
-  )(implicit signer: Signer[V1.type]): F[HttpResponse[AuthenticatedUser]] =
+  )(implicit signer: SignerV1): F[HttpResponse[AuthenticatedUser]] =
     GetAuthenticatedUserProfile(username).runWith(client)
 
   /**
@@ -77,6 +76,6 @@ class UsersApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
     location: Option[UserLocation],
     profile: Option[UserProfileInfo],
     currAbbr: Option[MarketplaceCurrency]
-  )(implicit signer: Signer[V1.type]): F[HttpResponse[AuthenticatedUser]] =
+  )(implicit signer: SignerV1): F[HttpResponse[AuthenticatedUser]] =
     UpdateUserProfile(username, name, homePage, location, profile, currAbbr).runWith(client)
 }
