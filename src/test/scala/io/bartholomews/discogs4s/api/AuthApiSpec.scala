@@ -6,7 +6,7 @@ import fsclient.entities.HttpResponse
 import fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, RequestTokenV1}
 import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.StubbedWordSpec
-import io.bartholomews.discogs4s.entities.RequestToken
+import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import org.http4s.client.oauth1.Token
 import org.http4s.{Status, Uri}
 
@@ -26,6 +26,7 @@ class AuthApiSpec extends StubbedWordSpec {
             .willReturn(
               aResponse()
                 .withStatus(401)
+                // TODO: Should parse as json instead
                 .withBody("Invalid consumer.")
             )
         )
@@ -45,9 +46,7 @@ class AuthApiSpec extends StubbedWordSpec {
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBody(
-                  "oauth_token=TK1&oauth_token_secret=fafafafafaffafaffafafa&oauth_callback_confirmed=true"
-                )
+                .withBody("oauth_token=TK1&oauth_token_secret=fafafafafaffafaffafafa&oauth_callback_confirmed=true")
             )
         )
 
@@ -77,9 +76,7 @@ class AuthApiSpec extends StubbedWordSpec {
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBody(
-                  "WAT"
-                )
+                .withBody("WAT")
             )
         )
 
@@ -124,9 +121,7 @@ class AuthApiSpec extends StubbedWordSpec {
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBody(
-                  "oauth_token=OATH_TK1&oauth_token_secret=TK_SECRET"
-                )
+                .withBody("oauth_token=OATH_TK1&oauth_token_secret=TK_SECRET")
             )
         )
 
@@ -147,9 +142,7 @@ class AuthApiSpec extends StubbedWordSpec {
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBody(
-                  "WAT"
-                )
+                .withBody("WAT")
             )
         )
 
@@ -157,6 +150,76 @@ class AuthApiSpec extends StubbedWordSpec {
         case res @ HttpResponse(_, Left(error)) =>
           res.status shouldBe Status.UnprocessableEntity
           error.getMessage shouldBe "Unexpected response: WAT"
+      }
+    }
+  }
+
+  "me" when {
+
+    def request: IOResponse[UserIdentity] = sampleClient.auth.me(
+      RequestTokenV1(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
+    )
+
+    "the server responds with an error" should {
+
+      def stub: StubMapping =
+        stubFor(
+          get(urlMatching("/oauth/identity"))
+            .willReturn(
+              aResponse()
+                .withStatus(401)
+                .withBody("Invalid consumer.")
+            )
+        )
+
+      "return a Left with appropriate message" in matchResponse(stub, request) {
+        case _ @HttpResponse(_, Left(error)) =>
+          error.status shouldBe Status.Unauthorized
+          // TODO: Should parse as json instead
+          error.getMessage shouldBe "Invalid consumer."
+      }
+    }
+
+    "the server responds with the expected string message" should {
+
+      def stub: StubMapping =
+        stubFor(
+          get(urlMatching("/oauth/identity"))
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("oauth/identity.json")
+            )
+        )
+
+      "return a Right with the `UserIdentity` response" in matchResponse(stub, request) {
+
+        case _ @HttpResponse(_, Right(response)) =>
+          response shouldBe UserIdentity(
+            id = 1L,
+            username = "example",
+            resourceUrl = Uri.unsafeFromString("https://api.discogs.com/users/example"),
+            consumerName = "Your Application Name"
+          )
+      }
+    }
+
+    "the server response is unexpected" should {
+
+      def stub: StubMapping =
+        stubFor(
+          get(urlMatching("/oauth/identity"))
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBody("WAT")
+            )
+        )
+
+      "return a Left with appropriate message" in matchResponse(stub, request) {
+        case res @ HttpResponse(_, Left(error)) =>
+          res.status shouldBe Status.UnprocessableEntity
+          error.getMessage shouldBe "There was a problem decoding or parsing this response, please check the error logs"
       }
     }
   }
