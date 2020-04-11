@@ -3,7 +3,8 @@ package io.bartholomews.discogs4s.api
 import cats.effect.Effect
 import fsclient.client.effect.HttpEffectClient
 import fsclient.entities.OAuthInfo.OAuthV1
-import fsclient.entities.{HttpResponse, SignerV1}
+import fsclient.entities.SignerV1
+import fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.discogs4s.endpoints.{GetAuthenticatedUserProfile, GetSimpleUserProfile, UpdateUserProfile}
 import io.bartholomews.discogs4s.entities.{
   AuthenticatedUser,
@@ -24,8 +25,24 @@ class UsersApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
    *
    * Retrieve a user by username.
+   *
+   * If authenticated as the requested user or the user’s collection/wantlist is public,
+   * the num_collection / num_wantlist keys will be visible.
+   *
+   * @param username The username of whose profile you are requesting.
+   * @return `SimpleUser`
+   */
+  def getSimpleUserProfile(username: Username): F[HttpResponse[SimpleUser]] =
+    GetSimpleUserProfile(username).runWith(client)
+
+  /**
+   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
+   *
+   * Retrieve a user by username.
    * If authenticated as the requested user, the email key will be visible,
    * and the num_list count will include the user’s private lists.
+   * Otherwise the call would probably fail since the entity expects the extra fields in the response.
+   * For unauthenticated calls `getSimpleUserProfile` should be used instead, returning a `SimpleUser` entity.
    *
    * If authenticated as the requested user or the user’s collection/wantlist is public,
    * the num_collection / num_wantlist keys will be visible.
@@ -37,22 +54,6 @@ class UsersApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
     username: Username
   )(implicit signer: SignerV1): F[HttpResponse[AuthenticatedUser]] =
     GetAuthenticatedUserProfile(username).runWith(client)
-
-  /**
-   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
-   *
-   * Retrieve a user by username.
-   * If authenticated as the requested user, the email key will be visible,
-   * and the num_list count will include the user’s private lists.
-   *
-   * If authenticated as the requested user or the user’s collection/wantlist is public,
-   * the num_collection / num_wantlist keys will be visible.
-   *
-   * @param username The username of whose profile you are requesting.
-   * @return `SimpleUser`
-   */
-  def getSimpleUserProfile(username: Username): F[HttpResponse[SimpleUser]] =
-    GetSimpleUserProfile(username).runWith(client)
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post

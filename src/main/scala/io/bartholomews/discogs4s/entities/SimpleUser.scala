@@ -3,37 +3,41 @@ package io.bartholomews.discogs4s.entities
 import fsclient.codecs.FsJsonResponsePipe
 import io.circe.Decoder
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
+import org.http4s.Uri
 
 // https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
-case class SimpleUser(profile: String,
-                      wantlistUrl: String, // FIXME Uri
-                      rank: Long,
-                      numPending: Long,
-                      id: Long,
-                      numForSale: Long,
-                      homePage: String,
-                      location: String,
-                      collectionFoldersUrl: String, // FIXME Uri
-                      username: String,
-                      collectionFieldsUrl: String, // FIXME Uri
-                      releasesContributed: Long,
-                      registered: String, // FIXME date
-                      ratingAvg: Long,
-                      releaseRated: Option[Long], // FIXME is it returned in some cases or should it be removed?
-                      numLists: Long,
-                      name: String,
-                      inventoryUrl: String, // FIXME Uri
-                      avatarUrl: String, // FIXME Uri
-                      bannerUrl: String, // FIXME Uri
-                      uri: String, // FIXME Uri
-                      resourceUrl: String, // FIXME Uri
-                      buyerRating: BigDecimal,
-                      buyerRatingStars: Short,
-                      buyerNumRating: Option[BigDecimal], // FIXME is it returned in some cases or should it be removed?
-                      sellerRatingStars: Short,
-                      sellerNumRatings: Long,
-                      currAbbr: String)
-    extends DiscogsEntity
+case class SimpleUser(
+  profile: String,
+  wantlistUrl: Uri,
+  rank: Long,
+  numPending: Long,
+  id: Long,
+  numForSale: Long,
+  homePage: UserWebsite,
+  location: UserLocation,
+  collectionFoldersUrl: Uri,
+  username: Username,
+  collectionFieldsUrl: Uri,
+  releasesContributed: Long,
+  registered: String, // FIXME date
+  ratingAvg: Double,
+  numCollection: Option[Long],
+  releasesRated: Long,
+  numLists: Long,
+  name: UserRealName,
+  numWantlist: Option[Long],
+  inventoryUrl: Uri,
+  avatarUrl: Uri,
+  bannerUrl: Uri,
+  uri: Uri,
+  resourceUrl: Uri,
+  buyerRating: Double,
+  buyerRatingStars: Short,
+  buyerNumRatings: Long,
+  sellerRatingStars: Short,
+  sellerNumRatings: Long,
+  currAbbr: String // FIXME [is this a COUNTRY ISO CODE? Should probably decode as Option[IsoDate]]
+) extends DiscogsEntity
 
 object SimpleUser extends FsJsonResponsePipe[SimpleUser] {
   implicit val decoder: Decoder[SimpleUser] = deriveConfiguredDecoder[SimpleUser]
@@ -41,35 +45,37 @@ object SimpleUser extends FsJsonResponsePipe[SimpleUser] {
 
 case class AuthenticatedUser(
   profile: String,
-  wantlistUrl: String, // FIXME Uri
+  wantlistUrl: Uri,
   rank: Long,
   numPending: Long,
+  num_unread: Long,
   id: Long,
   numForSale: Long,
-  homePage: String,
-  location: String,
-  collectionFoldersUrl: String, // FIXME Uri
-  username: String,
-  collectionFieldsUrl: String, // FIXME Uri
+  homePage: UserWebsite,
+  location: UserLocation,
+  collectionFoldersUrl: Uri,
+  username: Username,
+  collectionFieldsUrl: Uri,
   releasesContributed: Long,
   registered: String, // FIXME date
-  ratingAvg: Long,
+  ratingAvg: Double,
   numCollection: Long,
-  releaseRated: Option[Long], // FIXME is it returned in some cases or should it be removed?
+  releasesRated: Long,
   numLists: Long,
-  name: String,
+  name: UserRealName,
+  email: UserEmail,
   numWantlist: Long,
-  inventoryUrl: String, // FIXME Uri
-  avatarUrl: String, // FIXME Uri
-  bannerUrl: String, // FIXME Uri
-  uri: String, // FIXME Uri
-  resourceUrl: String, // FIXME Uri
-  buyerRating: BigDecimal,
+  inventoryUrl: Uri,
+  avatarUrl: Uri,
+  bannerUrl: Uri,
+  uri: Uri,
+  resourceUrl: Uri,
+  buyerRating: Double,
   buyerRatingStars: Short,
-  buyerNumRating: Option[BigDecimal], // FIXME is it returned in some cases or should it be removed?
+  buyerNumRatings: Long,
   sellerRatingStars: Short,
   sellerNumRatings: Long,
-  currAbbr: String
+  currAbbr: String // FIXME [is this a COUNTRY ISO CODE? Should probably decode a [IsoDate]
 ) extends DiscogsEntity
 
 object AuthenticatedUser extends FsJsonResponsePipe[AuthenticatedUser] {
