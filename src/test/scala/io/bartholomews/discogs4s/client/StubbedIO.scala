@@ -1,8 +1,7 @@
 package io.bartholomews.discogs4s.client
 
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import fsclient.entities.HttpResponse
-import fsclient.utils.HttpTypes.IOResponse
+import fsclient.utils.HttpTypes.{HttpResponse, IOResponse}
 import org.scalatest.{Assertion, Inside}
 
 trait StubbedIO extends Inside {

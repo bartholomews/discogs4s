@@ -2,17 +2,20 @@ package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import fsclient.entities.HttpResponse
 import fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, RequestTokenV1}
+import fsclient.entities.{FsResponseErrorJson, FsResponseErrorString, FsResponseSuccess}
 import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.StubbedWordSpec
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
+import org.apache.http.entity.ContentType
 import org.http4s.client.oauth1.Token
 import org.http4s.{Status, Uri}
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
 class AuthApiSpec extends StubbedWordSpec {
+
+  import io.circe.generic.auto._
 
   "getRequestToken" when {
 
@@ -26,15 +29,15 @@ class AuthApiSpec extends StubbedWordSpec {
             .willReturn(
               aResponse()
                 .withStatus(401)
-                // TODO: Should parse as json instead
+                .withContentType(ContentType.TEXT_PLAIN)
                 .withBody("Invalid consumer.")
             )
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case _ @HttpResponse(_, Left(error)) =>
-          error.status shouldBe Status.Unauthorized
-          error.getMessage shouldBe "Invalid consumer."
+        case FsResponseErrorString(_, status, error) =>
+          status shouldBe Status.Unauthorized
+          error shouldBe "Invalid consumer."
       }
     }
 
@@ -51,7 +54,7 @@ class AuthApiSpec extends StubbedWordSpec {
         )
 
       "return a Right with the response Token" in matchResponse(stub, request) {
-        case _ @HttpResponse(_, Right(response)) =>
+        case FsResponseSuccess(_, _, response) =>
           response should matchTo(
             RequestToken(
               token = Token("TK1", "fafafafafaffafaffafafa"),
@@ -61,7 +64,7 @@ class AuthApiSpec extends StubbedWordSpec {
       }
 
       "return a Right with the callback Uri" in matchResponse(stub, request) {
-        case _ @HttpResponse(_, Right(tokenResponse)) =>
+        case FsResponseSuccess(_, _, tokenResponse) =>
           tokenResponse.callback shouldBe Uri.unsafeFromString(
             "http://127.0.0.1:8080/oauth/authorize?oauth_token=TK1"
           )
@@ -81,9 +84,9 @@ class AuthApiSpec extends StubbedWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case res @ HttpResponse(_, Left(error)) =>
-          res.status shouldBe Status.UnprocessableEntity
-          error.getMessage shouldBe "Unexpected response: WAT"
+        case FsResponseErrorString(_, status, error) =>
+          status shouldBe Status.UnprocessableEntity
+          error shouldBe "Unexpected response: WAT"
       }
     }
   }
@@ -107,9 +110,9 @@ class AuthApiSpec extends StubbedWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case _ @HttpResponse(_, Left(error)) =>
-          error.status shouldBe Status.Unauthorized
-          error.getMessage shouldBe "Invalid consumer."
+        case FsResponseErrorString(_, status, error) =>
+          status shouldBe Status.Unauthorized
+          error shouldBe "Invalid consumer."
       }
     }
 
@@ -127,7 +130,7 @@ class AuthApiSpec extends StubbedWordSpec {
 
       "return a Right with the response Token" in matchResponse(stub, request) {
 
-        case _ @HttpResponse(_, Right(response)) =>
+        case FsResponseSuccess(_, _, response) =>
           response should matchTo(
             AccessTokenV1(Token(value = "OATH_TK1", secret = "TK_SECRET"), sampleConsumer)
           )
@@ -147,9 +150,9 @@ class AuthApiSpec extends StubbedWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case res @ HttpResponse(_, Left(error)) =>
-          res.status shouldBe Status.UnprocessableEntity
-          error.getMessage shouldBe "Unexpected response: WAT"
+        case FsResponseErrorString(_, status, error) =>
+          status shouldBe Status.UnprocessableEntity
+          error shouldBe "Unexpected response: WAT"
       }
     }
   }
@@ -168,15 +171,15 @@ class AuthApiSpec extends StubbedWordSpec {
             .willReturn(
               aResponse()
                 .withStatus(401)
-                .withBody("Invalid consumer.")
+                .withContentType(ContentType.APPLICATION_JSON)
+                .withBodyFile("unauthenticated.json")
             )
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case _ @HttpResponse(_, Left(error)) =>
-          error.status shouldBe Status.Unauthorized
-          // TODO: Should parse as json instead
-          error.getMessage shouldBe "Invalid consumer."
+        case FsResponseErrorJson(_, status, error) =>
+          status shouldBe Status.Unauthorized
+          error.as[DiscogsError].map(_.message) shouldBe Right("You must authenticate to access this resource.")
       }
     }
 
@@ -194,7 +197,7 @@ class AuthApiSpec extends StubbedWordSpec {
 
       "return a Right with the `UserIdentity` response" in matchResponse(stub, request) {
 
-        case _ @HttpResponse(_, Right(response)) =>
+        case FsResponseSuccess(_, _, response) =>
           response shouldBe UserIdentity(
             id = 1L,
             username = "example",
@@ -217,9 +220,9 @@ class AuthApiSpec extends StubbedWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case res @ HttpResponse(_, Left(error)) =>
-          res.status shouldBe Status.UnprocessableEntity
-          error.getMessage shouldBe "There was a problem decoding or parsing this response, please check the error logs"
+        case FsResponseErrorString(_, status, error) =>
+          status shouldBe Status.UnprocessableEntity
+          error shouldBe "There was a problem decoding or parsing this response, please check the error logs"
       }
     }
   }

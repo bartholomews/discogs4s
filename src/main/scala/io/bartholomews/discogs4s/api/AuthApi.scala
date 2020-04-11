@@ -7,6 +7,7 @@ import fsclient.entities.OAuthInfo.OAuthV1
 import fsclient.entities.OAuthVersion.Version1._
 import fsclient.entities._
 import fsclient.requests.OAuthV1AuthorizationFramework.AccessTokenRequest
+import fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.discogs4s.endpoints.{AccessTokenEndpoint, AuthorizeUrl, Identity}
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import org.http4s.client.oauth1.Token

@@ -6,7 +6,7 @@ import org.http4s.Uri
 
 // https://www.discogs.com/developers#page:authentication,header:authentication-request-token-url
 sealed trait OAuthEndpoint extends DiscogsEndpoint {
-  val path: String = "oauth"
+  final val path: String = "oauth"
   private[endpoints] val basePath: Uri = apiUri / path
 }
 
@@ -15,7 +15,7 @@ case object AuthorizeUrl extends OAuthEndpoint with PlainTextRequest.Get[Request
 }
 
 case object AccessTokenEndpoint extends OAuthEndpoint with AccessTokenEndpointBase {
-  val uri: Uri = basePath / "access_token"
+  override val uri: Uri = basePath / "access_token"
 }
 
 case object Identity extends AuthJsonRequest.Get[UserIdentity] with OAuthEndpoint {

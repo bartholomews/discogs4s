@@ -37,7 +37,7 @@
     </appender>
 
 <!--    <logger name="org.http4s" level="ERROR"/>-->
-    <logger name="fsclient-logger" level="DEBUG" />
+    <logger name="discogs4s" level="DEBUG" />
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>

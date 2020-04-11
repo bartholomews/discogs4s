@@ -2,8 +2,8 @@ package io.bartholomews.discogs4s.api
 
 import cats.effect.Effect
 import fsclient.client.effect.HttpEffectClient
-import fsclient.entities.HttpResponse
 import fsclient.entities.OAuthInfo.OAuthV1
+import fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.discogs4s.endpoints.ArtistsReleases
 import io.bartholomews.discogs4s.entities.{PaginatedReleases, SortBy, SortOrder}
 
