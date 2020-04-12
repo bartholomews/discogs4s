@@ -6,8 +6,8 @@ import fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
 import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.client.MockClient
 import io.bartholomews.discogs4s.entities.{SimpleUser, UserLocation, UserRealName, UserWebsite, Username}
+import io.bartholomews.testudo.WireWordSpec
 import org.http4s.{Status, Uri}
-import testudo.WireWordSpec
 
 class UsersApiSpec extends WireWordSpec with MockClient {
 

@@ -5,8 +5,8 @@ import fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, BasicSignature}
 import fsclient.entities.{OAuthEnabled, SignerV1}
 import fsclient.requests.OAuthV1AuthorizationFramework.{OAuthV1AccessToken, OAuthV1BasicSignature}
 import io.bartholomews.discogs4s.client.MockClient
+import io.bartholomews.testudo.WireWordSpec
 import org.http4s.client.oauth1.{Consumer, Token}
-import testudo.WireWordSpec
 
 class DiscogsClientSpec extends WireWordSpec with MockClient {
 

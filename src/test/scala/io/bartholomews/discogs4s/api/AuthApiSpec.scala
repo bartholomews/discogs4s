@@ -7,10 +7,10 @@ import fsclient.entities.{FsResponseErrorJson, FsResponseErrorString, FsResponse
 import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.client.MockClient
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
+import io.bartholomews.testudo.WireWordSpec
 import org.apache.http.entity.ContentType
 import org.http4s.client.oauth1.Token
 import org.http4s.{Status, Uri}
-import testudo.WireWordSpec
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html

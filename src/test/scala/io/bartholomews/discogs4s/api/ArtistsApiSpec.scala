@@ -6,8 +6,8 @@ import fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
 import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.client.MockClient
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release, SortBy, SortOrder}
+import io.bartholomews.testudo.WireWordSpec
 import org.http4s.Status
-import testudo.WireWordSpec
 
 class ArtistsApiSpec extends WireWordSpec with MockClient {
 
