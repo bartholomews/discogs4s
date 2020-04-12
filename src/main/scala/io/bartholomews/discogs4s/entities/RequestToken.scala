@@ -2,8 +2,8 @@ package io.bartholomews.discogs4s.entities
 
 import cats.effect.Effect
 import fs2.Pipe
-import fsclient.codecs.FsJsonResponsePipe
-import fsclient.implicits.plainTextDecoderPipe
+import io.bartholomews.fsclient.codecs.FsJsonResponsePipe
+import io.bartholomews.fsclient.implicits.plainTextDecoderPipe
 import io.bartholomews.discogs4s.endpoints.AuthorizeUrl
 import io.bartholomews.discogs4s.utils.Configuration
 import org.http4s.Uri

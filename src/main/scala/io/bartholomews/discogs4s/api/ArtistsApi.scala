@@ -1,15 +1,15 @@
 package io.bartholomews.discogs4s.api
 
 import cats.effect.Effect
-import fsclient.client.effect.HttpEffectClient
-import fsclient.entities.OAuthInfo.OAuthV1
-import fsclient.utils.HttpTypes.HttpResponse
+import io.bartholomews.fsclient.client.effect.HttpEffectClient
+import io.bartholomews.fsclient.entities.OAuthInfo.OAuthV1
+import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.discogs4s.endpoints.ArtistsReleases
 import io.bartholomews.discogs4s.entities.{PaginatedReleases, SortBy, SortOrder}
 
 class ArtistsApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
 
-  import fsclient.implicits.{emptyEntityEncoder, rawJsonPipe}
+  import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, rawJsonPipe}
 
   /**
    * https://www.discogs.com/developers/#page:database,header:database-artist-releases

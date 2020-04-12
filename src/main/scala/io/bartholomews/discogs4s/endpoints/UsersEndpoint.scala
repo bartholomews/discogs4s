@@ -1,6 +1,6 @@
 package io.bartholomews.discogs4s.endpoints
 
-import fsclient.requests.{AuthJsonRequest, FsAuthRequest, JsonRequest}
+import io.bartholomews.fsclient.requests.{AuthJsonRequest, FsAuthRequest, JsonRequest}
 import io.bartholomews.discogs4s.entities.{
   AuthenticatedUser,
   MarketplaceCurrency,

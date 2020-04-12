@@ -1,12 +1,12 @@
 package io.bartholomews.discogs4s
 
-import fsclient.client.io_client.IOAuthClient
-import fsclient.config.FsClientConfig.{AppConfig, BasicAppConfig, TokenAppConfig}
-import fsclient.config.{Derivations, UserAgent}
-import fsclient.entities.OAuthVersion.Version1
-import fsclient.entities.OAuthVersion.Version1.AccessTokenV1
-import fsclient.entities.{OAuthVersion, SignerV1}
-import fsclient.requests.OAuthV1AuthorizationFramework.{OAuthV1AccessToken, OAuthV1BasicSignature, SignerType}
+import io.bartholomews.fsclient.client.io_client.IOAuthClient
+import io.bartholomews.fsclient.config.FsClientConfig.{AppConfig, BasicAppConfig, TokenAppConfig}
+import io.bartholomews.fsclient.config.{Derivations, UserAgent}
+import io.bartholomews.fsclient.entities.OAuthVersion.Version1
+import io.bartholomews.fsclient.entities.OAuthVersion.Version1.AccessTokenV1
+import io.bartholomews.fsclient.entities.{OAuthVersion, SignerV1}
+import io.bartholomews.fsclient.requests.OAuthV1AuthorizationFramework.{OAuthV1AccessToken, OAuthV1BasicSignature, SignerType}
 import io.bartholomews.discogs4s.api.{ArtistsApi, AuthApi, UsersApi}
 import pureconfig.{ConfigReader, ConfigSource, Derivation}
 

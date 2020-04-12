@@ -1,6 +1,6 @@
 package io.bartholomews.discogs4s.endpoints
 
-import fsclient.requests.JsonRequest
+import io.bartholomews.fsclient.requests.JsonRequest
 import io.bartholomews.discogs4s.entities.{PaginatedReleases, SortBy, SortOrder}
 import org.http4s.Uri
 

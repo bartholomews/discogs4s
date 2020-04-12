@@ -2,12 +2,12 @@ package io.bartholomews.discogs4s.api
 
 import cats.effect.Effect
 import fs2.Pipe
-import fsclient.client.effect.HttpEffectClient
-import fsclient.entities.OAuthInfo.OAuthV1
-import fsclient.entities.OAuthVersion.Version1._
-import fsclient.entities._
-import fsclient.requests.OAuthV1AuthorizationFramework.AccessTokenRequest
-import fsclient.utils.HttpTypes.HttpResponse
+import io.bartholomews.fsclient.client.effect.HttpEffectClient
+import io.bartholomews.fsclient.entities.OAuthInfo.OAuthV1
+import io.bartholomews.fsclient.entities.OAuthVersion.Version1._
+import io.bartholomews.fsclient.entities._
+import io.bartholomews.fsclient.requests.OAuthV1AuthorizationFramework.AccessTokenRequest
+import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.discogs4s.endpoints.{AccessTokenEndpoint, AuthorizeUrl, Identity}
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import org.http4s.client.oauth1.Token
@@ -15,7 +15,7 @@ import org.http4s.client.oauth1.Token
 // https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
 class AuthApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
 
-  import fsclient.implicits.{emptyEntityEncoder, plainTextDecoderPipe, rawJsonPipe, rawPlainTextPipe}
+  import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, plainTextDecoderPipe, rawJsonPipe, rawPlainTextPipe}
 
   def getRequestToken: F[HttpResponse[RequestToken]] =
     AuthorizeUrl.runWith(client)

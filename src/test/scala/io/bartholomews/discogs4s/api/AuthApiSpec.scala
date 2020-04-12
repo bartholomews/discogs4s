@@ -2,9 +2,9 @@ package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, RequestTokenV1}
-import fsclient.entities.{FsResponseErrorJson, FsResponseErrorString, FsResponseSuccess}
-import fsclient.utils.HttpTypes.IOResponse
+import io.bartholomews.fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, RequestTokenV1}
+import io.bartholomews.fsclient.entities.{FsResponseErrorJson, FsResponseErrorString, FsResponseSuccess}
+import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.client.MockClient
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import io.bartholomews.testudo.WireWordSpec

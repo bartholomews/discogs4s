@@ -2,10 +2,10 @@ package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
-import fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.discogs4s.client.MockClient
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release, SortBy, SortOrder}
+import io.bartholomews.fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
+import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.testudo.WireWordSpec
 import org.http4s.Status
 
@@ -76,7 +76,7 @@ class ArtistsApiSpec extends WireWordSpec with MockClient {
             )
         )
 
-      "decode an `Unauthorized` response" in matchResponse(stub, request) {
+      "decode an `Unauthorized` response" in matchResponse[PaginatedReleases](stub, request) {
         case FsResponseErrorString(_, status, error) =>
           status shouldBe Status.Unauthorized
           error shouldBe "Invalid consumer."

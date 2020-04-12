@@ -1,6 +1,6 @@
 package io.bartholomews.discogs4s.endpoints
 
-import fsclient.requests.{AccessTokenEndpointBase, AuthJsonRequest, PlainTextRequest}
+import io.bartholomews.fsclient.requests.{AccessTokenEndpointBase, AuthJsonRequest, PlainTextRequest}
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import org.http4s.Uri
 

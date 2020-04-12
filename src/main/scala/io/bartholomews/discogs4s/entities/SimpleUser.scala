@@ -1,6 +1,6 @@
 package io.bartholomews.discogs4s.entities
 
-import fsclient.codecs.FsJsonResponsePipe
+import io.bartholomews.fsclient.codecs.FsJsonResponsePipe
 import io.circe.Decoder
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 import org.http4s.Uri

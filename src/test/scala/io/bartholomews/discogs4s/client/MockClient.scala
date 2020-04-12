@@ -1,8 +1,8 @@
 package io.bartholomews.discogs4s.client
 
 import cats.effect.{ContextShift, IO, Resource}
-import fsclient.config.UserAgent
-import fsclient.entities.OAuthVersion.Version1.BasicSignature
+import io.bartholomews.fsclient.config.UserAgent
+import io.bartholomews.fsclient.entities.OAuthVersion.Version1.BasicSignature
 import io.bartholomews.discogs4s.DiscogsClient
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder

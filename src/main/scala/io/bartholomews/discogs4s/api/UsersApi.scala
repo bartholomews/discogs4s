@@ -1,10 +1,10 @@
 package io.bartholomews.discogs4s.api
 
 import cats.effect.Effect
-import fsclient.client.effect.HttpEffectClient
-import fsclient.entities.OAuthInfo.OAuthV1
-import fsclient.entities.SignerV1
-import fsclient.utils.HttpTypes.HttpResponse
+import io.bartholomews.fsclient.client.effect.HttpEffectClient
+import io.bartholomews.fsclient.entities.OAuthInfo.OAuthV1
+import io.bartholomews.fsclient.entities.SignerV1
+import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.discogs4s.endpoints.{GetAuthenticatedUserProfile, GetSimpleUserProfile, UpdateUserProfile}
 import io.bartholomews.discogs4s.entities.{
   AuthenticatedUser,
@@ -19,7 +19,7 @@ import io.bartholomews.discogs4s.entities.{
 
 class UsersApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
 
-  import fsclient.implicits.{emptyEntityEncoder, rawJsonPipe}
+  import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, rawJsonPipe}
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
