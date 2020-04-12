@@ -1,6 +1,6 @@
 package io.bartholomews.discogs4s
 
-import io.bartholomews.discogs4s.client.MockClient
+import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.fsclient.config.{FsClientConfig, UserAgent}
 import io.bartholomews.fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, BasicSignature}
 import io.bartholomews.fsclient.entities.{OAuthEnabled, SignerV1}
@@ -8,7 +8,10 @@ import io.bartholomews.fsclient.requests.OAuthV1AuthorizationFramework.{OAuthV1A
 import io.bartholomews.testudo.WireWordSpec
 import org.http4s.client.oauth1.{Consumer, Token}
 
-class DiscogsClientSpec extends WireWordSpec with MockClient {
+class DiscogsClientSpec extends WireWordSpec {
+
+  import ClientData._
+
   "DiscogsSimpleClient" when {
 
     "initialised with an implicit configuration for `BasicSignature`" should {

@@ -2,11 +2,11 @@ package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import io.bartholomews.discogs4s.client.ClientData
+import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import io.bartholomews.fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, RequestTokenV1}
 import io.bartholomews.fsclient.entities.{FsResponseErrorJson, FsResponseErrorString, FsResponseSuccess}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.discogs4s.client.MockClient
-import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import io.bartholomews.testudo.WireWordSpec
 import org.apache.http.entity.ContentType
 import org.http4s.client.oauth1.Token
@@ -14,8 +14,9 @@ import org.http4s.{Status, Uri}
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class AuthApiSpec extends WireWordSpec with MockClient {
+class AuthApiSpec extends WireWordSpec {
 
+  import ClientData._
   import io.circe.generic.auto._
 
   "getRequestToken" when {

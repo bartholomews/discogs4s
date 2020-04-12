@@ -2,14 +2,16 @@ package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import io.bartholomews.discogs4s.client.MockClient
+import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release, SortBy, SortOrder}
 import io.bartholomews.fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.testudo.WireWordSpec
 import org.http4s.Status
 
-class ArtistsApiSpec extends WireWordSpec with MockClient {
+class ArtistsApiSpec extends WireWordSpec {
+
+  import ClientData._
 
   "getArtistsReleases" when {
 

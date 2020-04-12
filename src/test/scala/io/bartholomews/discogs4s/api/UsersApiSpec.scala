@@ -2,14 +2,16 @@ package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import io.bartholomews.discogs4s.client.ClientData
+import io.bartholomews.discogs4s.entities.{SimpleUser, UserLocation, UserRealName, UserWebsite, Username}
 import io.bartholomews.fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.discogs4s.client.MockClient
-import io.bartholomews.discogs4s.entities.{SimpleUser, UserLocation, UserRealName, UserWebsite, Username}
 import io.bartholomews.testudo.WireWordSpec
 import org.http4s.{Status, Uri}
 
-class UsersApiSpec extends WireWordSpec with MockClient {
+class UsersApiSpec extends WireWordSpec {
+
+  import ClientData._
 
   "getSimpleUserProfile" when {
 
