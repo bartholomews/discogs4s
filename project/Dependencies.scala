@@ -2,8 +2,9 @@ import sbt._
 
 object Versions {
   // https://github.com/scalatest/scalatest/releases
-  val scalaTest = "3.0.8"
-  // https://github.com/tomakehurst/wiremock/releases
+  val scalaTest = "3.1.1"
+  //
+
   val wiremock = "2.25.0"
 }
 
@@ -17,6 +18,7 @@ object Dependencies {
   )
 
   lazy val testDependencies: Seq[ModuleID] = Seq(
+    "io.bartholomews" %% "scalatestudo" % "0.0.1-SNAPSHOT",
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
     // libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.7.25" % Test
     "org.scalactic" %% "scalactic" % Versions.scalaTest,

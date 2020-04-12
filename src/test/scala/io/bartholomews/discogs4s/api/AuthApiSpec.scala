@@ -5,15 +5,16 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, RequestTokenV1}
 import fsclient.entities.{FsResponseErrorJson, FsResponseErrorString, FsResponseSuccess}
 import fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.discogs4s.StubbedWordSpec
+import io.bartholomews.discogs4s.client.MockClient
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import org.apache.http.entity.ContentType
 import org.http4s.client.oauth1.Token
 import org.http4s.{Status, Uri}
+import testudo.WireWordSpec
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class AuthApiSpec extends StubbedWordSpec {
+class AuthApiSpec extends WireWordSpec with MockClient {
 
   import io.circe.generic.auto._
 

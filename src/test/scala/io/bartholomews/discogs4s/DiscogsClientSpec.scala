@@ -4,9 +4,11 @@ import fsclient.config.{FsClientConfig, UserAgent}
 import fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, BasicSignature}
 import fsclient.entities.{OAuthEnabled, SignerV1}
 import fsclient.requests.OAuthV1AuthorizationFramework.{OAuthV1AccessToken, OAuthV1BasicSignature}
+import io.bartholomews.discogs4s.client.MockClient
 import org.http4s.client.oauth1.{Consumer, Token}
+import testudo.WireWordSpec
 
-class DiscogsClientSpec extends StubbedWordSpec {
+class DiscogsClientSpec extends WireWordSpec with MockClient {
 
   "DiscogsSimpleClient" when {
 
@@ -27,7 +29,7 @@ class DiscogsClientSpec extends StubbedWordSpec {
         inside(discogs.appConfig) {
           case FsClientConfig(userAgent, OAuthEnabled(AccessTokenV1(token, verifier, consumer))) =>
             token should matchTo(Token("TOKEN_VALUE", "TOKEN_SECRET"))
-            verifier shouldBe empty
+            verifier.isEmpty shouldBe true
             consumer.key should matchTo("mock-consumer-key")
             consumer.secret should matchTo("mock-consumer-secret")
         }

@@ -4,11 +4,12 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
 import fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.discogs4s.StubbedWordSpec
+import io.bartholomews.discogs4s.client.MockClient
 import io.bartholomews.discogs4s.entities.{SimpleUser, UserLocation, UserRealName, UserWebsite, Username}
 import org.http4s.{Status, Uri}
+import testudo.WireWordSpec
 
-class UsersApiSpec extends StubbedWordSpec {
+class UsersApiSpec extends WireWordSpec with MockClient {
 
   "getSimpleUserProfile" when {
 

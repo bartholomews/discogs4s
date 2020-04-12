@@ -28,4 +28,6 @@ trait MockClient {
       UserAgent("discogs-test", appVersion = None, appUrl = None),
       BasicSignature(sampleConsumer)
     )
+
+  case class DiscogsError(message: String)
 }

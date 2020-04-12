@@ -4,11 +4,12 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
 import fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.discogs4s.StubbedWordSpec
+import io.bartholomews.discogs4s.client.MockClient
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release, SortBy, SortOrder}
 import org.http4s.Status
+import testudo.WireWordSpec
 
-class ArtistsApiSpec extends StubbedWordSpec {
+class ArtistsApiSpec extends WireWordSpec with MockClient {
 
   "getArtistsReleases" when {
 
