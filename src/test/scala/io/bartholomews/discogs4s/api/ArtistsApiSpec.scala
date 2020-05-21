@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release, SortBy, SortOrder}
-import io.bartholomews.fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
+import io.bartholomews.fsclient.entities.{ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.testudo.WireWordSpec
 import org.http4s.Status
@@ -23,7 +23,7 @@ class ArtistsApiSpec extends WireWordSpec {
                                                 sortOrder = Some(SortOrder.Asc))
 
       "decode the response correctly" in matchResponse(stubWithResourceFile, request) {
-        case FsResponseSuccess(_, _, entity) =>
+        case FsResponse(_, _, Right(entity)) =>
           entity should matchTo(
             PaginatedReleases(
               pagination = Pagination(
@@ -79,7 +79,7 @@ class ArtistsApiSpec extends WireWordSpec {
         )
 
       "decode an `Unauthorized` response" in matchResponse[PaginatedReleases](stub, request) {
-        case FsResponseErrorString(_, status, error) =>
+        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
           status shouldBe Status.Unauthorized
           error shouldBe "Invalid consumer."
       }

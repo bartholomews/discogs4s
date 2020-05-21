@@ -1,23 +1,13 @@
 package io.bartholomews.discogs4s.api
 
-import cats.effect.Effect
-import io.bartholomews.fsclient.client.effect.HttpEffectClient
-import io.bartholomews.fsclient.entities.OAuthInfo.OAuthV1
-import io.bartholomews.fsclient.entities.SignerV1
-import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
+import cats.effect.ConcurrentEffect
 import io.bartholomews.discogs4s.endpoints.{GetAuthenticatedUserProfile, GetSimpleUserProfile, UpdateUserProfile}
-import io.bartholomews.discogs4s.entities.{
-  AuthenticatedUser,
-  MarketplaceCurrency,
-  SimpleUser,
-  UserLocation,
-  UserProfileInfo,
-  UserRealName,
-  UserWebsite,
-  Username
-}
+import io.bartholomews.discogs4s.entities.{AuthenticatedUser, MarketplaceCurrency, SimpleUser, UserLocation, UserProfileInfo, UserRealName, UserWebsite, Username}
+import io.bartholomews.fsclient.client.FsClientV1
+import io.bartholomews.fsclient.entities.oauth.SignerV1
+import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 
-class UsersApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
+class UsersApi[F[_]: ConcurrentEffect](client: FsClientV1[F, SignerV1]) {
 
   import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, rawJsonPipe}
 

@@ -3,8 +3,8 @@ package io.bartholomews.discogs4s.client
 import cats.effect.{ContextShift, IO, Resource}
 import io.bartholomews.discogs4s.DiscogsClient
 import io.bartholomews.fsclient.config.UserAgent
-import io.bartholomews.fsclient.entities.OAuthVersion.Version1.BasicSignature
-import io.bartholomews.testudo.client.TestudoClientData
+import io.bartholomews.fsclient.entities.oauth.ClientCredentials
+import io.bartholomews.testudo.data.TestudoClientData
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
 
@@ -20,7 +20,7 @@ object ClientData extends TestudoClientData {
   val sampleClient =
     new DiscogsClient(
       UserAgent("discogs-test", appVersion = None, appUrl = None),
-      BasicSignature(sampleConsumer)
+      ClientCredentials(sampleConsumer)
     )
 
   case class DiscogsError(message: String)

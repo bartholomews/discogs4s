@@ -4,8 +4,12 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
-import io.bartholomews.fsclient.entities.OAuthVersion.Version1.{AccessTokenV1, RequestTokenV1}
-import io.bartholomews.fsclient.entities.{FsResponseErrorJson, FsResponseErrorString, FsResponseSuccess}
+import io.bartholomews.fsclient.entities.oauth.{
+  AccessTokenCredentials,
+  RequestTokenCredentials,
+  TemporaryCredentialsRequest
+}
+import io.bartholomews.fsclient.entities.{ErrorBodyJson, ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.testudo.WireWordSpec
 import org.apache.http.entity.ContentType
@@ -21,7 +25,12 @@ class AuthApiSpec extends WireWordSpec {
 
   "getRequestToken" when {
 
-    def request: IOResponse[RequestToken] = sampleClient.auth.getRequestToken
+    def request: IOResponse[RequestToken] = sampleClient.auth.getRequestToken(
+      TemporaryCredentialsRequest(
+        sampleConsumer,
+        Uri.unsafeFromString("https://bartholomews.io/discogs4s/callback")
+      )
+    )
 
     "the server responds with an error" should {
 
@@ -37,7 +46,7 @@ class AuthApiSpec extends WireWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponseErrorString(_, status, error) =>
+        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
           status shouldBe Status.Unauthorized
           error shouldBe "Invalid consumer."
       }
@@ -56,7 +65,7 @@ class AuthApiSpec extends WireWordSpec {
         )
 
       "return a Right with the response Token" in matchResponse(stub, request) {
-        case FsResponseSuccess(_, _, response) =>
+        case FsResponse(_, _, Right(response)) =>
           response should matchTo(
             RequestToken(
               token = Token("TK1", "fafafafafaffafaffafafa"),
@@ -66,7 +75,7 @@ class AuthApiSpec extends WireWordSpec {
       }
 
       "return a Right with the callback Uri" in matchResponse(stub, request) {
-        case FsResponseSuccess(_, _, tokenResponse) =>
+        case FsResponse(_, _, Right(tokenResponse)) =>
           tokenResponse.callback shouldBe Uri.unsafeFromString(
             "http://127.0.0.1:8080/oauth/authorize?oauth_token=TK1"
           )
@@ -86,7 +95,7 @@ class AuthApiSpec extends WireWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponseErrorString(_, status, error) =>
+        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
           status shouldBe Status.UnprocessableEntity
           error shouldBe "Unexpected response: WAT"
       }
@@ -95,8 +104,8 @@ class AuthApiSpec extends WireWordSpec {
 
   "getAccessToken" when {
 
-    def request: IOResponse[AccessTokenV1] = sampleClient.auth.getAccessToken(
-      RequestTokenV1(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
+    def request: IOResponse[AccessTokenCredentials] = sampleClient.auth.getAccessToken(
+      RequestTokenCredentials(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
     )
 
     "the server responds with an error" should {
@@ -112,7 +121,7 @@ class AuthApiSpec extends WireWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponseErrorString(_, status, error) =>
+        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
           status shouldBe Status.Unauthorized
           error shouldBe "Invalid consumer."
       }
@@ -131,11 +140,8 @@ class AuthApiSpec extends WireWordSpec {
         )
 
       "return a Right with the response Token" in matchResponse(stub, request) {
-
-        case FsResponseSuccess(_, _, response) =>
-          response should matchTo(
-            AccessTokenV1(Token(value = "OATH_TK1", secret = "TK_SECRET"), sampleConsumer)
-          )
+        case FsResponse(_, _, Right(response)) =>
+          response shouldBe AccessTokenCredentials(Token(value = "OATH_TK1", secret = "TK_SECRET"), sampleConsumer)
       }
     }
 
@@ -152,7 +158,7 @@ class AuthApiSpec extends WireWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponseErrorString(_, status, error) =>
+        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
           status shouldBe Status.UnprocessableEntity
           error shouldBe "Unexpected response: WAT"
       }
@@ -162,7 +168,8 @@ class AuthApiSpec extends WireWordSpec {
   "me" when {
 
     def request: IOResponse[UserIdentity] = sampleClient.auth.me(
-      RequestTokenV1(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
+      // TODO: Shouldn't only be enforce an `AccessTokenCredentials` as `SignerV1` ?
+      RequestTokenCredentials(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
     )
 
     "the server responds with an error" should {
@@ -179,7 +186,7 @@ class AuthApiSpec extends WireWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponseErrorJson(_, status, error) =>
+        case FsResponse(_, status, Left(ErrorBodyJson(error))) =>
           status shouldBe Status.Unauthorized
           error.as[DiscogsError].map(_.message) shouldBe Right("You must authenticate to access this resource.")
       }
@@ -199,7 +206,7 @@ class AuthApiSpec extends WireWordSpec {
 
       "return a Right with the `UserIdentity` response" in matchResponse(stub, request) {
 
-        case FsResponseSuccess(_, _, response) =>
+        case FsResponse(_, _, Right(response)) =>
           response shouldBe UserIdentity(
             id = 1L,
             username = "example",
@@ -222,7 +229,7 @@ class AuthApiSpec extends WireWordSpec {
         )
 
       "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponseErrorString(_, status, error) =>
+        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
           status shouldBe Status.UnprocessableEntity
           error shouldBe "There was a problem decoding or parsing this response, please check the error logs"
       }

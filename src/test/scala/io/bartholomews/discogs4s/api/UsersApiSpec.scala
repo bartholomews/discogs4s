@@ -4,7 +4,7 @@ import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.discogs4s.entities.{SimpleUser, UserLocation, UserRealName, UserWebsite, Username}
-import io.bartholomews.fsclient.entities.{FsResponseErrorString, FsResponseSuccess}
+import io.bartholomews.fsclient.entities.{ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
 import io.bartholomews.testudo.WireWordSpec
 import org.http4s.{Status, Uri}
@@ -21,7 +21,7 @@ class UsersApiSpec extends WireWordSpec {
     "the server responds with the response entity" should {
 
       "decode the response correctly" in matchResponse(stubWithResourceFile, request) {
-        case FsResponseSuccess(_, _, entity) =>
+        case FsResponse(_, _, Right(entity)) =>
           entity should matchTo(
             SimpleUser(
               profile = "I am a software developer for Discogs.\r\n\r\n[img=http://i.imgur.com/IAk3Ukk.gif]",
@@ -75,7 +75,7 @@ class UsersApiSpec extends WireWordSpec {
         )
 
       "decode an `Unauthorized` response" in matchResponse(stub, request) {
-        case FsResponseErrorString(_, status, error) =>
+        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
           status shouldBe Status.Unauthorized
           error shouldBe "Invalid consumer."
       }

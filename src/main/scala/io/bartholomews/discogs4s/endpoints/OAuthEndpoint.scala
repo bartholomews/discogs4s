@@ -1,7 +1,7 @@
 package io.bartholomews.discogs4s.endpoints
 
-import io.bartholomews.fsclient.requests.{AccessTokenEndpointBase, AuthJsonRequest, PlainTextRequest}
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
+import io.bartholomews.fsclient.requests.{AccessTokenEndpointBase, AuthJsonRequest, AuthPlainTextRequest}
 import org.http4s.Uri
 
 // https://www.discogs.com/developers#page:authentication,header:authentication-request-token-url
@@ -10,7 +10,7 @@ sealed trait OAuthEndpoint extends DiscogsEndpoint {
   private[endpoints] val basePath: Uri = apiUri / path
 }
 
-case object AuthorizeUrl extends OAuthEndpoint with PlainTextRequest.Get[RequestToken] {
+case object AuthorizeUrl extends OAuthEndpoint with AuthPlainTextRequest.Get[RequestToken] {
   override val uri: Uri = basePath / "request_token"
 }
 

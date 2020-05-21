@@ -1,31 +1,64 @@
 package io.bartholomews.discogs4s.api
 
-import cats.effect.Effect
+import cats.Applicative
+import cats.effect.ConcurrentEffect
 import fs2.Pipe
-import io.bartholomews.fsclient.client.effect.HttpEffectClient
-import io.bartholomews.fsclient.entities.OAuthInfo.OAuthV1
-import io.bartholomews.fsclient.entities.OAuthVersion.Version1._
-import io.bartholomews.fsclient.entities._
-import io.bartholomews.fsclient.requests.OAuthV1AuthorizationFramework.AccessTokenRequest
-import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import io.bartholomews.discogs4s.endpoints.{AccessTokenEndpoint, AuthorizeUrl, Identity}
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
+import io.bartholomews.fsclient.client.FsClientV1
+import io.bartholomews.fsclient.entities.oauth._
+import io.bartholomews.fsclient.entities.oauth.v1.OAuthV1AuthorizationFramework.AccessTokenRequest
+import io.bartholomews.fsclient.entities.{ErrorBodyString, FsResponse}
+import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 import org.http4s.client.oauth1.Token
+import org.http4s.{Headers, Status, Uri}
 
 // https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
-class AuthApi[F[_]: Effect](client: HttpEffectClient[F, OAuthV1]) {
+class AuthApi[F[_]: ConcurrentEffect](client: FsClientV1[F, SignerV1]) {
 
   import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, plainTextDecoderPipe, rawJsonPipe, rawPlainTextPipe}
 
-  def getRequestToken: F[HttpResponse[RequestToken]] =
+  def getRequestToken(implicit signer: TemporaryCredentialsRequest): F[HttpResponse[RequestToken]] =
     AuthorizeUrl.runWith(client)
 
-  def getAccessToken(implicit requestToken: RequestTokenV1): F[HttpResponse[AccessTokenV1]] = {
-    implicit val decoderPipe: Pipe[F, String, AccessTokenV1] = plainTextDecoderPipe({
+  def getAccessToken(implicit requestToken: RequestTokenCredentials): F[HttpResponse[AccessTokenCredentials]] = {
+    implicit val decoderPipe: Pipe[F, String, AccessTokenCredentials] = plainTextDecoderPipe({
       case Right(s"oauth_token=$token&oauth_token_secret=$secret") =>
-        AccessTokenV1(Token(token, secret), requestToken.consumer)
+        AccessTokenCredentials(Token(token, secret), requestToken.consumer)
     })
     AccessTokenRequest(AccessTokenEndpoint.uri).runWith(client)
+  }
+
+  def fromUri(requestToken: RequestToken,
+              callbackUri: Uri)(implicit f: Applicative[F]): F[HttpResponse[AccessTokenCredentials]] = {
+    val queryParams = callbackUri.query.pairs
+    val response: Either[String, String] = queryParams
+      .collectFirst({
+        case ("denied", Some(_)) => Left("permission_denied")
+        case ("oauth_token", Some(token)) =>
+          if (token != requestToken.token.value) Left("oauth_token_mismatch")
+          else
+            queryParams
+              .collectFirst({
+                case ("oauth_verifier", Some(verifier)) => Right(verifier)
+              })
+              .toRight("missing_oauth_verifier_query_parameter")
+              .joinRight
+      })
+      .toRight("missing_required_query_parameters")
+      .joinRight
+
+    response.fold(
+      errorMsg => f.pure(FsResponse(Headers.empty, Status.Unauthorized, Left(ErrorBodyString(errorMsg)))),
+      verifier =>
+        getAccessToken(
+          RequestTokenCredentials(
+            requestToken.token,
+            verifier,
+            client.appConfig.signer.consumer
+          )
+        )
+    )
   }
 
   /**
