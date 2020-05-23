@@ -19,13 +19,14 @@ libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.0.1"
 ```scala
   import cats.effect.{ContextShift, IO, Resource}
   import io.bartholomews.discogs4s.endpoints.GetSimpleUserProfile
-  import io.bartholomews.discogs4s.entities.Username
+  import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
   import io.bartholomews.fsclient.client.FClientNoAuth
   import io.bartholomews.fsclient.config.UserAgent
+  import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
   import org.http4s.client.Client
   import org.http4s.client.blaze.BlazeClientBuilder
-  import scala.concurrent.ExecutionContext
 
+  import scala.concurrent.ExecutionContext
   // needed for importing empty entity encoder and json decoder
   import io.bartholomews.fsclient.implicits._
 
@@ -37,11 +38,10 @@ libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.0.1"
 
   // create a basic client ready to make (unsigned) requests
   val discogsClient = FClientNoAuth[IO](userAgent)
-
-  println {
-    // run a request with your client
-    GetSimpleUserProfile(Username("_.bartholomews")).runWith(discogsClient).unsafeRunSync()
-  }
+  
+  // run a request with your client
+  val response: IO[HttpResponse[SimpleUser]] = 
+    GetSimpleUserProfile(Username("_.bartholomews")).runWith(discogsClient)
 ```
 
 ## OAuth
@@ -68,18 +68,28 @@ discogs {
 
 This way you can create a client with *Client Credentials*:
 ```scala
+  import cats.effect.IO
   import io.bartholomews.discogs4s.DiscogsClient
+  import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
   import io.bartholomews.fsclient.entities.oauth.v1.OAuthV1AuthorizationFramework.SignerType
+  import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
+
   import scala.concurrent.ExecutionContext
 
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
 
   val discogsClient: DiscogsClient =
     DiscogsClient.unsafeFromConfig(SignerType.BasicSignature)
+
+  val response: IO[HttpResponse[SimpleUser]] = 
+    discogsClient.users.getSimpleUserProfile(Username("_.bartholomews"))
 ```
 
 This client will sign by default with consumer key/secret, so you can benefit
 from higher rate limiting.
+
+Also notice that you don't need the boilerplate imports that were necessary
+when using a plain client without OAuth.
 
 ### Personal access token
 
