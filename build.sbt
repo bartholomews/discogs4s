@@ -18,8 +18,6 @@ inThisBuild(List(
   )
 ))
 
-// thtPetowkvDi6CY4fUmZdHGFGdSLaqV8kU3mZtSzyQtzdcY6wG4HettEeQvugTgE
-
 libraryDependencies ++= dependencies ++ testDependencies
 
 scalacOptions ++= compilerOptions
