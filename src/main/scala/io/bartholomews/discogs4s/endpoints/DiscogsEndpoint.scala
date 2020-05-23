@@ -1,8 +1,9 @@
 package io.bartholomews.discogs4s.endpoints
 
 import io.bartholomews.discogs4s.utils.Configuration
+import org.http4s.Uri
 
-trait DiscogsEndpoint {
-  private[endpoints] val baseUri = Configuration.discogs.baseUri
-  private[endpoints] val apiUri = Configuration.discogs.apiUri
+object DiscogsEndpoint {
+  final val baseUri: Uri = Configuration.discogs.baseUri
+  final val apiUri: Uri = Configuration.discogs.apiUri
 }

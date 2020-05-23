@@ -1,12 +1,14 @@
 package io.bartholomews.discogs4s.endpoints
 
-import io.bartholomews.fsclient.requests.JsonRequest
+import io.bartholomews.discogs4s.endpoints.DiscogsReleasesEndpoint._
 import io.bartholomews.discogs4s.entities.Release
+import io.bartholomews.fsclient.requests.JsonRequest
 import org.http4s.Uri
 
 // https://www.discogs.com/developers#page:database
-sealed trait ReleasesEndpoint extends DiscogsEndpoint {
-  private[endpoints] val basePath: Uri = apiUri / "releases"
+sealed trait DiscogsReleasesEndpoint
+object DiscogsReleasesEndpoint {
+  final val basePath: Uri = DiscogsEndpoint.apiUri / "releases"
 }
 
 // https://www.discogs.com/developers#page:database,header:database-release
@@ -22,7 +24,7 @@ sealed trait ReleasesEndpoint extends DiscogsEndpoint {
  *                  TODO => Should these request pass auth token (i.e. FsAuthRequest?) Or not? WTF
  */
 case class GetRelease(releaseId: Long, currency: Option[String])
-    extends ReleasesEndpoint
+    extends DiscogsReleasesEndpoint
     with JsonRequest.Get[Release] {
   override def uri: Uri = basePath / s"$releaseId" / s"${currency.getOrElse("")}"
 }

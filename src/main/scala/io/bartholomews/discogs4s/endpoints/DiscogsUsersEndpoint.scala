@@ -1,6 +1,6 @@
 package io.bartholomews.discogs4s.endpoints
 
-import io.bartholomews.fsclient.requests.{AuthJsonRequest, FsAuthRequest, JsonRequest}
+import io.bartholomews.discogs4s.endpoints.DiscogsUsersEndpoint._
 import io.bartholomews.discogs4s.entities.{
   AuthenticatedUser,
   MarketplaceCurrency,
@@ -11,20 +11,21 @@ import io.bartholomews.discogs4s.entities.{
   UserWebsite,
   Username
 }
+import io.bartholomews.fsclient.requests.{AuthJsonRequest, FsAuthRequest, JsonRequest}
 import io.circe.Json
 import org.http4s.Uri
 
-sealed trait UsersEndpoint extends DiscogsEndpoint {
-  private[endpoints] def username: Username
-  private[endpoints] def basePath: Uri = apiUri / "users"
+sealed trait DiscogsUsersEndpoint
+object DiscogsUsersEndpoint {
+  final val basePath: Uri = DiscogsEndpoint.apiUri / "users"
 }
 
-case class GetSimpleUserProfile(username: Username) extends UsersEndpoint with JsonRequest.Get[SimpleUser] {
+case class GetSimpleUserProfile(username: Username) extends DiscogsUsersEndpoint with JsonRequest.Get[SimpleUser] {
   override val uri: Uri = basePath / username.value
 }
 
 case class GetAuthenticatedUserProfile(username: Username)
-    extends UsersEndpoint
+    extends DiscogsUsersEndpoint
     with AuthJsonRequest.Get[AuthenticatedUser] {
   override val uri: Uri = basePath / username.value
 }
@@ -36,7 +37,7 @@ case class UpdateUserProfile(
   location: Option[UserLocation],
   profile: Option[UserProfileInfo],
   currAbbr: Option[MarketplaceCurrency]
-) extends UsersEndpoint
+) extends DiscogsUsersEndpoint
     with FsAuthRequest.Post[Nothing, Json, AuthenticatedUser] {
 
   final override val body: Option[Nothing] = None
