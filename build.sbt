@@ -26,7 +26,7 @@ testOptions in Test ++= TestSettings.options
 logBuffered in Test := false
 parallelExecution in ThisBuild := false
 
-coverageMinimum := 100
+coverageMinimum := 56.39
 coverageFailOnMinimum := true
 
 addCommandAlias("test-coverage", ";coverage ;test ;coverageReport")
