@@ -3,7 +3,10 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # discogs4s
-Early stage *Discogs* client with the *Typelevel* stack
+Early stage *Discogs* client with the *Typelevel* stack.  
+
+The client is using the library [fsclient](https://github.com/bartholomews/fsclient)
+which is a wrapper on http4s/fs2 with circe and OAuth handling.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13)
 
@@ -11,7 +14,7 @@ Early stage *Discogs* client with the *Typelevel* stack
 libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.0.1"
 ```
 
-### Simple client
+## Simple client
 
 ```scala
   import cats.effect.{ContextShift, IO, Resource}
@@ -41,11 +44,11 @@ libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.0.1"
   }
 ```
 
-### OAuth
+## OAuth
 
 Read  the discogs [OAuth Flow](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow)
 
-#### Client Credentials 
+### Client Credentials 
 
 If you want to use consumer credentials, add them in your `application.conf`:
 ```
@@ -78,7 +81,7 @@ This way you can create a client with *Client Credentials*:
 This client will sign by default with consumer key/secret, so you can benefit
 from higher rate limiting.
 
-#### Personal access token
+### Personal access token
 
 If you have a personal access token you could just create a client with that:
 ```
@@ -114,7 +117,7 @@ This way you can create a client with *Personal access token*:
 
 You could also create a client manually passing directly `UserAgent` and `Signer`.
 
-#### Full OAuth 1.0a with access token/secret
+### Full OAuth 1.0a with access token/secret
 ```scala
   import io.bartholomews.discogs4s.DiscogsClient
   import io.bartholomews.discogs4s.entities.{RequestToken, Username}
@@ -159,7 +162,7 @@ You could also create a client manually passing directly `UserAgent` and `Signer
   // you could serialize it in the client session cookies
   // or store it somewhere: it doesn't expire;
   val accessToken: AccessTokenCredentials =
-    discogsClient.auth.fromUri(requestToken, callbackUri)
+    discogsClient.auth.fromUri(requestToken, uriFromCallback)
       .unsafeRunSync()
       .entity
       .right
@@ -172,22 +175,22 @@ You could also create a client manually passing directly `UserAgent` and `Signer
 
 ```
 
-### Implemented endpoints:
+## Implemented endpoints:
 
-- *AuthApi*
+- **AuthApi**
     - [`getRequestToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-request-token-url)
     - [`getAccessToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-access-token-url)
     - [`me`](https://www.discogs.com/developers/#page:user-identity)
     
-- *ArtistsApi*
+- **ArtistsApi**
     - [`getArtistsReleases`](https://www.discogs.com/developers/#page:database,header:database-artist-releases)
     
-- *UsersApi*
+- **UsersApi**
     - [`getSimpleUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)    
     - [`getAuthenticateUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)    
     - [`updateUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post)    
     
-### Contributing
+## Contributing
 
 Any request / issue / help / PR is most welcome.
 
