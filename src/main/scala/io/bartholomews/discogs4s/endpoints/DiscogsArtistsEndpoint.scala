@@ -16,7 +16,7 @@ object DiscogsArtistsEndpoint {
 
 case class ArtistsReleases(artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])
     extends DiscogsArtistsEndpoint
-    with JsonRequest.Get[PaginatedReleases]    {
+    with JsonRequest.Get[PaginatedReleases] {
   override val uri: Uri =
     (artistsUri / "releases")
       .withOptionQueryParam("sort", sortBy.map(_.entryName))
