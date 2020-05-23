@@ -10,13 +10,14 @@ private[discogs4s] object Configuration {
   import cats.implicits._
   import pureconfig.generic.auto._
 
+  private val discogsConfig = ConfigSource.default.at("discogs")
+
   val discogs: DiscogsReference = (for {
-    conf <- Try(ConfigSource.default.loadOrThrow[Config]).toEither
-    apiUri <- Uri.fromString(s"${conf.discogs.scheme}://${conf.discogs.api}")
-    baseUri <- Uri.fromString(s"${conf.discogs.scheme}://${conf.discogs.domain}")
+    config <- Try(discogsConfig.loadOrThrow[DiscogsConfig]).toEither
+    apiUri <- Uri.fromString(s"${config.scheme}://${config.api}")
+    baseUri <- Uri.fromString(s"${config.scheme}://${config.domain}")
   } yield DiscogsReference(apiUri, baseUri)).valueOr(throw _)
 
-  case class Config(discogs: Discogs)
-  case class Discogs(api: String, domain: String, scheme: String)
+  private case class DiscogsConfig(api: String, domain: String, scheme: String)
   case class DiscogsReference(apiUri: Uri, baseUri: Uri)
 }
