@@ -4,7 +4,7 @@ import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.fsclient.config.UserAgent
 import io.bartholomews.fsclient.entities.oauth.ClientCredentials
 import io.bartholomews.fsclient.entities.oauth.v1.OAuthV1AuthorizationFramework.SignerType
-import io.bartholomews.testudo.WireWordSpec
+import io.bartholomews.scalatestudo.WireWordSpec
 
 class DiscogsClientSpec extends WireWordSpec {
 

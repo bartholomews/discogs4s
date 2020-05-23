@@ -11,7 +11,7 @@ import io.bartholomews.fsclient.entities.oauth.{
 }
 import io.bartholomews.fsclient.entities.{ErrorBodyJson, ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.testudo.WireWordSpec
+import io.bartholomews.scalatestudo.WireWordSpec
 import org.apache.http.entity.ContentType
 import org.http4s.client.oauth1.Token
 import org.http4s.{Status, Uri}

@@ -1,0 +1,929 @@
+{
+  "pagination": {
+    "per_page": 50,
+    "items": 110,
+    "page": 1,
+    "urls": {
+      "last": "https://api.discogs.com/artists/1/releases?sort=year&per_page=50&page=3",
+      "next": "https://api.discogs.com/artists/1/releases?sort=year&per_page=50&page=2"
+    },
+    "pages": 3
+  },
+  "releases": [
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 318,
+          "in_wantlist": 1247
+        }
+      },
+      "thumb": "",
+      "title": "Kaos",
+      "format": "10\"",
+      "label": "Svek",
+      "role": "Main",
+      "year": 1997,
+      "resource_url": "https://api.discogs.com/releases/20209",
+      "artist": "Stephan-G* & The Persuader",
+      "type": "release",
+      "id": 20209
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 538,
+          "in_wantlist": 666
+        }
+      },
+      "thumb": "",
+      "title": "Snorkelmannen Ø Hans Vänner",
+      "format": "12\"",
+      "label": "Svek",
+      "role": "Main",
+      "year": 1997,
+      "resource_url": "https://api.discogs.com/releases/62584",
+      "artist": "Mr. Barth* & The Persuader",
+      "type": "release",
+      "id": 62584
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 411,
+          "in_wantlist": 607
+        }
+      },
+      "thumb": "",
+      "artist": "The Persuader",
+      "main_release": 4664,
+      "title": "Stockholm By Night",
+      "role": "Main",
+      "year": 1997,
+      "resource_url": "https://api.discogs.com/masters/321212",
+      "type": "master",
+      "id": 321212
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 459,
+          "in_wantlist": 1000
+        }
+      },
+      "thumb": "",
+      "title": "A View From Slussen",
+      "format": "12\"",
+      "label": "Svek",
+      "role": "Main",
+      "year": 1998,
+      "resource_url": "https://api.discogs.com/releases/400",
+      "artist": "The Persuader",
+      "type": "release",
+      "id": 400
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 443,
+          "in_wantlist": 861
+        }
+      },
+      "thumb": "",
+      "artist": "The Persuader",
+      "main_release": 79,
+      "title": "City Of Islands",
+      "role": "Main",
+      "year": 1998,
+      "resource_url": "https://api.discogs.com/masters/4242",
+      "type": "master",
+      "id": 4242
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 404,
+          "in_wantlist": 498
+        }
+      },
+      "thumb": "",
+      "artist": "Stephan Grieder & The Persuader",
+      "main_release": 401,
+      "title": "Pleasure",
+      "role": "Main",
+      "year": 1998,
+      "resource_url": "https://api.discogs.com/masters/4250",
+      "type": "master",
+      "id": 4250
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 454,
+          "in_wantlist": 685
+        }
+      },
+      "thumb": "",
+      "artist": "The Persuader",
+      "main_release": 101,
+      "title": "Morgon Sol",
+      "role": "Main",
+      "year": 1998,
+      "resource_url": "https://api.discogs.com/masters/374577",
+      "type": "master",
+      "id": 374577
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 188,
+          "in_wantlist": 162
+        }
+      },
+      "thumb": "",
+      "title": "Stockholm",
+      "format": "CD, Album",
+      "label": "Svek",
+      "role": "Main",
+      "year": 1999,
+      "resource_url": "https://api.discogs.com/releases/24200",
+      "artist": "The Persuader",
+      "type": "release",
+      "id": 24200
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 566,
+          "in_wantlist": 830
+        }
+      },
+      "thumb": "",
+      "artist": "The Persuader",
+      "main_release": 1,
+      "title": "Stockholm",
+      "role": "Main",
+      "year": 1999,
+      "resource_url": "https://api.discogs.com/masters/1660109",
+      "type": "master",
+      "id": 1660109
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 343,
+          "in_wantlist": 261
+        }
+      },
+      "thumb": "",
+      "title": "Central Bron",
+      "format": "12\"",
+      "label": "Svek, Svek",
+      "role": "Main",
+      "year": 2001,
+      "resource_url": "https://api.discogs.com/releases/12362",
+      "artist": "The Persuader",
+      "type": "release",
+      "id": 12362
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 205,
+          "in_wantlist": 196
+        }
+      },
+      "thumb": "",
+      "artist": "The Persuader",
+      "main_release": 5226920,
+      "title": "Autumn Leaves EP",
+      "role": "Main",
+      "year": 2013,
+      "resource_url": "https://api.discogs.com/masters/863513",
+      "type": "master",
+      "id": 863513
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 245,
+          "in_wantlist": 151
+        }
+      },
+      "thumb": "",
+      "artist": "The Persuader",
+      "main_release": 5244594,
+      "title": "Fusion Of Thoughts",
+      "role": "Main",
+      "year": 2013,
+      "resource_url": "https://api.discogs.com/masters/637047",
+      "type": "master",
+      "id": 637047
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 302,
+          "in_wantlist": 257
+        }
+      },
+      "thumb": "",
+      "title": "The Persuader EP1",
+      "format": "12\", EP",
+      "label": "Templar (3)",
+      "role": "Main",
+      "year": 2014,
+      "resource_url": "https://api.discogs.com/releases/5516176",
+      "artist": "The Persuader",
+      "type": "release",
+      "id": 5516176
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 197,
+          "in_wantlist": 143
+        }
+      },
+      "thumb": "",
+      "title": "The Persuader EP2",
+      "format": "12\", EP",
+      "label": "Templar (3)",
+      "role": "Main",
+      "year": 2014,
+      "resource_url": "https://api.discogs.com/releases/5841765",
+      "artist": "The Persuader",
+      "type": "release",
+      "id": 5841765
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 307,
+          "in_wantlist": 243
+        }
+      },
+      "thumb": "",
+      "title": "The Persuader EP3",
+      "format": "12\", EP",
+      "label": "Templar (3)",
+      "role": "Main",
+      "year": 2014,
+      "resource_url": "https://api.discogs.com/releases/6146433",
+      "artist": "The Persuader",
+      "type": "release",
+      "id": 6146433
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 20,
+          "in_wantlist": 47
+        }
+      },
+      "thumb": "",
+      "artist": "The Persuader",
+      "main_release": 6793647,
+      "title": "Skargard",
+      "role": "Main",
+      "year": 2015,
+      "resource_url": "https://api.discogs.com/masters/827783",
+      "type": "master",
+      "id": 827783
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 283,
+          "in_wantlist": 331
+        }
+      },
+      "thumb": "",
+      "artist": "The Persuader",
+      "main_release": 7397291,
+      "title": "Vårblommor",
+      "role": "Main",
+      "year": 2015,
+      "resource_url": "https://api.discogs.com/masters/926124",
+      "type": "master",
+      "id": 926124
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 147,
+          "in_wantlist": 105
+        }
+      },
+      "thumb": "",
+      "title": "Himmel Röd",
+      "format": "12\"",
+      "label": "Parabel",
+      "role": "Main",
+      "year": 2016,
+      "resource_url": "https://api.discogs.com/releases/8296032",
+      "artist": "The Persuader",
+      "type": "release",
+      "id": 8296032
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 90,
+          "in_wantlist": 49
+        }
+      },
+      "thumb": "",
+      "title": "Arrival",
+      "format": "12\"",
+      "label": "Parabel",
+      "role": "Main",
+      "year": 2017,
+      "resource_url": "https://api.discogs.com/releases/10392503",
+      "artist": "The Persuader",
+      "type": "release",
+      "id": 10392503
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 47,
+          "in_wantlist": 37
+        }
+      },
+      "thumb": "",
+      "title": "Aftermath",
+      "format": "12\"",
+      "label": "Stockholm LTD",
+      "role": "Main",
+      "year": 2017,
+      "resource_url": "https://api.discogs.com/releases/11334732",
+      "artist": "The Persuader & Nima Khak",
+      "type": "release",
+      "id": 11334732
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 4,
+          "in_wantlist": 4
+        }
+      },
+      "thumb": "",
+      "title": "The Kosmos EP",
+      "format": "3xFile, MP3, EP",
+      "label": "Strange Idols",
+      "role": "Main",
+      "year": 2017,
+      "resource_url": "https://api.discogs.com/releases/12855756",
+      "artist": "The Persuader",
+      "type": "release",
+      "id": 12855756
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 73,
+          "in_wantlist": 36
+        }
+      },
+      "thumb": "",
+      "title": "Cosmic Isolation EP",
+      "format": "12\", EP, Ltd",
+      "label": "Kalvaberget Records",
+      "role": "Main",
+      "year": 2019,
+      "resource_url": "https://api.discogs.com/releases/13392912",
+      "artist": "AD* & The Persuader",
+      "type": "release",
+      "id": 13392912
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 164,
+          "in_wantlist": 520
+        }
+      },
+      "thumb": "",
+      "artist": "Superlova",
+      "main_release": 88892,
+      "title": "Loves You All Night And Day",
+      "role": "Remix",
+      "year": 1997,
+      "resource_url": "https://api.discogs.com/masters/1157881",
+      "type": "master",
+      "id": 1157881
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 359,
+          "in_wantlist": 252
+        }
+      },
+      "thumb": "",
+      "artist": "Dr. Nobody",
+      "main_release": 119,
+      "title": "The Big Bang Theory",
+      "role": "Remix",
+      "year": 1997,
+      "resource_url": "https://api.discogs.com/masters/169563",
+      "type": "master",
+      "id": 169563
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 179,
+          "in_wantlist": 113
+        }
+      },
+      "thumb": "",
+      "title": "The Lords Of Svek - Vol. 4",
+      "format": "CD, Comp",
+      "label": "Svek",
+      "role": "Remix",
+      "year": 1998,
+      "trackinfo": "Discophrenia (The Pers...",
+      "resource_url": "https://api.discogs.com/releases/5955",
+      "artist": "Various",
+      "type": "release",
+      "id": 5955
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 318,
+          "in_wantlist": 219
+        }
+      },
+      "thumb": "",
+      "artist": "Ralph Lundsten",
+      "main_release": 15542,
+      "title": "Diskophrenia Remixes",
+      "role": "Remix",
+      "year": 1998,
+      "resource_url": "https://api.discogs.com/masters/1042102",
+      "type": "master",
+      "id": 1042102
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 17,
+          "in_wantlist": 13
+        }
+      },
+      "thumb": "",
+      "title": "Chill On Kaos Volume Two",
+      "format": "2xCD, Comp, Mixed",
+      "label": "Kaos Records",
+      "role": "Remix",
+      "year": 2001,
+      "trackinfo": "Diskophrenia (The Pers...",
+      "resource_url": "https://api.discogs.com/releases/229135",
+      "artist": "Various",
+      "type": "release",
+      "id": 229135
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 4,
+          "in_wantlist": 17
+        }
+      },
+      "thumb": "",
+      "title": "Raw Essentials",
+      "format": "2xCDr, Comp, Promo",
+      "label": "Raw Elements",
+      "role": "Remix",
+      "year": 2008,
+      "trackinfo": "All Night ( Stephan Gr...",
+      "resource_url": "https://api.discogs.com/releases/2629499",
+      "artist": "Various",
+      "type": "release",
+      "id": 2629499
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 40,
+          "in_wantlist": 66
+        }
+      },
+      "thumb": "",
+      "title": "Volume 1-4 - Live At Robert Johnson",
+      "format": "4xCD, Comp, Mixed + Box, Ltd, Art",
+      "label": "Live At Robert Johnson",
+      "role": "Remix",
+      "year": 2010,
+      "trackinfo": "The Big Bang Theory (R...",
+      "resource_url": "https://api.discogs.com/releases/2219613",
+      "artist": "Various",
+      "type": "release",
+      "id": 2219613
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 86,
+          "in_wantlist": 51
+        }
+      },
+      "thumb": "",
+      "artist": "Thomas Hammann & Gerd Janson",
+      "main_release": 2116649,
+      "title": "Live At Robert Johnson",
+      "role": "Remix",
+      "year": 2010,
+      "resource_url": "https://api.discogs.com/masters/944234",
+      "type": "master",
+      "id": 944234
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 80,
+          "in_wantlist": 51
+        }
+      },
+      "thumb": "",
+      "title": "My Busted SH-101",
+      "format": "12\"",
+      "label": "Spectral Sound",
+      "role": "Remix",
+      "year": 2014,
+      "trackinfo": "My Busted SH-101 (The ...",
+      "resource_url": "https://api.discogs.com/releases/5468479",
+      "artist": "Alexi Delano",
+      "type": "release",
+      "id": 5468479
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 36,
+          "in_wantlist": 22
+        }
+      },
+      "thumb": "",
+      "title": "Guitarra Trina",
+      "format": "12\"",
+      "label": "Alexi Delano Limited",
+      "role": "Remix",
+      "year": 2014,
+      "trackinfo": "Guitarra Trina (The Pe...",
+      "resource_url": "https://api.discogs.com/releases/5885934",
+      "artist": "Damien K. Sahri*",
+      "type": "release",
+      "id": 5885934
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 10,
+          "in_wantlist": 8
+        }
+      },
+      "thumb": "",
+      "title": "Soppåsar / 5 Months Later",
+      "format": "12\"",
+      "label": "Allofon Recordings",
+      "role": "Remix",
+      "year": 2015,
+      "trackinfo": "Soppåsar (The Persuade..",
+      "resource_url": "https://api.discogs.com/releases/6699352",
+      "artist": "Carl Hasselrot & Mattias Olsson (6) / Techjacka",
+      "type": "release",
+      "id": 6699352
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 82,
+          "in_wantlist": 45
+        }
+      },
+      "thumb": "",
+      "title": "Diffused Light Vol. 1",
+      "format": "12\"",
+      "label": "Odd Even",
+      "role": "Remix",
+      "year": 2015,
+      "trackinfo": "Eden (The Persuader Re...",
+      "resource_url": "https://api.discogs.com/releases/6954733",
+      "artist": "Various",
+      "type": "release",
+      "id": 6954733
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 119,
+          "in_wantlist": 88
+        }
+      },
+      "thumb": "",
+      "artist": "Joel Alter",
+      "main_release": 7679347,
+      "title": " Heart (Remixes)  ",
+      "role": "Remix",
+      "year": 2015,
+      "resource_url": "https://api.discogs.com/masters/1723086",
+      "type": "master",
+      "id": 1723086
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 40,
+          "in_wantlist": 27
+        }
+      },
+      "thumb": "",
+      "title": "Capricorn Meets Leo",
+      "format": "12\"",
+      "label": "Constant Sound",
+      "role": "Remix",
+      "year": 2016,
+      "trackinfo": "Capricorn Meets Leo (T...",
+      "resource_url": "https://api.discogs.com/releases/8321965",
+      "artist": "Vrsion",
+      "type": "release",
+      "id": 8321965
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 2,
+          "in_wantlist": 1
+        }
+      },
+      "thumb": "",
+      "artist": "Ray Kajioka",
+      "main_release": 14466486,
+      "title": "Consistency Remixes ",
+      "role": "Remix",
+      "year": 2016,
+      "resource_url": "https://api.discogs.com/masters/1644222",
+      "type": "master",
+      "id": 1644222
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 22,
+          "in_wantlist": 26
+        }
+      },
+      "thumb": "",
+      "title": "Water Colors EP",
+      "format": "12\", EP",
+      "label": "Visionquest",
+      "role": "Remix",
+      "year": 2017,
+      "trackinfo": "Water Colors (The Pers...",
+      "resource_url": "https://api.discogs.com/releases/10885504",
+      "artist": "Alexi Delano",
+      "type": "release",
+      "id": 10885504
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 28,
+          "in_wantlist": 51
+        }
+      },
+      "thumb": "",
+      "title": "Odd Even Red One",
+      "format": "10x12\", Ltd, Red",
+      "label": "Odd Even",
+      "role": "Remix",
+      "year": 2018,
+      "trackinfo": "Eden (The Persuader Re...",
+      "resource_url": "https://api.discogs.com/releases/11940415",
+      "artist": "Various",
+      "type": "release",
+      "id": 11940415
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 2,
+          "in_wantlist": 7
+        }
+      },
+      "thumb": "",
+      "title": "Live @ The Traxx",
+      "format": "Cass, Mixed, Promo, C90",
+      "label": "Sole Unlimited",
+      "role": "Remix",
+      "trackinfo": "The Big Bang Theory (R...",
+      "resource_url": "https://api.discogs.com/releases/12526186",
+      "artist": "Ian Pooley",
+      "type": "release",
+      "id": 12526186
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 399,
+          "in_wantlist": 709
+        }
+      },
+      "thumb": "",
+      "title": "Untitled",
+      "format": "12\"",
+      "label": "Svek",
+      "role": "Producer",
+      "year": 1997,
+      "resource_url": "https://api.discogs.com/releases/20207",
+      "artist": "Brommage Dub",
+      "type": "release",
+      "id": 20207
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 399,
+          "in_wantlist": 709
+        }
+      },
+      "thumb": "",
+      "title": "Untitled",
+      "format": "12\"",
+      "label": "Svek",
+      "role": "Appearance",
+      "year": 1997,
+      "resource_url": "https://api.discogs.com/releases/20207",
+      "artist": "Brommage Dub",
+      "type": "release",
+      "id": 20207
+    },
+    {
+      "stats": {
+        "community": {
+          "in_collection": 63,
+          "in_wantlist": 38
+        }
+      },
+      "thumb": "",
+      "artist": "Various",
+      "main_release": 125192,
+      "title": "Sun Trip - Fifth",
+      "role": "Appearance",
+      "year": 1998,
+      "resource_url": "https://api.discogs.com/masters/44004",
+      "type": "master",
+      "id": 44004
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 1,
+          "in_wantlist": 0
+        }
+      },
+      "thumb": "",
+      "title": "Tokio",
+      "format": "CDr, EP",
+      "label": "Pronoise Records, Black Fish Discos",
+      "role": "Appearance",
+      "year": 2013,
+      "resource_url": "https://api.discogs.com/releases/13177515",
+      "artist": "Riphle",
+      "type": "release",
+      "id": 13177515
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 193,
+          "in_wantlist": 186
+        }
+      },
+      "thumb": "",
+      "title": "The Lords Of Svek Vol. 2",
+      "format": "CD, Comp",
+      "label": "Svek",
+      "role": "TrackAppearance",
+      "year": 1997,
+      "trackinfo": "Bottle Up!, What Is Th...",
+      "resource_url": "https://api.discogs.com/releases/17087",
+      "artist": "Various",
+      "type": "release",
+      "id": 17087
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 9,
+          "in_wantlist": 7
+        }
+      },
+      "thumb": "",
+      "title": "Goldhead Music Sampler Vol 2 1997",
+      "format": "CD, Comp, Promo, Smplr",
+      "label": "Goldhead Music",
+      "role": "TrackAppearance",
+      "year": 1997,
+      "trackinfo": "Kaos",
+      "resource_url": "https://api.discogs.com/releases/3949016",
+      "artist": "Various",
+      "type": "release",
+      "id": 3949016
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 179,
+          "in_wantlist": 113
+        }
+      },
+      "thumb": "",
+      "title": "The Lords Of Svek - Vol. 4",
+      "format": "CD, Comp",
+      "label": "Svek",
+      "role": "TrackAppearance",
+      "year": 1998,
+      "trackinfo": "Naked Woman, From West...",
+      "resource_url": "https://api.discogs.com/releases/5955",
+      "artist": "Various",
+      "type": "release",
+      "id": 5955
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 186,
+          "in_wantlist": 114
+        }
+      },
+      "thumb": "",
+      "title": "The Lords Of Svek Vol. 3",
+      "format": "CD, Comp",
+      "label": "Svek",
+      "role": "TrackAppearance",
+      "year": 1998,
+      "trackinfo": "Stockholm By Night, Fu...",
+      "resource_url": "https://api.discogs.com/releases/17088",
+      "artist": "Various",
+      "type": "release",
+      "id": 17088
+    },
+    {
+      "status": "Accepted",
+      "stats": {
+        "community": {
+          "in_collection": 101,
+          "in_wantlist": 41
+        }
+      },
+      "thumb": "",
+      "title": "hr3 Clubnight Volume 3",
+      "format": "2xCD, Comp, Mixed",
+      "label": "Epidrome",
+      "role": "TrackAppearance",
+      "year": 1998,
+      "trackinfo": "Naked Woman",
+      "resource_url": "https://api.discogs.com/releases/27535",
+      "artist": "Mark Spoon",
+      "type": "release",
+      "id": 27535
+    }
+  ]
+}

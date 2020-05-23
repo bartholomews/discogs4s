@@ -4,7 +4,7 @@ import cats.effect.{ContextShift, IO, Resource}
 import io.bartholomews.discogs4s.DiscogsClient
 import io.bartholomews.fsclient.config.UserAgent
 import io.bartholomews.fsclient.entities.oauth.ClientCredentials
-import io.bartholomews.testudo.data.TestudoClientData
+import io.bartholomews.scalatestudo.data.TestudoClientData
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
 

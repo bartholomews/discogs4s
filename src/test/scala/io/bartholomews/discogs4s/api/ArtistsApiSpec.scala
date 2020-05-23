@@ -6,7 +6,7 @@ import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release, SortBy, SortOrder}
 import io.bartholomews.fsclient.entities.{ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.testudo.WireWordSpec
+import io.bartholomews.scalatestudo.WireWordSpec
 import org.http4s.Status
 
 class ArtistsApiSpec extends WireWordSpec {
@@ -15,7 +15,7 @@ class ArtistsApiSpec extends WireWordSpec {
 
   "getArtistsReleases" when {
 
-    "the server responds with the response entity" should {
+    "the server responds with one response entity" should {
 
       def request: IOResponse[PaginatedReleases] =
         sampleClient.artists.getArtistsReleases(artistId = 1,
@@ -47,7 +47,7 @@ class ArtistsApiSpec extends WireWordSpec {
                   format = Some("10\""),
                   label = Some("Svek"),
                   role = "Main",
-                  year = 1997,
+                  year = Some(1997),
                   resource_url = "https://api.discogs.com/releases/20209",
                   artist = "Stephan-G* & The Persuader",
                   `type` = "release",
@@ -56,6 +56,21 @@ class ArtistsApiSpec extends WireWordSpec {
               )
             )
           )
+      }
+    }
+
+    "the server responds with multiple response entities" should {
+
+      def request: IOResponse[PaginatedReleases] =
+        sampleClient.artists.getArtistsReleases(artistId = 1, sortBy = None, sortOrder = None)
+
+      "decode the response correctly" in matchResponse(stubWithResourceFile, request) {
+        case FsResponse(_, _, Right(entity)) =>
+          entity.pagination.items shouldBe 110
+          entity.pagination.per_page shouldBe 50
+          inside(entity.releases.find(_.id == 12526186)) {
+            case Some(release) => release.year shouldBe None
+          }
       }
     }
 

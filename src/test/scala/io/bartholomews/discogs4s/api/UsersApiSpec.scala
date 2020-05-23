@@ -6,7 +6,7 @@ import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.discogs4s.entities.{SimpleUser, UserLocation, UserRealName, UserWebsite, Username}
 import io.bartholomews.fsclient.entities.{ErrorBodyString, FsResponse}
 import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.testudo.WireWordSpec
+import io.bartholomews.scalatestudo.WireWordSpec
 import org.http4s.{Status, Uri}
 
 class UsersApiSpec extends WireWordSpec {
