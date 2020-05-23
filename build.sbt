@@ -7,7 +7,7 @@ name := "discogs4s"
 
 version := "0.0.1-SNAPSHOT"
 
-scalaVersion := "2.13.1"
+scalaVersion := "2.13.2"
 
 resolvers += "Sonatype OSS Snapshots".at("https://oss.sonatype.org/content/repositories/snapshots")
 
