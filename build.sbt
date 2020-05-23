@@ -1,43 +1,35 @@
 import CompilerOptions._
 import Dependencies._
 
-organization := "io.bartholomews"
-
 name := "discogs4s"
-
-version := "0.0.1-SNAPSHOT"
-
 scalaVersion := "2.13.2"
 
-resolvers += "Sonatype OSS Snapshots".at("https://oss.sonatype.org/content/repositories/snapshots")
+inThisBuild(List(
+  organization := "io.bartholomews",
+  homepage := Some(url("https://github.com/batholomews/discogs4s")),
+  licenses += ("GPL", url("http://opensource.org/licenses/GPL-3.0")),
+  developers := List(
+    Developer(
+      "bartholomews",
+      "Federico Bartolomei",
+      "fsclient@bartholomews.io",
+      url("https://bartholomews.io")
+    )
+  )
+))
+
+// thtPetowkvDi6CY4fUmZdHGFGdSLaqV8kU3mZtSzyQtzdcY6wG4HettEeQvugTgE
 
 libraryDependencies ++= dependencies ++ testDependencies
 
-coverageMinimum := 70.80 // FIXME
-coverageFailOnMinimum := true
+scalacOptions ++= compilerOptions
 
-// http://www.scalatest.org/user_guide/using_scalatest_with_sbt
+testOptions in Test ++= TestSettings.options
 logBuffered in Test := false
 parallelExecution in ThisBuild := false
 
-scalacOptions ++= compilerOptions
-
-val standardOutputReporter = Seq(
-  "-oU"
-)
-
-val xmlReporter = Seq(
-  "-u",
-  "target/test-reports"
-)
+coverageMinimum := 100
+coverageFailOnMinimum := true
 
 addCommandAlias("test-coverage", ";coverage ;test ;coverageReport")
 addCommandAlias("test-fast", "testOnly * -l org.scalatest.tags.Slow")
-
-//// TODO move into TestSettings
-testOptions in Test ++= Seq(
-  Tests.Argument(
-    TestFrameworks.ScalaTest,
-    standardOutputReporter ++ xmlReporter: _*
-  )
-)

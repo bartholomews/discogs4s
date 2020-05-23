@@ -2,7 +2,16 @@ package io.bartholomews.discogs4s.api
 
 import cats.effect.ConcurrentEffect
 import io.bartholomews.discogs4s.endpoints.{GetAuthenticatedUserProfile, GetSimpleUserProfile, UpdateUserProfile}
-import io.bartholomews.discogs4s.entities.{AuthenticatedUser, MarketplaceCurrency, SimpleUser, UserLocation, UserProfileInfo, UserRealName, UserWebsite, Username}
+import io.bartholomews.discogs4s.entities.{
+  AuthenticatedUser,
+  MarketplaceCurrency,
+  SimpleUser,
+  UserLocation,
+  UserProfileInfo,
+  UserRealName,
+  UserWebsite,
+  Username
+}
 import io.bartholomews.fsclient.client.FsClientV1
 import io.bartholomews.fsclient.entities.oauth.SignerV1
 import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
