@@ -2,6 +2,7 @@ package io.bartholomews.discogs4s.endpoints
 
 import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint._
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
+import io.bartholomews.fsclient.entities.oauth.TokenCredentials
 import io.bartholomews.fsclient.requests.{AccessTokenEndpointBase, AuthJsonRequest, AuthPlainTextRequest}
 import org.http4s.Uri
 
@@ -11,7 +12,9 @@ object DiscogsAuthEndpoint {
   final val path: String = "oauth"
   final val basePath: Uri = DiscogsEndpoint.apiUri / DiscogsAuthEndpoint.path
   final val authorizeUri = DiscogsEndpoint.baseUri / path / "authorize"
-  final val revokeUri = DiscogsEndpoint.baseUri / path / "revoke"
+  final def revokeUri(credentials: TokenCredentials): Uri =
+    (DiscogsEndpoint.baseUri / path / "revoke")
+      .withQueryParam("access_token", credentials.token.value)
 }
 
 case object AuthorizeUrl extends DiscogsAuthEndpoint with AuthPlainTextRequest.Get[RequestToken] {
