@@ -19,8 +19,7 @@ object DiscogsReleasesEndpoint {
  * @param currency  Currency for marketplace data. Defaults to the authenticated users currency.
  *                  Must be one of the following:
  *                  USD GBP EUR CAD AUD JPY CHF MXN BRL NZD SEK ZAR
- *                  TODO [ISO_CCY ? UNION TYPE?]
- *
+ *                  TODO [ISO_CCY?]
  *                  TODO => Should these request pass auth token (i.e. FsAuthRequest?) Or not? WTF
  */
 case class GetRelease(releaseId: Long, currency: Option[String])
