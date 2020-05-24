@@ -21,15 +21,14 @@ import scala.concurrent.ExecutionContext
 // https://http4s.org/v0.19/streaming/
 class DiscogsClient[F[_]: ConcurrentEffect](userAgent: UserAgent, signer: SignerV1)(implicit ec: ExecutionContext,
                                                                                     cs: ContextShift[F]) {
-
   def temporaryCredentialsRequest(callback: Uri): TemporaryCredentialsRequest =
     TemporaryCredentialsRequest(client.appConfig.signer.consumer, callback)
 
   private val client = FsClientV1[F, SignerV1](FsClientConfig.v1.basic(userAgent, signer.consumer))
 
-  object auth extends AuthApi(client)
-  object artists extends ArtistsApi(client)
-  object users extends UsersApi(client)
+  object auth extends AuthApi[F](client)
+  object artists extends ArtistsApi[F](client)
+  object users extends UsersApi[F](client)
 }
 
 object DiscogsClient {
