@@ -37,11 +37,11 @@ libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.0.1"
   val userAgent = UserAgent(appName = "my-app", appVersion = None, appUrl = None)
 
   // create a basic client ready to make (unsigned) requests
-  val discogsClient = FClientNoAuth[IO](userAgent)
+  val client = FClientNoAuth[IO](userAgent)
   
   // run a request with your client
   val response: IO[HttpResponse[SimpleUser]] = 
-    GetSimpleUserProfile(Username("_.bartholomews")).runWith(discogsClient)
+    GetSimpleUserProfile(Username("_.bartholomews")).runWith(client)
 ```
 
 ## OAuth
@@ -68,20 +68,20 @@ discogs {
 
 This way you can create a client with *Client Credentials*:
 ```scala
-  import cats.effect.IO
+  import cats.effect.{ContextShift, IO}
   import io.bartholomews.discogs4s.DiscogsClient
   import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
   import io.bartholomews.fsclient.entities.oauth.v1.OAuthV1AuthorizationFramework.SignerType
   import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 
   import scala.concurrent.ExecutionContext
-
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+  implicit val cs: ContextShift[IO] = IO.contextShift(ec)
 
-  val discogsClient: DiscogsClient =
+  val discogsClient: DiscogsClient[IO] =
     DiscogsClient.unsafeFromConfig(SignerType.BasicSignature)
 
-  val response: IO[HttpResponse[SimpleUser]] = 
+  val response: IO[HttpResponse[SimpleUser]] =
     discogsClient.users.getSimpleUserProfile(Username("_.bartholomews"))
 ```
 
@@ -115,13 +115,15 @@ discogs {
 
 This way you can create a client with *Personal access token*:
 ```scala
+  import cats.effect.{ContextShift, IO}
   import io.bartholomews.discogs4s.DiscogsClient
   import io.bartholomews.fsclient.entities.oauth.v1.OAuthV1AuthorizationFramework.SignerType
+
   import scala.concurrent.ExecutionContext
-
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+  implicit val cs: ContextShift[IO] = IO.contextShift(ec)
 
-  val discogsClient: DiscogsClient =
+  val discogsClient: DiscogsClient[IO] =
     DiscogsClient.unsafeFromConfig(SignerType.TokenSignature)
 ```
 
@@ -129,6 +131,8 @@ You could also create a client manually passing directly `UserAgent` and `Signer
 
 ### Full OAuth 1.0a with access token/secret
 ```scala
+  import cats.data.EitherT
+  import cats.effect.{ContextShift, IO}
   import io.bartholomews.discogs4s.DiscogsClient
   import io.bartholomews.discogs4s.entities.{RequestToken, Username}
   import io.bartholomews.fsclient.entities.ErrorBody
@@ -137,52 +141,45 @@ You could also create a client manually passing directly `UserAgent` and `Signer
   import org.http4s.Uri
 
   import scala.concurrent.ExecutionContext
-
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
+  implicit val cs: ContextShift[IO] = IO.contextShift(ec)
 
-  val discogsClient: DiscogsClient =
+  val discogsClient: DiscogsClient[IO] =
     DiscogsClient.unsafeFromConfig(SignerType.BasicSignature)
-  
+
   // the uri to be redirected after the user will grant permissions for your app
   val callbackUri =
     Uri.unsafeFromString("http://localhost:9000/discogs/callback")
-  
-  val maybeRequestToken: Either[ErrorBody, RequestToken] = discogsClient.auth
-    .getRequestToken(discogsClient.temporaryCredentialsRequest(callbackUri))
-    .unsafeRunSync()
-    .entity
 
-  // you should store the request token entity somewhere  
-  val requestToken: RequestToken = maybeRequestToken.right.get
-  // the discogs uri your app should redirect to, where the user will grant permissions
-  val discogsRedirectUri: Uri = requestToken.callback
-
-  /*
-    After you have sent the user to `discogsRedirectUri`,
-    the user will be redirected to `callbackUri`: the url will have
-    query parameters with the token key and verifier;
-    it doesn't seem to have the token secret, 
-    that's why you need to store the request token in the previous step 
-  */
-  val uriFromCallback = 
-    callbackUri.withQueryParam("oauth_token", "AAABBB")
-    callbackUri.withQueryParam("oauth_verifier", "ZZZZZ")
-  
-  // finally get the access token credentials;
-  // you could serialize it in the client session cookies
-  // or store it somewhere: it doesn't expire;
-  val accessToken: AccessTokenCredentials =
-    discogsClient.auth.fromUri(requestToken, uriFromCallback)
+  for {
+    // you should store the request token entity somewhere
+    requestToken <- EitherT[IO, ErrorBody, RequestToken](
+      discogsClient.auth.getRequestToken(discogsClient.temporaryCredentialsRequest(callbackUri)).map(_.entity)
+    )
+    // the discogs uri your app should redirect to, where the user will grant permissions
+    discogsRedirectUri <- EitherT.pure[IO, ErrorBody](requestToken.callback)
+    /*
+      After you have sent the user to `discogsRedirectUri`,
+      the user will be redirected to `callbackUri`: the url will have
+      query parameters with the token key and verifier;
+      it doesn't seem to have the token secret,
+      that's why you need to store the request token in the previous step
+     */
+    uriFromCallback: Uri = callbackUri.withQueryParam("oauth_token", "AAABBB").withQueryParam("oauth_verifier", "ZZZZZ")
+    /*
+      finally get the access token credentials;
+      you could serialize it in the client session cookies
+      or store it somewhere: it doesn't expire;
+     */
+    accessToken <- EitherT[IO, ErrorBody, AccessTokenCredentials](
+      discogsClient.auth.fromUri(requestToken, uriFromCallback).map(_.entity)
+    )
+  } yield {
+    // you need to provide an accessToken to make user-authenticated calls
+    discogsClient.users
+      .getAuthenticateUserProfile(Username("_.bartholomews"))(accessToken)
       .unsafeRunSync()
-      .entity
-      .right
-      .get
-  
-   // you need to provide an accessToken to make user-authenticated calls
-   discogsClient.users  
-    .getAuthenticateUserProfile(Username("_.bartholomews"))(accessToken)
-    .unsafeRunSync()
-
+  }
 ```
 
 ## Implemented endpoints:
