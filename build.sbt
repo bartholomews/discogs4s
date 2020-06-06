@@ -12,7 +12,7 @@ inThisBuild(List(
     Developer(
       "bartholomews",
       "Federico Bartolomei",
-      "fsclient@bartholomews.io",
+      "discogs4s@bartholomews.io",
       url("https://bartholomews.io")
     )
   )
