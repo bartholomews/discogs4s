@@ -18,7 +18,7 @@ object ClientData extends TestudoClientData {
   implicit val resource: Resource[IO, Client[IO]] = BlazeClientBuilder[IO](ec).resource
 
   val sampleClient =
-    new DiscogsClient(
+    new DiscogsClient[IO](
       UserAgent("discogs-test", appVersion = None, appUrl = None),
       ClientCredentials(sampleConsumer)
     )

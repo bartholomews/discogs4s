@@ -26,5 +26,5 @@ testOptions in Test ++= TestSettings.options
 logBuffered in Test := false
 parallelExecution in ThisBuild := false
 
-coverageMinimum := 56.39
+coverageMinimum := 55.76
 coverageFailOnMinimum := true

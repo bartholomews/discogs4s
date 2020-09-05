@@ -1,5 +1,6 @@
 package io.bartholomews.discogs4s
 
+import cats.effect.IO
 import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.fsclient.config.UserAgent
 import io.bartholomews.fsclient.entities.oauth.ClientCredentials
@@ -15,7 +16,7 @@ class DiscogsClientSpec extends WireWordSpec {
     "initialised with an implicit configuration for `BasicSignature`" should {
       "read the consumer values from resource folder" in {
         noException should be thrownBy {
-          DiscogsClient.unsafeFromConfig(SignerType.BasicSignature)
+          DiscogsClient.unsafeFromConfig[IO](SignerType.BasicSignature)
         }
       }
     }
@@ -23,7 +24,7 @@ class DiscogsClientSpec extends WireWordSpec {
     "initialised with an implicit configuration for `AccessToken`" should {
       "read the consumer values from resource folder" in {
         noException should be thrownBy {
-          DiscogsClient.unsafeFromConfig(SignerType.TokenSignature)
+          DiscogsClient.unsafeFromConfig[IO](SignerType.TokenSignature)
         }
       }
 
@@ -34,7 +35,7 @@ class DiscogsClientSpec extends WireWordSpec {
 
         "read the consumer values from the injected configuration" in {
           noException should be thrownBy {
-            new DiscogsClient(sampleUserAgent, basicSignature)
+            new DiscogsClient[IO](sampleUserAgent, basicSignature)
           }
         }
       }
