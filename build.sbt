@@ -4,7 +4,9 @@ import Dependencies._
 name := "discogs4s"
 scalaVersion := "2.13.2"
 
-inThisBuild(List(
+lazy val root = (project in file("."))
+  .settings(TestSettings())
+  .settings(
   organization := "io.bartholomews",
   homepage := Some(url("https://github.com/batholomews/discogs4s")),
   licenses += ("GPL", url("http://opensource.org/licenses/GPL-3.0")),
@@ -15,11 +17,9 @@ inThisBuild(List(
       "discogs4s@bartholomews.io",
       url("https://bartholomews.io")
     )
-  )
-))
+  ))
 
 libraryDependencies ++= dependencies ++ testDependencies
-
 scalacOptions ++= compilerOptions
 
 testOptions in Test ++= TestSettings.options
@@ -28,6 +28,3 @@ parallelExecution in ThisBuild := false
 
 coverageMinimum := 56.39
 coverageFailOnMinimum := true
-
-addCommandAlias("test-coverage", ";coverage ;test ;coverageReport")
-addCommandAlias("test-fast", "testOnly * -l org.scalatest.tags.Slow")

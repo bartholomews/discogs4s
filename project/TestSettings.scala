@@ -1,4 +1,4 @@
-import sbt.{TestFrameworks, Tests}
+import sbt.{Def, TestFrameworks, Tests, addCommandAlias}
 
 object TestSettings {
   private val standardOutputReporter = Seq("-oU")
@@ -11,4 +11,8 @@ object TestSettings {
       standardOutputReporter ++ xmlReporter: _*
     )
   )
+
+  def apply(): Def.SettingsDefinition =
+    addCommandAlias("test-coverage", ";coverage ;test ;coverageReport") ++
+    addCommandAlias("test-fast", "testOnly * -l org.scalatest.tags.Slow")
 }
