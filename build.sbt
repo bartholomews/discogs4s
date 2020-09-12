@@ -19,6 +19,9 @@ lazy val root = (project in file("."))
     )
   ))
 
+resolvers +=
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+
 libraryDependencies ++= dependencies ++ testDependencies
 scalacOptions ++= compilerOptions
 
