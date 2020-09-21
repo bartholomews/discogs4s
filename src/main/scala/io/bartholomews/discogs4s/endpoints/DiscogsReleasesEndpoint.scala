@@ -2,7 +2,7 @@ package io.bartholomews.discogs4s.endpoints
 
 import io.bartholomews.discogs4s.endpoints.DiscogsReleasesEndpoint._
 import io.bartholomews.discogs4s.entities.Release
-import io.bartholomews.fsclient.requests.JsonRequest
+import io.bartholomews.fsclient.requests.FsSimpleJson
 import org.http4s.Uri
 
 // https://www.discogs.com/developers#page:database
@@ -24,6 +24,6 @@ object DiscogsReleasesEndpoint {
  */
 case class GetRelease(releaseId: Long, currency: Option[String])
     extends DiscogsReleasesEndpoint
-    with JsonRequest.Get[Release] {
+    with FsSimpleJson.Get[Release] {
   override def uri: Uri = basePath / s"$releaseId" / s"${currency.getOrElse("")}"
 }

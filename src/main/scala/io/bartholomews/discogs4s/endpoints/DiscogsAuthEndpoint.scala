@@ -3,7 +3,7 @@ package io.bartholomews.discogs4s.endpoints
 import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint._
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import io.bartholomews.fsclient.entities.oauth.TokenCredentials
-import io.bartholomews.fsclient.requests.{AccessTokenEndpointBase, AuthJsonRequest, AuthPlainTextRequest}
+import io.bartholomews.fsclient.requests.{AccessTokenEndpointBase, FsAuthJson, FsAuthPlainText}
 import org.http4s.Uri
 
 // https://www.discogs.com/developers#page:authentication,header:authentication-request-token-url
@@ -26,7 +26,7 @@ object DiscogsAuthEndpoint {
       .withQueryParam("access_key", credentials.token.value)
 }
 
-case object AuthorizeUrl extends DiscogsAuthEndpoint with AuthPlainTextRequest.Get[RequestToken] {
+case object AuthorizeUrl extends DiscogsAuthEndpoint with FsAuthPlainText.Get[RequestToken] {
   override val uri: Uri = basePath / "request_token"
 }
 
@@ -34,6 +34,6 @@ case object AccessTokenEndpoint extends DiscogsAuthEndpoint with AccessTokenEndp
   override val uri: Uri = basePath / "access_token"
 }
 
-case object Identity extends AuthJsonRequest.Get[UserIdentity] with DiscogsAuthEndpoint {
+case object Identity extends FsAuthJson.Get[UserIdentity] with DiscogsAuthEndpoint {
   override val uri: Uri = basePath / "identity"
 }

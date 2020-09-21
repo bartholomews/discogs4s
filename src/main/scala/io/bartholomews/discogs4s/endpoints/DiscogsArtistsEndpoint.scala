@@ -2,7 +2,7 @@ package io.bartholomews.discogs4s.endpoints
 
 import io.bartholomews.discogs4s.endpoints.DiscogsArtistsEndpoint._
 import io.bartholomews.discogs4s.entities.{PaginatedReleases, SortBy, SortOrder}
-import io.bartholomews.fsclient.requests.JsonRequest
+import io.bartholomews.fsclient.requests.FsSimpleJson
 import org.http4s.Uri
 
 sealed trait DiscogsArtistsEndpoint {
@@ -16,7 +16,7 @@ object DiscogsArtistsEndpoint {
 
 case class ArtistsReleases(artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])
     extends DiscogsArtistsEndpoint
-    with JsonRequest.Get[PaginatedReleases] {
+    with FsSimpleJson.Get[PaginatedReleases] {
   override val uri: Uri =
     (artistsUri / "releases")
       .withOptionQueryParam("sort", sortBy.map(_.entryName))
