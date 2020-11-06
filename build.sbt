@@ -2,7 +2,7 @@ import CompilerOptions._
 import Dependencies._
 
 name := "discogs4s"
-scalaVersion := "2.13.2"
+scalaVersion := "2.13.3"
 
 lazy val root = (project in file("."))
   .settings(TestSettings())
