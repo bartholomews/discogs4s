@@ -97,7 +97,7 @@ class AuthApiSpec extends WireWordSpec {
       "return a Left with appropriate message" in matchResponse(stub, request) {
         case FsResponse(_, status, Left(ErrorBodyString(error))) =>
           status shouldBe Status.UnprocessableEntity
-          error shouldBe "Unexpected response: WAT"
+          error shouldBe "Unexpected response: [WAT]"
       }
     }
   }
@@ -160,7 +160,7 @@ class AuthApiSpec extends WireWordSpec {
       "return a Left with appropriate message" in matchResponse(stub, request) {
         case FsResponse(_, status, Left(ErrorBodyString(error))) =>
           status shouldBe Status.UnprocessableEntity
-          error shouldBe "Unexpected response: WAT"
+          error shouldBe "Unexpected response: [WAT]"
       }
     }
   }

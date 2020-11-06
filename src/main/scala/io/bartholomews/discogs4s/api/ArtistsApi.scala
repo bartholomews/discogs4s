@@ -9,8 +9,6 @@ import io.bartholomews.fsclient.utils.HttpTypes.HttpResponse
 
 class ArtistsApi[F[_]: ConcurrentEffect](client: FsClientV1[F, SignerV1]) {
 
-  import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, rawJsonPipe}
-
   /**
    * https://www.discogs.com/developers/#page:database,header:database-artist-releases
    *

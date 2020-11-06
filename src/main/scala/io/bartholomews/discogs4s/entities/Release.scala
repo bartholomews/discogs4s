@@ -1,6 +1,5 @@
 package io.bartholomews.discogs4s.entities
 
-import io.bartholomews.fsclient.codecs.FsJsonResponsePipe
 import io.circe.Decoder
 import io.circe.generic.semiauto.deriveDecoder
 
@@ -17,12 +16,12 @@ case class Release(status: Option[String],
                    `type`: String,
                    id: Long)
 
-object Release extends FsJsonResponsePipe[Release] {
+object Release {
   implicit val decoder: Decoder[Release] = deriveDecoder[Release]
 }
 
 case class PaginatedReleases(pagination: Pagination, releases: Seq[Release]) extends DiscogsEntity
 
-object PaginatedReleases extends FsJsonResponsePipe[PaginatedReleases] {
+object PaginatedReleases {
   implicit val decoder: Decoder[PaginatedReleases] = deriveDecoder[PaginatedReleases]
 }

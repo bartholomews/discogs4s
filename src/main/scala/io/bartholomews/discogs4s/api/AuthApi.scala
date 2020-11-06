@@ -2,10 +2,10 @@ package io.bartholomews.discogs4s.api
 
 import cats.Applicative
 import cats.effect.ConcurrentEffect
-import fs2.Pipe
 import io.bartholomews.discogs4s.endpoints.{AccessTokenEndpoint, AuthorizeUrl, Identity}
 import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
 import io.bartholomews.fsclient.client.FsClientV1
+import io.bartholomews.fsclient.codecs.ResDecoder
 import io.bartholomews.fsclient.entities.oauth._
 import io.bartholomews.fsclient.entities.oauth.v1.OAuthV1AuthorizationFramework.AccessTokenRequest
 import io.bartholomews.fsclient.entities.{ErrorBodyString, FsResponse}
@@ -16,16 +16,18 @@ import org.http4s.{Headers, Status, Uri}
 // https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
 class AuthApi[F[_]: ConcurrentEffect](client: FsClientV1[F, SignerV1]) {
 
-  import io.bartholomews.fsclient.implicits.{emptyEntityEncoder, plainTextDecoderPipe, rawJsonPipe, rawPlainTextPipe}
-
   def getRequestToken(implicit signer: TemporaryCredentialsRequest): F[HttpResponse[RequestToken]] =
     AuthorizeUrl.runWith(client)
 
   def getAccessToken(implicit requestToken: RequestTokenCredentials): F[HttpResponse[AccessTokenCredentials]] = {
-    implicit val decoderPipe: Pipe[F, String, AccessTokenCredentials] = plainTextDecoderPipe({
-      case Right(s"oauth_token=$token&oauth_token_secret=$secret") =>
-        AccessTokenCredentials(Token(token, secret), requestToken.consumer)
-    })
+
+    implicit val decoderPipe: ResDecoder[String, AccessTokenCredentials] = {
+      case s"oauth_token=$token&oauth_token_secret=$secret" =>
+        Right(AccessTokenCredentials(Token(token, secret), requestToken.consumer))
+      case other =>
+        Left(new Exception(s"Unexpected response: [$other]"))
+    }
+
     AccessTokenRequest(AccessTokenEndpoint.uri).runWith(client)
   }
 

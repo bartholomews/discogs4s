@@ -27,20 +27,18 @@ libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.0.1"
   import org.http4s.client.blaze.BlazeClientBuilder
 
   import scala.concurrent.ExecutionContext
-  // needed for importing empty entity encoder and json decoder
-  import io.bartholomews.fsclient.implicits._
 
   implicit val ec: ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
   implicit val ioContextShift: ContextShift[IO] = IO.contextShift(ec)
   implicit val resource: Resource[IO, Client[IO]] = BlazeClientBuilder[IO](ec).resource
 
-  val userAgent = UserAgent(appName = "my-app", appVersion = None, appUrl = None)
+  private val userAgent = UserAgent(appName = "my-app", appVersion = None, appUrl = None)
 
   // create a basic client ready to make (unsigned) requests
-  val client = FClientNoAuth[IO](userAgent)
-  
+  private val client = FClientNoAuth[IO](userAgent)
+
   // run a request with your client
-  val response: IO[HttpResponse[SimpleUser]] = 
+  val response: IO[HttpResponse[SimpleUser]] =
     GetSimpleUserProfile(Username("_.bartholomews")).runWith(client)
 ```
 

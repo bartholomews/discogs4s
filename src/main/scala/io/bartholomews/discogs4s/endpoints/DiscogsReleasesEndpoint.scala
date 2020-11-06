@@ -23,7 +23,7 @@ object DiscogsReleasesEndpoint {
  *                  TODO => Should these request pass auth token (i.e. FsAuthRequest?) Or not? WTF
  */
 case class GetRelease(releaseId: Long, currency: Option[String])
-    extends DiscogsReleasesEndpoint
-    with FsSimpleJson.Get[Release] {
+    extends FsSimpleJson.Get[Release]
+    with DiscogsReleasesEndpoint {
   override def uri: Uri = basePath / s"$releaseId" / s"${currency.getOrElse("")}"
 }

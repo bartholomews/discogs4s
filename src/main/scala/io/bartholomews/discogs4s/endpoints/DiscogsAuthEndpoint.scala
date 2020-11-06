@@ -26,8 +26,8 @@ object DiscogsAuthEndpoint {
       .withQueryParam("access_key", credentials.token.value)
 }
 
-case object AuthorizeUrl extends DiscogsAuthEndpoint with FsAuthPlainText.Get[RequestToken] {
-  override val uri: Uri = basePath / "request_token"
+case object AuthorizeUrl extends FsAuthPlainText.GetEmpty[RequestToken] {
+  override def uri: Uri = basePath / "request_token"
 }
 
 case object AccessTokenEndpoint extends DiscogsAuthEndpoint with AccessTokenEndpointBase {

@@ -19,13 +19,13 @@ object DiscogsUsersEndpoint {
   final val basePath: Uri = DiscogsEndpoint.apiUri / "users"
 }
 
-case class GetSimpleUserProfile(username: Username) extends DiscogsUsersEndpoint with FsSimpleJson.Get[SimpleUser] {
+case class GetSimpleUserProfile(username: Username) extends FsSimpleJson.Get[SimpleUser] with DiscogsUsersEndpoint {
   override val uri: Uri = basePath / username.value
 }
 
 case class GetAuthenticatedUserProfile(username: Username)
-    extends DiscogsUsersEndpoint
-    with FsAuthJson.Get[AuthenticatedUser] {
+    extends FsAuthJson.Get[AuthenticatedUser]
+    with DiscogsUsersEndpoint {
   override val uri: Uri = basePath / username.value
 }
 
@@ -36,8 +36,8 @@ case class UpdateUserProfile(
   location: Option[UserLocation],
   profile: Option[UserProfileInfo],
   currAbbr: Option[MarketplaceCurrency]
-) extends DiscogsUsersEndpoint
-    with FsAuthJson.PostEmpty[AuthenticatedUser] {
+) extends FsAuthJson.PostEmpty[AuthenticatedUser]
+    with DiscogsUsersEndpoint {
   final override val uri: Uri = {
     (basePath / username.value)
       .withOptionQueryParam("name", name.map(_.value))

@@ -1,6 +1,5 @@
 package io.bartholomews.discogs4s.entities
 
-import io.bartholomews.fsclient.codecs.FsJsonResponsePipe
 import io.circe.Decoder
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
 import org.http4s.Uri
@@ -39,7 +38,7 @@ case class SimpleUser(
   currAbbr: String // FIXME [is this a COUNTRY ISO CODE? Should probably decode as Option[IsoDate]]
 ) extends DiscogsEntity
 
-object SimpleUser extends FsJsonResponsePipe[SimpleUser] {
+object SimpleUser {
   implicit val decoder: Decoder[SimpleUser] = deriveConfiguredDecoder[SimpleUser]
 }
 
@@ -78,6 +77,6 @@ case class AuthenticatedUser(
   currAbbr: String // FIXME [is this a COUNTRY ISO CODE? Should probably decode a [IsoDate]
 ) extends DiscogsEntity
 
-object AuthenticatedUser extends FsJsonResponsePipe[AuthenticatedUser] {
+object AuthenticatedUser {
   implicit val decoder: Decoder[AuthenticatedUser] = deriveConfiguredDecoder[AuthenticatedUser]
 }

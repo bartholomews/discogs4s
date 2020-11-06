@@ -6,7 +6,6 @@ import io.bartholomews.discogs4s.entities.Username
 import io.bartholomews.fsclient.client.FClientNoAuth
 import io.bartholomews.fsclient.config.UserAgent
 import io.bartholomews.fsclient.entities.oauth._
-import io.bartholomews.fsclient.implicits._
 import org.http4s.Uri
 import org.http4s.client.Client
 import org.http4s.client.blaze.BlazeClientBuilder
