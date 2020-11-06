@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Release script
 ### Removed
 ### Changed
-- Updated Readme, example docs 
+- Updated Readme, example docs, various dependencies
 ### Fixed
 - `revokeUri` query parameter key
 - Project developer email in `build.sbt`
