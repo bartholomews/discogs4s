@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/bartholomews/discogs4s.svg?branch=master)](https://travis-ci.org/bartholomews/discogs4s)
+[![Actions Status](https://github.com/bartholomews/discogs4s/workflows/build/badge.svg)](https://github.com/bartholomews/discogs4s/actions)
 [![codecov](https://codecov.io/gh/bartholomews/discogs4s/branch/master/graph/badge.svg)](https://codecov.io/gh/bartholomews/discogs4s)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
