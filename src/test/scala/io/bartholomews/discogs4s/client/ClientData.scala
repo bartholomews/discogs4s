@@ -1,24 +1,28 @@
 package io.bartholomews.discogs4s.client
 
-import cats.effect.{ContextShift, IO, Resource}
 import io.bartholomews.discogs4s.DiscogsClient
-import io.bartholomews.fsclient.config.UserAgent
-import io.bartholomews.fsclient.entities.oauth.ClientCredentials
-import io.bartholomews.scalatestudo.data.TestudoClientData
-import org.http4s.client.Client
-import org.http4s.client.blaze.BlazeClientBuilder
+import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.oauth.ClientCredentials
+import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.{Consumer, Token}
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
+import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend, UriContext}
 
-import scala.concurrent.ExecutionContext
+object ClientData {
 
-object ClientData extends TestudoClientData {
+  val sampleConsumer: Consumer = Consumer(
+    key = "SAMPLE_CONSUMER_KEY",
+    secret = "SAMPLE_CONSUMER_SECRET"
+  )
 
-  // https://http4s.org/v0.20/client/
-  implicit val ec: ExecutionContext = ExecutionContext.Implicits.global
-  implicit val ioContextShift: ContextShift[IO] = IO.contextShift(ec)
-  implicit val resource: Resource[IO, Client[IO]] = BlazeClientBuilder[IO](ec).resource
+  implicit val backend: SttpBackend[Identity, Nothing, NothingT] = HttpURLConnectionBackend()
+
+  val sampleToken: Token = Token(value = "SAMPLE_TOKEN_VALUE", secret = "SAMPLE_TOKEN_SECRET")
+
+  val sampleRedirectUri: RedirectUri =
+    RedirectUri(uri"https://bartholomews.io/discogs4s/callback")
 
   val sampleClient =
-    new DiscogsClient[IO](
+    new DiscogsClient[Identity, ClientCredentials](
       UserAgent("discogs-test", appVersion = None, appUrl = None),
       ClientCredentials(sampleConsumer)
     )

@@ -1,7 +1,7 @@
 package io.bartholomews.discogs4s.endpoints
 
 import io.bartholomews.discogs4s.utils.Configuration
-import org.http4s.Uri
+import sttp.model.Uri
 
 object DiscogsEndpoint {
   final val baseUri: Uri = Configuration.discogs.baseUri

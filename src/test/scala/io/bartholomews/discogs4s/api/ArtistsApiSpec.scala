@@ -2,14 +2,15 @@ package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
+import io.bartholomews.discogs4s.CoreWireWordSpec
 import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release, SortBy, SortOrder}
-import io.bartholomews.fsclient.entities.{ErrorBodyString, FsResponse}
-import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.scalatestudo.WireWordSpec
-import org.http4s.Status
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import sttp.client.{HttpError, Response}
+import sttp.model.StatusCode
 
-class ArtistsApiSpec extends WireWordSpec {
+class ArtistsApiSpec extends CoreWireWordSpec {
 
   import ClientData._
 
@@ -17,13 +18,13 @@ class ArtistsApiSpec extends WireWordSpec {
 
     "the server responds with one response entity" should {
 
-      def request: IOResponse[PaginatedReleases] =
+      def request: SttpResponse[io.circe.Error, PaginatedReleases] =
         sampleClient.artists.getArtistsReleases(artistId = 1,
                                                 sortBy = Some(SortBy.Title),
                                                 sortOrder = Some(SortOrder.Asc))
 
-      "decode the response correctly" in matchResponse(stubWithResourceFile, request) {
-        case FsResponse(_, _, Right(entity)) =>
+      "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) {
+        case Right(entity) =>
           entity should matchTo(
             PaginatedReleases(
               pagination = Pagination(
@@ -61,11 +62,11 @@ class ArtistsApiSpec extends WireWordSpec {
 
     "the server responds with multiple response entities" should {
 
-      def request: IOResponse[PaginatedReleases] =
+      def request: SttpResponse[io.circe.Error, PaginatedReleases] =
         sampleClient.artists.getArtistsReleases(artistId = 1, sortBy = None, sortOrder = None)
 
-      "decode the response correctly" in matchResponse(stubWithResourceFile, request) {
-        case FsResponse(_, _, Right(entity)) =>
+      "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) {
+        case Right(entity) =>
           entity.pagination.items shouldBe 110
           entity.pagination.per_page shouldBe 50
           inside(entity.releases.find(_.id == 12526186)) {
@@ -76,7 +77,7 @@ class ArtistsApiSpec extends WireWordSpec {
 
     "the server responds with an error" should {
 
-      def request: IOResponse[PaginatedReleases] =
+      def request: SttpResponse[io.circe.Error, PaginatedReleases] =
         sampleClient.artists.getArtistsReleases(artistId = 1,
                                                 sortBy = Some(SortBy.Year),
                                                 sortOrder = Some(SortOrder.Desc))
@@ -93,10 +94,10 @@ class ArtistsApiSpec extends WireWordSpec {
             )
         )
 
-      "decode an `Unauthorized` response" in matchResponse[PaginatedReleases](stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
-          status shouldBe Status.Unauthorized
-          error shouldBe "Invalid consumer."
+      "decode an `Unauthorized` response" in matchIdResponse(stub, request) {
+        case Response(Left(error), status, _, _, _) =>
+          status shouldBe StatusCode.Unauthorized
+          error shouldBe HttpError("Invalid consumer.", StatusCode.Unauthorized)
       }
     }
   }

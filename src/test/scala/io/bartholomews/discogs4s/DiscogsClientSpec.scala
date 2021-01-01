@@ -1,13 +1,10 @@
 package io.bartholomews.discogs4s
 
-import cats.effect.IO
 import io.bartholomews.discogs4s.client.ClientData
-import io.bartholomews.fsclient.config.UserAgent
-import io.bartholomews.fsclient.entities.oauth.ClientCredentials
-import io.bartholomews.fsclient.entities.oauth.v1.OAuthV1AuthorizationFramework.SignerType
-import io.bartholomews.scalatestudo.WireWordSpec
+import io.bartholomews.fsclient.core.config.UserAgent
+import sttp.client.Identity
 
-class DiscogsClientSpec extends WireWordSpec {
+class DiscogsClientSpec extends CoreWireWordSpec {
 
   import ClientData._
 
@@ -16,7 +13,7 @@ class DiscogsClientSpec extends WireWordSpec {
     "initialised with an implicit configuration for `BasicSignature`" should {
       "read the consumer values from resource folder" in {
         noException should be thrownBy {
-          DiscogsClient.unsafeFromConfig[IO](SignerType.BasicSignature)
+          DiscogsClient.clientCredentialsFromConfig[Identity]
         }
       }
     }
@@ -24,18 +21,18 @@ class DiscogsClientSpec extends WireWordSpec {
     "initialised with an implicit configuration for `AccessToken`" should {
       "read the consumer values from resource folder" in {
         noException should be thrownBy {
-          DiscogsClient.unsafeFromConfig[IO](SignerType.TokenSignature)
+          DiscogsClient.personalFromConfig[Identity]
         }
       }
 
       "initialised with an explicit `BasicSignature` configuration" should {
 
         val sampleUserAgent = UserAgent(appName = "mock-app-name", appVersion = Some("1.0"), appUrl = None)
-        val basicSignature = ClientCredentials(sampleConsumer)
+        val basicSignature = sampleConsumer
 
         "read the consumer values from the injected configuration" in {
           noException should be thrownBy {
-            new DiscogsClient[IO](sampleUserAgent, basicSignature)
+            DiscogsClient.clientCredentials(sampleUserAgent, basicSignature)
           }
         }
       }

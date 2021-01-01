@@ -1,7 +1,7 @@
 package io.bartholomews.discogs4s.entities
 
 import io.circe.Decoder
-import org.http4s.Uri
+import sttp.model.Uri
 
 case class UserIdentity(id: Long, username: String, resourceUrl: Uri, consumerName: String) extends DiscogsEntity
 

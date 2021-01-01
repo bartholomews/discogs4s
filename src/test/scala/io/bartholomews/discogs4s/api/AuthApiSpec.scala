@@ -2,35 +2,39 @@ package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
+import io.bartholomews.discogs4s.CoreWireWordSpec
 import io.bartholomews.discogs4s.client.ClientData
-import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
-import io.bartholomews.fsclient.entities.oauth.{
+import io.bartholomews.discogs4s.entities.UserIdentity
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.{SignatureMethod, Token}
+import io.bartholomews.fsclient.core.oauth.v1.TemporaryCredentials
+import io.bartholomews.fsclient.core.oauth.{
   AccessTokenCredentials,
-  RequestTokenCredentials,
+  ClientCredentials,
+  ResourceOwnerAuthorizationUri,
   TemporaryCredentialsRequest
 }
-import io.bartholomews.fsclient.entities.{ErrorBodyJson, ErrorBodyString, FsResponse}
-import io.bartholomews.fsclient.utils.HttpTypes.IOResponse
-import io.bartholomews.scalatestudo.WireWordSpec
 import org.apache.http.entity.ContentType
-import org.http4s.client.oauth1.Token
-import org.http4s.{Status, Uri}
+import sttp.client.{DeserializationError, HttpError, Identity, Response, ResponseError, UriContext}
+import sttp.model.StatusCode
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
-class AuthApiSpec extends WireWordSpec {
+class AuthApiSpec extends CoreWireWordSpec {
 
   import ClientData._
-  import io.circe.generic.auto._
 
   "getRequestToken" when {
 
-    def request: IOResponse[RequestToken] = sampleClient.auth.getRequestToken(
-      TemporaryCredentialsRequest(
-        sampleConsumer,
-        Uri.unsafeFromString("https://bartholomews.io/discogs4s/callback")
+    def request: Identity[Response[Either[ResponseError[Exception], TemporaryCredentials]]] =
+      sampleClient.auth.getRequestToken(
+        TemporaryCredentialsRequest(
+          sampleConsumer,
+          sampleRedirectUri,
+          SignatureMethod.PLAINTEXT
+        )
       )
-    )
 
     "the server responds with an error" should {
 
@@ -45,10 +49,10 @@ class AuthApiSpec extends WireWordSpec {
             )
         )
 
-      "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
-          status shouldBe Status.Unauthorized
-          error shouldBe "Invalid consumer."
+      "return a Left with appropriate message" in matchIdResponse(stub, request) {
+        case Response(Left(error), status, _, _, _) =>
+          status shouldBe StatusCode.Unauthorized
+          error shouldBe HttpError("Invalid consumer.", StatusCode.Unauthorized)
       }
     }
 
@@ -64,21 +68,22 @@ class AuthApiSpec extends WireWordSpec {
             )
         )
 
-      "return a Right with the response Token" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(response)) =>
+      "return a Right with the response Token" in matchResponseBody(stub, request) {
+        case Right(response) =>
           response should matchTo(
-            RequestToken(
+            TemporaryCredentials(
+              sampleConsumer,
               token = Token("TK1", "fafafafafaffafaffafafa"),
-              callbackConfirmed = true
+              callbackConfirmed = true,
+              ResourceOwnerAuthorizationUri(uri"http://127.0.0.1:8080/oauth/authorize")
             )
           )
       }
 
-      "return a Right with the callback Uri" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(tokenResponse)) =>
-          tokenResponse.callback shouldBe Uri.unsafeFromString(
-            "http://127.0.0.1:8080/oauth/authorize?oauth_token=TK1"
-          )
+      "return a Right with the callback Uri" in matchResponseBody(stub, request) {
+        case Right(tokenResponse) =>
+          tokenResponse.resourceOwnerAuthorizationRequest shouldBe
+            uri"http://127.0.0.1:8080/oauth/authorize?oauth_token=TK1"
       }
     }
 
@@ -94,19 +99,33 @@ class AuthApiSpec extends WireWordSpec {
             )
         )
 
-      "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
-          status shouldBe Status.UnprocessableEntity
-          error shouldBe "Unexpected response: [WAT]"
+      "return a Left with appropriate message" in matchIdResponse(stub, request) {
+        case Response(Left(DeserializationError(body, error)), status, _, _, _) =>
+          body shouldBe "WAT"
+          error.getMessage shouldBe "Unexpected response"
+          status shouldBe StatusCode.Ok
       }
     }
   }
 
   "getAccessToken" when {
 
-    def request: IOResponse[AccessTokenCredentials] = sampleClient.auth.getAccessToken(
-      RequestTokenCredentials(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
-    )
+    def request: Response[Either[ResponseError[Exception], AccessTokenCredentials]] =
+      sampleClient.auth.fromUri(
+        sampleRedirectUri.value.params(
+          Map(
+            "oauth_token" -> sampleToken.value,
+            "oauth_verifier" -> "SAMPLE_VERIFIER"
+          )
+        ),
+        TemporaryCredentials(
+          sampleConsumer,
+          sampleToken,
+          callbackConfirmed = true,
+          resourceOwnerAuthorizationUri = ResourceOwnerAuthorizationUri(uri"http://127.0.0.1:8080")
+        ),
+        SignatureMethod.PLAINTEXT
+      )
 
     "the server responds with an error" should {
 
@@ -120,10 +139,10 @@ class AuthApiSpec extends WireWordSpec {
             )
         )
 
-      "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
-          status shouldBe Status.Unauthorized
-          error shouldBe "Invalid consumer."
+      "return a Left with appropriate message" in matchIdResponse(stub, request) {
+        case Response(Left(HttpError(body, error)), status, _, _, _) =>
+          status shouldBe StatusCode.Unauthorized
+          body shouldBe "Invalid consumer."
       }
     }
 
@@ -139,9 +158,13 @@ class AuthApiSpec extends WireWordSpec {
             )
         )
 
-      "return a Right with the response Token" in matchResponse(stub, request) {
-        case FsResponse(_, _, Right(response)) =>
-          response shouldBe AccessTokenCredentials(Token(value = "OATH_TK1", secret = "TK_SECRET"), sampleConsumer)
+      "return a Right with the response Token" in matchResponseBody(stub, request) {
+        case Right(response) =>
+          response shouldBe AccessTokenCredentials(
+            Token(value = "OATH_TK1", secret = "TK_SECRET"),
+            sampleConsumer,
+            SignatureMethod.PLAINTEXT
+          )
       }
     }
 
@@ -157,20 +180,19 @@ class AuthApiSpec extends WireWordSpec {
             )
         )
 
-      "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
-          status shouldBe Status.UnprocessableEntity
-          error shouldBe "Unexpected response: [WAT]"
+      "return a Left with appropriate message" in matchIdResponse(stub, request) {
+        case Response(Left(DeserializationError(body, error)), status, _, _, _) =>
+          status shouldBe StatusCode.Ok
+          body shouldBe "WAT"
       }
     }
   }
 
   "me" when {
-
-    def request: IOResponse[UserIdentity] = sampleClient.auth.me(
-      // TODO: Shouldn't only be enforce an `AccessTokenCredentials` as `SignerV1` ?
-      RequestTokenCredentials(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
-    )
+    implicit val signer: ClientCredentials = sampleClient.client.signer
+    def request: SttpResponse[io.circe.Error, UserIdentity] = sampleClient.users.me(signer)
+    // TODO: Shouldn't only be enforce an `AccessTokenCredentials` as `SignerV1` ?
+//      RequestTokenCredentials(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
 
     "the server responds with an error" should {
 
@@ -185,10 +207,16 @@ class AuthApiSpec extends WireWordSpec {
             )
         )
 
-      "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyJson(error))) =>
-          status shouldBe Status.Unauthorized
-          error.as[DiscogsError].map(_.message) shouldBe Right("You must authenticate to access this resource.")
+      "return a Left with appropriate message" in matchIdResponse(stub, request) {
+        case Response(Left(HttpError(body, statusCode)), status, _, _, _) =>
+          import io.circe.generic.auto._
+          import io.circe.parser.parse
+          status shouldBe StatusCode.Unauthorized
+          parse(body).flatMap(_.as[DiscogsError]) shouldBe Right(
+            DiscogsError(
+              "You must authenticate to access this resource."
+            )
+          )
       }
     }
 
@@ -204,13 +232,13 @@ class AuthApiSpec extends WireWordSpec {
             )
         )
 
-      "return a Right with the `UserIdentity` response" in matchResponse(stub, request) {
+      "return a Right with the `UserIdentity` response" in matchResponseBody(stub, request) {
 
-        case FsResponse(_, _, Right(response)) =>
+        case Right(response) =>
           response shouldBe UserIdentity(
             id = 1L,
             username = "example",
-            resourceUrl = Uri.unsafeFromString("https://api.discogs.com/users/example"),
+            resourceUrl = uri"https://api.discogs.com/users/example",
             consumerName = "Your Application Name"
           )
       }
@@ -228,10 +256,10 @@ class AuthApiSpec extends WireWordSpec {
             )
         )
 
-      "return a Left with appropriate message" in matchResponse(stub, request) {
-        case FsResponse(_, status, Left(ErrorBodyString(error))) =>
-          status shouldBe Status.UnprocessableEntity
-          error shouldBe "There was a problem decoding or parsing this response, please check the error logs"
+      "return a Left with appropriate message" in matchIdResponse(stub, request) {
+        case Response(Left(DeserializationError(body, error)), status, _, _, _) =>
+          status shouldBe StatusCode.Ok
+          body shouldBe "WAT"
       }
     }
   }

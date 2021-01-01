@@ -1,97 +1,93 @@
 package io.bartholomews.discogs4s
 
-import cats.effect.{ConcurrentEffect, ContextShift}
 import io.bartholomews.discogs4s.api.{ArtistsApi, AuthApi, UsersApi}
-import io.bartholomews.fsclient.client.FsClientV1
-import io.bartholomews.fsclient.config.{FsClientConfig, UserAgent}
-import io.bartholomews.fsclient.entities.oauth.v1.OAuthV1AuthorizationFramework.SignerType
-import io.bartholomews.fsclient.entities.oauth.{
-  AccessTokenCredentials,
+import io.bartholomews.fsclient.core.FsClient
+import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.{Consumer, SignatureMethod}
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.{AccessToken, RedirectUri}
+import io.bartholomews.fsclient.core.oauth.{
+  AuthDisabled,
   ClientCredentials,
+  CustomAuthorizationHeader,
+  OAuthSigner,
+  Signer,
   SignerV1,
   TemporaryCredentialsRequest
 }
-import org.http4s.Uri
-import org.http4s.client.oauth1.{Consumer, Token}
 import pureconfig.ConfigSource
-import pureconfig.error.ConfigReaderFailures
+import sttp.client.SttpBackend
 
-import scala.concurrent.ExecutionContext
+sealed abstract class DiscogsAbstractClient[F[_], S <: Signer](
+  implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
+) {
 
-// https://http4s.org/v0.19/streaming/
-class DiscogsClient[F[_]: ConcurrentEffect](userAgent: UserAgent, signer: SignerV1)(implicit ec: ExecutionContext,
-                                                                                    cs: ContextShift[F]) {
-  def temporaryCredentialsRequest(callback: Uri): TemporaryCredentialsRequest =
-    TemporaryCredentialsRequest(client.appConfig.signer.consumer, callback)
+  private[discogs4s] def client: FsClient[F, S]
+  final object artists extends ArtistsApi[F, S](client)
+  final object users extends UsersApi[F, S](client)
+}
 
-  private val client = FsClientV1[F, SignerV1](FsClientConfig.v1.basic(userAgent, signer.consumer))
+class DiscogsSimpleClient[F[_], S <: Signer](userAgent: UserAgent, signer: S)(
+  implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
+) extends DiscogsAbstractClient[F, S] {
+  override private[discogs4s] val client = new FsClient[F, S](userAgent: UserAgent, signer: S, sttpBackend)
+}
 
-  object auth extends AuthApi[F](client)
-  object artists extends ArtistsApi[F](client)
-  object users extends UsersApi[F](client)
+class DiscogsClient[F[_], S <: SignerV1](userAgent: UserAgent, signer: S)(
+  implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
+) extends DiscogsAbstractClient[F, S] {
+  def temporaryCredentialsRequest(redirectUri: RedirectUri): TemporaryCredentialsRequest =
+    TemporaryCredentialsRequest(signer.consumer, redirectUri)
+
+  override private[discogs4s] val client = new FsClient[F, S](userAgent, signer, sttpBackend)
+  final object auth extends AuthApi[F, S](client)
 }
 
 object DiscogsClient {
 
-  import io.bartholomews.fsclient.config.FsClientConfig.LoadConfigOrThrow
   import pureconfig.generic.auto._
 
   private val userAgentConfig = ConfigSource.default.at("user-agent")
   private val discogsConfig = ConfigSource.default.at("discogs")
 
-  /**
-   * Unsafely load userAgent and consumer from config
-   * @param ec the `ExecutionContext` for the client runner
-   * @return a fully configured `DiscogsClient` with the specified OAuth v1 signer type
-   */
-  def unsafeFromConfig[F[_]: ConcurrentEffect](
-    signerType: SignerType
-  )(implicit ec: ExecutionContext, cs: ContextShift[F]): DiscogsClient[F] = {
-    val userAgent = userAgentConfig.load[UserAgent].orThrow
-    val consumer = discogsConfig.at("consumer").load[Consumer].orThrow
-    new DiscogsClient(
-      userAgent,
-      signerType match {
-        case SignerType.BasicSignature => ClientCredentials(consumer)
-        case SignerType.TokenSignature =>
-          val accessToken = discogsConfig.at("access-token").load[Token].orThrow
-          AccessTokenCredentials(token = accessToken, consumer)
-      }
+  def basic[F[_]](userAgent: UserAgent)(
+    implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
+  ): DiscogsSimpleClient[F, AuthDisabled.type] = new DiscogsSimpleClient[F, AuthDisabled.type](
+    userAgent,
+    AuthDisabled
+  )
+
+  def basicFromConfig[F[_]](
+    implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
+  ): DiscogsSimpleClient[F, AuthDisabled.type] =
+    basic(userAgentConfig.loadOrThrow[UserAgent])
+
+  def personalToken(accessToken: AccessToken): CustomAuthorizationHeader =
+    CustomAuthorizationHeader(s"Discogs token=${accessToken.value}")
+
+  def personal[F[_]](userAgent: UserAgent, signer: CustomAuthorizationHeader)(
+    implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
+  ): DiscogsSimpleClient[F, OAuthSigner] = new DiscogsSimpleClient[F, OAuthSigner](
+    userAgent,
+    signer
+  )
+
+  def personalFromConfig[F[_]](
+    implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
+  ): DiscogsSimpleClient[F, OAuthSigner] =
+    personal(
+      userAgentConfig.loadOrThrow[UserAgent],
+      personalToken(discogsConfig.at("access-token").loadOrThrow[AccessToken])
     )
-  }
 
-  /**
-   * Unsafely load userAgent and consumer from config
-   * @param ec the `ExecutionContext` for the client runner
-   * @return a function which takes an OAuth v1 access token and returns a fully configured `DiscogsClient`
-   */
-  def unsafeFromConfig[F[_]: ConcurrentEffect]()(implicit ec: ExecutionContext,
-                                                 cs: ContextShift[F]): Token => DiscogsClient[F] = {
-    val userAgent = userAgentConfig.load[UserAgent].orThrow
-    val consumer = discogsConfig.at("consumer").load[Consumer].orThrow
-    accessToken =>
-      new DiscogsClient(
-        userAgent,
-        AccessTokenCredentials(token = accessToken, consumer)
-      )
-  }
+  def clientCredentials[F[_]](userAgent: UserAgent, consumer: Consumer)(
+    implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
+  ) = new DiscogsClient[F, SignerV1](userAgent, ClientCredentials(consumer, SignatureMethod.PLAINTEXT))
 
-  /**
-   * Safely load userAgent and consumer from config
-   * @param ec the `ExecutionContext` for the client runner
-   * @return Either the config reader failures
-   *         or a function which takes an OAuth v1 access token and returns a fully configured `DiscogsClient`
-   */
-  def fromConfig[F[_]: ConcurrentEffect](
-    implicit ec: ExecutionContext,
-    cs: ContextShift[F]
-  ): Either[ConfigReaderFailures, Token => DiscogsClient[F]] =
-    for {
-      userAgent <- userAgentConfig.load[UserAgent]
-      consumer <- discogsConfig.at("consumer").load[Consumer]
-    } yield (accessToken: Token) =>
-      new DiscogsClient(
-        userAgent,
-        AccessTokenCredentials(token = accessToken, consumer)
-      )
+  def clientCredentialsFromConfig[F[_]](
+    implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
+  ): DiscogsClient[F, SignerV1] =
+    clientCredentials(
+      userAgentConfig.loadOrThrow[UserAgent],
+      discogsConfig.at("consumer").loadOrThrow[Consumer]
+    )
 }

@@ -1,10 +1,8 @@
 package io.bartholomews.discogs4s.endpoints
 
-import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint._
-import io.bartholomews.discogs4s.entities.{RequestToken, UserIdentity}
-import io.bartholomews.fsclient.entities.oauth.TokenCredentials
-import io.bartholomews.fsclient.requests.{AccessTokenEndpointBase, FsAuthJson, FsAuthPlainText}
-import org.http4s.Uri
+import io.bartholomews.fsclient.core.http.FsClientSttpExtensions.UriExtensions
+import io.bartholomews.fsclient.core.oauth.TokenCredentials
+import sttp.model.Uri
 
 // https://www.discogs.com/developers#page:authentication,header:authentication-request-token-url
 sealed trait DiscogsAuthEndpoint
@@ -24,16 +22,4 @@ object DiscogsAuthEndpoint {
   final def revokeUri(credentials: TokenCredentials): Uri =
     (DiscogsEndpoint.baseUri / path / "revoke")
       .withQueryParam("access_key", credentials.token.value)
-}
-
-case object AuthorizeUrl extends FsAuthPlainText.GetEmpty[RequestToken] {
-  override def uri: Uri = basePath / "request_token"
-}
-
-case object AccessTokenEndpoint extends DiscogsAuthEndpoint with AccessTokenEndpointBase {
-  override val uri: Uri = basePath / "access_token"
-}
-
-case object Identity extends FsAuthJson.Get[UserIdentity] with DiscogsAuthEndpoint {
-  override val uri: Uri = basePath / "identity"
 }
