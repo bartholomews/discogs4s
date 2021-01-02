@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2021-01-02
+### Changed
+- Fsclient `client` val in `DiscogsClient` is now accessible,
+  so its signer can be used for *Personal access token* calls 
+
 ## [0.1.0] - 2021-01-02
 ### Added
 - Release script
@@ -18,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - This is the first release of `discogs4s`.
 
-[Unreleased]: https://github.com/bartholomews/discogs4s/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/bartholomews/discogs4s/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/bartholomews/discogs4s/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/bartholomews/discogs4s/compare/v0.0.1...v0.1.0
 [0.0.1]: https://github.com/bartholomews/discogs4s/releases/tag/v0.0.1

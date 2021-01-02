@@ -2,7 +2,6 @@ package io.bartholomews.discogs4s.samples
 
 object FullOAuthReadme {
   import io.bartholomews.discogs4s.DiscogsClient
-  import io.bartholomews.discogs4s.entities.Username
   import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
   import io.bartholomews.fsclient.core.oauth.{AccessTokenCredentials, SignerV1, TemporaryCredentialsRequest}
   import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend, UriContext}
@@ -23,8 +22,11 @@ object FullOAuthReadme {
   for {
     temporaryCredentials <- discogsClient.auth.getRequestToken(temporaryCredentialsRequest).body
 
+    // Send the uri to discogs token uri to give permissions to your app
+    sendTheUserTo: Uri = temporaryCredentials.resourceOwnerAuthorizationRequest
+
     /*
-      After the user accept/reject permissions for your app,
+      After the user accept/reject permissions for your app at `sendTheUserTo` uri,
       they will be redirected to `redirectUri`: the url will have
       query parameters with the token key and verifier;
       it doesn't seem to have the token secret,
@@ -46,6 +48,9 @@ object FullOAuthReadme {
   } yield {
     implicit val token: AccessTokenCredentials = accessToken
     // you need to provide an accessToken to make user-authenticated calls
-    discogsClient.users.getAuthenticateUserProfile(Username("_.bartholomews"))
+    discogsClient.users.me.body match {
+      case Left(error) => println(error.getMessage)
+      case Right(user) => println(user.username)
+    }
   }
 }

@@ -21,7 +21,7 @@ sealed abstract class DiscogsAbstractClient[F[_], S <: Signer](
   implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
 ) {
 
-  private[discogs4s] def client: FsClient[F, S]
+  def client: FsClient[F, S]
   final object artists extends ArtistsApi[F, S](client)
   final object users extends UsersApi[F, S](client)
 }
@@ -29,7 +29,7 @@ sealed abstract class DiscogsAbstractClient[F[_], S <: Signer](
 class DiscogsSimpleClient[F[_], S <: Signer](userAgent: UserAgent, signer: S)(
   implicit sttpBackend: SttpBackend[F, Nothing, Nothing]
 ) extends DiscogsAbstractClient[F, S] {
-  override private[discogs4s] val client = new FsClient[F, S](userAgent: UserAgent, signer: S, sttpBackend)
+  override val client = new FsClient[F, S](userAgent: UserAgent, signer: S, sttpBackend)
 }
 
 class DiscogsClient[F[_], S <: SignerV1](userAgent: UserAgent, signer: S)(
@@ -38,7 +38,7 @@ class DiscogsClient[F[_], S <: SignerV1](userAgent: UserAgent, signer: S)(
   def temporaryCredentialsRequest(redirectUri: RedirectUri): TemporaryCredentialsRequest =
     TemporaryCredentialsRequest(signer.consumer, redirectUri)
 
-  override private[discogs4s] val client = new FsClient[F, S](userAgent, signer, sttpBackend)
+  override val client = new FsClient[F, S](userAgent, signer, sttpBackend)
   final object auth extends AuthApi[F, S](client)
 }
 

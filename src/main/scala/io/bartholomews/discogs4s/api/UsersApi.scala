@@ -16,7 +16,6 @@ import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.{OAuthSigner, Signer, SignerV1}
 import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
 import sttp.client.circe.asJson
-import sttp.client.emptyRequest
 import sttp.model.Uri
 
 class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {

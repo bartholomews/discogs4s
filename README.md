@@ -11,7 +11,7 @@ which is a wrapper around sttp with circe and OAuth handling.
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13)
 
 ```
-libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.1.0"
+libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.1.1"
 ```
 
 ## Simple client
@@ -77,8 +77,8 @@ Then you can create a client with *Client Credentials*:
     client.users.getSimpleUserProfile(Username("_.bartholomews"))
 ```
 
-This client will sign by default with consumer key/secret, so you can benefit
-from higher rate limiting.
+This client will sign by default with consumer key/secret:  
+you cannot make authenticated requests, but you can benefit from higher rate limiting.
 
 ### Personal access token
 
@@ -102,18 +102,21 @@ discogs {
 This way you can create a client with *Personal access token*:
 ```scala
   import io.bartholomews.discogs4s.DiscogsClient
-  import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
+  import io.bartholomews.discogs4s.entities.UserIdentity
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+  import io.bartholomews.fsclient.core.oauth.OAuthSigner
   import io.circe
   import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend}
 
   type F[X] = Identity[X]
   implicit val backend: SttpBackend[F, Nothing, NothingT] = HttpURLConnectionBackend()
-  
-  private val client = DiscogsClient.personalFromConfig
 
-  val response: F[SttpResponse[circe.Error, SimpleUser]] =
-    client.users.getSimpleUserProfile(Username("_.bartholomews"))
+  private val discogs = DiscogsClient.personalFromConfig
+
+  implicit val signer: OAuthSigner = discogs.client.signer
+
+  // You can make authenticated (for your user only) calls with the implicit signer
+  val response: F[SttpResponse[circe.Error, UserIdentity]] = discogs.users.me
 ```
 
 You could also create a client manually passing directly `UserAgent` and `Signer`.
@@ -121,7 +124,6 @@ You could also create a client manually passing directly `UserAgent` and `Signer
 ### Full OAuth 1.0a with access token/secret
 ```scala
   import io.bartholomews.discogs4s.DiscogsClient
-  import io.bartholomews.discogs4s.entities.Username
   import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
   import io.bartholomews.fsclient.core.oauth.{AccessTokenCredentials, SignerV1, TemporaryCredentialsRequest}
   import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend, UriContext}
@@ -142,8 +144,11 @@ You could also create a client manually passing directly `UserAgent` and `Signer
   for {
     temporaryCredentials <- discogsClient.auth.getRequestToken(temporaryCredentialsRequest).body
 
+    // Send the uri to discogs token uri to give permissions to your app
+    sendTheUserTo: Uri = temporaryCredentials.resourceOwnerAuthorizationRequest
+
     /*
-      After the user accept/reject permissions for your app,
+      After the user accept/reject permissions for your app at `sendTheUserTo` uri,
       they will be redirected to `redirectUri`: the url will have
       query parameters with the token key and verifier;
       it doesn't seem to have the token secret,
@@ -165,7 +170,10 @@ You could also create a client manually passing directly `UserAgent` and `Signer
   } yield {
     implicit val token: AccessTokenCredentials = accessToken
     // you need to provide an accessToken to make user-authenticated calls
-    discogsClient.users.getAuthenticateUserProfile(Username("_.bartholomews"))
+    discogsClient.users.me.body match {
+      case Left(error) => println(error.getMessage) 
+      case Right(user) => println(user.username)
+    }
   }
 ```
 
