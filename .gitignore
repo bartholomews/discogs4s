@@ -4,5 +4,7 @@
 .idea
 target
 
-main/resources/application.conf
-main/scala/Main
+# metals
+.bloop
+.metals
+project/metals.sbt
