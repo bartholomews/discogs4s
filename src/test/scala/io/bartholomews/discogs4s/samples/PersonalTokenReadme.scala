@@ -15,4 +15,3 @@ object PersonalTokenReadme {
   val response: F[SttpResponse[circe.Error, SimpleUser]] =
     client.users.getSimpleUserProfile(Username("_.bartholomews"))
 }
-

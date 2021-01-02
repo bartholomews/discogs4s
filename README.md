@@ -3,15 +3,15 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # discogs4s
-Early stage *Discogs* client with the *Typelevel* stack.  
+Early stage *Discogs* client wrapping [sttp](https://sttp.softwaremill.com/en/stable)
 
 The client is using the library [fsclient](https://github.com/bartholomews/fsclient)
-which is a wrapper on http4s/fs2 with circe and OAuth handling.
+which is a wrapper around sttp with circe and OAuth handling.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13)
 
 ```
-libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.0.1"
+libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.1.0"
 ```
 
 ## Simple client
@@ -149,7 +149,7 @@ You could also create a client manually passing directly `UserAgent` and `Signer
       it doesn't seem to have the token secret,
       that's why you need to keep the temporary credentials in the previous step
      */
-    uriFromCallback: Uri = redirectUri.value.params(
+    resourceOwnerAuthorizationUriResponse: Uri = redirectUri.value.params(
       Map("oauth_token" -> "AAA", "oauth_verifier" -> "ZZZ")
     )
 
@@ -160,7 +160,7 @@ You could also create a client manually passing directly `UserAgent` and `Signer
       By default the OAuth signature is using SHA1, you can override and use PLAINTEXT instead
       (for more info see https://tools.ietf.org/html/rfc5849#section-3.4).
      */
-    accessToken <- discogsClient.auth.fromUri(uriFromCallback, temporaryCredentials).body
+    accessToken <- discogsClient.auth.fromUri(resourceOwnerAuthorizationUriResponse, temporaryCredentials).body
 
   } yield {
     implicit val token: AccessTokenCredentials = accessToken

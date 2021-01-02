@@ -30,7 +30,7 @@ object FullOAuthReadme {
       it doesn't seem to have the token secret,
       that's why you need to keep the temporary credentials in the previous step
      */
-    uriFromCallback: Uri = redirectUri.value.params(
+    resourceOwnerAuthorizationUriResponse: Uri = redirectUri.value.params(
       Map("oauth_token" -> "AAA", "oauth_verifier" -> "ZZZ")
     )
 
@@ -41,7 +41,7 @@ object FullOAuthReadme {
       By default the OAuth signature is using SHA1, you can override and use PLAINTEXT instead
       (for more info see https://tools.ietf.org/html/rfc5849#section-3.4).
      */
-    accessToken <- discogsClient.auth.fromUri(uriFromCallback, temporaryCredentials).body
+    accessToken <- discogsClient.auth.fromUri(resourceOwnerAuthorizationUriResponse, temporaryCredentials).body
 
   } yield {
     implicit val token: AccessTokenCredentials = accessToken

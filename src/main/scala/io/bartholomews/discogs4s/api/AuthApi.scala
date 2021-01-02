@@ -6,7 +6,6 @@ import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint.basePath
 import io.bartholomews.fsclient.core.http.ResponseMapping
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.SignatureMethod
 import io.bartholomews.fsclient.core.oauth.v1.TemporaryCredentials
-import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
 import io.bartholomews.fsclient.core.oauth.{
   AccessTokenCredentials,
   OAuthSigner,
@@ -45,13 +44,13 @@ class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) extends FsApiClien
       .send()
   }
 
-  def fromUri(uriFromCallback: Uri,
+  def fromUri(resourceOwnerAuthorizationUriResponse: Uri,
               temporaryCredentials: TemporaryCredentials,
               signatureMethod: SignatureMethod = SignatureMethod.SHA1)(implicit f: Applicative[F]): F[
     Response[Either[ResponseError[Exception], AccessTokenCredentials]]
   ] =
     RequestTokenCredentials
-      .validate(RedirectUri(uriFromCallback), temporaryCredentials, signatureMethod)
+      .fetchRequestTokenCredentials(resourceOwnerAuthorizationUriResponse, temporaryCredentials, signatureMethod)
       .fold(error => f.pure(Response(code = StatusCode.Unauthorized, body = Left(error))),
             requestTokenCredentials => getAccessToken(requestTokenCredentials))
 }

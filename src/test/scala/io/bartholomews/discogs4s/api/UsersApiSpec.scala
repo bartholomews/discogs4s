@@ -46,8 +46,9 @@ class UsersApiSpec extends CoreWireWordSpec {
               numWantlist = Some(160L),
               inventoryUrl = uri"https://api.discogs.com/users/rodneyfool/inventory",
               avatarUrl = uri"http://www.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?s=52&r=pg&d=mm",
-              bannerUrl =
-                Some(uri"https://img.discogs.com/dhuJe-pRJmod7hN3cdVi2PugEh4=/1600x400/filters:strip_icc():format(jpeg)/discogs-banners/B-1578108-user-1436314164-9231.jpg.jpg"),
+              bannerUrl = Some(
+                uri"https://img.discogs.com/dhuJe-pRJmod7hN3cdVi2PugEh4=/1600x400/filters:strip_icc():format(jpeg)/discogs-banners/B-1578108-user-1436314164-9231.jpg.jpg"
+              ),
               uri = uri"http://www.discogs.com/user/rodneyfool",
               resourceUrl = uri"https://api.discogs.com/users/rodneyfool",
               buyerRating = 100.00,
