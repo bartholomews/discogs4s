@@ -9,6 +9,6 @@ object Dependencies {
   )
 
   val testDependencies: Seq[ModuleID] = Seq(
-    "io.bartholomews" %% "scalatestudo" % "0.0.2+10-e954ea69+20201231-1436-SNAPSHOT"
+    "io.bartholomews" %% "scalatestudo" % "0.0.3"
   ).map(_ % Test)
 }
