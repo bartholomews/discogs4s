@@ -3,7 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # discogs4s
-Early stage *Discogs* client wrapping [sttp](https://sttp.softwaremill.com/en/stable)
+Early stage *Discogs* client wrapping [sttp](https://sttp.softwaremill.com/en/latest)
 
 The client is using the library [fsclient](https://github.com/bartholomews/fsclient)
 which is a wrapper around sttp with circe and OAuth handling.
@@ -19,20 +19,16 @@ libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.1.1"
 ```scala
   import io.bartholomews.discogs4s.DiscogsClient
   import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
-  import io.bartholomews.fsclient.core.config.UserAgent
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
   import io.circe
-  import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend}
+  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Nothing, NothingT] = HttpURLConnectionBackend()
+  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
-  private val userAgent = UserAgent(appName = "my-app", appVersion = None, appUrl = None)
+  // you could also pass the credentials directly in `DiscogsClient.clientCredentials`
+  private val client = DiscogsClient.clientCredentialsFromConfig
 
-  // create a basic client ready to make (unsigned) requests
-  private val client = DiscogsClient.basic(userAgent)
-
-  // run a request with your client
   val response: F[SttpResponse[circe.Error, SimpleUser]] =
     client.users.getSimpleUserProfile(Username("_.bartholomews"))
 ```
@@ -65,14 +61,15 @@ Then you can create a client with *Client Credentials*:
   import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
   import io.circe
-  import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend}
+  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Nothing, NothingT] = HttpURLConnectionBackend()
-  
-  // you could also pass the credentials directly in `DiscogsClient.clientCredentials`
+  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+
+  // create a basic client ready to make (unsigned) requests
   private val client = DiscogsClient.clientCredentialsFromConfig
 
+  // run a request with your client
   val response: F[SttpResponse[circe.Error, SimpleUser]] =
     client.users.getSimpleUserProfile(Username("_.bartholomews"))
 ```
@@ -106,14 +103,13 @@ This way you can create a client with *Personal access token*:
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
   import io.bartholomews.fsclient.core.oauth.OAuthSigner
   import io.circe
-  import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend}
+  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Nothing, NothingT] = HttpURLConnectionBackend()
+  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
   private val discogs = DiscogsClient.personalFromConfig
-
-  implicit val signer: OAuthSigner = discogs.client.signer
+  implicit val personalToken: OAuthSigner = discogs.client.signer
 
   // You can make authenticated (for your user only) calls with the implicit signer
   val response: F[SttpResponse[circe.Error, UserIdentity]] = discogs.users.me
@@ -126,11 +122,11 @@ You could also create a client manually passing directly `UserAgent` and `Signer
   import io.bartholomews.discogs4s.DiscogsClient
   import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
   import io.bartholomews.fsclient.core.oauth.{AccessTokenCredentials, SignerV1, TemporaryCredentialsRequest}
-  import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend, UriContext}
+  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend, UriContext}
   import sttp.model.Uri
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Nothing, NothingT] = HttpURLConnectionBackend()
+  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
   val discogsClient: DiscogsClient[F, SignerV1] =
     DiscogsClient.clientCredentialsFromConfig
@@ -154,7 +150,7 @@ You could also create a client manually passing directly `UserAgent` and `Signer
       it doesn't seem to have the token secret,
       that's why you need to keep the temporary credentials in the previous step
      */
-    resourceOwnerAuthorizationUriResponse: Uri = redirectUri.value.params(
+    resourceOwnerAuthorizationUriResponse: Uri = redirectUri.value.withParams(
       Map("oauth_token" -> "AAA", "oauth_verifier" -> "ZZZ")
     )
 
@@ -171,7 +167,7 @@ You could also create a client manually passing directly `UserAgent` and `Signer
     implicit val token: AccessTokenCredentials = accessToken
     // you need to provide an accessToken to make user-authenticated calls
     discogsClient.users.me.body match {
-      case Left(error) => println(error.getMessage) 
+      case Left(error) => println(error.getMessage)
       case Right(user) => println(user.username)
     }
   }

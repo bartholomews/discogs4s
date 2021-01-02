@@ -7,7 +7,7 @@ import io.bartholomews.discogs4s.CoreWireWordSpec
 import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.discogs4s.entities.{SimpleUser, UserLocation, UserRealName, UserWebsite, Username}
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-import sttp.client.{HttpError, Response, UriContext}
+import sttp.client3.{HttpError, Response, UriContext}
 import sttp.model.{StatusCode => Status}
 
 class UsersApiSpec extends CoreWireWordSpec {
@@ -75,7 +75,7 @@ class UsersApiSpec extends CoreWireWordSpec {
         )
 
       "decode an `Unauthorized` response" in matchIdResponse(stub, request) {
-        case Response(Left(HttpError(body, statusCode)), status, _, _, _) =>
+        case Response(Left(HttpError(body, statusCode)), status, _, _, _, _) =>
           status shouldBe Status.Unauthorized
           statusCode shouldBe Status.Unauthorized
           body shouldBe "Invalid consumer."

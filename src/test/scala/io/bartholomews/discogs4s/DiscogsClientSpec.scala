@@ -2,7 +2,7 @@ package io.bartholomews.discogs4s
 
 import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.fsclient.core.config.UserAgent
-import sttp.client.Identity
+import sttp.client3.Identity
 
 class DiscogsClientSpec extends CoreWireWordSpec {
 

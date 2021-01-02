@@ -4,11 +4,11 @@ object FullOAuthReadme {
   import io.bartholomews.discogs4s.DiscogsClient
   import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
   import io.bartholomews.fsclient.core.oauth.{AccessTokenCredentials, SignerV1, TemporaryCredentialsRequest}
-  import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend, UriContext}
+  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend, UriContext}
   import sttp.model.Uri
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Nothing, NothingT] = HttpURLConnectionBackend()
+  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
   val discogsClient: DiscogsClient[F, SignerV1] =
     DiscogsClient.clientCredentialsFromConfig
@@ -32,7 +32,7 @@ object FullOAuthReadme {
       it doesn't seem to have the token secret,
       that's why you need to keep the temporary credentials in the previous step
      */
-    resourceOwnerAuthorizationUriResponse: Uri = redirectUri.value.params(
+    resourceOwnerAuthorizationUriResponse: Uri = redirectUri.value.withParams(
       Map("oauth_token" -> "AAA", "oauth_verifier" -> "ZZZ")
     )
 

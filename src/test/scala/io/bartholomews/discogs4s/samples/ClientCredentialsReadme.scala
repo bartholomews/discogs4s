@@ -5,10 +5,10 @@ object ClientCredentialsReadme {
   import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
   import io.circe
-  import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend}
+  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Nothing, NothingT] = HttpURLConnectionBackend()
+  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
   // create a basic client ready to make (unsigned) requests
   private val client = DiscogsClient.clientCredentialsFromConfig
@@ -16,5 +16,4 @@ object ClientCredentialsReadme {
   // run a request with your client
   val response: F[SttpResponse[circe.Error, SimpleUser]] =
     client.users.getSimpleUserProfile(Username("_.bartholomews"))
-
 }

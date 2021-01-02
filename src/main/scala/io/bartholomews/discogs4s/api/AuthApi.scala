@@ -14,7 +14,7 @@ import io.bartholomews.fsclient.core.oauth.{
   TemporaryCredentialsRequest
 }
 import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
-import sttp.client.{Response, ResponseError}
+import sttp.client3.{Response, ResponseException}
 import sttp.model.{Method, StatusCode, Uri}
 
 // https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
@@ -22,7 +22,7 @@ class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) extends FsApiClien
 
   def getRequestToken(
     temporaryCredentialsRequest: TemporaryCredentialsRequest
-  ): F[Response[Either[ResponseError[Exception], TemporaryCredentials]]] =
+  ): F[Response[Either[ResponseException[String, Exception], TemporaryCredentials]]] =
     temporaryCredentialsRequest.send(
       method = Method.GET,
       serverUri = basePath / "request_token",
@@ -31,23 +31,24 @@ class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) extends FsApiClien
     )
 
   def getAccessToken(implicit signer: RequestTokenCredentials): F[
-    Response[Either[ResponseError[Exception], AccessTokenCredentials]]
+    Response[Either[ResponseException[String, Exception], AccessTokenCredentials]]
   ] = {
 
     implicit val responseMapping: ResponseMapping[String, Exception, AccessTokenCredentials] =
       AccessTokenCredentials.responseMapping(signer.consumer, signer.signatureMethod)
 
-    baseRequest(client)
-      .post(basePath / "access_token")
-      .sign
-      .response(mapInto[String, Exception, AccessTokenCredentials])
-      .send()
+    backend.send(
+      baseRequest(client)
+        .post(basePath / "access_token")
+        .sign
+        .response(mapInto[String, Exception, AccessTokenCredentials])
+    )
   }
 
   def fromUri(resourceOwnerAuthorizationUriResponse: Uri,
               temporaryCredentials: TemporaryCredentials,
               signatureMethod: SignatureMethod = SignatureMethod.SHA1)(implicit f: Applicative[F]): F[
-    Response[Either[ResponseError[Exception], AccessTokenCredentials]]
+    Response[Either[ResponseException[String, Exception], AccessTokenCredentials]]
   ] =
     RequestTokenCredentials
       .fetchRequestTokenCredentials(resourceOwnerAuthorizationUriResponse, temporaryCredentials, signatureMethod)

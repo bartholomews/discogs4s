@@ -5,7 +5,7 @@ import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth.ClientCredentials
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.{Consumer, Token}
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
-import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, SttpBackend, UriContext}
+import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend, UriContext}
 
 object ClientData {
 
@@ -14,7 +14,7 @@ object ClientData {
     secret = "SAMPLE_CONSUMER_SECRET"
   )
 
-  implicit val backend: SttpBackend[Identity, Nothing, NothingT] = HttpURLConnectionBackend()
+  implicit val backend: SttpBackend[Identity, Any] = HttpURLConnectionBackend()
 
   val sampleToken: Token = Token(value = "SAMPLE_TOKEN_VALUE", secret = "SAMPLE_TOKEN_SECRET")
 

@@ -5,7 +5,7 @@ import io.bartholomews.discogs4s.entities.{PaginatedReleases, SortBy, SortOrder}
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.Signer
 import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
-import sttp.client.circe.asJson
+import sttp.client3.circe.asJson
 import sttp.model.Uri
 
 class ArtistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {
@@ -37,10 +37,11 @@ class ArtistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(
         .withOptionQueryParam("sort", sortBy.map(_.entryName))
         .withOptionQueryParam("sort_order", sortOrder.map(_.entryName))
 
-    baseRequest(client)
-      .get(uri)
-      .sign(client)
-      .response(asJson[PaginatedReleases])
-      .send()
+    backend.send(
+      baseRequest(client)
+        .get(uri)
+        .sign(client)
+        .response(asJson[PaginatedReleases])
+    )
   }
 }

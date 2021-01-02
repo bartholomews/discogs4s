@@ -16,7 +16,7 @@ import io.bartholomews.fsclient.core.oauth.{
   TemporaryCredentialsRequest
 }
 import org.apache.http.entity.ContentType
-import sttp.client.{DeserializationError, HttpError, Identity, Response, ResponseError, UriContext}
+import sttp.client3.{DeserializationException, HttpError, Identity, Response, ResponseException, UriContext}
 import sttp.model.StatusCode
 
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
@@ -27,7 +27,7 @@ class AuthApiSpec extends CoreWireWordSpec {
 
   "getRequestToken" when {
 
-    def request: Identity[Response[Either[ResponseError[Exception], TemporaryCredentials]]] =
+    def request: Identity[Response[Either[ResponseException[String, Exception], TemporaryCredentials]]] =
       sampleClient.auth.getRequestToken(
         TemporaryCredentialsRequest(
           sampleConsumer,
@@ -50,7 +50,7 @@ class AuthApiSpec extends CoreWireWordSpec {
         )
 
       "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(error), status, _, _, _) =>
+        case Response(Left(error), status, _, _, _, _) =>
           status shouldBe StatusCode.Unauthorized
           error shouldBe HttpError("Invalid consumer.", StatusCode.Unauthorized)
       }
@@ -100,7 +100,7 @@ class AuthApiSpec extends CoreWireWordSpec {
         )
 
       "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(DeserializationError(body, error)), status, _, _, _) =>
+        case Response(Left(DeserializationException(body, error)), status, _, _, _, _) =>
           body shouldBe "WAT"
           error.getMessage shouldBe "Unexpected response"
           status shouldBe StatusCode.Ok
@@ -110,9 +110,9 @@ class AuthApiSpec extends CoreWireWordSpec {
 
   "getAccessToken" when {
 
-    def request: Response[Either[ResponseError[Exception], AccessTokenCredentials]] =
+    def request: Response[Either[ResponseException[String, Exception], AccessTokenCredentials]] =
       sampleClient.auth.fromUri(
-        sampleRedirectUri.value.params(
+        sampleRedirectUri.value.withParams(
           Map(
             "oauth_token" -> sampleToken.value,
             "oauth_verifier" -> "SAMPLE_VERIFIER"
@@ -140,7 +140,7 @@ class AuthApiSpec extends CoreWireWordSpec {
         )
 
       "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(HttpError(body, error)), status, _, _, _) =>
+        case Response(Left(HttpError(body, _)), status, _, _, _, _) =>
           status shouldBe StatusCode.Unauthorized
           body shouldBe "Invalid consumer."
       }
@@ -181,7 +181,7 @@ class AuthApiSpec extends CoreWireWordSpec {
         )
 
       "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(DeserializationError(body, error)), status, _, _, _) =>
+        case Response(Left(DeserializationException(body, _)), status, _, _, _, _) =>
           status shouldBe StatusCode.Ok
           body shouldBe "WAT"
       }
@@ -208,7 +208,7 @@ class AuthApiSpec extends CoreWireWordSpec {
         )
 
       "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(HttpError(body, statusCode)), status, _, _, _) =>
+        case Response(Left(HttpError(body, statusCode)), status, _, _, _, _) =>
           import io.circe.generic.auto._
           import io.circe.parser.parse
           status shouldBe StatusCode.Unauthorized
@@ -257,7 +257,7 @@ class AuthApiSpec extends CoreWireWordSpec {
         )
 
       "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(DeserializationError(body, error)), status, _, _, _) =>
+        case Response(Left(DeserializationException(body, _)), status, _, _, _, _) =>
           status shouldBe StatusCode.Ok
           body shouldBe "WAT"
       }

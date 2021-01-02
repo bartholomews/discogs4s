@@ -15,7 +15,7 @@ import io.bartholomews.fsclient.core.oauth.{
   SignerV1,
   TemporaryCredentialsRequest
 }
-import sttp.client.{HttpURLConnectionBackend, Identity, NothingT, ResponseError, SttpBackend, UriContext}
+import sttp.client3.{HttpURLConnectionBackend, Identity, ResponseException, SttpBackend, UriContext}
 
 object Test {
   // $COVERAGE-OFF$
@@ -26,7 +26,7 @@ object Test {
     appUrl = Some("com.github.bartholomews")
   )
 
-  implicit val backend: SttpBackend[Identity, Nothing, NothingT] = HttpURLConnectionBackend()
+  implicit val backend: SttpBackend[Identity, Any] = HttpURLConnectionBackend()
 
   val consumer: Consumer =
     Consumer(key = sys.env("MUSICGENE_DISCOGS_CONSUMER_KEY"), secret = sys.env("MUSICGENE_DISCOGS_CONSUMER_SECRET"))
@@ -91,7 +91,7 @@ object ClientCredentialsFlow extends App {
  */
 object Step1RetrieveRequestToken extends App {
   // $COVERAGE-OFF$
-  val requestToken: Either[ResponseError[Exception], TemporaryCredentials] = Test.discogsClient.auth
+  val requestToken: Either[ResponseException[String, Exception], TemporaryCredentials] = Test.discogsClient.auth
     .getRequestToken(
       TemporaryCredentialsRequest(
         Test.consumer,

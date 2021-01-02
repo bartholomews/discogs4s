@@ -7,7 +7,7 @@ import io.bartholomews.discogs4s.CoreWireWordSpec
 import io.bartholomews.discogs4s.client.ClientData
 import io.bartholomews.discogs4s.entities.{PageUrls, PaginatedReleases, Pagination, Release, SortBy, SortOrder}
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-import sttp.client.{HttpError, Response}
+import sttp.client3.{HttpError, Response}
 import sttp.model.StatusCode
 
 class ArtistsApiSpec extends CoreWireWordSpec {
@@ -95,7 +95,7 @@ class ArtistsApiSpec extends CoreWireWordSpec {
         )
 
       "decode an `Unauthorized` response" in matchIdResponse(stub, request) {
-        case Response(Left(error), status, _, _, _) =>
+        case Response(Left(error), status, _, _, _, _) =>
           status shouldBe StatusCode.Unauthorized
           error shouldBe HttpError("Invalid consumer.", StatusCode.Unauthorized)
       }
