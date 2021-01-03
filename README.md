@@ -14,6 +14,11 @@ which is a wrapper around sttp with circe and OAuth handling.
 libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.1.1"
 ```
 
+*NOTE*
+
+The following snippets are based on the latest snapshot 
+which has been migrated to `sttp3`
+
 ## Simple client
 
 ```scala
