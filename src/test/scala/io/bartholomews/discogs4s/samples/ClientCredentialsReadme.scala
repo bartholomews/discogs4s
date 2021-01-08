@@ -10,10 +10,9 @@ object ClientCredentialsReadme {
   type F[X] = Identity[X]
   implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
-  // create a basic client ready to make (unsigned) requests
+  // you could also pass the credentials directly in `DiscogsClient.clientCredentials`
   private val client = DiscogsClient.clientCredentialsFromConfig
 
-  // run a request with your client
   val response: F[SttpResponse[circe.Error, SimpleUser]] =
     client.users.getSimpleUserProfile(Username("_.bartholomews"))
 }
