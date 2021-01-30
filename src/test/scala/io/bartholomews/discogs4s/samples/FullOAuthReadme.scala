@@ -8,10 +8,10 @@ object FullOAuthReadme {
   import sttp.model.Uri
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
   val discogsClient: DiscogsClient[F, SignerV1] =
-    DiscogsClient.clientCredentialsFromConfig
+    DiscogsClient.clientCredentialsFromConfig(backend)
 
   // the uri to be redirected after the user will grant permissions for your app
   private val redirectUri = RedirectUri(uri"http://localhost:9000/discogs/callback")

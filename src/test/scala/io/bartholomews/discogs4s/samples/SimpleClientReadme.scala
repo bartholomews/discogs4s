@@ -9,7 +9,7 @@ object SimpleClientReadme {
   import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
   /*
     create a basic client ready to make (unsigned) requests:
@@ -17,7 +17,7 @@ object SimpleClientReadme {
    */
   private val client = DiscogsClient.basic(
     UserAgent(appName = "my-app", appVersion = None, appUrl = None)
-  )
+  )(backend)
 
   // run a request with your client
   val response: F[SttpResponse[circe.Error, SimpleUser]] =

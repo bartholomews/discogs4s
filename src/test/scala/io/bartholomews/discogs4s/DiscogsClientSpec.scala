@@ -13,7 +13,7 @@ class DiscogsClientSpec extends CoreWireWordSpec {
     "initialised with an implicit configuration for `BasicSignature`" should {
       "read the consumer values from resource folder" in {
         noException should be thrownBy {
-          DiscogsClient.clientCredentialsFromConfig[Identity]
+          DiscogsClient.clientCredentialsFromConfig[Identity](backend)
         }
       }
     }
@@ -21,7 +21,7 @@ class DiscogsClientSpec extends CoreWireWordSpec {
     "initialised with an implicit configuration for `AccessToken`" should {
       "read the consumer values from resource folder" in {
         noException should be thrownBy {
-          DiscogsClient.personalFromConfig[Identity]
+          DiscogsClient.personalFromConfig[Identity](backend)
         }
       }
 
@@ -32,7 +32,7 @@ class DiscogsClientSpec extends CoreWireWordSpec {
 
         "read the consumer values from the injected configuration" in {
           noException should be thrownBy {
-            DiscogsClient.clientCredentials(sampleUserAgent, basicSignature)
+            DiscogsClient.clientCredentials(sampleUserAgent, basicSignature)(backend)
           }
         }
       }

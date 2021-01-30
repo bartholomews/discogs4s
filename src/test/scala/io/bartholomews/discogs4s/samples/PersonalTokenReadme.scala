@@ -9,9 +9,9 @@ object PersonalTokenReadme {
   import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
-  private val discogs = DiscogsClient.personalFromConfig
+  private val discogs = DiscogsClient.personalFromConfig(backend)
   implicit val personalToken: OAuthSigner = discogs.client.signer
 
   // You can make authenticated (for your user only) calls with the implicit signer

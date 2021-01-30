@@ -26,7 +26,7 @@ object Test {
     appUrl = Some("com.github.bartholomews")
   )
 
-  implicit val backend: SttpBackend[Identity, Any] = HttpURLConnectionBackend()
+  val backend: SttpBackend[Identity, Any] = HttpURLConnectionBackend()
 
   val consumer: Consumer =
     Consumer(key = sys.env("MUSICGENE_DISCOGS_CONSUMER_KEY"), secret = sys.env("MUSICGENE_DISCOGS_CONSUMER_SECRET"))
@@ -34,7 +34,7 @@ object Test {
   val callback: RedirectUri = RedirectUri(uri"https://bartholomews.io/callback")
 
   val discogsClient: DiscogsClient[Identity, SignerV1] =
-    DiscogsClient.clientCredentials(Test.userAgent, consumer)
+    DiscogsClient.clientCredentials(Test.userAgent, consumer)(backend)
   // $COVERAGE-ON$
 }
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,7 +43,7 @@ object NoAuth extends App {
 
   import Test._
 
-  val client = DiscogsClient.basic(userAgent)
+  val client = DiscogsClient.basic(userAgent)(backend)
   client.users.getSimpleUserProfile(Username("_.bartholomews")).body.fold(println, println)
 
   // $COVERAGE-ON$
@@ -60,7 +60,7 @@ object Auth1 extends App {
   implicit val signer: CustomAuthorizationHeader =
     personalToken(AccessToken("???"))
 
-  val discogsClient = DiscogsClient.personal(Test.userAgent, signer)
+  val discogsClient = DiscogsClient.personal(Test.userAgent, signer)(backend)
 
   discogsClient.users.me.body
     .fold(println, println)

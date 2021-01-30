@@ -20,6 +20,8 @@ import sttp.model.Uri
 
 class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {
 
+  type DE = io.circe.Error
+
   private val basePath: Uri = DiscogsEndpoint.apiUri / "users"
   private def userPath(username: Username): Uri = basePath / username.value
 
@@ -34,7 +36,7 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
    * @param username The username of whose profile you are requesting.
    * @return `SimpleUser`
    */
-  def getSimpleUserProfile(username: Username): F[SttpResponse[io.circe.Error, SimpleUser]] =
+  def getSimpleUserProfile(username: Username): F[SttpResponse[DE, SimpleUser]] =
     backend.send(
       baseRequest(client)
         .get(userPath(username))
@@ -59,7 +61,7 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
    */
   def getAuthenticateUserProfile(
     username: Username
-  )(implicit signer: SignerV1): F[SttpResponse[io.circe.Error, AuthenticatedUser]] =
+  )(implicit signer: SignerV1): F[SttpResponse[DE, AuthenticatedUser]] =
     backend.send(
       baseRequest(client)
         .get(userPath(username))
@@ -89,7 +91,7 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
     location: Option[UserLocation],
     profile: Option[UserProfileInfo],
     currAbbr: Option[MarketplaceCurrency]
-  )(implicit signer: SignerV1): F[SttpResponse[io.circe.Error, AuthenticatedUser]] =
+  )(implicit signer: SignerV1): F[SttpResponse[DE, AuthenticatedUser]] =
     backend.send(
       baseRequest(client)
         .post(
@@ -114,7 +116,7 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
    *
    * @return `UserIdentity`
    */
-  def me(implicit signer: OAuthSigner): F[SttpResponse[io.circe.Error, UserIdentity]] =
+  def me(implicit signer: OAuthSigner): F[SttpResponse[DE, UserIdentity]] =
     backend.send(
       baseRequest(client)
         .get(DiscogsEndpoint.apiUri / DiscogsAuthEndpoint.path / "identity")

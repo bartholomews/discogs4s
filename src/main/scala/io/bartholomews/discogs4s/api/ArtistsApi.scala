@@ -10,6 +10,8 @@ import sttp.model.Uri
 
 class ArtistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {
 
+  type DE = io.circe.Error
+
   final val basePath = DiscogsEndpoint.apiUri / "artists"
   def artistsPath(artistId: Int): Uri = basePath / artistId.toString
 
@@ -30,7 +32,7 @@ class ArtistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(
    */
   def getArtistsReleases[E](artistId: Int,
                             sortBy: Option[SortBy],
-                            sortOrder: Option[SortOrder]): F[SttpResponse[io.circe.Error, PaginatedReleases]] = {
+                            sortOrder: Option[SortOrder]): F[SttpResponse[DE, PaginatedReleases]] = {
 
     val uri: Uri =
       (artistsPath(artistId) / "releases")

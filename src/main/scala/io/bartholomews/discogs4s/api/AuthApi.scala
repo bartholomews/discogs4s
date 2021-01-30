@@ -4,6 +4,7 @@ import cats.Applicative
 import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint
 import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint.basePath
 import io.bartholomews.fsclient.core.http.ResponseMapping
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.SignatureMethod
 import io.bartholomews.fsclient.core.oauth.v1.TemporaryCredentials
 import io.bartholomews.fsclient.core.oauth.{
@@ -14,7 +15,7 @@ import io.bartholomews.fsclient.core.oauth.{
   TemporaryCredentialsRequest
 }
 import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
-import sttp.client3.{Response, ResponseException}
+import sttp.client3.Response
 import sttp.model.{Method, StatusCode, Uri}
 
 // https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
@@ -22,17 +23,15 @@ class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) extends FsApiClien
 
   def getRequestToken(
     temporaryCredentialsRequest: TemporaryCredentialsRequest
-  ): F[Response[Either[ResponseException[String, Exception], TemporaryCredentials]]] =
+  ): F[SttpResponse[Exception, TemporaryCredentials]] =
     temporaryCredentialsRequest.send(
       method = Method.GET,
       serverUri = basePath / "request_token",
       userAgent = client.userAgent,
       resourceOwnerAuthorizationUri = ResourceOwnerAuthorizationUri(DiscogsAuthEndpoint.authorizeUri)
-    )
+    )(backend)
 
-  def getAccessToken(implicit signer: RequestTokenCredentials): F[
-    Response[Either[ResponseException[String, Exception], AccessTokenCredentials]]
-  ] = {
+  def getAccessToken(implicit signer: RequestTokenCredentials): F[SttpResponse[Exception, AccessTokenCredentials]] = {
 
     implicit val responseMapping: ResponseMapping[String, Exception, AccessTokenCredentials] =
       AccessTokenCredentials.responseMapping(signer.consumer, signer.signatureMethod)
@@ -45,11 +44,11 @@ class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) extends FsApiClien
     )
   }
 
-  def fromUri(resourceOwnerAuthorizationUriResponse: Uri,
-              temporaryCredentials: TemporaryCredentials,
-              signatureMethod: SignatureMethod = SignatureMethod.SHA1)(implicit f: Applicative[F]): F[
-    Response[Either[ResponseException[String, Exception], AccessTokenCredentials]]
-  ] =
+  def fromUri(
+    resourceOwnerAuthorizationUriResponse: Uri,
+    temporaryCredentials: TemporaryCredentials,
+    signatureMethod: SignatureMethod = SignatureMethod.SHA1
+  )(implicit f: Applicative[F]): F[SttpResponse[Exception, AccessTokenCredentials]] =
     RequestTokenCredentials
       .fetchRequestTokenCredentials(resourceOwnerAuthorizationUriResponse, temporaryCredentials, signatureMethod)
       .fold(error => f.pure(Response(code = StatusCode.Unauthorized, body = Left(error))),

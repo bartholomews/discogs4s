@@ -30,15 +30,15 @@ which has been migrated to `sttp3`
   import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
   /*
     create a basic client ready to make (unsigned) requests:
     you can also use `basicFromConfig` but need to have user-agent in config
    */
   private val client = DiscogsClient.basic(
-    UserAgent(appName = "your-consumer-app", appVersion = None, appUrl = None)
-  )
+    UserAgent(appName = "my-app", appVersion = None, appUrl = None)
+  )(backend)
 
   // run a request with your client
   val response: F[SttpResponse[circe.Error, SimpleUser]] =
@@ -76,10 +76,10 @@ Then you can create a client with *Client Credentials*:
   import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
   // you could also pass the credentials directly in `DiscogsClient.clientCredentials`
-  private val client = DiscogsClient.clientCredentialsFromConfig
+  private val client = DiscogsClient.clientCredentialsFromConfig(backend)
 
   val response: F[SttpResponse[circe.Error, SimpleUser]] =
     client.users.getSimpleUserProfile(Username("_.bartholomews"))
@@ -117,9 +117,9 @@ This way you can create a client with *Personal access token*:
   import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
-  private val discogs = DiscogsClient.personalFromConfig
+  private val discogs = DiscogsClient.personalFromConfig(backend)
   implicit val personalToken: OAuthSigner = discogs.client.signer
 
   // You can make authenticated (for your user only) calls with the implicit signer
@@ -137,10 +137,10 @@ You could also create a client manually passing directly `UserAgent` and `Signer
   import sttp.model.Uri
 
   type F[X] = Identity[X]
-  implicit val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
   val discogsClient: DiscogsClient[F, SignerV1] =
-    DiscogsClient.clientCredentialsFromConfig
+    DiscogsClient.clientCredentialsFromConfig(backend)
 
   // the uri to be redirected after the user will grant permissions for your app
   private val redirectUri = RedirectUri(uri"http://localhost:9000/discogs/callback")
@@ -189,12 +189,12 @@ You could also create a client manually passing directly `UserAgent` and `Signer
 - **AuthApi**
     - [`getRequestToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-request-token-url)
     - [`getAccessToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-access-token-url)
-    - [`me`](https://www.discogs.com/developers/#page:user-identity)
     
 - **ArtistsApi**
     - [`getArtistsReleases`](https://www.discogs.com/developers/#page:database,header:database-artist-releases)
     
 - **UsersApi**
+    - [`me`](https://www.discogs.com/developers/#page:user-identity)
     - [`getSimpleUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)    
     - [`getAuthenticateUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)    
     - [`updateUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post)    

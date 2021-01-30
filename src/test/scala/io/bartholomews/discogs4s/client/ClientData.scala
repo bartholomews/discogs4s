@@ -25,7 +25,7 @@ object ClientData {
     new DiscogsClient[Identity, ClientCredentials](
       UserAgent("discogs-test", appVersion = None, appUrl = None),
       ClientCredentials(sampleConsumer)
-    )
+    )(backend)
 
   case class DiscogsError(message: String)
 }
