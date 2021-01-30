@@ -2,7 +2,7 @@ import sbt._
 
 object Dependencies {
 
-  private val fsClientVersion = "0.1.0+13-21a52034-SNAPSHOT"
+  private val fsClientVersion = "0.1.1"
 
   val dependencies: Seq[ModuleID] = Seq(
     "io.bartholomews" %% "fsclient-circe" % fsClientVersion
