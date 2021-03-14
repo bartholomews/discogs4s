@@ -2,13 +2,14 @@ package io.bartholomews.discogs4s.api
 
 import io.bartholomews.discogs4s.endpoints.DiscogsEndpoint
 import io.bartholomews.discogs4s.entities.{PaginatedReleases, SortBy, SortOrder}
+import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.Signer
-import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
 import sttp.client3.circe.asJson
 import sttp.model.Uri
 
-class ArtistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {
+class ArtistsApi[F[_], S <: Signer](client: FsClient[F, S]) {
+  import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   type DE = io.circe.Error
 
@@ -39,11 +40,10 @@ class ArtistsApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(
         .withOptionQueryParam("sort", sortBy.map(_.entryName))
         .withOptionQueryParam("sort_order", sortOrder.map(_.entryName))
 
-    backend.send(
-      baseRequest(client)
-        .get(uri)
-        .sign(client)
-        .response(asJson[PaginatedReleases])
-    )
+    baseRequest(client.userAgent)
+      .get(uri)
+      .sign(client)
+      .response(asJson[PaginatedReleases])
+      .send(client.backend)
   }
 }

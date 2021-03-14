@@ -12,13 +12,14 @@ import io.bartholomews.discogs4s.entities.{
   UserWebsite,
   Username
 }
+import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.{OAuthSigner, Signer, SignerV1}
-import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
 import sttp.client3.circe.asJson
 import sttp.model.Uri
 
-class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(client) {
+class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
+  import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   type DE = io.circe.Error
 
@@ -37,12 +38,11 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
    * @return `SimpleUser`
    */
   def getSimpleUserProfile(username: Username): F[SttpResponse[DE, SimpleUser]] =
-    backend.send(
-      baseRequest(client)
-        .get(userPath(username))
-        .sign(client)
-        .response(asJson[SimpleUser])
-    )
+    baseRequest(client.userAgent)
+      .get(userPath(username))
+      .sign(client)
+      .response(asJson[SimpleUser])
+      .send(client.backend)
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
@@ -62,12 +62,11 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
   def getAuthenticateUserProfile(
     username: Username
   )(implicit signer: SignerV1): F[SttpResponse[DE, AuthenticatedUser]] =
-    backend.send(
-      baseRequest(client)
-        .get(userPath(username))
-        .sign
-        .response(asJson[AuthenticatedUser])
-    )
+    baseRequest(client.userAgent)
+      .get(userPath(username))
+      .sign
+      .response(asJson[AuthenticatedUser])
+      .send(client.backend)
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post
@@ -92,19 +91,18 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
     profile: Option[UserProfileInfo],
     currAbbr: Option[MarketplaceCurrency]
   )(implicit signer: SignerV1): F[SttpResponse[DE, AuthenticatedUser]] =
-    backend.send(
-      baseRequest(client)
-        .post(
-          userPath(username)
-            .withOptionQueryParam("name", name.map(_.value))
-            .withOptionQueryParam("home_page", homePage.map(_.value))
-            .withOptionQueryParam("location", location.map(_.value))
-            .withOptionQueryParam("profile", profile.map(_.value))
-            .withOptionQueryParam("curr_abbr", currAbbr.map(_.entryName))
-        )
-        .sign
-        .response(asJson[AuthenticatedUser])
-    )
+    baseRequest(client.userAgent)
+      .post(
+        userPath(username)
+          .withOptionQueryParam("name", name.map(_.value))
+          .withOptionQueryParam("home_page", homePage.map(_.value))
+          .withOptionQueryParam("location", location.map(_.value))
+          .withOptionQueryParam("profile", profile.map(_.value))
+          .withOptionQueryParam("curr_abbr", currAbbr.map(_.entryName))
+      )
+      .sign
+      .response(asJson[AuthenticatedUser])
+      .send(client.backend)
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity
@@ -117,10 +115,9 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) extends FsApiClient(cl
    * @return `UserIdentity`
    */
   def me(implicit signer: OAuthSigner): F[SttpResponse[DE, UserIdentity]] =
-    backend.send(
-      baseRequest(client)
-        .get(DiscogsEndpoint.apiUri / DiscogsAuthEndpoint.path / "identity")
-        .sign
-        .response(asJson[UserIdentity])
-    )
+    baseRequest(client.userAgent)
+      .get(DiscogsEndpoint.apiUri / DiscogsAuthEndpoint.path / "identity")
+      .sign
+      .response(asJson[UserIdentity])
+      .send(client.backend)
 }

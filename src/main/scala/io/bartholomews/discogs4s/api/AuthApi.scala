@@ -3,23 +3,18 @@ package io.bartholomews.discogs4s.api
 import cats.Applicative
 import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint
 import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint.basePath
+import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.http.ResponseMapping
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.SignatureMethod
 import io.bartholomews.fsclient.core.oauth.v1.TemporaryCredentials
-import io.bartholomews.fsclient.core.oauth.{
-  AccessTokenCredentials,
-  OAuthSigner,
-  RequestTokenCredentials,
-  ResourceOwnerAuthorizationUri,
-  TemporaryCredentialsRequest
-}
-import io.bartholomews.fsclient.core.{FsApiClient, FsClient}
+import io.bartholomews.fsclient.core.oauth._
 import sttp.client3.Response
 import sttp.model.{Method, StatusCode, Uri}
 
 // https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
-class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) extends FsApiClient(client) {
+class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) {
+  import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   def getRequestToken(
     temporaryCredentialsRequest: TemporaryCredentialsRequest
@@ -29,19 +24,18 @@ class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) extends FsApiClien
       serverUri = basePath / "request_token",
       userAgent = client.userAgent,
       resourceOwnerAuthorizationUri = ResourceOwnerAuthorizationUri(DiscogsAuthEndpoint.authorizeUri)
-    )(backend)
+    )(client.backend)
 
   def getAccessToken(implicit signer: RequestTokenCredentials): F[SttpResponse[Exception, AccessTokenCredentials]] = {
 
     implicit val responseMapping: ResponseMapping[String, Exception, AccessTokenCredentials] =
       AccessTokenCredentials.responseMapping(signer.consumer, signer.signatureMethod)
 
-    backend.send(
-      baseRequest(client)
-        .post(basePath / "access_token")
-        .sign
-        .response(mapInto[String, Exception, AccessTokenCredentials])
-    )
+    baseRequest(client.userAgent)
+      .post(basePath / "access_token")
+      .sign
+      .response(mapInto[String, Exception, AccessTokenCredentials])
+      .send(client.backend)
   }
 
   def fromUri(
