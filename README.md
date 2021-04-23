@@ -11,7 +11,12 @@ which is a wrapper around sttp with circe and OAuth handling.
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13)
 
 ```
-libraryDependencies += "io.bartholomews" %% "discogs4s" % "0.1.1"
+// circe codecs
+libraryDependencies += "io.bartholomews" %% "discogs4s-circe" % "<LATEST_VERSION>"
+// play codecs
+libraryDependencies += "io.bartholomews" %% "discogs4s-play" % "<LATEST_VERSION>"
+// no codecs (you need to provide your own)
+libraryDependencies += "io.bartholomews" %% "discogs4s-core" % "<LATEST_VERSION>"
 ```
 
 *NOTE*
