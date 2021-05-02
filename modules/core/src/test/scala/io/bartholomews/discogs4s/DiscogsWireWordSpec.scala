@@ -5,5 +5,5 @@ import io.bartholomews.scalatestudo.WireWordSpec
 import org.scalatest.matchers.should.Matchers
 
 trait DiscogsWireWordSpec extends WireWordSpec with DiscogsDiffDerivations with Matchers {
-  override val testResourcesFileRoot = "src/test/resources"
+  override val testResourcesFileRoot = "modules/core/src/test/resources"
 }

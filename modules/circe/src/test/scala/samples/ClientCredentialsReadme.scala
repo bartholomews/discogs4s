@@ -14,7 +14,7 @@ object ClientCredentialsReadme extends App {
   import io.bartholomews.discogs4s.circe.codecs._
 
   // you could also pass the credentials directly in `DiscogsClient.clientCredentials`
-  private val client = DiscogsClient.clientCredentialsFromConfig(backend)
+  private val client = DiscogsClient.clientCredentials.unsafeFromConfig(backend)
 
   val response: F[SttpResponse[circe.Error, SimpleUser]] =
     client.users.getSimpleUserProfile(Username("_.bartholomews"))

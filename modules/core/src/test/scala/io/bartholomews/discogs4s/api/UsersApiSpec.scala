@@ -6,20 +6,25 @@ import io.bartholomews.discogs4s.DiscogsWireWordSpec
 import io.bartholomews.discogs4s.client.DiscogsClientData
 import io.bartholomews.discogs4s.entities._
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.bartholomews.fsclient.core.oauth.ClientCredentials
 import io.bartholomews.scalatestudo.ServerBehaviours
-import sttp.client3.{HttpError, Response, UriContext}
-import sttp.model.{StatusCode => Status}
+import org.apache.http.entity.ContentType
+import sttp.client3.{DeserializationException, HttpError, Response, UriContext}
+import sttp.model.StatusCode
 
 abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with ServerBehaviours[E, D, DE, J] {
 
   import DiscogsClientData._
 
   implicit def simpleUserDecoder: D[SimpleUser]
+  implicit def userIdentityDecoder: D[UserIdentity]
+  implicit def discogsErrorEncoder: E[DiscogsError]
+  implicit def discogsErrorDecoder: D[DiscogsError]
 
   "getSimpleUserProfile" when {
 
     def request: SttpResponse[DE, SimpleUser] =
-      sampleClient.users.getSimpleUserProfile(Username("rodneyfool"))
+      sampleOAuthClient.users.getSimpleUserProfile(Username("rodneyfool"))(accessTokenCredentials)
 
     "the server responds with the response entity" should {
 
@@ -78,9 +83,84 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
 
       "decode an `Unauthorized` response" in matchIdResponse(stub, request) {
         case Response(Left(HttpError(body, statusCode)), status, _, _, _, _) =>
-          status shouldBe Status.Unauthorized
-          statusCode shouldBe Status.Unauthorized
+          status shouldBe StatusCode.Unauthorized
+          statusCode shouldBe StatusCode.Unauthorized
           body shouldBe "Invalid consumer."
+      }
+    }
+  }
+
+  "me" when {
+    implicit val signer: ClientCredentials = clientCredentials
+    def request: SttpResponse[DE, UserIdentity] = sampleOAuthClient.users.me(signer)
+    // TODO: Shouldn't only be enforce an `AccessTokenCredentials` as `SignerV1` ?
+    //      RequestTokenCredentials(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
+
+    "the server responds with an error" should {
+
+      def stub: StubMapping =
+        stubFor(
+          get(urlMatching("/oauth/identity"))
+            .willReturn(
+              aResponse()
+                .withStatus(401)
+                .withContentType(ContentType.APPLICATION_JSON)
+                .withBodyFile("unauthenticated.json")
+            )
+        )
+
+      "return a Left with appropriate message" in matchIdResponse(stub, request) {
+        case Response(Left(HttpError(body, _)), status, _, _, _, _) =>
+          status shouldBe StatusCode.Unauthorized
+          val ec = entityCodecs[DiscogsError]
+          ec.parse(body).flatMap(ec.decode) shouldBe Right(
+            DiscogsError(
+              "You must authenticate to access this resource."
+            )
+          )
+      }
+    }
+
+    "the server responds with the expected string message" should {
+
+      def stub: StubMapping =
+        stubFor(
+          get(urlMatching("/oauth/identity"))
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("oauth/identity.json")
+            )
+        )
+
+      "return a Right with the `UserIdentity` response" in matchResponseBody(stub, request) {
+
+        case Right(response) =>
+          response shouldBe UserIdentity(
+            id = 1L,
+            username = "example",
+            resourceUrl = uri"https://api.discogs.com/users/example",
+            consumerName = "Your Application Name"
+          )
+      }
+    }
+
+    "the server response is unexpected" should {
+
+      def stub: StubMapping =
+        stubFor(
+          get(urlMatching("/oauth/identity"))
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBody("WAT")
+            )
+        )
+
+      "return a Left with appropriate message" in matchIdResponse(stub, request) {
+        case Response(Left(DeserializationException(body, _)), status, _, _, _, _) =>
+          status shouldBe StatusCode.Ok
+          body shouldBe "WAT"
       }
     }
   }

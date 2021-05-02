@@ -2,17 +2,12 @@ package io.bartholomews.discogs4s.api
 
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import com.softwaremill.diffx.scalatest.DiffMatcher.matchTo
 import io.bartholomews.discogs4s.DiscogsWireWordSpec
 import io.bartholomews.discogs4s.client.DiscogsClientData
-import io.bartholomews.discogs4s.client.DiscogsClientData.DiscogsError
-import io.bartholomews.discogs4s.entities.UserIdentity
-import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.{SignatureMethod, Token}
 import io.bartholomews.fsclient.core.oauth.v1.TemporaryCredentials
 import io.bartholomews.fsclient.core.oauth.{
   AccessTokenCredentials,
-  ClientCredentials,
   ResourceOwnerAuthorizationUri,
   TemporaryCredentialsRequest
 }
@@ -25,17 +20,12 @@ import sttp.model.StatusCode
 // http://blog.shangjiaming.com/2018/01/04/http4s-intorduction/
 // https://www.lewuathe.com/wiremock-in-scala.html
 abstract class AuthApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with ServerBehaviours[E, D, DE, J] {
-
-  implicit def userIdentityDecoder: D[UserIdentity]
-  implicit def discogsErrorEncoder: E[DiscogsError]
-  implicit def discogsErrorDecoder: D[DiscogsError]
-
   import DiscogsClientData._
 
   "getRequestToken" when {
 
     def request: Identity[Response[Either[ResponseException[String, Exception], TemporaryCredentials]]] =
-      sampleClient.auth.getRequestToken(
+      sampleOAuthClient.auth.getRequestToken(
         TemporaryCredentialsRequest(
           sampleConsumer,
           sampleRedirectUri,
@@ -118,7 +108,7 @@ abstract class AuthApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with S
   "getAccessToken" when {
 
     def request: Response[Either[ResponseException[String, Exception], AccessTokenCredentials]] =
-      sampleClient.auth.fromUri(
+      sampleOAuthClient.auth.fromUri(
         sampleRedirectUri.value.withParams(
           Map(
             "oauth_token" -> sampleToken.value,
@@ -180,81 +170,6 @@ abstract class AuthApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with S
       def stub: StubMapping =
         stubFor(
           post(urlMatching("/oauth/access_token"))
-            .willReturn(
-              aResponse()
-                .withStatus(200)
-                .withBody("WAT")
-            )
-        )
-
-      "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(DeserializationException(body, _)), status, _, _, _, _) =>
-          status shouldBe StatusCode.Ok
-          body shouldBe "WAT"
-      }
-    }
-  }
-
-  "me" when {
-    implicit val signer: ClientCredentials = sampleClient.client.signer
-    def request: SttpResponse[DE, UserIdentity] = sampleClient.users.me(signer)
-    // TODO: Shouldn't only be enforce an `AccessTokenCredentials` as `SignerV1` ?
-//      RequestTokenCredentials(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
-
-    "the server responds with an error" should {
-
-      def stub: StubMapping =
-        stubFor(
-          get(urlMatching("/oauth/identity"))
-            .willReturn(
-              aResponse()
-                .withStatus(401)
-                .withContentType(ContentType.APPLICATION_JSON)
-                .withBodyFile("unauthenticated.json")
-            )
-        )
-
-      "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(HttpError(body, _)), status, _, _, _, _) =>
-          status shouldBe StatusCode.Unauthorized
-          val ec = entityCodecs[DiscogsError]
-          ec.parse(body).flatMap(ec.decode) shouldBe Right(
-            DiscogsError(
-              "You must authenticate to access this resource."
-            )
-          )
-      }
-    }
-
-    "the server responds with the expected string message" should {
-
-      def stub: StubMapping =
-        stubFor(
-          get(urlMatching("/oauth/identity"))
-            .willReturn(
-              aResponse()
-                .withStatus(200)
-                .withBodyFile("oauth/identity.json")
-            )
-        )
-
-      "return a Right with the `UserIdentity` response" in matchResponseBody(stub, request) {
-
-        case Right(response) =>
-          response shouldBe UserIdentity(
-            id = 1L,
-            username = "example",
-            resourceUrl = uri"https://api.discogs.com/users/example",
-            consumerName = "Your Application Name"
-          )
-      }
-    }
-
-    "the server response is unexpected" should {
-
-      def stub: StubMapping =
-        stubFor(
-          get(urlMatching("/oauth/identity"))
             .willReturn(
               aResponse()
                 .withStatus(200)

@@ -3,9 +3,9 @@ import sbt._
 object Dependencies {
   object Versions {
     // https://github.com/typelevel/cats
-    val cats = "2.5.0"
+    val cats = "2.6.0"
     // https://github.com/bartholomews/fsclient
-    val fsClient = "0.1.1+40-aa0ed2c6-SNAPSHOT"
+    val fsClient = "0.1.2+1-3f82a8dd+20210502-1219-SNAPSHOT"
     // https://github.com/xdotai/play-json-extensions
     val playJsonExtensions = "0.42.0"
   }

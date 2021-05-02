@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Migrated to sttp v3
 - Multi-module projects setup (circe / play / core)
+- Multi-client setup (for each auth flow)
   
 ## [0.1.1] - 2021-01-02
 ### Changed

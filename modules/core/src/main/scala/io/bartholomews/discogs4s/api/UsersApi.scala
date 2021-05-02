@@ -2,12 +2,13 @@ package io.bartholomews.discogs4s.api
 
 import io.bartholomews.discogs4s.endpoints.{DiscogsAuthEndpoint, DiscogsEndpoint}
 import io.bartholomews.discogs4s.entities._
-import io.bartholomews.fsclient.core.FsClient
+import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
 import io.bartholomews.fsclient.core.oauth.{OAuthSigner, Signer, SignerV1}
+import sttp.client3.SttpBackend
 import sttp.model.Uri
 
-class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
+class UsersApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   private val basePath: Uri = DiscogsEndpoint.apiUri / "users"
@@ -26,12 +27,12 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
    */
   def getSimpleUserProfile[DE](
     username: Username
-  )(implicit responseHandler: ResponseHandler[DE, SimpleUser]): F[SttpResponse[DE, SimpleUser]] =
-    baseRequest(client.userAgent)
+  )(signer: S)(implicit responseHandler: ResponseHandler[DE, SimpleUser]): F[SttpResponse[DE, SimpleUser]] =
+    baseRequest(userAgent)
       .get(userPath(username))
-      .sign(client)
+      .sign(signer)
       .response(responseHandler)
-      .send(client.backend)
+      .send(backend)
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
@@ -51,13 +52,13 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
   def getAuthenticateUserProfile[DE](
     username: Username
   )(
-    signer: SignerV1
+    signer: S
   )(implicit responseHandler: ResponseHandler[DE, AuthenticatedUser]): F[SttpResponse[DE, AuthenticatedUser]] =
-    baseRequest(client.userAgent)
+    baseRequest(userAgent)
       .get(userPath(username))
       .sign(signer)
       .response(responseHandler)
-      .send(client.backend)
+      .send(backend)
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post
@@ -84,7 +85,7 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
   )(
     signer: SignerV1
   )(implicit responseHandler: ResponseHandler[DE, AuthenticatedUser]): F[SttpResponse[DE, AuthenticatedUser]] =
-    baseRequest(client.userAgent)
+    baseRequest(userAgent)
       .post(
         userPath(username)
           .withOptionQueryParam("name", name.map(_.value))
@@ -95,7 +96,7 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
       )
       .sign(signer)
       .response(responseHandler)
-      .send(client.backend)
+      .send(backend)
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity
@@ -111,9 +112,9 @@ class UsersApi[F[_], S <: Signer](client: FsClient[F, S]) {
     implicit
     responseHandler: ResponseHandler[DE, UserIdentity]
   ): F[SttpResponse[DE, UserIdentity]] =
-    baseRequest(client.userAgent)
+    baseRequest(userAgent)
       .get(DiscogsEndpoint.apiUri / DiscogsAuthEndpoint.path / "identity")
       .sign(signer)
       .response(responseHandler)
-      .send(client.backend)
+      .send(backend)
 }

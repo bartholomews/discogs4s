@@ -1,14 +1,12 @@
 package samples
 
 import cats.implicits._
-import io.bartholomews.discogs4s.DiscogsClient
-import io.bartholomews.discogs4s.DiscogsClient.personalToken
 import io.bartholomews.discogs4s.entities.Username
+import io.bartholomews.discogs4s.{DiscogsClient, DiscogsOAuthClient}
 import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.oauth._
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.{Consumer, SignatureMethod, Token}
 import io.bartholomews.fsclient.core.oauth.v1.TemporaryCredentials
-import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.AccessToken
-import io.bartholomews.fsclient.core.oauth._
 import sttp.client3.{HttpURLConnectionBackend, Identity, ResponseException, SttpBackend, UriContext}
 
 object Test {
@@ -27,8 +25,8 @@ object Test {
 
   val callback: RedirectUri = RedirectUri(uri"https://bartholomews.io/callback")
 
-  val discogsClient: DiscogsClient[Identity, SignerV1] =
-    DiscogsClient.clientCredentials(Test.userAgent, consumer)(backend)
+  val discogsAuthClient: DiscogsOAuthClient[Identity] =
+    DiscogsClient.oAuth(Test.userAgent, consumer)(backend)
   // $COVERAGE-ON$
 }
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,7 +36,7 @@ object NoAuth extends App {
   import Test._
   import io.bartholomews.discogs4s.circe.codecs._
 
-  val client = DiscogsClient.basic(userAgent)(backend)
+  val client = DiscogsClient.authDisabled(userAgent)(backend)
   client.users.getSimpleUserProfile(Username("_.bartholomews")).body.fold(println, println)
 
   // $COVERAGE-ON$
@@ -52,13 +50,13 @@ object Auth1 extends App {
 
   import Test._
   import io.bartholomews.discogs4s.circe.codecs._
-  val signer: CustomAuthorizationHeader = personalToken(AccessToken("???"))
 
-  val discogsClient = DiscogsClient.personal(Test.userAgent, signer)(backend)
+  val discogsClient = DiscogsClient.personal(
+    userAgent,
+    CustomAuthorizationHeader("???")
+  )(backend)
 
-  discogsClient.users
-    .me(signer)
-    .body
+  discogsClient.users.me.body
     .fold(println, println)
   // $COVERAGE-ON$
 }
@@ -70,9 +68,12 @@ object Auth1 extends App {
 object ClientCredentialsFlow extends App {
   // $COVERAGE-OFF$
 
+  import Test._
   import io.bartholomews.discogs4s.circe.codecs._
 
-  Test.discogsClient.users
+  val client = DiscogsClient.clientCredentials(userAgent, consumer)(backend)
+
+  client.users
     .getSimpleUserProfile(Username("_.bartholomews"))
     .headers
     .foreach(println)
@@ -89,7 +90,7 @@ object ClientCredentialsFlow extends App {
  */
 object Step1RetrieveRequestToken extends App {
   // $COVERAGE-OFF$
-  val requestToken: Either[ResponseException[String, Exception], TemporaryCredentials] = Test.discogsClient.auth
+  val requestToken: Either[ResponseException[String, Exception], TemporaryCredentials] = Test.discogsAuthClient.auth
     .getRequestToken(
       TemporaryCredentialsRequest(
         Test.consumer,
@@ -129,7 +130,7 @@ object Step2RetrieveAccessToken extends App {
       ResourceOwnerAuthorizationUri(uri"https://discogs.com/oauth/authorize")
     )
 
-  Test.discogsClient.auth
+  Test.discogsAuthClient.auth
     .fromUri(
       uri"https://bartholomews.io/callback?oauth_token=???&oauth_verifier=???",
       temporaryCredentials,
@@ -156,7 +157,7 @@ object Step3UseAccessToken extends App {
     SignatureMethod.SHA1
   )
   //  Main.discogsClient.auth.me(accessToken).unsafeRunSync().entity
-  Test.discogsClient.users.me(accessToken).body.fold(println, println)
+  Test.discogsAuthClient.users.me(accessToken).body.fold(println, println)
 
   // $COVERAGE-ON$
 }

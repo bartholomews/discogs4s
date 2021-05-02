@@ -3,17 +3,17 @@ package io.bartholomews.discogs4s.api
 import cats.Applicative
 import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint
 import io.bartholomews.discogs4s.endpoints.DiscogsAuthEndpoint.basePath
-import io.bartholomews.fsclient.core.FsClient
+import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.http.ResponseMapping
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth._
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.SignatureMethod
 import io.bartholomews.fsclient.core.oauth.v1.TemporaryCredentials
-import sttp.client3.Response
+import sttp.client3.{Response, SttpBackend}
 import sttp.model.{Method, StatusCode, Uri}
 
 // https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
-class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) {
+class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   def getRequestToken(
@@ -22,20 +22,20 @@ class AuthApi[F[_], S <: OAuthSigner](client: FsClient[F, S]) {
     temporaryCredentialsRequest.send(
       method = Method.GET,
       serverUri = basePath / "request_token",
-      userAgent = client.userAgent,
+      userAgent = userAgent,
       resourceOwnerAuthorizationUri = ResourceOwnerAuthorizationUri(DiscogsAuthEndpoint.authorizeUri)
-    )(client.backend)
+    )(backend)
 
   def getAccessToken(signer: RequestTokenCredentials): F[SttpResponse[Exception, AccessTokenCredentials]] = {
 
     implicit val responseMapping: ResponseMapping[String, Exception, AccessTokenCredentials] =
       AccessTokenCredentials.responseMapping(signer.consumer, signer.signatureMethod)
 
-    baseRequest(client.userAgent)
+    baseRequest(userAgent)
       .post(basePath / "access_token")
       .sign(signer)
       .response(mapInto[String, Exception, AccessTokenCredentials])
-      .send(client.backend)
+      .send(backend)
   }
 
   def fromUri(

@@ -1,6 +1,6 @@
 package samples
 
-object SimpleClientReadme extends App {
+object AuthDisabledReadme extends App {
   import io.bartholomews.discogs4s.DiscogsClient
   import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
   import io.bartholomews.fsclient.core.config.UserAgent
@@ -11,14 +11,12 @@ object SimpleClientReadme extends App {
   type F[X] = Identity[X]
   val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
-  //
+  // import the response handler and token response decoder
+  // (here using the circe module, you can also use the play framework or provide your own if using core module)
   import io.bartholomews.discogs4s.circe.codecs._
 
-  /*
-    create a basic client ready to make (unsigned) requests:
-    you can also use `basicFromConfig` but need to have user-agent in config
-   */
-  private val client = DiscogsClient.basic(
+  // create a basic client ready to make (unsigned) requests:
+  private val client = DiscogsClient.authDisabled(
     UserAgent(appName = "my-app", appVersion = None, appUrl = None)
   )(backend)
 

@@ -1,35 +1,14 @@
 package io.bartholomews.discogs4s
 
-import io.bartholomews.discogs4s.api.{ArtistsApi, AuthApi, UsersApi}
 import io.bartholomews.fsclient.core.FsClient
 import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.oauth._
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.{Consumer, SignatureMethod}
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.AccessToken
-import io.bartholomews.fsclient.core.oauth._
 import pureconfig.ConfigSource
 import sttp.client3.SttpBackend
 
-sealed abstract class DiscogsAbstractClient[F[_], S <: Signer] {
-
-  def client: FsClient[F, S]
-  final object artists extends ArtistsApi[F, S](client)
-  final object users extends UsersApi[F, S](client)
-}
-
-class DiscogsSimpleClient[F[_], S <: Signer](userAgent: UserAgent, signer: S)(backend: SttpBackend[F, Any])
-    extends DiscogsAbstractClient[F, S] {
-  override val client = new FsClient[F, S](userAgent: UserAgent, signer: S, backend)
-}
-
-class DiscogsClient[F[_], S <: SignerV1](userAgent: UserAgent, signer: S)(backend: SttpBackend[F, Any])
-    extends DiscogsAbstractClient[F, S] {
-  def temporaryCredentialsRequest(redirectUri: RedirectUri): TemporaryCredentialsRequest =
-    TemporaryCredentialsRequest(signer.consumer, redirectUri)
-
-  override val client = new FsClient[F, S](userAgent, signer, backend)
-  final object auth extends AuthApi[F, S](client)
-}
-
+// https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow
 object DiscogsClient {
 
   import pureconfig.generic.auto._
@@ -37,38 +16,69 @@ object DiscogsClient {
   private val userAgentConfig = ConfigSource.default.at("user-agent")
   private val discogsConfig = ConfigSource.default.at("discogs")
 
-  def basic[F[_]](userAgent: UserAgent)(backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, AuthDisabled.type] =
-    new DiscogsSimpleClient[F, AuthDisabled.type](
-      userAgent,
-      AuthDisabled
-    )(backend)
+  /**
+   * Credentials in request ? None
+   * Rate limiting          ? 🐢 Low tier
+   * Image URLs             ? ❌ No
+   * Authenticated as user  ? ❌ No
+   */
+  object authDisabled {
+    def apply[F[_]](userAgent: UserAgent)(backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, AuthDisabled.type] =
+      new DiscogsSimpleClient[F, AuthDisabled.type](FsClient(userAgent, AuthDisabled, backend))
 
-  def basicFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, AuthDisabled.type] =
-    basic(userAgentConfig.loadOrThrow[UserAgent])(backend)
+    def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, AuthDisabled.type] =
+      apply(userAgentConfig.loadOrThrow[UserAgent])(backend)
+  }
 
-  def personalToken(accessToken: AccessToken): CustomAuthorizationHeader =
-    CustomAuthorizationHeader(s"Discogs token=${accessToken.value}")
+  /**
+   * Credentials in request ? Only Consumer key/secret
+   * Rate limiting          ? 🐰 High tier
+   * Image URLs             ? ✔ Yes
+   * Authenticated as user  ? ❌ No
+   */
+  object clientCredentials {
+    def apply[F[_]](userAgent: UserAgent, consumer: Consumer)(backend: SttpBackend[F, Any]) =
+      new DiscogsSimpleClient[F, SignerV1](
+        FsClient(userAgent, ClientCredentials(consumer, SignatureMethod.PLAINTEXT), backend)
+      )
 
-  def personal[F[_]](userAgent: UserAgent, signer: CustomAuthorizationHeader)(
-    backend: SttpBackend[F, Any]
-  ): DiscogsSimpleClient[F, OAuthSigner] =
-    new DiscogsSimpleClient[F, OAuthSigner](
-      userAgent,
-      signer
-    )(backend)
+    def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, SignerV1] =
+      clientCredentials(
+        userAgentConfig.loadOrThrow[UserAgent],
+        discogsConfig.at("consumer").loadOrThrow[Consumer]
+      )(backend)
+  }
 
-  def personalFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, OAuthSigner] =
-    personal(
-      userAgentConfig.loadOrThrow[UserAgent],
-      personalToken(discogsConfig.at("access-token").loadOrThrow[AccessToken])
-    )(backend)
+  /**
+   * Credentials in request ? Personal access token
+   * Rate limiting          ? 🐰 High tier
+   * Image URLs             ? ✔ Yes
+   * Authenticated as user  ? ✔ Yes, for token holder only 👩
+   */
+  object personal {
+    private def personalToken(accessToken: AccessToken): CustomAuthorizationHeader =
+      CustomAuthorizationHeader(s"Discogs token=${accessToken.value}")
 
-  def clientCredentials[F[_]](userAgent: UserAgent, consumer: Consumer)(backend: SttpBackend[F, Any]) =
-    new DiscogsClient[F, SignerV1](userAgent, ClientCredentials(consumer, SignatureMethod.PLAINTEXT))(backend)
+    def apply[F[_]](userAgent: UserAgent, signer: CustomAuthorizationHeader)(
+      backend: SttpBackend[F, Any]
+    ): DiscogsPersonalClient[F, OAuthSigner] =
+      new DiscogsPersonalClient[F, OAuthSigner](FsClient(userAgent, signer, backend))
 
-  def clientCredentialsFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsClient[F, SignerV1] =
-    clientCredentials(
-      userAgentConfig.loadOrThrow[UserAgent],
-      discogsConfig.at("consumer").loadOrThrow[Consumer]
-    )(backend)
+    def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsPersonalClient[F, OAuthSigner] =
+      personal(
+        userAgentConfig.loadOrThrow[UserAgent],
+        personalToken(discogsConfig.at("access-token").loadOrThrow[AccessToken])
+      )(backend)
+  }
+
+  /**
+   * Credentials in request ? Full OAuth 1.0a with access token/secret
+   * Rate limiting          ? 🐰 High tier
+   * Image URLs             ? ✔ Yes
+   * Authenticated as user  ? ✔ Yes, on behalf of any user 🌍
+   */
+  object oAuth {
+    def apply[F[_]](userAgent: UserAgent, consumer: Consumer)(backend: SttpBackend[F, Any]) =
+      new DiscogsOAuthClient[F](userAgent, consumer)(backend)
+  }
 }

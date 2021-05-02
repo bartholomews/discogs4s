@@ -21,9 +21,9 @@ abstract class ArtistsApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec wit
     "the server responds with one response entity" should {
 
       def request: SttpResponse[DE, PaginatedReleases] =
-        sampleClient.artists.getArtistsReleases(artistId = 1,
-                                                sortBy = Some(SortBy.Title),
-                                                sortOrder = Some(SortOrder.Asc))
+        sampleOAuthClient.artists.getArtistsReleases(artistId = 1,
+                                                     sortBy = Some(SortBy.Title),
+                                                     sortOrder = Some(SortOrder.Asc))(accessTokenCredentials)
 
       "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) {
         case Right(entity) =>
@@ -44,14 +44,14 @@ abstract class ArtistsApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec wit
               releases = Seq(
                 Release(
                   status = Some("Accepted"),
-                  main_release = None,
+                  mainRelease = None,
                   thumb = "",
                   title = "Kaos",
                   format = Some("10\""),
                   label = Some("Svek"),
                   role = "Main",
                   year = Some(1997),
-                  resource_url = "https://api.discogs.com/releases/20209",
+                  resourceUrl = "https://api.discogs.com/releases/20209",
                   artist = "Stephan-G* & The Persuader",
                   `type` = "release",
                   id = 20209
@@ -65,7 +65,9 @@ abstract class ArtistsApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec wit
     "the server responds with multiple response entities" should {
 
       def request: SttpResponse[DE, PaginatedReleases] =
-        sampleClient.artists.getArtistsReleases(artistId = 1, sortBy = None, sortOrder = None)
+        sampleOAuthClient.artists.getArtistsReleases(artistId = 1, sortBy = None, sortOrder = None)(
+          accessTokenCredentials
+        )
 
       "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) {
         case Right(entity) =>
@@ -80,9 +82,9 @@ abstract class ArtistsApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec wit
     "the server responds with an error" should {
 
       def request: SttpResponse[DE, PaginatedReleases] =
-        sampleClient.artists.getArtistsReleases(artistId = 1,
-                                                sortBy = Some(SortBy.Year),
-                                                sortOrder = Some(SortOrder.Desc))
+        sampleOAuthClient.artists.getArtistsReleases(artistId = 1,
+                                                     sortBy = Some(SortBy.Year),
+                                                     sortOrder = Some(SortOrder.Desc))(accessTokenCredentials)
 
       def stub: StubMapping =
         stubFor(

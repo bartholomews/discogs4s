@@ -3,18 +3,15 @@ package io.bartholomews.discogs4s.circe
 import io.bartholomews.discogs4s.entities._
 import io.bartholomews.fsclient.circe.FsClientCirceApi
 import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
-import io.circe.generic.extras.{Configuration, semiauto}
-import io.circe.generic.semiauto.deriveDecoder
-import io.circe.{Codec, Decoder, Encoder, HCursor}
+import io.circe.generic.extras.{semiauto, Configuration}
+import io.circe.{Decoder, HCursor}
 import sttp.model.Uri
 
-object codecs extends FsClientCirceApi {
-  implicit val configuration: Configuration = Configuration.default.withSnakeCaseMemberNames
-  // FIXME: Should be able to remove this and load from fsclient
-  implicit val uriCodec: Codec[Uri] = Codec.from(
-    Decoder.decodeString.emap(Uri.parse),
-    Encoder.encodeString.contramap(_.toString)
-  )
+object codecs extends DiscogsCirceApi
+
+trait DiscogsCirceApi extends FsClientCirceApi {
+
+  implicit val config: Configuration = Configuration.default.withSnakeCaseMemberNames
 
   def decodeOptionAsEmptyString[A](implicit decoder: Decoder[A]): Decoder[Option[A]] = { (c: HCursor) =>
     c.focus match {
@@ -25,10 +22,12 @@ object codecs extends FsClientCirceApi {
     }
   }
 
-  implicit val pageUrlsDecoder: Decoder[PageUrls] = deriveDecoder[PageUrls]
-  implicit val paginationDecoder: Decoder[Pagination] = deriveDecoder[Pagination]
-  implicit val paginatedReleasesDecoder: Decoder[PaginatedReleases] = deriveDecoder[PaginatedReleases]
-  implicit val releaseDecoder: Decoder[Release] = deriveDecoder[Release]
+  implicit val pageUrlsDecoder: Decoder[PageUrls] = deriveConfiguredDecoder[PageUrls]
+  implicit val paginationDecoder: Decoder[Pagination] = deriveConfiguredDecoder[Pagination]
+  implicit val paginatedReleasesDecoder: Decoder[PaginatedReleases] = deriveConfiguredDecoder[PaginatedReleases]
+  implicit val releaseDecoder: Decoder[Release] = {
+    deriveConfiguredDecoder[Release]
+  }
   implicit val authenticatedUserDecoder: Decoder[AuthenticatedUser] = deriveConfiguredDecoder[AuthenticatedUser]
   implicit val simpleUserDecoder: Decoder[SimpleUser] = {
     implicit val emptyUriDecoder: Decoder[Option[Uri]] = decodeOptionAsEmptyString[Uri]

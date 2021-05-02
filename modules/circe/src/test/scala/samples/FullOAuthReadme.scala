@@ -1,10 +1,13 @@
 package samples
 
+import io.bartholomews.discogs4s.DiscogsOAuthClient
+import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth.RedirectUri
+import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.Consumer
 
 object FullOAuthReadme {
   import io.bartholomews.discogs4s.DiscogsClient
-  import io.bartholomews.fsclient.core.oauth.{AccessTokenCredentials, SignerV1, TemporaryCredentialsRequest}
+  import io.bartholomews.fsclient.core.oauth.TemporaryCredentialsRequest
   import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend, UriContext}
   import sttp.model.Uri
 
@@ -14,8 +17,11 @@ object FullOAuthReadme {
   //
   import io.bartholomews.discogs4s.circe.codecs._
 
-  val discogsClient: DiscogsClient[F, SignerV1] =
-    DiscogsClient.clientCredentialsFromConfig(backend)
+  val userAgent: UserAgent = UserAgent("TODO", None, None)
+  val consumer: Consumer = Consumer("TODO", "TODO")
+
+  val discogsClient: DiscogsOAuthClient[F] =
+    DiscogsClient.oAuth.apply(userAgent, consumer)(backend)
 
   // the uri to be redirected after the user will grant permissions for your app
   private val redirectUri = RedirectUri(uri"http://localhost:9000/discogs/callback")
