@@ -27,9 +27,9 @@ You can instantiate different discogs clients depending on the required [flow](h
 This is the most basic client with no credentials and low rate limits.
 
 * Credentials in request ? None
-* Rate limiting          ? 🐢 Low tier
-* Image URLs             ? ❌ No
-* Authenticated as user  ? ❌ No
+* Rate limiting          ? 🐢 *Low tier*
+* Image URLs             ? ❌ *No*
+* Authenticated as user  ? ❌ *No*
 
 ```scala
 import io.bartholomews.discogs4s.DiscogsClient
@@ -59,12 +59,12 @@ val response: F[SttpResponse[circe.Error, SimpleUser]] =
 ### Client Credentials
 This client has higher rate limits, but still cannot call user-authenticated endpoints.
 You need to provide consumer key/secret in (developer settings)[https://www.discogs.com/settings/developers]
-(at least in theory, currently any dummy consumer key/secret is getting the higher rate limit ¯\_(ツ)_/¯)
+(at least in theory, currently any dummy consumer key/secret is getting the higher rate limit x--(ツ)--x)
 
-* Credentials in request ? Only Consumer key/secret
-* Rate limiting          ? 🐰 High tier
-* Image URLs             ? ✔ Yes
-* Authenticated as user  ? ❌ No
+* Credentials in request ? *Only Consumer key/secret*
+* Rate limiting          ? 🐰 *High tier*
+* Image URLs             ? ✔ *Yes*
+* Authenticated as user  ? ❌ *No*
 
 ```scala
 import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
@@ -116,12 +116,12 @@ val response: F[SttpResponse[circe.Error, SimpleUser]] =
 
 ### Personal access token
 This client has higher rate limits and can also make user-authenticated calls (for your user only).
-You need to provide your personal access token from (developer settings)[https://www.discogs.com/settings/developers]
+You need to provide your personal access token from [developer settings](https://www.discogs.com/settings/developers)
 
-* Credentials in request ? Personal access token
-* Rate limiting          ? 🐰 High tier
-* Image URLs             ? ✔ Yes
-* Authenticated as user  ? ✔ Yes, for token holder only 👩
+* Credentials in request ? *Personal access token*
+* Rate limiting          ? 🐰 *High tier*
+* Image URLs             ? ✔ *Yes*
+* Authenticated as user  ? ✔ *Yes, for token holder only* 👩
 
 ```scala
 import io.bartholomews.discogs4s.entities.UserIdentity
@@ -171,10 +171,10 @@ val response: F[SttpResponse[circe.Error, UserIdentity]] = client.users.me
 ### Full OAuth 1.0a with access token/secret
 This client is for making calls on behalf of any authenticated user which granted permissions for your app via OAuth 1.0
 
-* Credentials in request ? Full OAuth 1.0a with access token/secret
-* Rate limiting          ? 🐰 High tier
-* Image URLs             ? ✔ Yes
-* Authenticated as user  ? ✔ Yes, on behalf of any user 🌍
+* Credentials in request ? *Full OAuth 1.0a with access token/secret*
+* Rate limiting          ? 🐰 *High tier*
+* Image URLs             ? ✔ *Yes*
+* Authenticated as user  ? ✔ *Yes, on behalf of any user* 🌍
 
 ```scala
 import io.bartholomews.discogs4s.{DiscogsClient, DiscogsOAuthClient}
