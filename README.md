@@ -19,174 +19,245 @@ libraryDependencies += "io.bartholomews" %% "discogs4s-play" % "<LATEST_VERSION>
 libraryDependencies += "io.bartholomews" %% "discogs4s-core" % "<LATEST_VERSION>"
 ```
 
-*NOTE*
+## Discogs clients
 
-The following snippets are based on the latest snapshot 
-which has been migrated to `sttp3`
+You can instantiate different discogs clients depending on the required [flow](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow)
 
-## Simple client
+### Basic client
+This is the most basic client with no credentials and low rate limits.
+
+* Credentials in request ? None
+* Rate limiting          ? 🐢 Low tier
+* Image URLs             ? ❌ No
+* Authenticated as user  ? ❌ No
 
 ```scala
-  import io.bartholomews.discogs4s.DiscogsClient
-  import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
-  import io.bartholomews.fsclient.core.config.UserAgent
-  import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-  import io.circe
-  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
+import io.bartholomews.discogs4s.DiscogsClient
+import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
+import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.circe
+import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
-  type F[X] = Identity[X]
-  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+type F[X] = Identity[X]
+val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
-  /*
-    create a basic client ready to make (unsigned) requests:
-    you can also use `basicFromConfig` but need to have user-agent in config
-   */
-  private val client = DiscogsClient.basic(
-    UserAgent(appName = "my-app", appVersion = None, appUrl = None)
-  )(backend)
+// import the response handler and token response decoder
+// (here using the circe module, you can also use the play framework or provide your own if using core module)
+import io.bartholomews.discogs4s.circe.codecs._
 
-  // run a request with your client
-  val response: F[SttpResponse[circe.Error, SimpleUser]] =
-    client.users.getSimpleUserProfile(Username("_.bartholomews"))
+// create a basic client ready to make (unsigned) requests:
+private val client = DiscogsClient.authDisabled(
+  UserAgent(appName = "my-app", appVersion = None, appUrl = None)
+)(backend)
+
+// run a request with your client
+val response: F[SttpResponse[circe.Error, SimpleUser]] =
+  client.users.getSimpleUserProfile(Username("_.bartholomews"))
 ```
 
-## OAuth
+### Client Credentials
+This client has higher rate limits, but still cannot call user-authenticated endpoints.
+You need to provide consumer key/secret in (developer settings)[https://www.discogs.com/settings/developers]
+(at least in theory, currently any dummy consumer key/secret is getting the higher rate limit ¯\_(ツ)_/¯)
 
-Read  the discogs [OAuth Flow](https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow)
+* Credentials in request ? Only Consumer key/secret
+* Rate limiting          ? 🐰 High tier
+* Image URLs             ? ✔ Yes
+* Authenticated as user  ? ❌ No
 
-### Client Credentials 
+```scala
+import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
+import io.bartholomews.discogs4s.{DiscogsClient, DiscogsSimpleClient}
+import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.bartholomews.fsclient.core.oauth.SignerV1
+import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.Consumer
+import io.circe
+import pureconfig.ConfigReader.Result
+import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
 
-If you want to use consumer credentials from config, add them in your `application.conf`:
-```
+type F[X] = Identity[X]
+val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+
+// import the response handler and token response decoder
+// (here using the circe module, you can also use the play framework or provide your own if using core module)
+import io.bartholomews.discogs4s.circe.codecs._
+
+/*
+// In `application.conf`:
+
 user-agent {
-    app-name = "your-consumer-app"
-    app-version = "0.0.1-SNAPSHOT (optional)"
-    app-url = "your-app-url (optional)"
+    app-name = "<YOUR_APP_NAME>"
+    app-version = "<OPTIONAL_APP_VERSION>"
+    app-url = "<OPTIONAL_APP_URL>"
 }
 
 discogs {
-    consumer {
-        key: ${?APP_CONSUMERY_KEY}
-        secret: ${?APP_CONSUMER_SECRET}
-    }
+  consumer {
+    key: "<YOUR_CONSUMER_KEY>",
+    secret: "<YOUR_CONSUMER_SECRET>"
+  }
 }
+*/
+private val client = DiscogsClient.clientCredentials.unsafeFromConfig(backend)
+// or you can create a safe client from config (i.e. `Either[ConfigReaderFailures, DiscogsSimpleClient[F, SignerV1]]`
+private val safeClient: Result[DiscogsSimpleClient[F, SignerV1]] =
+  DiscogsClient.clientCredentials.fromConfig(backend)
+// you can also client providing `UserAgent` and `Consumer` directly
+private val explicitClient = DiscogsClient.clientCredentials.apply(
+  UserAgent(appName = "<YOUR_APP_NAME>", appVersion = Some("<YOUR_APP_VERSION>"), appUrl = Some("<YOUR_APP_URL>")),
+  Consumer(key = "<YOUR_CONSUMER_KEY>", secret = "<YOUR_CONSUMER_SECRET>")
+)(backend)
+
+val response: F[SttpResponse[circe.Error, SimpleUser]] =
+  client.users.getSimpleUserProfile(Username("_.bartholomews"))
 ```
-
-Then you can create a client with *Client Credentials*:
-```scala
-  import io.bartholomews.discogs4s.DiscogsClient
-  import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
-  import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-  import io.circe
-  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
-
-  type F[X] = Identity[X]
-  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
-
-  // you could also pass the credentials directly in `DiscogsClient.clientCredentials`
-  private val client = DiscogsClient.clientCredentialsFromConfig(backend)
-
-  val response: F[SttpResponse[circe.Error, SimpleUser]] =
-    client.users.getSimpleUserProfile(Username("_.bartholomews"))
-```
-
-This client will sign by default with consumer key/secret:  
-you cannot make authenticated requests, but you can benefit from higher rate limiting.
 
 ### Personal access token
+This client has higher rate limits and can also make user-authenticated calls (for your user only).
+You need to provide your personal access token from (developer settings)[https://www.discogs.com/settings/developers]
 
-If you have a personal access token you could just create a client with that:
-```
+* Credentials in request ? Personal access token
+* Rate limiting          ? 🐰 High tier
+* Image URLs             ? ✔ Yes
+* Authenticated as user  ? ✔ Yes, for token holder only 👩
+
+```scala
+import io.bartholomews.discogs4s.entities.UserIdentity
+import io.bartholomews.discogs4s.{DiscogsClient, DiscogsPersonalClient}
+import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+import io.bartholomews.fsclient.core.oauth.OAuthSigner
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.AccessToken
+import io.circe
+import pureconfig.ConfigReader.Result
+import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
+
+type F[X] = Identity[X]
+val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+
+// import the response handler and token response decoder
+// (here using the circe module, you can also use the play framework or provide your own if using core module)
+import io.bartholomews.discogs4s.circe.codecs._
+
+/*
+// In `application.conf`:
+
 user-agent {
-    app-name = "your-consumer-app"
-    app-version = "0.0.1-SNAPSHOT (optional)"
-    app-url = "your-app-url (optional)"
+    app-name = "<YOUR_APP_NAME>"
+    app-version = "<OPTIONAL_APP_VERSION>"
+    app-url = "<OPTIONAL_APP_URL>"
 }
 
 discogs {
-    consumer {
-        key: ${?APP_CONSUMERY_KEY}
-        secret: ${?APP_CONSUMER_SECRET}
-    }
-    access-token:${?PERSONAL_TOKEN_VALUE}
+  access-token: "<YOUR_PERSONAL_ACCESS_TOKEN>"
 }
+ */
+private val client = DiscogsClient.personal.unsafeFromConfig(backend)
+// or you can create a safe client from config (i.e. `Either[ConfigReaderFailures, DiscogsPersonalClient[F, OAuthSigner]]`
+private val safeClient: Result[DiscogsPersonalClient[F, OAuthSigner]] =
+  DiscogsClient.personal.fromConfig(backend)
+// you can also client providing `UserAgent` and `AccessToken` directly
+private val explicitClient = DiscogsClient.personal(
+  UserAgent(appName = "<YOUR_APP_NAME>", appVersion = Some("<YOUR_APP_VERSION>"), appUrl = Some("<YOUR_APP_URL>")),
+  AccessToken(value = "<YOUR_PERSONAL_ACCESS_TOKEN>")
+)(backend)
+
+// You can make authenticated (for your user only) calls
+val response: F[SttpResponse[circe.Error, UserIdentity]] = client.users.me
 ```
-
-This way you can create a client with *Personal access token*:
-```scala
-  import io.bartholomews.discogs4s.DiscogsClient
-  import io.bartholomews.discogs4s.entities.UserIdentity
-  import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-  import io.bartholomews.fsclient.core.oauth.OAuthSigner
-  import io.circe
-  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
-
-  type F[X] = Identity[X]
-  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
-
-  private val discogs = DiscogsClient.personalFromConfig(backend)
-  implicit val personalToken: OAuthSigner = discogs.client.signer
-
-  // You can make authenticated (for your user only) calls with the implicit signer
-  val response: F[SttpResponse[circe.Error, UserIdentity]] = discogs.users.me
-```
-
-You could also create a client manually passing directly `UserAgent` and `Signer`.
 
 ### Full OAuth 1.0a with access token/secret
+This client is for making calls on behalf of any authenticated user which granted permissions for your app via OAuth 1.0
+
+* Credentials in request ? Full OAuth 1.0a with access token/secret
+* Rate limiting          ? 🐰 High tier
+* Image URLs             ? ✔ Yes
+* Authenticated as user  ? ✔ Yes, on behalf of any user 🌍
+
 ```scala
-  import io.bartholomews.discogs4s.DiscogsClient
-  import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.RedirectUri
-  import io.bartholomews.fsclient.core.oauth.{AccessTokenCredentials, SignerV1, TemporaryCredentialsRequest}
-  import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend, UriContext}
-  import sttp.model.Uri
+import io.bartholomews.discogs4s.{DiscogsClient, DiscogsOAuthClient}
+import io.bartholomews.fsclient.core.config.UserAgent
+import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.Consumer
+import io.bartholomews.fsclient.core.oauth.{RedirectUri, TemporaryCredentialsRequest}
+import pureconfig.ConfigReader.Result
+import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend, UriContext}
+import sttp.model.Uri
 
-  type F[X] = Identity[X]
-  val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
+type F[X] = Identity[X]
+val backend: SttpBackend[F, Any] = HttpURLConnectionBackend()
 
-  val discogsClient: DiscogsClient[F, SignerV1] =
-    DiscogsClient.clientCredentialsFromConfig(backend)
+// import the response handler and token response decoder
+// (here using the circe module, you can also use the play framework or provide your own if using core module)
+import io.bartholomews.discogs4s.circe.codecs._
 
-  // the uri to be redirected after the user will grant permissions for your app
-  private val redirectUri = RedirectUri(uri"http://localhost:9000/discogs/callback")
+/*
+// In `application.conf`:
 
-  val temporaryCredentialsRequest: TemporaryCredentialsRequest =
-    discogsClient.temporaryCredentialsRequest(redirectUri)
+user-agent {
+    app-name = "<YOUR_APP_NAME>"
+    app-version = "<OPTIONAL_APP_VERSION>"
+    app-url = "<OPTIONAL_APP_URL>"
+}
 
-  for {
-    temporaryCredentials <- discogsClient.auth.getRequestToken(temporaryCredentialsRequest).body
-
-    // Send the uri to discogs token uri to give permissions to your app
-    sendTheUserTo: Uri = temporaryCredentials.resourceOwnerAuthorizationRequest
-
-    /*
-      After the user accept/reject permissions for your app at `sendTheUserTo` uri,
-      they will be redirected to `redirectUri`: the url will have
-      query parameters with the token key and verifier;
-      it doesn't seem to have the token secret,
-      that's why you need to keep the temporary credentials in the previous step
-     */
-    resourceOwnerAuthorizationUriResponse: Uri = redirectUri.value.withParams(
-      Map("oauth_token" -> "AAA", "oauth_verifier" -> "ZZZ")
-    )
-
-    /*
-      finally get the access token credentials:
-      you could serialize it in the client session cookies or store it somewhere
-      (it doesn't expire).
-      By default the OAuth signature is using SHA1, you can override and use PLAINTEXT instead
-      (for more info see https://tools.ietf.org/html/rfc5849#section-3.4).
-     */
-    accessToken <- discogsClient.auth.fromUri(resourceOwnerAuthorizationUriResponse, temporaryCredentials).body
-
-  } yield {
-    implicit val token: AccessTokenCredentials = accessToken
-    // you need to provide an accessToken to make user-authenticated calls
-    discogsClient.users.me.body match {
-      case Left(error) => println(error.getMessage)
-      case Right(user) => println(user.username)
-    }
+discogs {
+  consumer {
+    key: "<YOUR_CONSUMER_KEY>",
+    secret: "<YOUR_CONSUMER_SECRET>"
   }
+}
+ */
+private val client = DiscogsClient.oAuth.unsafeFromConfig(backend)
+// or you can create a safe client from config (i.e. `Either[ConfigReaderFailures, DiscogsOAuthClient[F]]`
+private val safeClient: Result[DiscogsOAuthClient[F]] =
+  DiscogsClient.oAuth.fromConfig(backend)
+// you can also client providing `UserAgent` and `Consumer` directly
+private val explicitClient = DiscogsClient.oAuth.apply(
+  UserAgent(appName = "<YOUR_APP_NAME>", appVersion = Some("<YOUR_APP_VERSION>"), appUrl = Some("<YOUR_APP_URL>")),
+  Consumer(key = "<YOUR_CONSUMER_KEY>", secret = "<YOUR_CONSUMER_SECRET>")
+)(backend)
+
+// the uri to be redirected after the user will grant permissions for your app
+private val redirectUri = RedirectUri(uri"http://localhost:9000/discogs/callback")
+
+// prepare your credentials request
+val temporaryCredentialsRequest: TemporaryCredentialsRequest =
+  client.temporaryCredentialsRequest(redirectUri)
+
+for {
+  temporaryCredentials <- client.auth.getRequestToken(temporaryCredentialsRequest).body
+
+  // After you get the temporary credentials, you server should redirect the user
+  // to `temporaryCredentials.resourceOwnerAuthorizationRequest`
+  // which is the discogs token uri where the user will grant permissions to your app
+  sendTheUserTo: Uri = temporaryCredentials.resourceOwnerAuthorizationRequest
+
+  /*
+    After the user grants/rejects permissions to your app at `sendTheUserTo` uri,
+    they will be redirected to `redirectUri`: the url will have
+    query parameters with the token key and verifier (if permissions have been granted)
+   */
+  resourceOwnerAuthorizationUriResponse: Uri = redirectUri.value.withParams(
+    Map("oauth_token" -> "AAA", "oauth_verifier" -> "ZZZ")
+  )
+
+  /*
+    finally get the access token credentials; this call will give an appropriate error message
+    if the user has rejected permissions; the access token can be serialized / stored somewhere
+    (it doesn't expire).
+    By default the OAuth signature is using SHA1, you can override and use PLAINTEXT instead
+    (for more info see https://tools.ietf.org/html/rfc5849#section-3.4).
+   */
+  accessToken <- client.auth.fromUri(resourceOwnerAuthorizationUriResponse, temporaryCredentials).body
+
+} yield {
+  // you need to provide an accessToken to make user-authenticated calls
+  client.users.me(accessToken).body match {
+    case Left(error) => println(error.getMessage)
+    case Right(user) => println(user.username)
+  }
+}
 ```
 
 ## Implemented endpoints:

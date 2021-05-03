@@ -7,6 +7,7 @@ import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth._
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.{Consumer, SignatureMethod, Token}
 import io.bartholomews.fsclient.core.oauth.v1.TemporaryCredentials
+import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.AccessToken
 import sttp.client3.{HttpURLConnectionBackend, Identity, ResponseException, SttpBackend, UriContext}
 
 object Test {
@@ -53,7 +54,7 @@ object Auth1 extends App {
 
   val discogsClient = DiscogsClient.personal(
     userAgent,
-    CustomAuthorizationHeader("???")
+    AccessToken("???")
   )(backend)
 
   discogsClient.users.me.body

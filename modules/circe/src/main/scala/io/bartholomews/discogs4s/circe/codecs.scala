@@ -10,7 +10,6 @@ import sttp.model.Uri
 object codecs extends DiscogsCirceApi
 
 trait DiscogsCirceApi extends FsClientCirceApi {
-
   implicit val config: Configuration = Configuration.default.withSnakeCaseMemberNames
 
   def decodeOptionAsEmptyString[A](implicit decoder: Decoder[A]): Decoder[Option[A]] = { (c: HCursor) =>

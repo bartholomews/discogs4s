@@ -5,6 +5,7 @@ import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth._
 import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.{Consumer, SignatureMethod}
 import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.AccessToken
+import pureconfig.ConfigReader.Result
 import pureconfig.ConfigSource
 import sttp.client3.SttpBackend
 
@@ -42,6 +43,12 @@ object DiscogsClient {
         FsClient(userAgent, ClientCredentials(consumer, SignatureMethod.PLAINTEXT), backend)
       )
 
+    def fromConfig[F[_]](backend: SttpBackend[F, Any]): Result[DiscogsSimpleClient[F, SignerV1]] =
+      for {
+        userAgent <- userAgentConfig.load[UserAgent]
+        consumer <- discogsConfig.at("consumer").load[Consumer]
+      } yield clientCredentials(userAgent, consumer)(backend)
+
     def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, SignerV1] =
       clientCredentials(
         userAgentConfig.loadOrThrow[UserAgent],
@@ -59,15 +66,21 @@ object DiscogsClient {
     private def personalToken(accessToken: AccessToken): CustomAuthorizationHeader =
       CustomAuthorizationHeader(s"Discogs token=${accessToken.value}")
 
-    def apply[F[_]](userAgent: UserAgent, signer: CustomAuthorizationHeader)(
+    def apply[F[_]](userAgent: UserAgent, accessToken: AccessToken)(
       backend: SttpBackend[F, Any]
     ): DiscogsPersonalClient[F, OAuthSigner] =
-      new DiscogsPersonalClient[F, OAuthSigner](FsClient(userAgent, signer, backend))
+      new DiscogsPersonalClient[F, OAuthSigner](FsClient(userAgent, personalToken(accessToken), backend))
+
+    def fromConfig[F[_]](backend: SttpBackend[F, Any]): Result[DiscogsPersonalClient[F, OAuthSigner]] =
+      for {
+        userAgent <- userAgentConfig.load[UserAgent]
+        accessToken <- discogsConfig.at("access-token").load[AccessToken]
+      } yield personal(userAgent, accessToken)(backend)
 
     def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsPersonalClient[F, OAuthSigner] =
       personal(
         userAgentConfig.loadOrThrow[UserAgent],
-        personalToken(discogsConfig.at("access-token").loadOrThrow[AccessToken])
+        discogsConfig.at("access-token").loadOrThrow[AccessToken]
       )(backend)
   }
 
@@ -80,5 +93,17 @@ object DiscogsClient {
   object oAuth {
     def apply[F[_]](userAgent: UserAgent, consumer: Consumer)(backend: SttpBackend[F, Any]) =
       new DiscogsOAuthClient[F](userAgent, consumer)(backend)
+
+    def fromConfig[F[_]](backend: SttpBackend[F, Any]): Result[DiscogsOAuthClient[F]] =
+      for {
+        userAgent <- userAgentConfig.load[UserAgent]
+        consumer <- discogsConfig.at("consumer").load[Consumer]
+      } yield oAuth(userAgent, consumer)(backend)
+
+    def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsOAuthClient[F] =
+      oAuth(
+        userAgentConfig.loadOrThrow[UserAgent],
+        discogsConfig.at("consumer").loadOrThrow[Consumer]
+      )(backend)
   }
 }

@@ -7,7 +7,7 @@ import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpRe
 import io.bartholomews.fsclient.core.oauth.OAuthSigner
 
 // Client for `personal` option;
-// The api should be the same as `oAuth` option, but with internal signer (automatically refreshed).
+// The api should be the same as `oAuth` option, but with internal signer.
 class DiscogsPersonalClient[F[_], S <: OAuthSigner](client: FsClient[F, S]) {
 
   final object artists {
