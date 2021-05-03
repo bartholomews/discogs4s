@@ -1,5 +1,5 @@
 [![Actions Status](https://github.com/bartholomews/discogs4s/workflows/build/badge.svg)](https://github.com/bartholomews/discogs4s/actions)
-[![codecov](https://codecov.io/gh/bartholomews/discogs4s/branch/master/graph/badge.svg)](https://codecov.io/gh/bartholomews/discogs4s)
+[![Coverage Status](https://coveralls.io/repos/github/bartholomews/discogs4s/badge.svg?branch=master)](https://coveralls.io/github/bartholomews/discogs4s?branch=master)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # discogs4s
@@ -17,6 +17,13 @@ libraryDependencies += "io.bartholomews" %% "discogs4s-circe" % "<LATEST_VERSION
 libraryDependencies += "io.bartholomews" %% "discogs4s-play" % "<LATEST_VERSION>"
 // no codecs (you need to provide your own)
 libraryDependencies += "io.bartholomews" %% "discogs4s-core" % "<LATEST_VERSION>"
+```
+
+*Please note that the following docs are based on the latest snapshot version*  
+(you need to have the following in your `build.sbt` in case):
+```
+resolvers +=
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 ```
 
 ## Discogs clients
