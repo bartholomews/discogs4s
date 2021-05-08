@@ -35,10 +35,9 @@ object ClientCredentialsReadme extends App {
   }
   */
   private val client = DiscogsClient.clientCredentials.unsafeFromConfig(backend)
-  // or you can create a safe client from config (i.e. `Either[ConfigReaderFailures, DiscogsSimpleClient[F, SignerV1]]`
-  private val safeClient: Result[DiscogsSimpleClient[F, SignerV1]] =
-    DiscogsClient.clientCredentials.fromConfig(backend)
-  // you can also client providing `UserAgent` and `Consumer` directly
+  // you can also create a safe client from config
+  private val safeClient: Result[DiscogsSimpleClient[F, SignerV1]] = DiscogsClient.clientCredentials.fromConfig(backend)
+  // you can also create a client providing `UserAgent` and `Consumer` directly
   private val explicitClient = DiscogsClient.clientCredentials.apply(
     UserAgent(appName = "<YOUR_APP_NAME>", appVersion = Some("<YOUR_APP_VERSION>"), appUrl = Some("<YOUR_APP_URL>")),
     Consumer(key = "<YOUR_CONSUMER_KEY>", secret = "<YOUR_CONSUMER_SECRET>")

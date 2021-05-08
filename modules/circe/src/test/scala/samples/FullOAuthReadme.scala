@@ -33,10 +33,9 @@ object FullOAuthReadme {
   }
    */
   private val client = DiscogsClient.oAuth.unsafeFromConfig(backend)
-  // or you can create a safe client from config (i.e. `Either[ConfigReaderFailures, DiscogsOAuthClient[F]]`
-  private val safeClient: Result[DiscogsOAuthClient[F]] =
-    DiscogsClient.oAuth.fromConfig(backend)
-  // you can also client providing `UserAgent` and `Consumer` directly
+  // you can also create a safe client from config
+  private val safeClient: Result[DiscogsOAuthClient[F]] = DiscogsClient.oAuth.fromConfig(backend)
+  // you can also create a client providing `UserAgent` and `Consumer` directly
   private val explicitClient = DiscogsClient.oAuth.apply(
     UserAgent(appName = "<YOUR_APP_NAME>", appVersion = Some("<YOUR_APP_VERSION>"), appUrl = Some("<YOUR_APP_URL>")),
     Consumer(key = "<YOUR_CONSUMER_KEY>", secret = "<YOUR_CONSUMER_SECRET>")

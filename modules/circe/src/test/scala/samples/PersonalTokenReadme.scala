@@ -32,10 +32,10 @@ object PersonalTokenReadme extends App {
   }
    */
   private val client = DiscogsClient.personal.unsafeFromConfig(backend)
-  // or you can create a safe client from config (i.e. `Either[ConfigReaderFailures, DiscogsPersonalClient[F, OAuthSigner]]`
+  // you can also create a safe client from config
   private val safeClient: Result[DiscogsPersonalClient[F, OAuthSigner]] =
     DiscogsClient.personal.fromConfig(backend)
-  // you can also client providing `UserAgent` and `AccessToken` directly
+  // you can also create a client providing `UserAgent` and `AccessToken` directly
   private val explicitClient = DiscogsClient.personal(
     UserAgent(appName = "<YOUR_APP_NAME>", appVersion = Some("<YOUR_APP_VERSION>"), appUrl = Some("<YOUR_APP_URL>")),
     AccessToken(value = "<YOUR_PERSONAL_ACCESS_TOKEN>")

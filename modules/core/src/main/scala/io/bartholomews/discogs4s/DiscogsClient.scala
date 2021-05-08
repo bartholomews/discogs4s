@@ -27,6 +27,11 @@ object DiscogsClient {
     def apply[F[_]](userAgent: UserAgent)(backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, AuthDisabled.type] =
       new DiscogsSimpleClient[F, AuthDisabled.type](FsClient(userAgent, AuthDisabled, backend))
 
+    def fromConfig[F[_]](backend: SttpBackend[F, Any]): Result[DiscogsSimpleClient[F, AuthDisabled.type]] =
+      userAgentConfig
+        .load[UserAgent]
+        .map(apply(_)(backend))
+
     def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, AuthDisabled.type] =
       apply(userAgentConfig.loadOrThrow[UserAgent])(backend)
   }
