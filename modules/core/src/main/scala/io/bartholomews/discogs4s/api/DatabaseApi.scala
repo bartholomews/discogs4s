@@ -8,11 +8,11 @@ import io.bartholomews.fsclient.core.oauth.Signer
 import sttp.client3.SttpBackend
 import sttp.model.Uri
 
-class ArtistsApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
+class DatabaseApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
-  final val basePath = DiscogsEndpoint.apiUri / "artists"
-  def artistsPath(artistId: Int): Uri = basePath / artistId.toString
+  final val artistsPath = DiscogsEndpoint.apiUri / "artists"
+  def artistIdPath(artistId: Int): Uri = artistsPath / artistId.toString
 
   /**
    * https://www.discogs.com/developers/#page:database,header:database-artist-releases
@@ -34,7 +34,7 @@ class ArtistsApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[F
   ): F[SttpResponse[DE, PaginatedReleases]] = {
 
     val uri: Uri =
-      (artistsPath(artistId) / "releases")
+      (artistIdPath(artistId) / "releases")
         .withOptionQueryParam("sort", sortBy.map(_.entryName))
         .withOptionQueryParam("sort_order", sortOrder.map(_.entryName))
 

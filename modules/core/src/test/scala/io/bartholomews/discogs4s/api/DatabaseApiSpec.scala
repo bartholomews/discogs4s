@@ -10,7 +10,7 @@ import io.bartholomews.scalatestudo.ServerBehaviours
 import sttp.client3.{HttpError, Response}
 import sttp.model.StatusCode
 
-abstract class ArtistsApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with ServerBehaviours[E, D, DE, J] {
+abstract class DatabaseApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with ServerBehaviours[E, D, DE, J] {
 
   implicit def paginatedReleasesDecoder: D[PaginatedReleases]
 
@@ -21,7 +21,7 @@ abstract class ArtistsApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec wit
     "the server responds with one response entity" should {
 
       def request: SttpResponse[DE, PaginatedReleases] =
-        sampleOAuthClient.artists.getArtistsReleases(artistId = 1,
+        sampleOAuthClient.database.getArtistsReleases(artistId = 1,
                                                      sortBy = Some(SortBy.Title),
                                                      sortOrder = Some(SortOrder.Asc))(accessTokenCredentials)
 
@@ -65,7 +65,7 @@ abstract class ArtistsApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec wit
     "the server responds with multiple response entities" should {
 
       def request: SttpResponse[DE, PaginatedReleases] =
-        sampleOAuthClient.artists.getArtistsReleases(artistId = 1, sortBy = None, sortOrder = None)(
+        sampleOAuthClient.database.getArtistsReleases(artistId = 1, sortBy = None, sortOrder = None)(
           accessTokenCredentials
         )
 
@@ -82,7 +82,7 @@ abstract class ArtistsApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec wit
     "the server responds with an error" should {
 
       def request: SttpResponse[DE, PaginatedReleases] =
-        sampleOAuthClient.artists.getArtistsReleases(artistId = 1,
+        sampleOAuthClient.database.getArtistsReleases(artistId = 1,
                                                      sortBy = Some(SortBy.Year),
                                                      sortOrder = Some(SortOrder.Desc))(accessTokenCredentials)
 
