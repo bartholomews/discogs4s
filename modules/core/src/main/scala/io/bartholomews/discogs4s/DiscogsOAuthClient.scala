@@ -15,8 +15,8 @@ class DiscogsOAuthClient[F[_]] private[discogs4s] (userAgent: UserAgent, consume
     TemporaryCredentialsRequest(consumer, redirectUri)
 
   final val auth: AuthApi[F] = new AuthApi[F](userAgent, backend)
-  final val database: DatabaseApi[F, AccessTokenCredentials] =
-    new DatabaseApi[F, AccessTokenCredentials](userAgent, backend)
+  final val database: DatabaseApi[F] =
+    new DatabaseApi[F](userAgent, backend)
 
   final val users: UsersApi[F] =
     new UsersApi[F](userAgent, backend)

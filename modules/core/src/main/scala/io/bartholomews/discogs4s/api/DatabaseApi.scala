@@ -10,15 +10,17 @@ import sttp.model.Uri
 
 /**
  * https://www.discogs.com/developers/#page:database
- * @param userAgent the application `User-Agent`, which will be added as header in all the requests
- * @param backend the Sttp backend for the requests
- * @tparam F the Effect type
- * @tparam S the Signer type
+ * @param userAgent
+ *   the application `User-Agent`, which will be added as header in all the requests
+ * @param backend
+ *   the Sttp backend for the requests
+ * @tparam F
+ *   the Effect type
  */
-class DatabaseApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
+class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
-  final val artistsPath = DiscogsEndpoint.apiUri / "artists"
+  final val artistsPath                = DiscogsEndpoint.apiUri / "artists"
   def artistIdPath(artistId: Int): Uri = artistsPath / artistId.toString
 
   /**
@@ -26,18 +28,18 @@ class DatabaseApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[
    *
    * Get an artist’s releases
    *
-   * @param artistId The Artist ID
+   * @param artistId
+   *   The Artist ID
    *
-   * @param sortBy Sort items by this field:
-   *               year (i.e. year of the release)
-   *               title (i.e. title of the release)
-   *               format
+   * @param sortBy
+   *   Sort items by this field: year (i.e. year of the release) title (i.e. title of the release) format
    *
-   * @param sortOrder Sort items in a particular order (one of asc, desc)
-   * @return
+   * @param sortOrder
+   *   Sort items in a particular order (one of asc, desc)
+   * @return `F[SttpResponse[DE, PaginatedReleases]]`
    */
-  def getArtistsReleases[DE](artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(signer: S)(
-    implicit responseHandler: ResponseHandler[DE, PaginatedReleases]
+  def getArtistReleases[DE](artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(signer: Signer)(
+      implicit responseHandler: ResponseHandler[DE, PaginatedReleases]
   ): F[SttpResponse[DE, PaginatedReleases]] = {
 
     val uri: Uri =

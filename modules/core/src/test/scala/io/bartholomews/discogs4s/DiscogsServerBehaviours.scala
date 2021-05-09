@@ -22,17 +22,17 @@ trait DiscogsServerBehaviours[E[_], D[_], DE, J] extends ServerBehaviours[E, D, 
   implicit def discogsErrorEncoder: E[DiscogsError]
   implicit def discogsErrorDecoder: D[DiscogsError]
 
-  def clientReceivingUnexpectedResponse[A](
+  def clientReceivingUnexpectedResponse[E2, A](
       expectedEndpoint: MappingBuilder,
-      request: => SttpResponse[DE, A]
+      request: => SttpResponse[E2, A]
   ): Unit = {
     behave.like(clientReceivingUnauthenticatedResponse(expectedEndpoint, request))
     behave.like(clientReceivingSuccessfulUnexpectedResponseBody(expectedEndpoint, request))
   }
 
-  private def clientReceivingUnauthenticatedResponse[A](
+  private def clientReceivingUnauthenticatedResponse[E2, A](
       expectedEndpoint: MappingBuilder,
-      request: => SttpResponse[DE, A]
+      request: => SttpResponse[E2, A]
   ): Unit =
     "the server responds with an error" should {
 
@@ -59,9 +59,9 @@ trait DiscogsServerBehaviours[E[_], D[_], DE, J] extends ServerBehaviours[E, D, 
       }
     }
 
-  private def clientReceivingSuccessfulUnexpectedResponseBody[A](
+  private def clientReceivingSuccessfulUnexpectedResponseBody[E2, A](
       expectedEndpoint: MappingBuilder,
-      request: => SttpResponse[DE, A]
+      request: => SttpResponse[E2, A]
   ): Unit =
     "the server response is unexpected" should {
 
@@ -91,7 +91,7 @@ trait DiscogsServerBehaviours[E[_], D[_], DE, J] extends ServerBehaviours[E, D, 
       "return a Left with appropriate message" in matchResponseBody(stub, request) {
         case Left(DeserializationException(body, error)) =>
           body shouldBe ezekiel
-          error.isInstanceOf[DE] shouldBe true
+          error.isInstanceOf[E2] shouldBe true
       }
     }
 }

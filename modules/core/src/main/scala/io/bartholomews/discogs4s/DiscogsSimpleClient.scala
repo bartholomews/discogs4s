@@ -11,12 +11,12 @@ import io.bartholomews.fsclient.core.oauth.Signer
 class DiscogsSimpleClient[F[_], S <: Signer] private[discogs4s] (client: FsClient[F, S]) {
 
   final object database {
-    private val api = new DatabaseApi[F, S](client.userAgent, client.backend)
+    private val api = new DatabaseApi[F](client.userAgent, client.backend)
 
     def getArtistsReleases[DE](artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(implicit
         responseHandler: ResponseHandler[DE, PaginatedReleases]
     ): F[SttpResponse[DE, PaginatedReleases]] =
-      api.getArtistsReleases(artistId, sortBy, sortOrder)(client.signer)
+      api.getArtistReleases(artistId, sortBy, sortOrder)(client.signer)
   }
 
   final object users {
