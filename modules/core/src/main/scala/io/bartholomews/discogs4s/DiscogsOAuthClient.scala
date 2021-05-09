@@ -7,7 +7,7 @@ import io.bartholomews.fsclient.core.oauth.{AccessTokenCredentials, RedirectUri,
 import sttp.client3.SttpBackend
 
 // Client for `oAuth` option;
-class DiscogsOAuthClient[F[_]] private (userAgent: UserAgent, consumer: Consumer)(
+class DiscogsOAuthClient[F[_]] private[discogs4s] (userAgent: UserAgent, consumer: Consumer)(
   backend: SttpBackend[F, Any]
 ) {
 
@@ -18,6 +18,6 @@ class DiscogsOAuthClient[F[_]] private (userAgent: UserAgent, consumer: Consumer
   final val database: DatabaseApi[F, AccessTokenCredentials] =
     new DatabaseApi[F, AccessTokenCredentials](userAgent, backend)
 
-  final val users: UsersApi[F, AccessTokenCredentials] =
-    new UsersApi[F, AccessTokenCredentials](userAgent, backend)
+  final val users: UsersApi[F] =
+    new UsersApi[F](userAgent, backend)
 }

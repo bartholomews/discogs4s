@@ -13,12 +13,11 @@ import sttp.client3.{Response, SttpBackend}
 import sttp.model.{Method, StatusCode, Uri}
 
 /**
- * Implementation of Discogs OAuth flow
- * (https://www.discogs.com/developers/#page:authentication,header:authentication-discogs-auth-flow)
+ * https://www.discogs.com/developers/#page:authentication
  * For example on usages, see https://github.com/bartholomews/discogs4s#full-oauth-10a-with-access-tokensecret
  * @param userAgent the application `User-Agent`, which will be added as header in all the requests
  * @param backend the Sttp backend for the requests
- * @tparam F the effect type
+ * @tparam F the Effect type
  */
 class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._

@@ -1,37 +1,35 @@
 package io.bartholomews.discogs4s.circe
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 import io.bartholomews.discogs4s.entities._
+import io.bartholomews.discogs4s.entities.requests.UpdateUserRequest
 import io.bartholomews.fsclient.circe.FsClientCirceApi
-import io.circe.generic.extras.semiauto.deriveConfiguredDecoder
-import io.circe.generic.extras.{semiauto, Configuration}
-import io.circe.{Decoder, HCursor}
+import io.circe.generic.extras.Configuration
+import io.circe.generic.extras.semiauto.{
+  deriveConfiguredCodec,
+  deriveConfiguredDecoder,
+  deriveConfiguredEncoder,
+  deriveUnwrappedCodec
+}
+import io.circe.{Codec, Decoder, Encoder}
 import sttp.model.Uri
 
 object codecs extends DiscogsCirceApi
 
 trait DiscogsCirceApi extends FsClientCirceApi {
-  implicit val config: Configuration = Configuration.default.withSnakeCaseMemberNames
+  implicit val config: Configuration                 = Configuration.default.withSnakeCaseMemberNames
+  implicit val emptyUriDecoder: Decoder[Option[Uri]] = decodeEmptyStringAsOption[Uri]
 
-  def decodeOptionAsEmptyString[A](implicit decoder: Decoder[A]): Decoder[Option[A]] = { (c: HCursor) =>
-    c.focus match {
-      case None => Right(None)
-      case Some(jValue) =>
-        if (jValue.asString.contains("")) Right(None)
-        else decoder(c).map(Some(_))
-    }
-  }
+  implicit val pageUrlsCodec: Codec[PageUrls]     = deriveConfiguredCodec
+  implicit val paginationCodec: Codec[Pagination] = deriveConfiguredCodec
 
-  implicit val pageUrlsDecoder: Decoder[PageUrls] = deriveConfiguredDecoder[PageUrls]
-  implicit val paginationDecoder: Decoder[Pagination] = deriveConfiguredDecoder[Pagination]
+  implicit val pageUrlsDecoder: Decoder[PageUrls]                   = deriveConfiguredDecoder[PageUrls]
+  implicit val paginationDecoder: Decoder[Pagination]               = deriveConfiguredDecoder[Pagination]
   implicit val paginatedReleasesDecoder: Decoder[PaginatedReleases] = deriveConfiguredDecoder[PaginatedReleases]
-  implicit val releaseDecoder: Decoder[Release] = {
-    deriveConfiguredDecoder[Release]
-  }
-  implicit val authenticatedUserDecoder: Decoder[AuthenticatedUser] = deriveConfiguredDecoder[AuthenticatedUser]
-  implicit val simpleUserDecoder: Decoder[SimpleUser] = {
-    implicit val emptyUriDecoder: Decoder[Option[Uri]] = decodeOptionAsEmptyString[Uri]
-    deriveConfiguredDecoder[SimpleUser]
-  }
+  implicit val releaseDecoder: Decoder[Release]                     = deriveConfiguredDecoder[Release]
+  implicit val userProfileDecoder: Decoder[UserProfile]             = deriveConfiguredDecoder[UserProfile]
 
   implicit val userIdentityDecoder: Decoder[UserIdentity] = Decoder.forProduct4(
     "id",
@@ -40,10 +38,46 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     "consumer_name"
   )(UserIdentity.apply)
 
-  implicit val usernameDecoder: Decoder[Username] = semiauto.deriveUnwrappedDecoder
-  implicit val userEmailDecoder: Decoder[UserEmail] = semiauto.deriveUnwrappedDecoder
-  implicit val userRealNameDecoder: Decoder[UserRealName] = semiauto.deriveUnwrappedDecoder
-  implicit val userWebsiteDecoder: Decoder[UserWebsite] = semiauto.deriveUnwrappedDecoder
-  implicit val userLocationDecoder: Decoder[UserLocation] = semiauto.deriveUnwrappedDecoder
-  implicit val userProfileInfoDecoder: Decoder[UserProfileInfo] = semiauto.deriveUnwrappedDecoder
+  implicit val usernameCodec: Codec[Username]               = deriveUnwrappedCodec
+  implicit val userEmailCodec: Codec[UserEmail]             = deriveUnwrappedCodec
+  implicit val userRealNameCodec: Codec[UserRealName]       = deriveUnwrappedCodec
+  implicit val userWebsiteCodec: Codec[UserWebsite]         = deriveUnwrappedCodec
+  implicit val userLocationCodec: Codec[UserLocation]       = deriveUnwrappedCodec
+  implicit val userProfileInfoCodec: Codec[UserProfileInfo] = deriveUnwrappedCodec
+  implicit val userResourceCodec: Codec[UserResource]       = deriveConfiguredCodec
+  implicit val ratingCodec: Codec[Rating]                   = deriveConfiguredCodec
+
+  implicit val marketCodec: Codec[MarketplaceCurrency] = Codec.from(
+    Decoder.decodeString.emap(s =>
+      MarketplaceCurrency.withNameOption(s).toRight(s"'$s' is not a member of enum MarketplaceCurrency")
+    ),
+    Encoder.encodeString.contramap(_.entryName)
+  )
+
+  implicit val releaseVideoCodec: Codec[ReleaseVideo]           = deriveConfiguredCodec
+  implicit val releaseImageCodec: Codec[ReleaseImage]           = deriveConfiguredCodec
+  implicit val releaseLabelCodec: Codec[ReleaseLabel]           = deriveConfiguredCodec
+  implicit val formatDescriptionCodec: Codec[FormatDescription] = deriveUnwrappedCodec
+  implicit val releaseFormatCodec: Codec[ReleaseFormat] = {
+    implicit val decodeFormatDescription: Decoder[List[FormatDescription]] = decodeNullableList[FormatDescription]
+    deriveConfiguredCodec
+  }
+  implicit val styleCodec: Codec[Style] = deriveUnwrappedCodec
+
+  implicit val artistSubmissionCodec: Codec[ArtistSubmission]               = deriveConfiguredCodec
+  implicit val artistReleaseSubmissionCodec: Codec[ArtistReleaseSubmission] = deriveConfiguredCodec
+  implicit val releaseSubmissionCodec: Codec[ReleaseSubmission] = {
+    implicit val dateTimeOffsetDecoder: Decoder[LocalDateTime] =
+      localDateTimeDecoder(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+    implicit val decodeImages: Decoder[List[ReleaseImage]] = decodeNullableList[ReleaseImage]
+    implicit val decodeStyles: Decoder[List[Style]]        = decodeNullableList[Style]
+    implicit val decodeVideos: Decoder[List[ReleaseVideo]] = decodeNullableList[ReleaseVideo]
+    deriveConfiguredCodec
+  }
+  implicit val communityReleaseSubmissionCodec: Codec[CommunityReleaseSubmission] = deriveConfiguredCodec
+  implicit val userSubmissionCodec: Codec[UserSubmissions]                        = deriveConfiguredCodec
+  implicit val userSubmissionResponseCodec: Codec[UserSubmissionResponse]       = deriveConfiguredCodec
+
+  implicit val userContributionsCodec: Codec[UserContributions] = deriveConfiguredCodec
+  implicit val updateUserRequestEncoder: Encoder[UpdateUserRequest] = deriveConfiguredEncoder
 }

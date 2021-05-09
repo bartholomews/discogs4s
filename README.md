@@ -292,9 +292,10 @@ This client is for making calls on behalf of any authenticated user which grante
     
 - **UsersApi**
     - [`me`](https://www.discogs.com/developers/#page:user-identity)*
-    - [`getSimpleUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)    
-    - [`getAuthenticateUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)*    
+    - [`getUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)    
     - [`updateUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post)*    
+    - [`getUserSubmissions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions)     
+    - [`getUserContributions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions)    
     
 [*]  *Available only in `DiscogsOAuthClient` and `DiscogsPersonalClient`*  
 [**] *Available only in `DiscogsOAuthClient`*

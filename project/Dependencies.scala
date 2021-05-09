@@ -5,7 +5,7 @@ object Dependencies {
     // https://github.com/typelevel/cats
     val cats = "2.6.0"
     // https://github.com/bartholomews/fsclient
-    val fsClient = "0.1.2+5-f5906f18-SNAPSHOT"
+    val fsClient = "0.1.2+10-69b86071-SNAPSHOT"
     // https://github.com/xdotai/play-json-extensions
     val playJsonExtensions = "0.42.0"
   }

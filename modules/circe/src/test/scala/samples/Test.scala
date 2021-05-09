@@ -38,7 +38,7 @@ object NoAuth extends App {
   import io.bartholomews.discogs4s.circe.codecs._
 
   val client = DiscogsClient.authDisabled(userAgent)(backend)
-  client.users.getSimpleUserProfile(Username("_.bartholomews")).body.fold(println, println)
+  client.users.getUserProfile(Username("_.bartholomews")).body.fold(println, println)
 
   // $COVERAGE-ON$
 }
@@ -75,7 +75,7 @@ object ClientCredentialsFlow extends App {
   val client = DiscogsClient.clientCredentials(userAgent, consumer)(backend)
 
   client.users
-    .getSimpleUserProfile(Username("_.bartholomews"))
+    .getUserProfile(Username("_.bartholomews"))
     .headers
     .foreach(println)
 

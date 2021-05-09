@@ -8,6 +8,13 @@ import io.bartholomews.fsclient.core.oauth.Signer
 import sttp.client3.SttpBackend
 import sttp.model.Uri
 
+/**
+ * https://www.discogs.com/developers/#page:database
+ * @param userAgent the application `User-Agent`, which will be added as header in all the requests
+ * @param backend the Sttp backend for the requests
+ * @tparam F the Effect type
+ * @tparam S the Signer type
+ */
 class DatabaseApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 

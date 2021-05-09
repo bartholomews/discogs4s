@@ -34,12 +34,12 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec wi
                 pages = 103,
                 items = 103,
                 per_page = 1,
-                urls = PageUrls(
+                urls = Some(PageUrls(
                   first = None,
                   prev = None,
-                  next = "https://api.discogs.com/artists/1/releases?per_page=1&page=2",
-                  last = "https://api.discogs.com/artists/1/releases?per_page=1&page=103"
-                )
+                  next = Some("https://api.discogs.com/artists/1/releases?per_page=1&page=2"),
+                  last = Some("https://api.discogs.com/artists/1/releases?per_page=1&page=103")
+                ))
               ),
               releases = Seq(
                 Release(

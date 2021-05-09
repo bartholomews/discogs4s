@@ -2,34 +2,54 @@ package io.bartholomews.discogs4s.api
 
 import io.bartholomews.discogs4s.endpoints.{DiscogsAuthEndpoint, DiscogsEndpoint}
 import io.bartholomews.discogs4s.entities._
+import io.bartholomews.discogs4s.entities.requests.UpdateUserRequest
 import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.http.SttpResponses.{ResponseHandler, SttpResponse}
-import io.bartholomews.fsclient.core.oauth.{OAuthSigner, Signer, SignerV1}
-import sttp.client3.SttpBackend
+import io.bartholomews.fsclient.core.oauth.{OAuthSigner, Signer}
+import sttp.client3.{BodySerializer, SttpBackend}
 import sttp.model.Uri
 
-class UsersApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
+/**
+ * https://www.discogs.com/developers/#page:user-identity
+ *
+ * Retrieve basic information about the authenticated user. You can use this resource to find out who you’re
+ * authenticated as, and it also doubles as a good sanity check to ensure that you’re using OAuth correctly. For more
+ * detailed information, make another request for the user’s Profile.
+ *
+ * @param userAgent
+ *   the application `User-Agent`, which will be added as header in all the requests
+ * @param backend
+ *   the Sttp backend for the requests
+ * @tparam F
+ *   the Effect type
+ */
+class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
-  private val basePath: Uri = DiscogsEndpoint.apiUri / "users"
+  private val basePath: Uri                     = DiscogsEndpoint.apiUri / "users"
   private def userPath(username: Username): Uri = basePath / username.value
 
   /**
-   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
+   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity
    *
-   * Retrieve a user by username.
+   * Retrieve basic information about the authenticated user. You can use this resource to find out who you’re
+   * authenticated as, and it also doubles as a good sanity check to ensure that you’re using OAuth correctly. For more
+   * detailed information, make another request for the user’s Profile.
    *
-   * If authenticated as the requested user or the user’s collection/wantlist is public,
-   * the num_collection / num_wantlist keys will be visible.
-   *
-   * @param username The username of whose profile you are requesting.
-   * @return `SimpleUser`
+   * @param signer
+   *   the request Signer
+   * @param responseHandler
+   *   the response decoder
+   * @tparam DE
+   *   the Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, UserIdentity]]`
    */
-  def getSimpleUserProfile[DE](
-    username: Username
-  )(signer: S)(implicit responseHandler: ResponseHandler[DE, SimpleUser]): F[SttpResponse[DE, SimpleUser]] =
+  def me[DE](signer: OAuthSigner)(implicit
+      responseHandler: ResponseHandler[DE, UserIdentity]
+  ): F[SttpResponse[DE, UserIdentity]] =
     baseRequest(userAgent)
-      .get(userPath(username))
+      .get(DiscogsEndpoint.apiUri / DiscogsAuthEndpoint.path / "identity")
       .sign(signer)
       .response(responseHandler)
       .send(backend)
@@ -38,22 +58,25 @@ class UsersApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[F, 
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get
    *
    * Retrieve a user by username.
-   * If authenticated as the requested user, the email key will be visible,
-   * and the num_list count will include the user’s private lists.
-   * Otherwise the call would probably fail since the entity expects the extra fields in the response.
-   * For unauthenticated calls `getSimpleUserProfile` should be used instead, returning a `SimpleUser` entity.
    *
-   * If authenticated as the requested user or the user’s collection/wantlist is public,
-   * the num_collection / num_wantlist keys will be visible.
+   * If authenticated as the requested user, the email key will be visible, and the num_list count will include the
+   * user’s private lists. If authenticated as the requested user or the user’s collection/wantlist is public, the
+   * num_collection / num_wantlist keys will be visible.
    *
-   * @param username The username of whose profile you are requesting.
-   * @return `AuthenticatedUser`
+   * @param username
+   *   The username of whose profile you are requesting.
+   * @param signer
+   *   the request Signer
+   * @param responseHandler
+   *   the response decoder
+   * @tparam DE
+   *   the Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, UserProfile]]`
    */
-  def getAuthenticateUserProfile[DE](
-    username: Username
-  )(
-    signer: S
-  )(implicit responseHandler: ResponseHandler[DE, AuthenticatedUser]): F[SttpResponse[DE, AuthenticatedUser]] =
+  def getUserProfile[DE](
+      username: Username
+  )(signer: Signer)(implicit responseHandler: ResponseHandler[DE, UserProfile]): F[SttpResponse[DE, UserProfile]] =
     baseRequest(userAgent)
       .get(userPath(username))
       .sign(signer)
@@ -65,55 +88,113 @@ class UsersApi[F[_], S <: Signer](userAgent: UserAgent, backend: SttpBackend[F, 
    *
    * Edit a user’s profile data.
    *
-   * @param username The username of the user.
-   * @param name The real name of the user.
-   * @param homePage The user’s website.
-   * @param location The geographical location of the user.
-   * @param profile Biographical information about the user.
-   * @param currAbbr Currency for marketplace data. Must be one of the following:
-   *                USD GBP EUR CAD AUD JPY CHF MXN BRL NZD SEK ZAR
-   *
-   * @return `AuthenticatedUser`
+   * @param username
+   *   The username of the user.
+   * @param request
+   *   The real name of the user. The user’s website. The geographical location of the user. Biographical information
+   *   about the user. Currency for marketplace data. Must be one of the following: USD GBP EUR CAD AUD JPY CHF MXN BRL
+   *   NZD SEK ZAR
+   * @param signer
+   *   the request Signer
+   * @param responseHandler
+   *   the response decoder
+   * @tparam DE
+   *   the Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, AuthenticatedUser]]`
    */
   def updateUserProfile[DE](
-    username: Username,
-    name: Option[UserRealName],
-    homePage: Option[UserWebsite],
-    location: Option[UserLocation],
-    profile: Option[UserProfileInfo],
-    currAbbr: Option[MarketplaceCurrency]
-  )(
-    signer: SignerV1
-  )(implicit responseHandler: ResponseHandler[DE, AuthenticatedUser]): F[SttpResponse[DE, AuthenticatedUser]] =
+      username: Username,
+      request: UpdateUserRequest
+  )(signer: OAuthSigner)(implicit
+      bodySerializer: BodySerializer[UpdateUserRequest],
+      responseHandler: ResponseHandler[DE, UserProfile]
+  ): F[SttpResponse[DE, UserProfile]] =
     baseRequest(userAgent)
-      .post(
-        userPath(username)
-          .withOptionQueryParam("name", name.map(_.value))
-          .withOptionQueryParam("home_page", homePage.map(_.value))
-          .withOptionQueryParam("location", location.map(_.value))
-          .withOptionQueryParam("profile", profile.map(_.value))
-          .withOptionQueryParam("curr_abbr", currAbbr.map(_.entryName))
+      .post(userPath(username))
+      .body(request)
+      .sign(signer)
+      .response(responseHandler)
+      .send(backend)
+
+  /**
+   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions
+   *
+   * Retrieve a user’s submissions by username. Accepts Pagination parameters.
+   *
+   * @param username
+   *   The username of the submissions you are trying to fetch.
+   * @param page
+   *   Page to fetch (default to 1)
+   * @param perPage
+   *   Items per page to fetch (default to 50, max 100)
+   * @param signer
+   *   the request Signer
+   * @param responseHandler
+   *   the response decoder
+   * @tparam DE
+   *   the Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, UserSubmissionResponse]]`
+   */
+  def getUserSubmissions[DE](username: Username, page: Int = 1, perPage: Int = 50)(
+      signer: Signer
+  )(implicit
+      responseHandler: ResponseHandler[DE, UserSubmissionResponse]
+  ): F[SttpResponse[DE, UserSubmissionResponse]] =
+    baseRequest(userAgent)
+      .get(
+        (userPath(username) / "submissions")
+          .withQueryParam("page", page.toString)
+          .withQueryParam("per_page", perPage.toString)
       )
       .sign(signer)
       .response(responseHandler)
       .send(backend)
 
   /**
-   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity
+   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions
    *
-   * Retrieve basic information about the authenticated user.
-   * You can use this resource to find out who you’re authenticated as,
-   * and it also doubles as a good sanity check to ensure that you’re using OAuth correctly.
-   * For more detailed information, make another request for the user’s Profile.
+   * Retrieve a user’s contributions by username. Accepts Pagination parameters.
    *
-   * @return `UserIdentity`
+   * @param username
+   *   The username of the submissions you are trying to fetch.
+   * @param page
+   *   Page to fetch (default to 1)
+   * @param perPage
+   *   Items per page to fetch (default to 50, max 100)
+   * @param sortBy
+   *   Valid sort keys are: label artist title catno format rating year added
+   * @param sortOrder
+   *   Valid sort_order keys are: asc desc
+   * @param signer
+   *   the request Signer
+   * @param responseHandler
+   *   the response decoder
+   * @tparam DE
+   *   the Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, ReleaseContributions]]`
    */
-  def me[DE](signer: OAuthSigner)(
-    implicit
-    responseHandler: ResponseHandler[DE, UserIdentity]
-  ): F[SttpResponse[DE, UserIdentity]] =
+  def getUserContributions[DE](
+                                username: Username,
+                                page: Int = 1,
+                                perPage: Int = 50,
+                                sortBy: Option[UserContributions.SortedBy] = None,
+                                sortOrder: Option[SortOrder] = None
+  )(
+      signer: Signer
+  )(implicit
+      responseHandler: ResponseHandler[DE, UserContributions]
+  ): F[SttpResponse[DE, UserContributions]] =
     baseRequest(userAgent)
-      .get(DiscogsEndpoint.apiUri / DiscogsAuthEndpoint.path / "identity")
+      .get(
+        (userPath(username) / "contributions")
+          .withQueryParam("page", page.toString)
+          .withQueryParam("per_page", perPage.toString)
+          .withOptionQueryParam("sort", sortBy.map(_.entryName))
+          .withOptionQueryParam("sort_order", sortOrder.map(_.entryName))
+      )
       .sign(signer)
       .response(responseHandler)
       .send(backend)

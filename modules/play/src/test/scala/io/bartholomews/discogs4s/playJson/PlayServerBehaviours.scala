@@ -1,11 +1,16 @@
 package io.bartholomews.discogs4s.playJson
 
-import io.bartholomews.scalatestudo.{ServerBehaviours, WireWordSpec}
+import io.bartholomews.discogs4s.DiscogsServerBehaviours
+import io.bartholomews.scalatestudo.WireWordSpec
 import play.api.libs.json._
 import sttp.client3.BodySerializer
 
-trait PlayServerBehaviours extends ServerBehaviours[Writes, Reads, JsError, JsValue] with DiscogsPlayJsonApi {
+import scala.reflect.ClassTag
+
+trait PlayServerBehaviours extends DiscogsServerBehaviours[Writes, Reads, JsError, JsValue] with DiscogsPlayJsonApi {
   self: WireWordSpec =>
+
+  implicit override val ct: ClassTag[JsError] = ClassTag[JsError](JsError.getClass)
 
   implicit def bodySerializer[T](implicit encoder: Writes[T]): BodySerializer[T] =
     sttp.client3.playJson.playJsonBodySerializer

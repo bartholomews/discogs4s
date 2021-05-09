@@ -1,0 +1,3951 @@
+{
+  "pagination": {
+    "page": 1,
+    "pages": 1,
+    "per_page": 50,
+    "items": 20,
+    "urls": {}
+  },
+  "contributions": [
+    {
+      "id": 12626336,
+      "status": "Accepted",
+      "year": 1976,
+      "resource_url": "https://api.discogs.com/releases/12626336",
+      "uri": "https://www.discogs.com/LTD-Love-To-The-World/release/12626336",
+      "artists": [
+        {
+          "name": "L.T.D.",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 189430,
+          "resource_url": "https://api.discogs.com/artists/189430"
+        }
+      ],
+      "artists_sort": "L.T.D.",
+      "labels": [
+        {
+          "name": "A&M Records",
+          "catno": "SP-4589",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 904,
+          "resource_url": "https://api.discogs.com/labels/904"
+        }
+      ],
+      "series": [],
+      "companies": [],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "descriptions": [
+            "LP",
+            "Album",
+            "Promo"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 11,
+        "want": 85,
+        "rating": {
+          "count": 1,
+          "average": 5.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2018-10-06T13:52:29-07:00",
+      "date_changed": "2018-10-06T17:16:15-07:00",
+      "num_for_sale": 1,
+      "lowest_price": 3.62,
+      "master_id": 83444,
+      "master_url": "https://api.discogs.com/masters/83444",
+      "title": "Love To The World",
+      "country": "US",
+      "released": "1976",
+      "notes": "Recorded and mixed at The Sound Factory, Los Angeles\nMastered at Artisan Sound Recorders\n\n\"Promotional copy not for sale\" sticker on front cover",
+      "released_formatted": "1976",
+      "identifiers": [],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=UIvQI_u3aH0",
+          "title": "Love to the World / L.T.D.",
+          "description": "alubum: Love To The World\r\nReleased: 1976",
+          "duration": 444,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=Rl8lMR-Ld0g",
+          "title": "L.T.D. - Let The Music Keep Playing",
+          "description": "",
+          "duration": 265,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=eX3ZYXMLAHs",
+          "title": "L.T.D. - Get Your It Together",
+          "description": "Get Your It Together is from the 'Love To The World' LP, released in 1976.\n\nNo copyright infringement intended. All copyrights belong to their original owners. Musical Videos and accompanying photos posted on this Channel are for entertainment purposes ",
+          "duration": 278,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=rZHgUQqiWDI",
+          "title": "L.T.D.-love ballad",
+          "description": "L.T.D.-love ballad",
+          "duration": 288,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Funk / Soul"
+      ],
+      "styles": [
+        "Disco"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/tXcsgUv2JelEoaz9NYKQURo62J4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870981-1649.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/tXcsgUv2JelEoaz9NYKQURo62J4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870981-1649.jpeg.jpg",
+          "uri150": "https://img.discogs.com/G3_8k5nd-GL6RFFpDzv9lPaakjA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-12626336-1538870981-1649.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/8XHrskdZQo1kC72Atpc0L6Nutas=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870980-8583.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/8XHrskdZQo1kC72Atpc0L6Nutas=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870980-8583.jpeg.jpg",
+          "uri150": "https://img.discogs.com/HP9LlqyJMDH4w8ktxs4np8I1LCo=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-12626336-1538870980-8583.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/nkhKLVPGqIZpcd31RPqzY6dGY9M=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870977-5038.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/nkhKLVPGqIZpcd31RPqzY6dGY9M=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870977-5038.jpeg.jpg",
+          "uri150": "https://img.discogs.com/ukiyvm0Jlctrcmaw6XrNUaYGd9g=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-12626336-1538870977-5038.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/ztbrowWffg0GkSqw9TlQh7tLhNc=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870977-4597.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/ztbrowWffg0GkSqw9TlQh7tLhNc=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870977-4597.jpeg.jpg",
+          "uri150": "https://img.discogs.com/fK-sK8XbVpm0mVJ4lMi7IbnvEYY=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-12626336-1538870977-4597.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/XY55jBhu5LpXhWM7uC_algrua64=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870980-1653.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/XY55jBhu5LpXhWM7uC_algrua64=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870980-1653.jpeg.jpg",
+          "uri150": "https://img.discogs.com/HcadRdk9TPLXPrjSqkl4ZH_BztQ=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-12626336-1538870980-1653.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/KIEtZotYH8dUByb2ZSg0BQnhmGI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870981-8535.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/KIEtZotYH8dUByb2ZSg0BQnhmGI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-12626336-1538870981-8535.jpeg.jpg",
+          "uri150": "https://img.discogs.com/v7v51IZDX4GoiY_oxDoBXSzuu48=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-12626336-1538870981-8535.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/G3_8k5nd-GL6RFFpDzv9lPaakjA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-12626336-1538870981-1649.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 11084136,
+      "status": "Accepted",
+      "year": 1963,
+      "resource_url": "https://api.discogs.com/releases/11084136",
+      "uri": "https://www.discogs.com/Miles-Davis-Seven-Steps-To-Heaven/release/11084136",
+      "artists": [
+        {
+          "name": "Miles Davis",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 23755,
+          "resource_url": "https://api.discogs.com/artists/23755"
+        }
+      ],
+      "artists_sort": "Miles Davis",
+      "labels": [
+        {
+          "name": "Columbia",
+          "catno": "CL 2051",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 1866,
+          "resource_url": "https://api.discogs.com/labels/1866"
+        }
+      ],
+      "series": [],
+      "companies": [
+        {
+          "name": "Customatrix",
+          "catno": "",
+          "entity_type": "29",
+          "entity_type_name": "Mastered At",
+          "id": 586613,
+          "resource_url": "https://api.discogs.com/labels/586613"
+        },
+        {
+          "name": "Columbia Records Pressing Plant, Terre Haute",
+          "catno": "",
+          "entity_type": "17",
+          "entity_type_name": "Pressed By",
+          "id": 403953,
+          "resource_url": "https://api.discogs.com/labels/403953"
+        },
+        {
+          "name": "Mayfair Music Corp.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 324665,
+          "resource_url": "https://api.discogs.com/labels/324665"
+        },
+        {
+          "name": "Musical Frontiers Pub. Co.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 324664,
+          "resource_url": "https://api.discogs.com/labels/324664"
+        },
+        {
+          "name": "Leo Feist, Inc.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 285061,
+          "resource_url": "https://api.discogs.com/labels/285061"
+        },
+        {
+          "name": "Kenwood Music, Inc.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 733095,
+          "resource_url": "https://api.discogs.com/labels/733095"
+        },
+        {
+          "name": "Pickwick Music Corp.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 372151,
+          "resource_url": "https://api.discogs.com/labels/372151"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "descriptions": [
+            "LP",
+            "Album",
+            "Mono"
+          ]
+        }
+      ],
+      "data_quality": "Correct",
+      "community": {
+        "have": 28,
+        "want": 81,
+        "rating": {
+          "count": 1,
+          "average": 5.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "Klass.Animal",
+            "resource_url": "https://api.discogs.com/users/Klass.Animal"
+          },
+          {
+            "username": "pinard75",
+            "resource_url": "https://api.discogs.com/users/pinard75"
+          }
+        ],
+        "data_quality": "Correct",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2017-11-01T09:48:35-07:00",
+      "date_changed": "2020-03-23T10:29:19-07:00",
+      "num_for_sale": 2,
+      "lowest_price": 25.0,
+      "master_id": 65108,
+      "master_url": "https://api.discogs.com/masters/65108",
+      "title": "Seven Steps To Heaven",
+      "country": "US",
+      "released": "1963-09-00",
+      "notes": "Tracks A1, A3, B2 recorded in Hollywood, Cal.\nTracks A2, B1, B3 recorded in New York\n\nAlso released in a Stereo version, [url=http://www.discogs.com/release/3467513]CS 8851[/url].\n\nColumbia - 2 walking eyes  - \"Nonbreakable\" - \"360 Sound\" - Mono\n\nThis copy is different from others due to its \"360 Sound\" Mono label. ",
+      "released_formatted": "Sep 1963",
+      "identifiers": [
+        {
+          "type": "Matrix / Runout",
+          "value": "XLP 59702",
+          "description": "Side 1 Label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "XLP 59703",
+          "description": "Side 2 Label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "XLP-59702-1F",
+          "description": "Side 1"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "XLP-59703-1L",
+          "description": "Side 2"
+        },
+        {
+          "type": "Rights Society",
+          "value": "BMI"
+        },
+        {
+          "type": "Rights Society",
+          "value": "ASCAP"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=Hhfe1SUe2-A",
+          "title": "Basin Street Blues",
+          "description": "Provided to YouTube by Columbia/Legacy\n\nBasin Street Blues · Miles Davis\n\nSeven Steps To Heaven\n\n℗ Originally released 1963. All rights reserved by Columbia Records, a division of Sony Music Entertainment\n\nReleased on: 1993-01-20\n\nProducer: Teo Macero\n",
+          "duration": 628,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=pQMJv3HuZdU",
+          "title": "Seven Steps to Heaven",
+          "description": "Provided to YouTube by Columbia/Legacy\n\nSeven Steps to Heaven · Miles Davis\n\nSeven Steps To Heaven\n\n℗ Originally released 1963. All rights reserved by Columbia Records, a division of Sony Music Entertainment\n\nReleased on: 1993-01-20\n\nProducer: Teo Mace",
+          "duration": 384,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=J1UouZ5hTEA",
+          "title": "I Fall In Love Too Easily",
+          "description": "Provided to YouTube by Columbia/Legacy\n\nI Fall In Love Too Easily · Miles Davis\n\nSeven Steps To Heaven\n\n℗ Originally released 1963. All rights reserved by Columbia Records, a division of Sony Music Entertainment\n\nReleased on: 1993-01-20\n\nProducer: Teo ",
+          "duration": 404,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=pK-R7txzoFg",
+          "title": "So Near, So Far",
+          "description": "Provided to YouTube by Columbia/Legacy\n\nSo Near, So Far · Miles Davis\n\nSeven Steps To Heaven\n\n℗ Originally released 1963. All rights reserved by Columbia Records, a division of Sony Music Entertainment\n\nReleased on: 1993-01-20\n\nProducer: Teo Macero\nDru",
+          "duration": 417,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=S-W9I-HRD9Y",
+          "title": "Baby Won't You Please Come Home",
+          "description": "Provided to YouTube by Columbia/Legacy\n\nBaby Won't You Please Come Home · Miles Davis\n\nSeven Steps To Heaven\n\n℗ Originally released 1963. All rights reserved by Columbia Records, a division of Sony Music Entertainment\n\nReleased on: 1993-01-20\n\nComposer",
+          "duration": 506,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=xXONYUnppLs",
+          "title": "Joshua",
+          "description": "Provided to YouTube by Columbia/Legacy\n\nJoshua · Miles Davis\n\nSeven Steps To Heaven\n\n℗ Originally released 1963. All rights reserved by Columbia Records, a division of Sony Music Entertainment\n\nReleased on: 1993-01-20\n\nProducer: Teo Macero\nComposer, Ly",
+          "duration": 419,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz"
+      ],
+      "styles": [
+        "Hard Bop",
+        "Modal"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/phtRwAY5I2t7E_n6amrFu_-nQT4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11084136-1510253144-1962.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/phtRwAY5I2t7E_n6amrFu_-nQT4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11084136-1510253144-1962.jpeg.jpg",
+          "uri150": "https://img.discogs.com/e3gG9rGLMlK_Fzrsc4wF4AuOF6Q=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11084136-1510253144-1962.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/yaE71Sa9Pc_dcEzZeIHLVqk3Q8s=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11084136-1510253144-9735.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/yaE71Sa9Pc_dcEzZeIHLVqk3Q8s=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11084136-1510253144-9735.jpeg.jpg",
+          "uri150": "https://img.discogs.com/_BtZGo8Diu0hli6z3mf8FxJ5ZGo=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11084136-1510253144-9735.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/_fQHEQ0wIXWV2Gf1NknTYwxWJ4Y=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11084136-1510252583-8316.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/_fQHEQ0wIXWV2Gf1NknTYwxWJ4Y=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11084136-1510252583-8316.jpeg.jpg",
+          "uri150": "https://img.discogs.com/d5U_N8n2OZO7XjV2FS3fiTL92uc=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11084136-1510252583-8316.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/eHuZpi9k03guKDYxqbHfRqD0aOI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11084136-1510252582-6695.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/eHuZpi9k03guKDYxqbHfRqD0aOI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11084136-1510252582-6695.jpeg.jpg",
+          "uri150": "https://img.discogs.com/eF4MThAtdvAbrXorFU9dMAqTGnk=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11084136-1510252582-6695.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/e3gG9rGLMlK_Fzrsc4wF4AuOF6Q=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11084136-1510253144-1962.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 11076373,
+      "status": "Accepted",
+      "year": 2013,
+      "resource_url": "https://api.discogs.com/releases/11076373",
+      "uri": "https://www.discogs.com/Greg-Goebel-Rainy-City/release/11076373",
+      "artists": [
+        {
+          "name": "Greg Goebel",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 2387009,
+          "resource_url": "https://api.discogs.com/artists/2387009"
+        }
+      ],
+      "artists_sort": "Greg Goebel",
+      "labels": [
+        {
+          "name": "Ninjazz",
+          "catno": "1301",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 231170,
+          "resource_url": "https://api.discogs.com/labels/231170"
+        }
+      ],
+      "series": [],
+      "companies": [
+        {
+          "name": "Crossroads Productions, Vancouver",
+          "catno": "",
+          "entity_type": "23",
+          "entity_type_name": "Recorded At",
+          "id": 715952,
+          "resource_url": "https://api.discogs.com/labels/715952"
+        },
+        {
+          "name": "Tone Proper Mastering",
+          "catno": "",
+          "entity_type": "27",
+          "entity_type_name": "Mixed At",
+          "id": 285665,
+          "resource_url": "https://api.discogs.com/labels/285665"
+        },
+        {
+          "name": "Tone Proper Mastering",
+          "catno": "",
+          "entity_type": "29",
+          "entity_type_name": "Mastered At",
+          "id": 285665,
+          "resource_url": "https://api.discogs.com/labels/285665"
+        }
+      ],
+      "formats": [
+        {
+          "name": "CD",
+          "qty": "1",
+          "descriptions": [
+            "Album"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 1,
+        "want": 0,
+        "rating": {
+          "count": 0,
+          "average": 0.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "degm",
+            "resource_url": "https://api.discogs.com/users/degm"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2017-10-30T14:11:33-07:00",
+      "date_changed": "2019-02-16T10:31:44-08:00",
+      "num_for_sale": 1,
+      "lowest_price": 10.0,
+      "title": "Rainy City",
+      "country": "US",
+      "released": "2013",
+      "notes": "Thanks to Rob, Dave, Todd and Nick for helping me get this music down. And a big thanks to my wife Elsa for her love and support.",
+      "released_formatted": "2013",
+      "identifiers": [
+        {
+          "type": "Barcode",
+          "value": "700261377162",
+          "description": "Scanned"
+        },
+        {
+          "type": "Barcode",
+          "value": "7 00261 37716 2",
+          "description": "Text"
+        }
+      ],
+      "genres": [
+        "Jazz"
+      ],
+      "styles": [
+        "Contemporary Jazz"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/wKpQNdhi0n9oXb7Xj32wCcEMfu0=/fit-in/600x535/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076373-1509397897-5052.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/wKpQNdhi0n9oXb7Xj32wCcEMfu0=/fit-in/600x535/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076373-1509397897-5052.jpeg.jpg",
+          "uri150": "https://img.discogs.com/IkWyvwAh6szlz2xUZ7-Ye2YNZCI=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076373-1509397897-5052.jpeg.jpg",
+          "width": 600,
+          "height": 535
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/gO4I5Y9HjkkIsrrypL-75L64UBU=/fit-in/600x544/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076373-1509397898-5856.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/gO4I5Y9HjkkIsrrypL-75L64UBU=/fit-in/600x544/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076373-1509397898-5856.jpeg.jpg",
+          "uri150": "https://img.discogs.com/thW2WwxDBLTx4dqrmlUl5J7n4sA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076373-1509397898-5856.jpeg.jpg",
+          "width": 600,
+          "height": 544
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/qzWxa-pV0Qe4fr5Bq-VginJ-I9M=/fit-in/600x545/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076373-1509397895-4096.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/qzWxa-pV0Qe4fr5Bq-VginJ-I9M=/fit-in/600x545/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076373-1509397895-4096.jpeg.jpg",
+          "uri150": "https://img.discogs.com/ZSF0M8pG4c40AVKSQ7yswpbfyzA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076373-1509397895-4096.jpeg.jpg",
+          "width": 600,
+          "height": 545
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/Ciw6ZxGZcOGlgQf82ngczirUbOY=/fit-in/600x534/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076373-1509397898-8143.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/Ciw6ZxGZcOGlgQf82ngczirUbOY=/fit-in/600x534/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076373-1509397898-8143.jpeg.jpg",
+          "uri150": "https://img.discogs.com/sZeVUNGy3tkrnakw7neeFRDDUSc=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076373-1509397898-8143.jpeg.jpg",
+          "width": 600,
+          "height": 534
+        }
+      ],
+      "thumb": "https://img.discogs.com/IkWyvwAh6szlz2xUZ7-Ye2YNZCI=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076373-1509397897-5052.jpeg.jpg",
+      "estimated_weight": 85
+    },
+    {
+      "id": 11076329,
+      "status": "Accepted",
+      "year": 1960,
+      "resource_url": "https://api.discogs.com/releases/11076329",
+      "uri": "https://www.discogs.com/Dizzy-Gillespie-Have-Trumpet-Will-Excite/release/11076329",
+      "artists": [
+        {
+          "name": "Dizzy Gillespie",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 64694,
+          "resource_url": "https://api.discogs.com/artists/64694"
+        }
+      ],
+      "artists_sort": "Dizzy Gillespie",
+      "labels": [
+        {
+          "name": "Verve Records",
+          "catno": "MG VS-6047",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 5041,
+          "resource_url": "https://api.discogs.com/labels/5041"
+        }
+      ],
+      "series": [],
+      "companies": [],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "descriptions": [
+            "LP",
+            "Album",
+            "Stereo"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 12,
+        "want": 10,
+        "rating": {
+          "count": 2,
+          "average": 4.5
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "schahmatist",
+            "resource_url": "https://api.discogs.com/users/schahmatist"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2017-10-30T13:59:30-07:00",
+      "date_changed": "2019-01-13T10:19:52-08:00",
+      "num_for_sale": 3,
+      "lowest_price": 2.0,
+      "master_id": 243686,
+      "master_url": "https://api.discogs.com/masters/243686",
+      "title": "Have Trumpet, Will Excite!",
+      "country": "US",
+      "released": "1960",
+      "notes": "Similar to [r6598519], but different label code (see photos). \n\nV 68313A on side 1\nV 68313B on side 2",
+      "released_formatted": "1960",
+      "identifiers": [
+        {
+          "type": "Matrix / Runout",
+          "value": "V6-8313-A 30098",
+          "description": "Side 1"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "V6-8313-B MGVS 6047B 39099 C",
+          "description": "Side 2"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=hVzNGM8fsWc",
+          "title": "My Heart Belongs To Daddy",
+          "description": "Provided to YouTube by The Orchard Enterprises\n\nMy Heart Belongs To Daddy · Dizzy Gillespie · Lex Humphries · Junior Mance\n\n1959 Jazz Essentials\n\n℗ 2011 Master Classics Records\n\nReleased on: 2011-06-01\n\nAuto-generated by YouTube.",
+          "duration": 361,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=WhDtGaFFAD0",
+          "title": "My Man (Mon Homme)",
+          "description": "Provided to YouTube by Universal Music Group\n\nMy Man (Mon Homme) · Dizzy Gillespie\n\nHave Trumpet, Will Excite!\n\n℗ 1959 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 2001-01-01\n\nProducer: Norman Granz\nParticipant: Junior Mance\n",
+          "duration": 260,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=VaJqyezOo_s",
+          "title": "Moonglow",
+          "description": "Provided to YouTube by Universal Music Group\n\nMoonglow · Dizzy Gillespie\n\nHave Trumpet, Will Excite!\n\n℗ 1959 Verve Label Group, a Division of UMG Recordings, Inc.\n\nReleased on: 2001-01-01\n\nParticipant: Junior Mance\nParticipant: Les Spann\nParticipant: S",
+          "duration": 385,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=GBQ8tJwOb90",
+          "title": "St. Louis Blues",
+          "description": "Provided to YouTube by Universal Music Group\n\nSt. Louis Blues · Dizzy Gillespie\n\nHave Trumpet, Will Excite!\n\n℗ 1959 Verve Label Group, a Division of UMG Recordings, Inc.\n\nReleased on: 2001-01-01\n\nProducer: Norman Granz\nParticipant: Junior Mance\nPartici",
+          "duration": 357,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=oz7YOD2ZPz4",
+          "title": "Woodyn' You",
+          "description": "Provided to YouTube by Universal Music Group\n\nWoodyn' You · Dizzy Gillespie\n\nHave Trumpet, Will Excite!\n\n℗ 1959 Verve Label Group, a Division of UMG Recordings, Inc.\n\nReleased on: 2001-01-01\n\nProducer: Norman Granz\nParticipant: Junior Mance\nParticipant",
+          "duration": 384,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=US7a1Qcs-tE",
+          "title": "Wrap Your Troubles In Dreams (And Dream Your Troubles Away)",
+          "description": "Provided to YouTube by Universal Music Group\n\nWrap Your Troubles In Dreams (And Dream Your Troubles Away) · Dizzy Gillespie\n\nHave Trumpet, Will Excite!\n\n℗ 1959 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 2001-01-01\n\nProducer",
+          "duration": 438,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=524as3eDT6Q",
+          "title": "There Is No Greater Love (Take 1)",
+          "description": "Provided to YouTube by Universal Music Group\n\nThere Is No Greater Love (Take 1) · Dizzy Gillespie\n\nHave Trumpet, Will Excite!\n\n℗ 2001 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 2001-01-01\n\nProducer: Norman Granz\nParticipant",
+          "duration": 210,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=PDxpfAiSYYA",
+          "title": "I Found A Million Dollar Baby In A Five And Ten Cent Store (Master Take)",
+          "description": "Provided to YouTube by Universal Music Group\n\nI Found A Million Dollar Baby In A Five And Ten Cent Store (Master Take) · Dizzy Gillespie\n\nHave Trumpet, Will Excite!\n\n℗ 1959 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 2001-01",
+          "duration": 420,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz"
+      ],
+      "styles": [
+        "Bop"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/A5wu3GM3LWVlAaq34SVr0FI259U=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076329-1509397183-3956.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/A5wu3GM3LWVlAaq34SVr0FI259U=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076329-1509397183-3956.jpeg.jpg",
+          "uri150": "https://img.discogs.com/4Nt5xuqFpSMKoc_N05kXp8j8opg=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076329-1509397183-3956.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/kTZueEu0Putz2DtyCmpvh7oLhTE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076329-1509397183-6582.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/kTZueEu0Putz2DtyCmpvh7oLhTE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076329-1509397183-6582.jpeg.jpg",
+          "uri150": "https://img.discogs.com/h00hBS-ehwdo9eJLE8NHBrOrGVk=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076329-1509397183-6582.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/HcvwvlM5678xFB2_miV6DUBgW6E=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076329-1509397183-6992.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/HcvwvlM5678xFB2_miV6DUBgW6E=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076329-1509397183-6992.jpeg.jpg",
+          "uri150": "https://img.discogs.com/RyLyuifwcxgPdu9ztlcJ6IxN_Mo=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076329-1509397183-6992.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/5ZMhNyWi7rhOVYwAeE2eHjwnm0E=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076329-1509397181-8357.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/5ZMhNyWi7rhOVYwAeE2eHjwnm0E=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-11076329-1509397181-8357.jpeg.jpg",
+          "uri150": "https://img.discogs.com/sR1PoX8Xrfa7LgI6TmfOuJbD4kg=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076329-1509397181-8357.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/4Nt5xuqFpSMKoc_N05kXp8j8opg=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-11076329-1509397183-3956.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 10974314,
+      "status": "Accepted",
+      "year": 1958,
+      "resource_url": "https://api.discogs.com/releases/10974314",
+      "uri": "https://www.discogs.com/Ahmad-Jamal-Trio-Ahmad-Jamal-At-The-Pershing/release/10974314",
+      "artists": [
+        {
+          "name": "Ahmad Jamal Trio",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 276214,
+          "resource_url": "https://api.discogs.com/artists/276214"
+        }
+      ],
+      "artists_sort": "Ahmad Jamal Trio",
+      "labels": [
+        {
+          "name": "Argo (6)",
+          "catno": "LP-628",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 1365351,
+          "resource_url": "https://api.discogs.com/labels/1365351"
+        }
+      ],
+      "series": [],
+      "companies": [
+        {
+          "name": "The Pershing Club",
+          "catno": "",
+          "entity_type": "23",
+          "entity_type_name": "Recorded At",
+          "id": 451428,
+          "resource_url": "https://api.discogs.com/labels/451428"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "text": "Grey Label",
+          "descriptions": [
+            "LP",
+            "Album",
+            "Mono"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 79,
+        "want": 70,
+        "rating": {
+          "count": 5,
+          "average": 4.8
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "CykoMF",
+            "resource_url": "https://api.discogs.com/users/CykoMF"
+          },
+          {
+            "username": "chrstnhendrickson",
+            "resource_url": "https://api.discogs.com/users/chrstnhendrickson"
+          },
+          {
+            "username": "BarnyardOrbit",
+            "resource_url": "https://api.discogs.com/users/BarnyardOrbit"
+          },
+          {
+            "username": "LEE-SUN_Records_68",
+            "resource_url": "https://api.discogs.com/users/LEE-SUN_Records_68"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2017-10-08T10:46:28-07:00",
+      "date_changed": "2019-11-13T00:08:52-08:00",
+      "num_for_sale": 1,
+      "lowest_price": 13.0,
+      "master_id": 59857,
+      "master_url": "https://api.discogs.com/masters/59857",
+      "title": "Ahmad Jamal At The Pershing",
+      "country": "US",
+      "released": "1958",
+      "notes": "Recorded live at The Pershing Lounge, January 16, 1958.\n\nLabel variation: \"Side 1\" printed on left of center hole; Matrix printed on right of center hole; black type on silver background\n\nBack cover / liner notes design has three columns of text",
+      "released_formatted": "1958",
+      "identifiers": [
+        {
+          "type": "Matrix / Runout",
+          "value": "LP 628-8671 J8OP 3506  C2",
+          "description": "Side A variant 1"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "LP 628-8672 J8OP 3507  1A",
+          "description": "Side B variant 1"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "LP 628-8671 J8OP 3506 1 C2",
+          "description": "Side A stamped, variant 2"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "A3 J8OP 35 07",
+          "description": "Side A stamped, cat. # runout missing, variant 2"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=Z0e2G32f3IU",
+          "title": "Poinciana (Live At The Pershing, Chicago, 1958)",
+          "description": "Provided to YouTube by Universal Music Group\n\nPoinciana (Live At The Pershing, Chicago, 1958) · Ahmad Jamal Trio\n\nAhmad Jamal At The Pershing: But Not For Me\n\n℗ A Verve Label Group Release; ℗ 1958 UMG Recordings, Inc.\n\nReleased on: 1958-01-01\n\nProduc",
+          "duration": 489,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=-zkH-d0IoAU",
+          "title": "Ahmad Jamal Trio at the Pershing - Poinciana",
+          "description": "Ahmad Jamal Trio at the Pershing - Poinciana (1958)\n\nPersonnel: Ahmad Jamal (piano), Israel Crosby (bass), Vernel Fournier (drums)\n\nfrom the album 'AHMAD JAMAL TRIO AT THE PERSHING - BUT NOT FOR ME' (Argo Records)",
+          "duration": 494,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=d7Sktqhz6GI",
+          "title": "Ahmad Jamal Trio at the Pershing - But Not for Me",
+          "description": "Ahmad Jamal Trio at the Pershing - But Not for Me (1958)\n\nPersonnel: Ahmad Jamal (piano), Israel Crosby (bass), Vernel Fournier (drums)\n\nfrom the album 'AHMAD JAMAL TRIO AT THE PERSHING - BUT NOT FOR ME' (Argo Records)",
+          "duration": 224,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=pYIeTZOFMmU",
+          "title": "Ahmad Jamal Trio at the Pershing - Woody'n You",
+          "description": "Ahmad Jamal Trio at the Pershing - Woody'n You (1958)\n\nPersonnel: Ahmad Jamal (piano), Israel Crosby (bass), Vernel Fournier (drums)\n\nfrom the album 'AHMAD JAMAL TRIO AT THE PERSHING - BUT NOT FOR ME' (Argo Records)",
+          "duration": 239,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=FU1hm7KlfT8",
+          "title": "Ahmad Jamal - Poinciana.",
+          "description": "",
+          "duration": 488,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=EGirm0smtLo",
+          "title": "Ahmad Jamal - No Greater Love",
+          "description": "The track was composed by Ahmad Jamal and performed by The Ahmad Jamal Trio for the album At The Pershing: But Not For Me (1958). Rights are reserved by Chess Records.",
+          "duration": 207,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=TQvIvb1S1EM",
+          "title": "Ahmad Jamal - What's New",
+          "description": "The track was composed by Bob Haggart and performed by The Ahmad Jamal Trio for the album At The Pershing: But Not For Me (1958). Rights are reserved by Chess Records.",
+          "duration": 252,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=eLiGp6wSSpQ",
+          "title": "Ahmad Jamal-(Put Another Nickel In(Music,Music,Music)",
+          "description": "Ahmad Jamal plays 'Put Another Nickel in(Music,Music,Music) from 'Ahmad Jamal at the Pershing(1958)\nAhmad Jamal(p)\nIsrael Crosby(b)\nVernell Fournier(d)",
+          "duration": 201,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=369BGE7NXoI",
+          "title": "All the Things You Are - Ahmad Jamal Trio Live at the Pershing",
+          "description": "All the Things You Are - Ahmad Jamal Trio Live at the Pershing\n\nthis song makes me melt into a liquid like substance. I do not own this song and am sharing to spread the amazingness that is Ahmad Jamal.",
+          "duration": 196,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=F3GYnP8lSds",
+          "title": "Ahmad Jamal - Moonlight In Vermont.",
+          "description": " ",
+          "duration": 192,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=hkGQn6MtfDg",
+          "title": "Ahmad Jamal - Surrey With The Fringe On Top.",
+          "description": " ",
+          "duration": 158,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz"
+      ],
+      "styles": [
+        "Bop",
+        "Cool Jazz"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/pHuhioTZ6n-FJqGGBqOzkdTZCcY=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974314-1507484797-5128.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/pHuhioTZ6n-FJqGGBqOzkdTZCcY=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974314-1507484797-5128.jpeg.jpg",
+          "uri150": "https://img.discogs.com/Fl7NcEGk0m32f3b0jkJVjEkYXRw=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974314-1507484797-5128.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/LtzBsVEbjObzAUQSWAq3zG3dmx8=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974314-1507484797-6327.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/LtzBsVEbjObzAUQSWAq3zG3dmx8=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974314-1507484797-6327.jpeg.jpg",
+          "uri150": "https://img.discogs.com/yBEFEfC9K4N0Bn63NUAt5M4tn9E=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974314-1507484797-6327.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/0pcf2EkvxkavkrqEdx47Jq0WXQE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974314-1507484798-1506.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/0pcf2EkvxkavkrqEdx47Jq0WXQE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974314-1507484798-1506.jpeg.jpg",
+          "uri150": "https://img.discogs.com/duE1YhWqKCu6lY5uIkSWiHZebU0=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974314-1507484798-1506.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/Fh694YXJLjhxV-ltO_seDjYQPrM=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974314-1507484797-2173.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/Fh694YXJLjhxV-ltO_seDjYQPrM=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974314-1507484797-2173.jpeg.jpg",
+          "uri150": "https://img.discogs.com/OkcFrDxkS0xvRfstFMV7R2brnaw=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974314-1507484797-2173.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/Fl7NcEGk0m32f3b0jkJVjEkYXRw=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974314-1507484797-5128.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 10974148,
+      "status": "Accepted",
+      "year": 1974,
+      "resource_url": "https://api.discogs.com/releases/10974148",
+      "uri": "https://www.discogs.com/Sonny-Rollins-On-Impulse/release/10974148",
+      "artists": [
+        {
+          "name": "Sonny Rollins",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 145264,
+          "resource_url": "https://api.discogs.com/artists/145264"
+        }
+      ],
+      "artists_sort": "Sonny Rollins",
+      "labels": [
+        {
+          "name": "ABC Impulse!",
+          "catno": "AS-91",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 202935,
+          "resource_url": "https://api.discogs.com/labels/202935"
+        },
+        {
+          "name": "Impulse!",
+          "catno": "A-91",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 26557,
+          "resource_url": "https://api.discogs.com/labels/26557"
+        }
+      ],
+      "series": [],
+      "companies": [
+        {
+          "name": "ABC-Paramount Records, Inc.",
+          "catno": "",
+          "entity_type": "10",
+          "entity_type_name": "Manufactured By",
+          "id": 332599,
+          "resource_url": "https://api.discogs.com/labels/332599"
+        },
+        {
+          "name": "Van Gelder Studio, Englewood Cliffs, New Jersey",
+          "catno": "",
+          "entity_type": "23",
+          "entity_type_name": "Recorded At",
+          "id": 274478,
+          "resource_url": "https://api.discogs.com/labels/274478"
+        },
+        {
+          "name": "Columbia Records Pressing Plant, Terre Haute",
+          "catno": "",
+          "entity_type": "17",
+          "entity_type_name": "Pressed By",
+          "id": 403953,
+          "resource_url": "https://api.discogs.com/labels/403953"
+        },
+        {
+          "name": "Leo Feist, Inc.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 285061,
+          "resource_url": "https://api.discogs.com/labels/285061"
+        },
+        {
+          "name": "Dorsey Bros. Music Inc.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 408978,
+          "resource_url": "https://api.discogs.com/labels/408978"
+        },
+        {
+          "name": "Folkway Music",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 699364,
+          "resource_url": "https://api.discogs.com/labels/699364"
+        },
+        {
+          "name": "Harms, Inc.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 298143,
+          "resource_url": "https://api.discogs.com/labels/298143"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "text": "Gatefold",
+          "descriptions": [
+            "LP",
+            "Album",
+            "Reissue",
+            "Stereo"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 47,
+        "want": 17,
+        "rating": {
+          "count": 4,
+          "average": 3.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "Thao8382",
+            "resource_url": "https://api.discogs.com/users/Thao8382"
+          },
+          {
+            "username": "cyclotronic",
+            "resource_url": "https://api.discogs.com/users/cyclotronic"
+          },
+          {
+            "username": "SJH",
+            "resource_url": "https://api.discogs.com/users/SJH"
+          },
+          {
+            "username": "sundinulf",
+            "resource_url": "https://api.discogs.com/users/sundinulf"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2017-10-08T10:15:03-07:00",
+      "date_changed": "2021-01-18T02:26:20-08:00",
+      "num_for_sale": 3,
+      "lowest_price": 25.0,
+      "master_id": 174516,
+      "master_url": "https://api.discogs.com/masters/174516",
+      "title": "On Impulse!",
+      "country": "US",
+      "released": "1974",
+      "notes": "Circa 1974-1979 reissue with green-to-purple ABC Impulse labels.\n\nImpulse Records, a product of ABC-Paramount Records, Inc.\nPrinted in USA\nRecorded 8 July, 1965 at Van Gelder Studio, Englewood Cliffs, New Jersey\n\nCat# variations on release:\n - spine Stereo A-91\n - frontcover & rear cover: A-91 + \"Stereo\" printed on cover\n - center label: AS-91 Stereo\n\nBranded ABC Impulse on labels but Impulse only on cover.",
+      "released_formatted": "1974",
+      "identifiers": [
+        {
+          "type": "Rights Society",
+          "value": "ASCAP",
+          "description": "A1, A2, B2, B3"
+        },
+        {
+          "type": "Rights Society",
+          "value": "BMI",
+          "description": "B1"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "T1 AS-91-A Ⓘ",
+          "description": "Runout A stamped / etched"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "T1 AS-91-B Ⓘ",
+          "description": "Runout B stamped / etched"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=xIu2DVruLDE",
+          "title": "On Green Dolphin Street",
+          "description": "Provided to YouTube by Universal Music Group\n\nOn Green Dolphin Street · Sonny Rollins\n\nOn Impulse!\n\n℗ A Verve Label Group Release; ℗ 1965 UMG Recordings, Inc.\n\nReleased on: 1965-01-01\n\nProducer: George Douglas\nProducer: Bob Thiele\nStudio  Personnel, ",
+          "duration": 428,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=8heCC-QP8mY",
+          "title": "Everything Happens To Me",
+          "description": "Provided to YouTube by Universal Music Group\n\nEverything Happens To Me · Sonny Rollins\n\nOn Impulse!\n\n℗ A Verve Label Group Release; ℗ 1965 UMG Recordings, Inc.\n\nReleased on: 1965-01-01\n\nProducer: George Douglas\nProducer: Bob Thiele\nStudio  Personnel,",
+          "duration": 676,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=pdJmYKXWkqw",
+          "title": "Hold 'Em Joe",
+          "description": "Provided to YouTube by Universal Music Group\n\nHold 'Em Joe · Sonny Rollins\n\nOn Impulse!\n\n℗ A Verve Label Group Release; ℗ 1965 UMG Recordings, Inc.\n\nReleased on: 1965-01-01\n\nProducer: George Douglas\nProducer: Bob Thiele\nStudio  Personnel, Recording  ",
+          "duration": 330,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=A8YymTAPj2k",
+          "title": "Blue Room",
+          "description": "Provided to YouTube by Universal Music Group\n\nBlue Room · Sonny Rollins\n\nOn Impulse!\n\n℗ A Verve Label Group Release; ℗ 1965 UMG Recordings, Inc.\n\nReleased on: 1965-01-01\n\nProducer: George Douglas\nProducer: Bob Thiele\nStudio  Personnel, Recording  Eng",
+          "duration": 224,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=Fu6EFWEGWtk",
+          "title": "Three Little Words",
+          "description": "Provided to YouTube by Universal Music Group\n\nThree Little Words · Sonny Rollins\n\nOn Impulse!\n\n℗ A Verve Label Group Release; ℗ 1965 UMG Recordings, Inc.\n\nReleased on: 1965-01-01\n\nProducer: Bob Thiele\nStudio  Personnel, Recording  Engineer: Rudy Van ",
+          "duration": 418,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz"
+      ],
+      "styles": [
+        "Post Bop"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/iwjWIZXipd-d0QjXOyUatKLwcvI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1507483758-3602.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/iwjWIZXipd-d0QjXOyUatKLwcvI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1507483758-3602.jpeg.jpg",
+          "uri150": "https://img.discogs.com/9yPWHTCbq10t7fB_D_7tMJbIMCA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974148-1507483758-3602.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/rA0b4_cYNcLYZ2nyCCPK4liKMs4=/fit-in/600x604/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1600116740-4640.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/rA0b4_cYNcLYZ2nyCCPK4liKMs4=/fit-in/600x604/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1600116740-4640.jpeg.jpg",
+          "uri150": "https://img.discogs.com/gV6YculaL-3zmf2CKZFZqLt43Q8=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974148-1600116740-4640.jpeg.jpg",
+          "width": 600,
+          "height": 604
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/vHG_n6WHhOT5CEyIG70NvC5EKLc=/fit-in/600x601/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1600116740-2592.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/vHG_n6WHhOT5CEyIG70NvC5EKLc=/fit-in/600x601/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1600116740-2592.jpeg.jpg",
+          "uri150": "https://img.discogs.com/pFrIVAlq03kskrv5mv5cWxMWzRY=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974148-1600116740-2592.jpeg.jpg",
+          "width": 600,
+          "height": 601
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/tJQ-zB4cQ9Cyl6oRjmpCsxjlJ2M=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1507483759-2072.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/tJQ-zB4cQ9Cyl6oRjmpCsxjlJ2M=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1507483759-2072.jpeg.jpg",
+          "uri150": "https://img.discogs.com/IdQJ_vwHufc0xY0hsMFybaFgelg=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974148-1507483759-2072.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/6Gsp0-KYCihycWpW5QGF7j7EhdU=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1507483757-8756.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/6Gsp0-KYCihycWpW5QGF7j7EhdU=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1507483757-8756.jpeg.jpg",
+          "uri150": "https://img.discogs.com/D48tvVg1-D4-3_SV2pe8-K8L-MY=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974148-1507483757-8756.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/wgbLUZRGZf2ilUdvU-mHmJ04On4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1507483757-9657.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/wgbLUZRGZf2ilUdvU-mHmJ04On4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10974148-1507483757-9657.jpeg.jpg",
+          "uri150": "https://img.discogs.com/W33dCnFaB_KO-a57DE6Ob_wuQ5k=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974148-1507483757-9657.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/9yPWHTCbq10t7fB_D_7tMJbIMCA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10974148-1507483758-3602.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 10920534,
+      "status": "Accepted",
+      "year": 0,
+      "resource_url": "https://api.discogs.com/releases/10920534",
+      "uri": "https://www.discogs.com/Chet-Baker-Chet/release/10920534",
+      "artists": [
+        {
+          "name": "Chet Baker",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 31617,
+          "resource_url": "https://api.discogs.com/artists/31617"
+        }
+      ],
+      "artists_sort": "Chet Baker",
+      "labels": [
+        {
+          "name": "Original Jazz Classics",
+          "catno": "OJC-087",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 34231,
+          "resource_url": "https://api.discogs.com/labels/34231"
+        },
+        {
+          "name": "Riverside Records",
+          "catno": "RLP-1135",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 34094,
+          "resource_url": "https://api.discogs.com/labels/34094"
+        }
+      ],
+      "series": [
+        {
+          "name": "Riverside Contemporary Series",
+          "catno": "",
+          "entity_type": "2",
+          "entity_type_name": "Series",
+          "id": 323814,
+          "resource_url": "https://api.discogs.com/labels/323814"
+        }
+      ],
+      "companies": [
+        {
+          "name": "Fantasy, Inc.",
+          "catno": "",
+          "entity_type": "9",
+          "entity_type_name": "Distributed By",
+          "id": 268137,
+          "resource_url": "https://api.discogs.com/labels/268137"
+        },
+        {
+          "name": "Fantasy, Inc.",
+          "catno": "",
+          "entity_type": "14",
+          "entity_type_name": "Copyright (c)",
+          "id": 268137,
+          "resource_url": "https://api.discogs.com/labels/268137"
+        },
+        {
+          "name": "Reeves Sound Studios",
+          "catno": "",
+          "entity_type": "23",
+          "entity_type_name": "Recorded At",
+          "id": 279247,
+          "resource_url": "https://api.discogs.com/labels/279247"
+        },
+        {
+          "name": "Quality Record Pressings",
+          "catno": "",
+          "entity_type": "17",
+          "entity_type_name": "Pressed By",
+          "id": 300589,
+          "resource_url": "https://api.discogs.com/labels/300589"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "text": "150g",
+          "descriptions": [
+            "LP",
+            "Album",
+            "Reissue",
+            "Stereo"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 159,
+        "want": 83,
+        "rating": {
+          "count": 12,
+          "average": 4.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2017-09-27T12:45:32-07:00",
+      "date_changed": "2021-01-19T10:04:40-08:00",
+      "num_for_sale": 1,
+      "lowest_price": 26.0,
+      "master_id": 60238,
+      "master_url": "https://api.discogs.com/masters/60238",
+      "title": "Chet",
+      "country": "US",
+      "notes": "Recorded in New York City on December 30, 1958 and January 19, 1959.\n\nSleeve and record look nearly identical to [r2170052]. Record label has different etching, packaging is plain shrinkwrap with no stickers/print. record is 150 gram, pressing is by [l300589], and barcode is on back.\n\nGlitch/pressing defect on \"How High The Moon\"",
+      "identifiers": [
+        {
+          "type": "Matrix / Runout",
+          "value": "OJC-087 A-1 RE5",
+          "description": "Side A"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "OJC-087 B-1 RE5",
+          "description": "Side B"
+        },
+        {
+          "type": "Rights Society",
+          "value": "ASCAP"
+        },
+        {
+          "type": "Barcode",
+          "value": "0 25218 60871 8",
+          "description": "Text"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=zdDhinO58ss",
+          "title": "Chet Baker - Alone Together",
+          "description": "Chet Baker - Alone Together",
+          "duration": 413,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=p0zIbYCu7Yc",
+          "title": "Alone Together",
+          "description": "Provided to YouTube by Universal Music Group\n\nAlone Together · Chet Baker\n\nChet\n\n℗ 2007 Fantasy, Inc.\n\nReleased on: 2007-01-01\n\nProducer: Orrin Keepnews\nAuthor: Howard Dietz\nComposer: Arthur Schwartz\n\nAuto-generated by YouTube.",
+          "duration": 414,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=m-w0WIUhgcY",
+          "title": "Chet Baker - How High The Moon",
+          "description": "Chesney Henry Chet Baker, Jr. (December 23, 1929 -- May 13, 1988) was an American jazz trumpeter, flugelhornist and singer.\n\nChet Baker - Chet (1959)\n\nChet Baker - trumpet\nHerbie Mann - flute (tracks 1, 4, 9 & 10)\nPepper Adams - baritone saxophone (trac",
+          "duration": 215,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=9UhTG_k0v7U",
+          "title": "Chet Baker - Early Morning Mood",
+          "description": "Chesney Henry Chet Baker, Jr. (December 23, 1929 -- May 13, 1988) was an American jazz trumpeter, flugelhornist and singer.\n\nChet Baker - Chet (1959)\n\nChet Baker - trumpet\nHerbie Mann - flute (tracks 1, 4, 9 & 10)\nPepper Adams - baritone saxophone (trac",
+          "duration": 543,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=mXr1W-guLhM",
+          "title": "Chet Baker It Never Entered My Mind",
+          "description": " ",
+          "duration": 283,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=EzRxEzKZaTc",
+          "title": "Chet Baker - 'tis Autumn",
+          "description": "Chesney Henry Chet Baker, Jr. (December 23, 1929 -- May 13, 1988) was an American jazz trumpeter, flugelhornist and singer.\n\nChet Baker - Chet (1959)\n\nChet Baker - trumpet\nHerbie Mann - flute (tracks 1, 4, 9 & 10)\nPepper Adams - baritone saxophone (trac",
+          "duration": 316,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=PDrPqw8EKwE",
+          "title": "Chet Baker - If You Could See Me Now",
+          "description": "Chesney Henry Chet Baker, Jr. (December 23, 1929 -- May 13, 1988) was an American jazz trumpeter, flugelhornist and singer.\n\nChet Baker - Chet (1959)\n\nChet Baker - trumpet\nHerbie Mann - flute (tracks 1, 4, 9 & 10)\nPepper Adams - baritone saxophone (trac",
+          "duration": 315,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=-O8yg8elY_k",
+          "title": "Chet Baker - September Song",
+          "description": "Chesney Henry Chet Baker, Jr. (December 23, 1929 -- May 13, 1988) was an American jazz trumpeter, flugelhornist and singer.\n\nChet Baker - Chet (1959)\n\nChet Baker - trumpet\nHerbie Mann - flute (tracks 1, 4, 9 & 10)\nPepper Adams - baritone saxophone (trac",
+          "duration": 183,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz"
+      ],
+      "styles": [
+        "Hard Bop",
+        "Cool Jazz"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/vuLxK7x-WBgaXiXdK1Mrs4Z9G6s=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10920534-1506543066-1235.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/vuLxK7x-WBgaXiXdK1Mrs4Z9G6s=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10920534-1506543066-1235.jpeg.jpg",
+          "uri150": "https://img.discogs.com/eFpozgxNdMTfmpl0sOgT8T9LQCs=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10920534-1506543066-1235.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/EzmNXLaeaBh533fGviivWtIJmnw=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10920534-1506543065-9688.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/EzmNXLaeaBh533fGviivWtIJmnw=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10920534-1506543065-9688.jpeg.jpg",
+          "uri150": "https://img.discogs.com/kRkJOIcUNhP6DnolIilN1w2ZIUU=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10920534-1506543065-9688.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/cMVf1ovOslUWHy2_izxJtDf3diE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10920534-1506543066-3748.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/cMVf1ovOslUWHy2_izxJtDf3diE=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10920534-1506543066-3748.jpeg.jpg",
+          "uri150": "https://img.discogs.com/126xSnLI2ebtWOC1xzau326LdQk=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10920534-1506543066-3748.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/kqqiEPGqTKQgR0p9Hny8GS2mGEo=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10920534-1506543063-9088.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/kqqiEPGqTKQgR0p9Hny8GS2mGEo=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10920534-1506543063-9088.jpeg.jpg",
+          "uri150": "https://img.discogs.com/a3mNAh8IK9Wxzjm79Oa-qRooZVU=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10920534-1506543063-9088.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/eFpozgxNdMTfmpl0sOgT8T9LQCs=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10920534-1506543066-1235.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 10542545,
+      "status": "Accepted",
+      "year": 1987,
+      "resource_url": "https://api.discogs.com/releases/10542545",
+      "uri": "https://www.discogs.com/Miles-Davis-In-A-Silent-Way/release/10542545",
+      "artists": [
+        {
+          "name": "Miles Davis",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 23755,
+          "resource_url": "https://api.discogs.com/artists/23755"
+        }
+      ],
+      "artists_sort": "Miles Davis",
+      "labels": [
+        {
+          "name": "Columbia",
+          "catno": "CJ 40580",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 1866,
+          "resource_url": "https://api.discogs.com/labels/1866"
+        }
+      ],
+      "series": [
+        {
+          "name": "Columbia Jazz Masterpieces",
+          "catno": "",
+          "entity_type": "2",
+          "entity_type_name": "Series",
+          "id": 77689,
+          "resource_url": "https://api.discogs.com/labels/77689"
+        }
+      ],
+      "companies": [
+        {
+          "name": "Columbia Records",
+          "catno": "",
+          "entity_type": "10",
+          "entity_type_name": "Manufactured By",
+          "id": 93330,
+          "resource_url": "https://api.discogs.com/labels/93330"
+        },
+        {
+          "name": "Columbia Records Pressing Plant, Carrollton, GA",
+          "catno": "",
+          "entity_type": "17",
+          "entity_type_name": "Pressed By",
+          "id": 442751,
+          "resource_url": "https://api.discogs.com/labels/442751"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "descriptions": [
+            "LP",
+            "Album",
+            "Reissue",
+            "Remastered"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 219,
+        "want": 265,
+        "rating": {
+          "count": 11,
+          "average": 4.64
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "truedream",
+            "resource_url": "https://api.discogs.com/users/truedream"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2017-07-08T16:58:24-07:00",
+      "date_changed": "2017-07-09T02:22:34-07:00",
+      "num_for_sale": 9,
+      "lowest_price": 15.85,
+      "master_id": 8408,
+      "master_url": "https://api.discogs.com/masters/8408",
+      "title": "In A Silent Way",
+      "country": "US",
+      "released": "1987",
+      "notes": "Recorded 2/18/69 in New York City.\nOriginally released in 1969.\n\nThis pressing has XSM 150308 and XSM 150309 on the labels, unlike [r761402].",
+      "released_formatted": "1987",
+      "identifiers": [
+        {
+          "type": "Matrix / Runout",
+          "value": "XSM 150308",
+          "description": "Side A label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "XSM 150309",
+          "description": "Side B label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "<J-T> XSM 150308 G2B G",
+          "description": "Side A runout"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "G1 XSM 150309 G1A CBS GA chet",
+          "description": "Side B runout"
+        },
+        {
+          "type": "Barcode",
+          "value": "07464405801"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=1yeEZ-bx63c",
+          "title": "Shhh / Peaceful",
+          "description": "Provided to YouTube by Columbia/Legacy\n\nShhh / Peaceful · Miles Davis\n\nIn A Silent Way\n\n℗ Originally released 1969. All rights reserved by Columbia Records, a division of Sony Music Entertainment\n\nReleased on: 1969-07-30\n\nSoloist, Soprano  Saxophone: W",
+          "duration": 1095,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=8bdBONxS-Es",
+          "title": "In a Silent Way",
+          "description": "Provided to YouTube by Columbia/Legacy\n\nIn a Silent Way · Miles Davis\n\nIn A Silent Way\n\n℗ Originally released 1969. All rights reserved by Columbia Records, a division of Sony Music Entertainment\n\nReleased on: 1969-07-30\n\nComposer, Lyricist: J. Zawinul",
+          "duration": 1193,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz"
+      ],
+      "styles": [
+        "Post Bop",
+        "Fusion",
+        "Modal"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/GHgbWJxTB2nRMClwMLlPNgPqOK4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10542545-1499559583-5176.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/GHgbWJxTB2nRMClwMLlPNgPqOK4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10542545-1499559583-5176.jpeg.jpg",
+          "uri150": "https://img.discogs.com/oNn2xphS8t-V9dEX2W_N7CTh4f8=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10542545-1499559583-5176.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/EgjE4zNMpjEl7wd2VripIuwIzeo=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10542545-1499559346-8133.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/EgjE4zNMpjEl7wd2VripIuwIzeo=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10542545-1499559346-8133.jpeg.jpg",
+          "uri150": "https://img.discogs.com/RqzSv-qbnAraj72IDncoIn8qqis=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10542545-1499559346-8133.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/v3vHOglN-xQ6t7ZMQglB-48U2xk=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10542545-1499559347-8560.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/v3vHOglN-xQ6t7ZMQglB-48U2xk=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10542545-1499559347-8560.jpeg.jpg",
+          "uri150": "https://img.discogs.com/cvsUMwpa2t3BGqJLp6aB4BKXQU8=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10542545-1499559347-8560.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/cX0Q-hWOYO8j9htkKjr98N9wWAk=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10542545-1499559346-5847.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/cX0Q-hWOYO8j9htkKjr98N9wWAk=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10542545-1499559346-5847.jpeg.jpg",
+          "uri150": "https://img.discogs.com/ozV4OuPn9xF5RuvXpzE6W3geyUU=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10542545-1499559346-5847.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/oNn2xphS8t-V9dEX2W_N7CTh4f8=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10542545-1499559583-5176.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 10431819,
+      "status": "Accepted",
+      "year": 1965,
+      "resource_url": "https://api.discogs.com/releases/10431819",
+      "uri": "https://www.discogs.com/Astrud-Gilberto-The-Shadow-Of-Your-Smile/release/10431819",
+      "artists": [
+        {
+          "name": "Astrud Gilberto",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 8699,
+          "resource_url": "https://api.discogs.com/artists/8699"
+        }
+      ],
+      "artists_sort": "Astrud Gilberto",
+      "labels": [
+        {
+          "name": "Verve Records",
+          "catno": "V6-8629",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 5041,
+          "resource_url": "https://api.discogs.com/labels/5041"
+        },
+        {
+          "name": "Verve Records",
+          "catno": "V6/8629",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 5041,
+          "resource_url": "https://api.discogs.com/labels/5041"
+        }
+      ],
+      "series": [],
+      "companies": [
+        {
+          "name": "Metro-Goldwyn-Mayer, Inc.",
+          "catno": "",
+          "entity_type": "4",
+          "entity_type_name": "Record Company",
+          "id": 247112,
+          "resource_url": "https://api.discogs.com/labels/247112"
+        },
+        {
+          "name": "Metro-Goldwyn-Mayer, Inc.",
+          "catno": "",
+          "entity_type": "14",
+          "entity_type_name": "Copyright (c)",
+          "id": 247112,
+          "resource_url": "https://api.discogs.com/labels/247112"
+        },
+        {
+          "name": "RCA Recording Studios",
+          "catno": "",
+          "entity_type": "23",
+          "entity_type_name": "Recorded At",
+          "id": 277531,
+          "resource_url": "https://api.discogs.com/labels/277531"
+        },
+        {
+          "name": "A&R Studios",
+          "catno": "",
+          "entity_type": "23",
+          "entity_type_name": "Recorded At",
+          "id": 264419,
+          "resource_url": "https://api.discogs.com/labels/264419"
+        },
+        {
+          "name": "Van Gelder Studio, Englewood Cliffs, New Jersey",
+          "catno": "",
+          "entity_type": "30",
+          "entity_type_name": "Lacquer Cut At",
+          "id": 274478,
+          "resource_url": "https://api.discogs.com/labels/274478"
+        },
+        {
+          "name": "Miller Music Corp.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 264974,
+          "resource_url": "https://api.discogs.com/labels/264974"
+        },
+        {
+          "name": "Butterfield Music",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 970961,
+          "resource_url": "https://api.discogs.com/labels/970961"
+        },
+        {
+          "name": "Guanabara Music",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 562140,
+          "resource_url": "https://api.discogs.com/labels/562140"
+        },
+        {
+          "name": "Ross Jungnickel, Inc.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 278154,
+          "resource_url": "https://api.discogs.com/labels/278154"
+        },
+        {
+          "name": "Alamac Music, Inc",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 1527076,
+          "resource_url": "https://api.discogs.com/labels/1527076"
+        },
+        {
+          "name": "Carioca Music",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 536997,
+          "resource_url": "https://api.discogs.com/labels/536997"
+        },
+        {
+          "name": "Musical Comedy Productions, Inc.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 626285,
+          "resource_url": "https://api.discogs.com/labels/626285"
+        },
+        {
+          "name": "Barton Music",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 314454,
+          "resource_url": "https://api.discogs.com/labels/314454"
+        },
+        {
+          "name": "Hanover Music",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 361064,
+          "resource_url": "https://api.discogs.com/labels/361064"
+        },
+        {
+          "name": "Peer International Corp.",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 236233,
+          "resource_url": "https://api.discogs.com/labels/236233"
+        },
+        {
+          "name": "Edward B. Marks Music",
+          "catno": "",
+          "entity_type": "21",
+          "entity_type_name": "Published By",
+          "id": 384456,
+          "resource_url": "https://api.discogs.com/labels/384456"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "descriptions": [
+            "LP",
+            "Album",
+            "Stereo"
+          ]
+        }
+      ],
+      "data_quality": "Correct",
+      "community": {
+        "have": 168,
+        "want": 61,
+        "rating": {
+          "count": 9,
+          "average": 4.33
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "les-plaisirs-demodes",
+            "resource_url": "https://api.discogs.com/users/les-plaisirs-demodes"
+          },
+          {
+            "username": "JazzcornerND",
+            "resource_url": "https://api.discogs.com/users/JazzcornerND"
+          },
+          {
+            "username": "Klass.Animal",
+            "resource_url": "https://api.discogs.com/users/Klass.Animal"
+          },
+          {
+            "username": "DarreLP",
+            "resource_url": "https://api.discogs.com/users/DarreLP"
+          },
+          {
+            "username": "RadioRamses",
+            "resource_url": "https://api.discogs.com/users/RadioRamses"
+          },
+          {
+            "username": "vinyljunkie66",
+            "resource_url": "https://api.discogs.com/users/vinyljunkie66"
+          }
+        ],
+        "data_quality": "Correct",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2017-06-12T13:17:38-07:00",
+      "date_changed": "2020-05-08T15:37:09-07:00",
+      "num_for_sale": 7,
+      "lowest_price": 12.99,
+      "master_id": 107175,
+      "master_url": "https://api.discogs.com/masters/107175",
+      "title": "The Shadow Of Your Smile",
+      "country": "US",
+      "released": "1965",
+      "notes": "Recorded in New York City. \nRCA Studios, Feb. 4, 1965. \nA&R Studios, Oct. 21, 1964; May 25, June 3 & 4, 1965. \n \nRunouts are etched except for the VAN GELDER stamp. \n \nPublished by: \nA1: Miller Music Corp. ASCAP \nA2: Butterfield Music / Guanabara Music BMI \nA3: Ross Jungnickel, Inc.  ASCAP \nA4: Almanac Music, Inc. ASCAP \nA5, B1: Carioca Music BMI \nA6: Carioca Music / Butterfield Music - BMI \nB2: Musical Comedy Prod., Inc. BMI --> Musical Comedy Productions, Inc. \nB3: Barton Music / Hanover Music ASCAP \nB4: Peer Int'l Corp. BMI --> Peer International Corp. \nB5: E.B. Marks Music BMI --> Edward B. Marks Music \n ",
+      "released_formatted": "1965",
+      "identifiers": [
+        {
+          "type": "Matrix / Runout",
+          "value": "65 VGS 548",
+          "description": "Label A, in parentheses"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "65 VGS 549",
+          "description": "Label B, in parentheses"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "V6-8629 65VGS-548 S-1 VAN GELDER",
+          "description": "Side A"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "V6-8629 65VGS-549 S-2 VAN GELDER",
+          "description": "Side B"
+        },
+        {
+          "type": "Rights Society",
+          "value": "ASCAP"
+        },
+        {
+          "type": "Rights Society",
+          "value": "BMI"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=Ag7NzCTA5n8",
+          "title": "The Shadow Of Your Smile",
+          "description": "Provided to YouTube by Universal Music Group\n\nThe Shadow Of Your Smile · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nAssociated  Performer, Trombone: Kai Winding\n",
+          "duration": 152,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=dYnBFvEf708",
+          "title": "[Take Me To] Aruanda",
+          "description": "Provided to YouTube by Universal Music Group\n\n[Take Me To] Aruanda · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nProducer: Creed Taylor\nComposer  Lyricist: Norman",
+          "duration": 151,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=0CPnB9RvxYs",
+          "title": "Manha De Carnaval",
+          "description": "Provided to YouTube by Universal Music Group\n\nManha De Carnaval · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nProducer: Creed Taylor\nAuthor: Antonio Maria\nCompose",
+          "duration": 118,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=_L7KrVIZSMo",
+          "title": "Fly Me To The Moon",
+          "description": "Provided to YouTube by Universal Music Group\n\nFly Me To The Moon · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nConductor, Associated  Performer, Recording  Arranger: Claus Ogerman\nProducer: Creed Tay",
+          "duration": 143,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=Hnt0i3aItKE",
+          "title": "Gentle Rain",
+          "description": "Provided to YouTube by Universal Music Group\n\nGentle Rain · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nProducer: Creed Taylor\nAssociated  Performer, Trombone: Ka",
+          "duration": 147,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=l65ZnEBqqME",
+          "title": "Non-Stop To Brazil",
+          "description": "Provided to YouTube by Universal Music Group\n\nNon-Stop To Brazil · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nProducer: Creed Taylor\nComposer  Lyricist: Luiz Bon",
+          "duration": 148,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=KqWo14973Dk",
+          "title": "O Ganso",
+          "description": "Provided to YouTube by Universal Music Group\n\nO Ganso · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nProducer: Creed Taylor\nComposer  Lyricist: Luiz Bonfa\n\nAuto-ge",
+          "duration": 130,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=yDfe1sYH10c",
+          "title": "Who can I turn to - Astrud Gilberto",
+          "description": "",
+          "duration": 127,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=6XgZfJkZy8Q",
+          "title": "Day By Day",
+          "description": "Provided to YouTube by Universal Music Group\n\nDay By Day · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nProducer: Creed Taylor\nComposer  Lyricist: Paul Weston\nComp",
+          "duration": 130,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=UgBnNvUJ2DE",
+          "title": "Tristeza",
+          "description": "Provided to YouTube by Universal Music Group\n\nTristeza · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nProducer: Creed Taylor\nComposer  Lyricist: Luiz Bonfa\nCompose",
+          "duration": 143,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=rp-9-IrGfbQ",
+          "title": "Funny World",
+          "description": "Provided to YouTube by Universal Music Group\n\nFunny World · Astrud Gilberto\n\nThe Shadow Of Your Smile\n\n℗ 1965 The Verve Music Group, a Division of UMG Recordings, Inc.\n\nReleased on: 1965-05-22\n\nProducer: Creed Taylor\nComposer  Lyricist: Ennio Morricone",
+          "duration": 145,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz",
+        "Pop",
+        "Stage & Screen"
+      ],
+      "styles": [
+        "Bossa Nova",
+        "Latin Jazz",
+        "Vocal"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/QApl6661CYidBxkVJOWi4acK_P0=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431819-1497298669-8357.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/QApl6661CYidBxkVJOWi4acK_P0=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431819-1497298669-8357.jpeg.jpg",
+          "uri150": "https://img.discogs.com/3e3y4dpeZbxyvDKH2nI8xSPiI28=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431819-1497298669-8357.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/ahwt0Wg5eW-hguexSnaF84eDgRc=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431819-1497298669-9986.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/ahwt0Wg5eW-hguexSnaF84eDgRc=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431819-1497298669-9986.jpeg.jpg",
+          "uri150": "https://img.discogs.com/gx_hoVKiizPgokSljx__RXeCIpc=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431819-1497298669-9986.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/oKXaYfVAtE9gaTyHO6BMc9xxvxI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431819-1497298668-9102.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/oKXaYfVAtE9gaTyHO6BMc9xxvxI=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431819-1497298668-9102.jpeg.jpg",
+          "uri150": "https://img.discogs.com/2xbanvBC-dxVsxUuKtW3aVqhzag=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431819-1497298668-9102.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/RSug5ysBpEp4IVOSdgrmrhEfAIg=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431819-1497298668-7352.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/RSug5ysBpEp4IVOSdgrmrhEfAIg=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431819-1497298668-7352.jpeg.jpg",
+          "uri150": "https://img.discogs.com/8WnyOCIlktOPkBRI8UrXVt8TRLA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431819-1497298668-7352.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/3e3y4dpeZbxyvDKH2nI8xSPiI28=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431819-1497298669-8357.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 10431713,
+      "status": "Accepted",
+      "year": 1972,
+      "resource_url": "https://api.discogs.com/releases/10431713",
+      "uri": "https://www.discogs.com/Bloodstone-Natural-High/release/10431713",
+      "artists": [
+        {
+          "name": "Bloodstone",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 135947,
+          "resource_url": "https://api.discogs.com/artists/135947"
+        }
+      ],
+      "artists_sort": "Bloodstone",
+      "labels": [
+        {
+          "name": "London Records",
+          "catno": "XPS 620",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 1060,
+          "resource_url": "https://api.discogs.com/labels/1060"
+        }
+      ],
+      "series": [],
+      "companies": [
+        {
+          "name": "Crystal Jukebox Inc.",
+          "catno": "",
+          "entity_type": "13",
+          "entity_type_name": "Phonographic Copyright (p)",
+          "id": 279230,
+          "resource_url": "https://api.discogs.com/labels/279230"
+        },
+        {
+          "name": "London Records",
+          "catno": "",
+          "entity_type": "14",
+          "entity_type_name": "Copyright (c)",
+          "id": 1060,
+          "resource_url": "https://api.discogs.com/labels/1060"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "descriptions": [
+            "LP",
+            "Album"
+          ]
+        }
+      ],
+      "data_quality": "Needs Minor Changes",
+      "community": {
+        "have": 160,
+        "want": 116,
+        "rating": {
+          "count": 11,
+          "average": 4.55
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "gippy",
+            "resource_url": "https://api.discogs.com/users/gippy"
+          }
+        ],
+        "data_quality": "Needs Minor Changes",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2017-06-12T12:50:24-07:00",
+      "date_changed": "2017-06-17T14:40:30-07:00",
+      "num_for_sale": 16,
+      "lowest_price": 1.09,
+      "master_id": 416524,
+      "master_url": "https://api.discogs.com/masters/416524",
+      "title": "Natural High",
+      "country": "US",
+      "released": "1972",
+      "notes": "Produced by Mike Vernon for the Crystal Jukebox. Strings and Horns arranged and conducted by Pip Williams\nRecording Engineer: Tony Reale. Recorded at The Village Recorder, West Los Angeles, California, July 1972.\nBloodstone are: Charles Love - Vocal, guitar; Willis Draffen Jr. - Vocal, guitar; Roger Durham - Vocal, percussion; Harry Williams - Vocal, percussion; Charles McCormick - Vocal, bass guitar; Melvin Webb - Drums, conga, timbales\nWith additional help from:\nEddie Summers - Vocals, drums, vibes, piano, conga on \"That's The Way We Make Our Music\"\nHense Powell - Piano, electric piano, organ; Gordon Dewitte - Organ; Mike Vernon - Glockenspiel, castanets, tubular bells; Gene Cipriano - Cor Anglais; Arthur N. Maebe - French horn; Richard L. Mackey - French horn; Jacqueline Lustgarten - Cello; Raymond L. Kelley - Cello; Nathan Kaproff - Viola; Dan Neufeld - Viola; Violins: Carla Spencer, Erno Neufeld (leader), Paul C. Shure, Samuel Boghossian\n\nOur special thanks go to Carol Kathi, Dick, Harry Wilkins and all the electronic boffins at Village Recorder, with an extra special word for a great engineer; and let us not forget two fine roadies, John and Mick (who also \"plays\" wind chimes). The Crystal Jukebox gives special thanks to: Lloyd (again), Lord H. and Friends, and all the good people of England.\n\nAlbum design: Pacific Eye & Ear    Photography: Art Enriquez\n©1972 Crystal Jukebox Inc.\n©1972 London Records, Inc.",
+      "released_formatted": "1972",
+      "identifiers": [
+        {
+          "type": "Label Code",
+          "value": "XZAL 11697 BW",
+          "description": "Side 1"
+        },
+        {
+          "type": "Label Code",
+          "value": "XZAL 11698 BW",
+          "description": "Side 2"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "XZAL 11697-5-W Bill Sound sf",
+          "description": "Side 1 (Etched)"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "XZAL 11697-2-W Bill Sound sf",
+          "description": "Side 2 (Etched)"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=Sdz3BoFKjcw",
+          "title": "Bloodstone- You Know We've Learned",
+          "description": "",
+          "duration": 250,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=il-J3EDu374",
+          "title": "Bloodstone- Who Has The Last Laugh Now",
+          "description": "",
+          "duration": 340,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=3Datt0Y4xow",
+          "title": "Bloodstone- Natural High",
+          "description": "",
+          "duration": 293,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=X1hrEi2NG-0",
+          "title": "Bloodstone- Never Let You Go",
+          "description": "",
+          "duration": 327,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=zEDHDATA1Hk",
+          "title": "Bloodstone- Little Green Apples",
+          "description": "",
+          "duration": 563,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=zoNmEBa9WbI",
+          "title": "bloodstone never let you go",
+          "description": "",
+          "duration": 353,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=VEea8u5C8tg",
+          "title": "bloodstone natural high",
+          "description": "",
+          "duration": 294,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=gKY7FAVPeKI",
+          "title": "bloodstone you know we' ve learned",
+          "description": "",
+          "duration": 254,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=vJN0qCNlUbI",
+          "title": "bloodstone i need your love",
+          "description": "",
+          "duration": 70,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=QEvl1b4nC2E",
+          "title": "bloodstone how has the last laugh now",
+          "description": "",
+          "duration": 300,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=5nxPpGMa984",
+          "title": "bloodstone peter' s jones",
+          "description": "",
+          "duration": 268,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=zTqZCliA_Jk",
+          "title": "bloodstone ran it in the ground",
+          "description": "",
+          "duration": 277,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=KhGfE9EWdvQ",
+          "title": "bloodstone tell it to my face",
+          "description": "",
+          "duration": 197,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=fcwDAfH2tkg",
+          "title": "bloodstone that' s the way we make our music",
+          "description": "",
+          "duration": 199,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Funk / Soul"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/hSvnVsi4sNKDH4_I9et8wF_hLfU=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431713-1497297043-3466.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/hSvnVsi4sNKDH4_I9et8wF_hLfU=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431713-1497297043-3466.jpeg.jpg",
+          "uri150": "https://img.discogs.com/15YtyaHFufVrogu2k1ehLahRyPY=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431713-1497297043-3466.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/opgrltaEQUKI-6Qu8Uy7asztmf4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431713-1497297043-3225.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/opgrltaEQUKI-6Qu8Uy7asztmf4=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431713-1497297043-3225.jpeg.jpg",
+          "uri150": "https://img.discogs.com/e4mVaw5y_jqrdcV7PGCn4INjC3s=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431713-1497297043-3225.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/fxyrhzeARWbTr0rIgoFav4yidmc=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431713-1497297042-6836.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/fxyrhzeARWbTr0rIgoFav4yidmc=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431713-1497297042-6836.jpeg.jpg",
+          "uri150": "https://img.discogs.com/CjJSrzKZT_VRoZ-vvAFwX_7H6RQ=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431713-1497297042-6836.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/FM6ToivV01zbAO7aLc8QSJGTrYU=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431713-1497297043-1657.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/FM6ToivV01zbAO7aLc8QSJGTrYU=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-10431713-1497297043-1657.jpeg.jpg",
+          "uri150": "https://img.discogs.com/MZO5Vy3GhUqNRKo1dt-AKwE_86I=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431713-1497297043-1657.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/15YtyaHFufVrogu2k1ehLahRyPY=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-10431713-1497297043-3466.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 6732399,
+      "status": "Accepted",
+      "year": 2015,
+      "resource_url": "https://api.discogs.com/releases/6732399",
+      "uri": "https://www.discogs.com/Little-People-Csay-Csay/release/6732399",
+      "artists": [
+        {
+          "name": "Little People",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 97365,
+          "resource_url": "https://api.discogs.com/artists/97365"
+        }
+      ],
+      "artists_sort": "Little People",
+      "labels": [
+        {
+          "name": "Not On Label",
+          "catno": "none",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 1818,
+          "resource_url": "https://api.discogs.com/labels/1818"
+        }
+      ],
+      "series": [],
+      "companies": [],
+      "formats": [
+        {
+          "name": "File",
+          "qty": "1",
+          "text": "320kbps ",
+          "descriptions": [
+            "MP3",
+            "EP"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 7,
+        "want": 5,
+        "rating": {
+          "count": 3,
+          "average": 4.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 0,
+      "date_added": "2015-03-04T15:03:03-08:00",
+      "date_changed": "2015-03-04T15:08:13-08:00",
+      "num_for_sale": 0,
+      "lowest_price": null,
+      "title": "Csay Csay",
+      "released": "2015-03-03",
+      "released_formatted": "03 Mar 2015",
+      "identifiers": [],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=SH2w1nXNbrM",
+          "title": "Little People - Enola",
+          "description": "Couldn't find it on Youtube so here it is: \nFrom the EP Csay Csay. No copyright infringement intended, I just would like to share a song from a producer that has been missing from the scene for too long. Get the EP at name your price from bandcamp: http",
+          "duration": 274,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Electronic",
+        "Hip Hop"
+      ],
+      "styles": [
+        "Instrumental",
+        "Downtempo"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/E_nsufLSwiUsn-QLQj94vdkJLuM=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6732399-1425510215-8589.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/E_nsufLSwiUsn-QLQj94vdkJLuM=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6732399-1425510215-8589.jpeg.jpg",
+          "uri150": "https://img.discogs.com/nYRMJIbQXe67TCumJwCdKhtpwHo=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6732399-1425510215-8589.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/nYRMJIbQXe67TCumJwCdKhtpwHo=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6732399-1425510215-8589.jpeg.jpg"
+    },
+    {
+      "id": 6680312,
+      "status": "Accepted",
+      "year": 2013,
+      "resource_url": "https://api.discogs.com/releases/6680312",
+      "uri": "https://www.discogs.com/Eldridge-Gravy-The-Court-Supreme-Gravys-In-The-House/release/6680312",
+      "artists": [
+        {
+          "name": "Eldridge Gravy & The Court Supreme",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 2773993,
+          "resource_url": "https://api.discogs.com/artists/2773993"
+        }
+      ],
+      "artists_sort": "Eldridge Gravy & The Court Supreme",
+      "labels": [
+        {
+          "name": "Avast! Recording Co.",
+          "catno": "none",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 276755,
+          "resource_url": "https://api.discogs.com/labels/276755"
+        }
+      ],
+      "series": [],
+      "companies": [
+        {
+          "name": "Aleph Studios",
+          "catno": "",
+          "entity_type": "4",
+          "entity_type_name": "Record Company",
+          "id": 272253,
+          "resource_url": "https://api.discogs.com/labels/272253"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "text": "Red",
+          "descriptions": [
+            "LP",
+            "Album"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 15,
+        "want": 4,
+        "rating": {
+          "count": 1,
+          "average": 2.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "DiscogsUpdateBot",
+            "resource_url": "https://api.discogs.com/users/DiscogsUpdateBot"
+          },
+          {
+            "username": "csssuf",
+            "resource_url": "https://api.discogs.com/users/csssuf"
+          },
+          {
+            "username": "sonafets38",
+            "resource_url": "https://api.discogs.com/users/sonafets38"
+          },
+          {
+            "username": "typoman2",
+            "resource_url": "https://api.discogs.com/users/typoman2"
+          },
+          {
+            "username": "hbent",
+            "resource_url": "https://api.discogs.com/users/hbent"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2015-02-20T20:14:18-08:00",
+      "date_changed": "2019-12-30T13:38:58-08:00",
+      "num_for_sale": 0,
+      "lowest_price": null,
+      "master_id": 1099590,
+      "master_url": "https://api.discogs.com/masters/1099590",
+      "title": "Gravy's In The House",
+      "country": "US",
+      "released": "2013",
+      "released_formatted": "2013",
+      "identifiers": [
+        {
+          "type": "Barcode",
+          "value": "888174626697"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=2vNettHWB0I",
+          "title": "GET READY TO GET DOWN!  Eldridge Gravy album release!",
+          "description": "Tickets / more info:\nhttps://www.facebook.com/events/268488573275759/\n\nTo celebrate the release of our third album, GRAVY'S IN YOUR AREA, we'll be blowing out the Tractor for two nights in a row directly following Thanksgiving, Nov 29 and 30!  Special MC,",
+          "duration": 34,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Funk / Soul"
+      ],
+      "styles": [
+        "Boogie",
+        "Soul",
+        "Funk"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/6gNtzOdqQDtTTC25aBtOn5h5hJQ=/fit-in/600x592/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6680312-1424492059-9149.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/6gNtzOdqQDtTTC25aBtOn5h5hJQ=/fit-in/600x592/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6680312-1424492059-9149.jpeg.jpg",
+          "uri150": "https://img.discogs.com/6lKs9O7yHLEItdd-QDj9hulGgp4=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6680312-1424492059-9149.jpeg.jpg",
+          "width": 600,
+          "height": 592
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/mXv0cTVOCLIxorvZEFkewiFYbCk=/fit-in/600x594/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6680312-1424492089-3884.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/mXv0cTVOCLIxorvZEFkewiFYbCk=/fit-in/600x594/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6680312-1424492089-3884.jpeg.jpg",
+          "uri150": "https://img.discogs.com/HTVo0vz2ueI0WdRwnPEDIQHM2VQ=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6680312-1424492089-3884.jpeg.jpg",
+          "width": 600,
+          "height": 594
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/agc4ms8Mw8ZFOmAg7W4xKtWBZHY=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6680312-1424492059-6324.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/agc4ms8Mw8ZFOmAg7W4xKtWBZHY=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6680312-1424492059-6324.jpeg.jpg",
+          "uri150": "https://img.discogs.com/cBHqnU1jB5p3212ZwkVe3pHsp1M=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6680312-1424492059-6324.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/LHlirIgbSE3gR3ICeFfZb3tD8Kg=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6680312-1424492059-6628.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/LHlirIgbSE3gR3ICeFfZb3tD8Kg=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6680312-1424492059-6628.jpeg.jpg",
+          "uri150": "https://img.discogs.com/YBKqZBm3kTZJ06lJTsAMLgQ2Ytg=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6680312-1424492059-6628.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/6lKs9O7yHLEItdd-QDj9hulGgp4=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6680312-1424492059-9149.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 6646903,
+      "status": "Accepted",
+      "year": 2014,
+      "resource_url": "https://api.discogs.com/releases/6646903",
+      "uri": "https://www.discogs.com/Lil-Ugly-Mane-The-Weeping-Worm/release/6646903",
+      "artists": [
+        {
+          "name": "Lil Ugly Mane",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 2721063,
+          "resource_url": "https://api.discogs.com/artists/2721063"
+        }
+      ],
+      "artists_sort": "Lil Ugly Mane",
+      "labels": [
+        {
+          "name": "Not On Label (Lil Ugly Mane Self-released)",
+          "catno": "none",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 434539,
+          "resource_url": "https://api.discogs.com/labels/434539"
+        }
+      ],
+      "series": [],
+      "companies": [],
+      "formats": [
+        {
+          "name": "File",
+          "qty": "6",
+          "text": "320 kbps",
+          "descriptions": [
+            "MP3",
+            "EP"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 28,
+        "want": 15,
+        "rating": {
+          "count": 9,
+          "average": 4.22
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "030crash",
+            "resource_url": "https://api.discogs.com/users/030crash"
+          },
+          {
+            "username": "excel21",
+            "resource_url": "https://api.discogs.com/users/excel21"
+          },
+          {
+            "username": "ItsBadSteve",
+            "resource_url": "https://api.discogs.com/users/ItsBadSteve"
+          },
+          {
+            "username": "hymns",
+            "resource_url": "https://api.discogs.com/users/hymns"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 0,
+      "date_added": "2015-02-12T15:40:01-08:00",
+      "date_changed": "2018-04-19T07:06:08-07:00",
+      "num_for_sale": 0,
+      "lowest_price": null,
+      "title": "The Weeping Worm",
+      "country": "US",
+      "released": "2014-10-26",
+      "released_formatted": "26 Oct 2014",
+      "identifiers": [],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=ceW_JH1LhRg",
+          "title": "LIL UGLY MANE - THE WEEPING WORM - END YA WHOLE SHIT OFFICIAL VIDEO",
+          "description": "VIDEO THAT CAME WITH THE WEEPING WORM ALBUM (NEW LIL UGLY MANE RELEASE) NOT MY VIDEO\n\nhttp://liluglymane.bandcamp.com/album/the-weeping-worm\n\n(Start of song)\nhttps://www.youtube.com/watch?v=ceW_JH1LhRg#t=163",
+          "duration": 355,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=dospigi0eIU",
+          "title": "Lil Ugly Mane-PASSION SCEPTRE/DERT MYSTERY",
+          "description": "//RIP HUMAN RAP GAME\\\\ http://liluglymane.bandcamp.com/album/the-weeping-worm",
+          "duration": 546,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=nR6trrpsBU0",
+          "title": "LIL UGLY MANE - HIDEOUS DISFIGUREMENTS [2014]",
+          "description": "The Weeping Worm, 2014.\n\ndownload here: https://liluglymane.bandcamp.com/album/the-weeping-worm",
+          "duration": 339,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Hip Hop"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/oGed5vpJ7h11cTJR8pKMoCJvrMo=/fit-in/598x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6646903-1423784427-7148.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/oGed5vpJ7h11cTJR8pKMoCJvrMo=/fit-in/598x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6646903-1423784427-7148.jpeg.jpg",
+          "uri150": "https://img.discogs.com/wchEH6qye7zzxlmKM_qSgJ2iJQw=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6646903-1423784427-7148.jpeg.jpg",
+          "width": 598,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/wchEH6qye7zzxlmKM_qSgJ2iJQw=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6646903-1423784427-7148.jpeg.jpg"
+    },
+    {
+      "id": 6609048,
+      "status": "Accepted",
+      "year": 2013,
+      "resource_url": "https://api.discogs.com/releases/6609048",
+      "uri": "https://www.discogs.com/Dumbfoundead-Old-Boy-Jon/release/6609048",
+      "artists": [
+        {
+          "name": "Dumbfoundead",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 1205010,
+          "resource_url": "https://api.discogs.com/artists/1205010"
+        }
+      ],
+      "artists_sort": "Dumbfoundead",
+      "labels": [
+        {
+          "name": "Not On Label (Dumbfoundead Self-released)",
+          "catno": "none",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 890554,
+          "resource_url": "https://api.discogs.com/labels/890554"
+        }
+      ],
+      "series": [],
+      "companies": [],
+      "formats": [
+        {
+          "name": "File",
+          "qty": "16",
+          "descriptions": [
+            "MP3",
+            "Album"
+          ]
+        }
+      ],
+      "data_quality": "Correct",
+      "community": {
+        "have": 6,
+        "want": 4,
+        "rating": {
+          "count": 1,
+          "average": 4.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "zin",
+            "resource_url": "https://api.discogs.com/users/zin"
+          },
+          {
+            "username": "Trylemma",
+            "resource_url": "https://api.discogs.com/users/Trylemma"
+          }
+        ],
+        "data_quality": "Correct",
+        "status": "Accepted"
+      },
+      "format_quantity": 0,
+      "date_added": "2015-02-03T15:37:39-08:00",
+      "date_changed": "2019-08-11T10:37:20-07:00",
+      "num_for_sale": 0,
+      "lowest_price": null,
+      "master_id": 1589404,
+      "master_url": "https://api.discogs.com/masters/1589404",
+      "title": "Old Boy Jon",
+      "country": "US",
+      "released": "2013-02-18",
+      "released_formatted": "18 Feb 2013",
+      "identifiers": [],
+      "genres": [
+        "Hip Hop"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/Qu7n6BRQx-yzjrmKIPnAmQBou5I=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6609048-1423007878-9325.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/Qu7n6BRQx-yzjrmKIPnAmQBou5I=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6609048-1423007878-9325.jpeg.jpg",
+          "uri150": "https://img.discogs.com/K41pZqvdN8u7MnadoXnHgp64WQs=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6609048-1423007878-9325.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        }
+      ],
+      "thumb": "https://img.discogs.com/K41pZqvdN8u7MnadoXnHgp64WQs=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6609048-1423007878-9325.jpeg.jpg"
+    },
+    {
+      "id": 6138004,
+      "status": "Accepted",
+      "year": 1945,
+      "resource_url": "https://api.discogs.com/releases/6138004",
+      "uri": "https://www.discogs.com/Mark-Warnow-And-His-Orchestra-Featuring-Jerry-Wayne-Hit-Parade/release/6138004",
+      "artists": [
+        {
+          "name": "Mark Warnow And His Orchestra",
+          "anv": "",
+          "join": "Featuring",
+          "role": "",
+          "tracks": "",
+          "id": 2021798,
+          "resource_url": "https://api.discogs.com/artists/2021798"
+        },
+        {
+          "name": "Jerry Wayne",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 281075,
+          "resource_url": "https://api.discogs.com/artists/281075"
+        }
+      ],
+      "artists_sort": "Mark Warnow And His Orchestra Featuring Jerry Wayne",
+      "labels": [
+        {
+          "name": "Sonora (6)",
+          "catno": "MS 470",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 453355,
+          "resource_url": "https://api.discogs.com/labels/453355"
+        },
+        {
+          "name": "Sonora (6)",
+          "catno": "MS470",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 453355,
+          "resource_url": "https://api.discogs.com/labels/453355"
+        }
+      ],
+      "series": [
+        {
+          "name": "Series E",
+          "catno": "",
+          "entity_type": "2",
+          "entity_type_name": "Series",
+          "id": 951889,
+          "resource_url": "https://api.discogs.com/labels/951889"
+        }
+      ],
+      "companies": [
+        {
+          "name": "Sonora Radio & Television Corporation",
+          "catno": "",
+          "entity_type": "4",
+          "entity_type_name": "Record Company",
+          "id": 218617,
+          "resource_url": "https://api.discogs.com/labels/218617"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Shellac",
+          "qty": "4",
+          "descriptions": [
+            "10\"",
+            "78 RPM",
+            "Album"
+          ]
+        }
+      ],
+      "data_quality": "Correct",
+      "community": {
+        "have": 21,
+        "want": 3,
+        "rating": {
+          "count": 2,
+          "average": 3.5
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "xiphophilos",
+            "resource_url": "https://api.discogs.com/users/xiphophilos"
+          },
+          {
+            "username": "Stringtickler",
+            "resource_url": "https://api.discogs.com/users/Stringtickler"
+          },
+          {
+            "username": "capitolfive",
+            "resource_url": "https://api.discogs.com/users/capitolfive"
+          },
+          {
+            "username": "jvaahtera",
+            "resource_url": "https://api.discogs.com/users/jvaahtera"
+          }
+        ],
+        "data_quality": "Correct",
+        "status": "Accepted"
+      },
+      "format_quantity": 4,
+      "date_added": "2014-09-29T10:59:38-07:00",
+      "date_changed": "2018-08-13T18:25:10-07:00",
+      "num_for_sale": 3,
+      "lowest_price": 1.09,
+      "title": "Hit Parade",
+      "country": "US",
+      "released": "1945-02-00",
+      "notes": "C: From \"Sweet And  Lowdown\"\nD: From \"Three Cheers For The Boys\"",
+      "released_formatted": "Feb 1945",
+      "identifiers": [
+        {
+          "type": "Matrix / Runout",
+          "value": "S. R. 1646-2",
+          "description": "Side A label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "S. R. 1647-2",
+          "description": "Side B label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "S. R. 1645-1",
+          "description": "Side C label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "S. R. 1650-2",
+          "description": "Side D label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "S. R. 1649-2",
+          "description": "Side E label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "S. R. 1644-2",
+          "description": "Side F label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "S. R. 1651-1",
+          "description": "Side G label"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "S. R. 1648-1",
+          "description": "Side H label"
+        },
+        {
+          "type": "Other",
+          "value": "1087",
+          "description": "Disc 1 catalog number"
+        },
+        {
+          "type": "Other",
+          "value": "1088",
+          "description": "Disc 2 catalog number"
+        },
+        {
+          "type": "Other",
+          "value": "1089",
+          "description": "Disc 3 catalog number"
+        },
+        {
+          "type": "Other",
+          "value": "1090",
+          "description": "Disc 4 catalog number"
+        }
+      ],
+      "genres": [
+        "Jazz",
+        "Pop",
+        "Folk, World, & Country"
+      ],
+      "styles": [
+        "Easy Listening",
+        "Vocal"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/G5fzITXRJYDVlq3oDPro4BtJrrw=/fit-in/600x510/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1518490704-7615.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/G5fzITXRJYDVlq3oDPro4BtJrrw=/fit-in/600x510/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1518490704-7615.jpeg.jpg",
+          "uri150": "https://img.discogs.com/dkhMtiLPJaaKkUJ97Hniy3TW8IM=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6138004-1518490704-7615.jpeg.jpg",
+          "width": 600,
+          "height": 510
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/f1nohEOyaXP0S9gXhMUbKqBt-tQ=/fit-in/600x450/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1534178948-8903.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/f1nohEOyaXP0S9gXhMUbKqBt-tQ=/fit-in/600x450/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1534178948-8903.jpeg.jpg",
+          "uri150": "https://img.discogs.com/Uk6tcLWLhzEz2IEOsbHxvNgJET4=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6138004-1534178948-8903.jpeg.jpg",
+          "width": 600,
+          "height": 450
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/Mey05ziZjAPS0ZUfBByQzmfwgxQ=/fit-in/600x450/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1534178948-8641.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/Mey05ziZjAPS0ZUfBByQzmfwgxQ=/fit-in/600x450/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1534178948-8641.jpeg.jpg",
+          "uri150": "https://img.discogs.com/7stKdHt6MmTPoEipaHJ-Ab3GmuA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6138004-1534178948-8641.jpeg.jpg",
+          "width": 600,
+          "height": 450
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/xH3TCENWsuP7RGTUjklYR6pMDkQ=/fit-in/600x607/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1412013579-2789.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/xH3TCENWsuP7RGTUjklYR6pMDkQ=/fit-in/600x607/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1412013579-2789.jpeg.jpg",
+          "uri150": "https://img.discogs.com/hYvDFK2id26WMvx1c13HnJcavV4=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6138004-1412013579-2789.jpeg.jpg",
+          "width": 600,
+          "height": 607
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/ja7Aq1jg6im1qa9jJpTD4k9PL1g=/fit-in/600x597/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1412013579-7151.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/ja7Aq1jg6im1qa9jJpTD4k9PL1g=/fit-in/600x597/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-6138004-1412013579-7151.jpeg.jpg",
+          "uri150": "https://img.discogs.com/hVa2diVL_S4SwrUtrjEfTK1yIug=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6138004-1412013579-7151.jpeg.jpg",
+          "width": 600,
+          "height": 597
+        }
+      ],
+      "thumb": "https://img.discogs.com/dkhMtiLPJaaKkUJ97Hniy3TW8IM=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-6138004-1518490704-7615.jpeg.jpg",
+      "estimated_weight": 920
+    },
+    {
+      "id": 5611271,
+      "status": "Accepted",
+      "year": 2014,
+      "resource_url": "https://api.discogs.com/releases/5611271",
+      "uri": "https://www.discogs.com/Sun-Ra-Outer-Spaceways-Incorporated/release/5611271",
+      "artists": [
+        {
+          "name": "Sun Ra",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 35328,
+          "resource_url": "https://api.discogs.com/artists/35328"
+        }
+      ],
+      "artists_sort": "Sun Ra",
+      "labels": [
+        {
+          "name": "ORG Music",
+          "catno": "ORGM-2014",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 223714,
+          "resource_url": "https://api.discogs.com/labels/223714"
+        }
+      ],
+      "series": [],
+      "companies": [
+        {
+          "name": "ORG Music",
+          "catno": "",
+          "entity_type": "10",
+          "entity_type_name": "Manufactured By",
+          "id": 223714,
+          "resource_url": "https://api.discogs.com/labels/223714"
+        },
+        {
+          "name": "Pallas USA",
+          "catno": "",
+          "entity_type": "10",
+          "entity_type_name": "Manufactured By",
+          "id": 632752,
+          "resource_url": "https://api.discogs.com/labels/632752"
+        },
+        {
+          "name": "ORG Music",
+          "catno": "",
+          "entity_type": "9",
+          "entity_type_name": "Distributed By",
+          "id": 223714,
+          "resource_url": "https://api.discogs.com/labels/223714"
+        },
+        {
+          "name": "Schallplattenfabrik Pallas GmbH",
+          "catno": "31380",
+          "entity_type": "17",
+          "entity_type_name": "Pressed By",
+          "id": 271440,
+          "resource_url": "https://api.discogs.com/labels/271440"
+        },
+        {
+          "name": "ORG Music",
+          "catno": "",
+          "entity_type": "8",
+          "entity_type_name": "Marketed By",
+          "id": 223714,
+          "resource_url": "https://api.discogs.com/labels/223714"
+        },
+        {
+          "name": "DA Music",
+          "catno": "",
+          "entity_type": "13",
+          "entity_type_name": "Phonographic Copyright (p)",
+          "id": 9393,
+          "resource_url": "https://api.discogs.com/labels/9393"
+        },
+        {
+          "name": "ORG Music",
+          "catno": "",
+          "entity_type": "14",
+          "entity_type_name": "Copyright (c)",
+          "id": 223714,
+          "resource_url": "https://api.discogs.com/labels/223714"
+        },
+        {
+          "name": "SST Brüggemann GmbH",
+          "catno": "",
+          "entity_type": "30",
+          "entity_type_name": "Lacquer Cut At",
+          "id": 265113,
+          "resource_url": "https://api.discogs.com/labels/265113"
+        }
+      ],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "text": "White & Purple",
+          "descriptions": [
+            "LP",
+            "Album",
+            "Limited Edition",
+            "Reissue"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 422,
+        "want": 189,
+        "rating": {
+          "count": 33,
+          "average": 4.39
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "jcolton302",
+            "resource_url": "https://api.discogs.com/users/jcolton302"
+          },
+          {
+            "username": "alwaysanalog",
+            "resource_url": "https://api.discogs.com/users/alwaysanalog"
+          },
+          {
+            "username": "djmifume",
+            "resource_url": "https://api.discogs.com/users/djmifume"
+          },
+          {
+            "username": "GastX",
+            "resource_url": "https://api.discogs.com/users/GastX"
+          },
+          {
+            "username": "seht",
+            "resource_url": "https://api.discogs.com/users/seht"
+          },
+          {
+            "username": "Forklift_Alex",
+            "resource_url": "https://api.discogs.com/users/Forklift_Alex"
+          },
+          {
+            "username": "rudeboyheiko",
+            "resource_url": "https://api.discogs.com/users/rudeboyheiko"
+          },
+          {
+            "username": "DiscogsUpdateBot",
+            "resource_url": "https://api.discogs.com/users/DiscogsUpdateBot"
+          },
+          {
+            "username": "Universe_In_Blue",
+            "resource_url": "https://api.discogs.com/users/Universe_In_Blue"
+          },
+          {
+            "username": "idefix23",
+            "resource_url": "https://api.discogs.com/users/idefix23"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2014-04-19T13:37:58-07:00",
+      "date_changed": "2018-09-13T03:53:48-07:00",
+      "num_for_sale": 21,
+      "lowest_price": 16.39,
+      "master_id": 143614,
+      "master_url": "https://api.discogs.com/masters/143614",
+      "title": "Outer Spaceways Incorporated",
+      "country": "US",
+      "released": "2014-04-19",
+      "notes": "Recorded in New York City 1968.\r\n\r\nReleased for Record Store Day 2014, limited edition of 1500. Purple and white vinyl color.",
+      "released_formatted": "19 Apr 2014",
+      "identifiers": [
+        {
+          "type": "Barcode",
+          "value": "711574702329"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "ORGM-2014 A INTERGALACTIC K SST P.USA -31380-",
+          "description": "Side A"
+        },
+        {
+          "type": "Matrix / Runout",
+          "value": "ORGM-2014 B MOTION K SST P.USA -31380-",
+          "description": "Side B"
+        }
+      ],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=CdFmjgC2_HA",
+          "title": "SUN RA  -  Somewhere There  (1968 audio)",
+          "description": "Sun Ra - Outer Spaceways Incorporated\nCD,  1st track...on Black Lion Records...",
+          "duration": 900,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=buPctKFyDn4",
+          "title": "Sun Ra - Outer Spaceways Incorporated",
+          "description": "Something to listen to when life on Earth gets boring.",
+          "duration": 295,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=VQkJKkpYtOg",
+          "title": "Sun Ra And His Arkestra - Saturn [HD]",
+          "description": "Album: Outer Spaceways Incorporated (Pictures Of Infinity)\nYear: 1971\nRecorded in New York City, 1968",
+          "duration": 379,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=c4xJVpuk4Wk",
+          "title": "Song Of The Sparer - Sun Ra (1968)",
+          "description": "Outer Spaceways Incorporated \r\n\r\nMarshall Allen       Flute\r\nRonnie Boykins       Bass\r\nRobert Cummings    Bass Clarinet \r\nDanny Davis        Flute, Alto\r\nAhk Tal Ebah        Trumpet\r\nJohn Gilmore        Tenor\r\nKwame Hadi        Drums, Trumpet\r\nAli Hassan",
+          "duration": 256,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=K1iHyh0lgKU",
+          "title": "Spontaneous Simplicity - Sun Ra (1968)",
+          "description": "Outer Spaceways Incorporated \r\n\r\nMarshall Allen       Flute\r\nRonnie Boykins       Bass\r\nRobert Cummings    Bass Clarinet \r\nDanny Davis        Flute, Alto\r\nAhk Tal Ebah        Trumpet\r\nJohn Gilmore        Tenor\r\nKwame Hadi        Drums, Trumpet\r\nAli Hassan",
+          "duration": 481,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz",
+        "Funk / Soul"
+      ],
+      "styles": [
+        "Free Jazz",
+        "Avant-garde Jazz",
+        "Free Improvisation",
+        "Big Band"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/p3i0E-9VmhV-uTrKD0fm4jTM_Ns=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1397940345-9756.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/p3i0E-9VmhV-uTrKD0fm4jTM_Ns=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1397940345-9756.jpeg.jpg",
+          "uri150": "https://img.discogs.com/1U6Wb9p1Yrhs6RDjKrvyX5EbMyk=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5611271-1397940345-9756.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/-qO6sBywHVdRjBXHM1murg8FUC8=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1400891293-1626.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/-qO6sBywHVdRjBXHM1murg8FUC8=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1400891293-1626.jpeg.jpg",
+          "uri150": "https://img.discogs.com/ribFUSA7syxAvkpfinsRixh__tQ=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5611271-1400891293-1626.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/6_WF_1fESb2RuewLanOS74eDz6o=/fit-in/595x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1400891293-8037.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/6_WF_1fESb2RuewLanOS74eDz6o=/fit-in/595x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1400891293-8037.jpeg.jpg",
+          "uri150": "https://img.discogs.com/we8aaz_mI7dOoY_QyNls4yShbDU=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5611271-1400891293-8037.jpeg.jpg",
+          "width": 595,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/7gs7vC2i5T02rR5gX77Zb-AZqgo=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1400890981-7324.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/7gs7vC2i5T02rR5gX77Zb-AZqgo=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1400890981-7324.jpeg.jpg",
+          "uri150": "https://img.discogs.com/_5Wx7XTkEcPpBECkZ1MZKFhpv24=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5611271-1400890981-7324.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/lC8SU9sJBrFWmQVd6BxU2qoTenM=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1397940346-9873.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/lC8SU9sJBrFWmQVd6BxU2qoTenM=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1397940346-9873.jpeg.jpg",
+          "uri150": "https://img.discogs.com/MGrjuRqUXBBGpt-4N2NLPNFnylQ=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5611271-1397940346-9873.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/NAyKp258UGmX5oPmpKeStz-Aj1A=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1397940346-5107.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/NAyKp258UGmX5oPmpKeStz-Aj1A=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1397940346-5107.jpeg.jpg",
+          "uri150": "https://img.discogs.com/cAZdGTRFn0Z0EsLFWrhkITHFHjc=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5611271-1397940346-5107.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/G1OBS4ez_C14kJ3LbKwc4KuN-UM=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1397940346-9496.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/G1OBS4ez_C14kJ3LbKwc4KuN-UM=/fit-in/600x600/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1397940346-9496.jpeg.jpg",
+          "uri150": "https://img.discogs.com/51Ga9aLeEr7NxpVRmqRKdl3I2lE=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5611271-1397940346-9496.jpeg.jpg",
+          "width": 600,
+          "height": 600
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/ApBCsyJ5BLBUkxAy1uhmp25wPVE=/fit-in/600x570/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1400890982-5331.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/ApBCsyJ5BLBUkxAy1uhmp25wPVE=/fit-in/600x570/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5611271-1400890982-5331.jpeg.jpg",
+          "uri150": "https://img.discogs.com/8PBIWTAUheVSGyfnPNfvGSfFrVA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5611271-1400890982-5331.jpeg.jpg",
+          "width": 600,
+          "height": 570
+        }
+      ],
+      "thumb": "https://img.discogs.com/1U6Wb9p1Yrhs6RDjKrvyX5EbMyk=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5611271-1397940345-9756.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 5610272,
+      "status": "Accepted",
+      "year": 2014,
+      "resource_url": "https://api.discogs.com/releases/5610272",
+      "uri": "https://www.discogs.com/Albert-Ammons-Boogie-Woogie-Stomp-Boogie-Woogie-Blues/release/5610272",
+      "artists": [
+        {
+          "name": "Albert Ammons",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 310295,
+          "resource_url": "https://api.discogs.com/artists/310295"
+        }
+      ],
+      "artists_sort": "Albert Ammons",
+      "labels": [
+        {
+          "name": "Blue Note",
+          "catno": "441-5/442-8",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 281,
+          "resource_url": "https://api.discogs.com/labels/281"
+        }
+      ],
+      "series": [],
+      "companies": [],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "descriptions": [
+            "12\"",
+            "Limited Edition"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 114,
+        "want": 22,
+        "rating": {
+          "count": 8,
+          "average": 4.13
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "WeedMusic",
+            "resource_url": "https://api.discogs.com/users/WeedMusic"
+          },
+          {
+            "username": "zepp69",
+            "resource_url": "https://api.discogs.com/users/zepp69"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2014-04-19T09:01:47-07:00",
+      "date_changed": "2014-06-11T13:35:03-07:00",
+      "num_for_sale": 8,
+      "lowest_price": 3.99,
+      "master_id": 680476,
+      "master_url": "https://api.discogs.com/masters/680476",
+      "title": "Boogie Woogie Stomp / Boogie Woogie Blues",
+      "country": "US",
+      "released": "2014-04-19",
+      "notes": "Limited Edition released for Record Store Day 2014",
+      "released_formatted": "19 Apr 2014",
+      "identifiers": [],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=dNbc0YO5hKg",
+          "title": "Boogie Woogie Stomp - Albert Ammons",
+          "description": "Boogie Woogie Stomp as recorded by Albert Ammons.",
+          "duration": 221,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=tBmVtW5qxGs",
+          "title": "Albert Ammons : Boogie Woogie Stomp (Transcription)",
+          "description": "",
+          "duration": 196,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=vkRfjahMheQ",
+          "title": "*original* - Boogie Woogie Blues - Albert Ammons",
+          "description": "-uploaded in HD at http://www.TunesToTube.com",
+          "duration": 220,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=ojtMvX6btas",
+          "title": "BN2A / Boogie Woogie Stomp by Albert Ammons",
+          "description": "BN2 / Albert Ammons / Boogie Woogie Stomp (441-5) \n12inch 78rpm\n\nThis is an extremely rare original 1st pressing of the very first Blue Note record ever made, NOT a recent re-issue. Only 50 were originally pressed by Alfred Lion back in 1939, and then sol",
+          "duration": 233,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=6gxvE4ariGw",
+          "title": "BN2B / Boogie Woogie Blues by Albert Ammons",
+          "description": "BN2 / Albert Ammons / Boogie Woogie Blues (442-8)\n12inch 78rpm\n\nThis is an extremely rare original 1st pressing of the very first Blue Note record ever made, NOT a recent re-issue. Only 50 were originally pressed by Alfred Lion back in 1939, and then sold",
+          "duration": 237,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz",
+        "Blues"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/ETU6yHHya1jxQiVxI8KrPvln2cQ=/fit-in/600x605/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5610272-1397924256-2734.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/ETU6yHHya1jxQiVxI8KrPvln2cQ=/fit-in/600x605/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5610272-1397924256-2734.jpeg.jpg",
+          "uri150": "https://img.discogs.com/NC5nfHttscZuD6P_fIvTYkaPloc=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5610272-1397924256-2734.jpeg.jpg",
+          "width": 600,
+          "height": 605
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/8asM2EgU0YWXrXGIXDlgVBhpvY4=/fit-in/600x595/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5610272-1397924256-8560.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/8asM2EgU0YWXrXGIXDlgVBhpvY4=/fit-in/600x595/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5610272-1397924256-8560.jpeg.jpg",
+          "uri150": "https://img.discogs.com/y1Cb_zmD4y8VTmooM_5UbFnPRHw=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5610272-1397924256-8560.jpeg.jpg",
+          "width": 600,
+          "height": 595
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/0_YkKnSRU3D0i6ffxbRa_kiNqy4=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5610272-1397924293-5428.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/0_YkKnSRU3D0i6ffxbRa_kiNqy4=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5610272-1397924293-5428.jpeg.jpg",
+          "uri150": "https://img.discogs.com/O0LuvktFTpNyd3SNzqHtzJKtb3A=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5610272-1397924293-5428.jpeg.jpg",
+          "width": 600,
+          "height": 596
+        }
+      ],
+      "thumb": "https://img.discogs.com/NC5nfHttscZuD6P_fIvTYkaPloc=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5610272-1397924256-2734.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 5553845,
+      "status": "Accepted",
+      "year": 1969,
+      "resource_url": "https://api.discogs.com/releases/5553845",
+      "uri": "https://www.discogs.com/Art-Blakey-The-Jazz-Messengers-Plus-Sabu/release/5553845",
+      "artists": [
+        {
+          "name": "Art Blakey",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 29977,
+          "resource_url": "https://api.discogs.com/artists/29977"
+        }
+      ],
+      "artists_sort": "Art Blakey",
+      "labels": [
+        {
+          "name": "Disques Vogue",
+          "catno": "LD. 657-30",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 34299,
+          "resource_url": "https://api.discogs.com/labels/34299"
+        }
+      ],
+      "series": [
+        {
+          "name": "15ᵉ Anniversaire Des Disques Vogue",
+          "catno": "Vol. 51",
+          "entity_type": "2",
+          "entity_type_name": "Series",
+          "id": 501489,
+          "resource_url": "https://api.discogs.com/labels/501489"
+        }
+      ],
+      "companies": [],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "descriptions": [
+            "LP",
+            "Album"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 20,
+        "want": 62,
+        "rating": {
+          "count": 1,
+          "average": 3.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "brianvy",
+            "resource_url": "https://api.discogs.com/users/brianvy"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2014-04-01T13:25:15-07:00",
+      "date_changed": "2014-07-16T01:06:04-07:00",
+      "num_for_sale": 2,
+      "lowest_price": 42.68,
+      "master_id": 373235,
+      "master_url": "https://api.discogs.com/masters/373235",
+      "title": "The Jazz Messengers Plus Sabu",
+      "country": "France",
+      "released": "1969",
+      "released_formatted": "1969",
+      "identifiers": [],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=PZq_cdCJIJA",
+          "title": "Cu-Bop! - Art Blakey And The Jazz Messengers With Sabu And A Bongo - (Full Album)",
+          "description": "Tracklist:\n\n00:00  Woodyn' You (Dizzy Gillespie)\n06:15  Sakeena (Art Blakey)\n18:15  Shorty (Johnny Griffin)\n22:55  Dawn On The Desert (Charlie Shavers)\n\nBass – Spanky DeBrest\nCongas, Bongos – Sabu\nDrums – Art Blakey\nPiano – Sam Dockery\nTenor Sax",
+          "duration": 2143,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Jazz"
+      ],
+      "styles": [
+        "Hard Bop"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/md2UAnQDKGu63kMeQgdFR1PN4Wg=/fit-in/600x601/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5553845-1396383388-6264.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/md2UAnQDKGu63kMeQgdFR1PN4Wg=/fit-in/600x601/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5553845-1396383388-6264.jpeg.jpg",
+          "uri150": "https://img.discogs.com/E-A583sP_qpecuFZHVtr_OYhC_U=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5553845-1396383388-6264.jpeg.jpg",
+          "width": 600,
+          "height": 601
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/dOoWNA9S_z0knZ4n7eI1y7jlWjI=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5553845-1396410971-9540.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/dOoWNA9S_z0knZ4n7eI1y7jlWjI=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5553845-1396410971-9540.jpeg.jpg",
+          "uri150": "https://img.discogs.com/78tsGh_LV3FhqO2mZSbX_n60IBA=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5553845-1396410971-9540.jpeg.jpg",
+          "width": 600,
+          "height": 596
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/-v8bMrdGuab1LaaV-57dmAEcAYU=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5553845-1396410971-7774.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/-v8bMrdGuab1LaaV-57dmAEcAYU=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5553845-1396410971-7774.jpeg.jpg",
+          "uri150": "https://img.discogs.com/O6xu_IzbRGo1hLASWkomwF6jHc0=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5553845-1396410971-7774.jpeg.jpg",
+          "width": 600,
+          "height": 596
+        },
+        {
+          "type": "secondary",
+          "uri": "https://img.discogs.com/tZhnl2kThrLjpja1ln7s2uYR2wU=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5553845-1396410972-8603.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/tZhnl2kThrLjpja1ln7s2uYR2wU=/fit-in/600x596/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5553845-1396410972-8603.jpeg.jpg",
+          "uri150": "https://img.discogs.com/bsrjR9ZIAJ0Cm5E34WUVkIlh9_w=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5553845-1396410972-8603.jpeg.jpg",
+          "width": 600,
+          "height": 596
+        }
+      ],
+      "thumb": "https://img.discogs.com/E-A583sP_qpecuFZHVtr_OYhC_U=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5553845-1396383388-6264.jpeg.jpg",
+      "estimated_weight": 230
+    },
+    {
+      "id": 5531872,
+      "status": "Accepted",
+      "year": 1984,
+      "resource_url": "https://api.discogs.com/releases/5531872",
+      "uri": "https://www.discogs.com/Eric-Carmen-I-Wanna-Hear-It-From-Your-Lips/release/5531872",
+      "artists": [
+        {
+          "name": "Eric Carmen",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 180926,
+          "resource_url": "https://api.discogs.com/artists/180926"
+        }
+      ],
+      "artists_sort": "Eric Carmen",
+      "labels": [
+        {
+          "name": "Geffen Records",
+          "catno": "7-29118",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 821,
+          "resource_url": "https://api.discogs.com/labels/821"
+        }
+      ],
+      "series": [],
+      "companies": [],
+      "formats": [
+        {
+          "name": "Vinyl",
+          "qty": "1",
+          "descriptions": [
+            "7\"",
+            "45 RPM",
+            "Single",
+            "Promo"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 9,
+        "want": 5,
+        "rating": {
+          "count": 1,
+          "average": 4.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "blackplastik",
+            "resource_url": "https://api.discogs.com/users/blackplastik"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2014-03-25T15:01:54-07:00",
+      "date_changed": "2016-03-17T06:22:25-07:00",
+      "num_for_sale": 3,
+      "lowest_price": 0.5,
+      "master_id": 167900,
+      "master_url": "https://api.discogs.com/masters/167900",
+      "title": "I Wanna Hear It From Your Lips",
+      "released": "1984",
+      "notes": "Promotion — Not For Sale",
+      "released_formatted": "1984",
+      "identifiers": [],
+      "videos": [
+        {
+          "uri": "https://www.youtube.com/watch?v=QVvumX8Gzpc",
+          "title": "Eric Carmen - I Wanna Hear It From Your Lips - Solid Gold 1985",
+          "description": "",
+          "duration": 193,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=zoHD-M2m-Hc",
+          "title": "Eric Carmen - I wanna hear it from your lips",
+          "description": "Sumthin Sumthin",
+          "duration": 365,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=PQR7wJvw1gg",
+          "title": "Eric Carmen ‎– I Wanna Hear It From Your Lips 12 1984",
+          "description": "Geffen Records ‎– 0-20294\n\nDrum Programming [Additional] – Jimmy Bralower\nEngineer [Assistant] – Melanie West\nEngineer [Mix] – Michael Hutchinson\nPercussion – Bashiri Johnson\nProducer – Bob Gaudio\nRemix – John Jellybean Benitez\nWritten-B",
+          "duration": 358,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=lT32SpxE2cQ",
+          "title": "I Wanna Hear It From Your Lips / Spotlight - 1985 (Facciate:2)",
+          "description": "Discografia parziale: https://www.discochannel.it/449182168\nInterprete: Eric Howard Carmen\nNazionalità Stati Uniti (Cleveland, 11 agosto 1949) \nPeriodo di attività musicale 1967 – in attività\nEtichetta: Geffen Records\nCatalogo: A 4956\nData di pubblic",
+          "duration": 437,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=q0ma8o7nhHM",
+          "title": "ERIC CARMEM- SPOTLIGHT *** 1984 ***",
+          "description": "",
+          "duration": 259,
+          "embed": true
+        },
+        {
+          "uri": "https://www.youtube.com/watch?v=XCu2IWEh7pc",
+          "title": "Eric Carmen - I Wanna Hear it from Your Lips (Subtítulos español)",
+          "description": "Eric Carmen - American singer, songwriter and guitarist\r\nI Wanna Hear It from Your Lips \r\nAlbum: Eric Carmen\r\nYear: 1984 \r\nLabel: Geffen\r\nI do not claim ownership to this song or video. All rights reserved by copyright holders\r\n\r\nNOTICE: Copyright Disc",
+          "duration": 188,
+          "embed": true
+        }
+      ],
+      "genres": [
+        "Rock"
+      ],
+      "styles": [
+        "Soft Rock"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/v9Kwt4lXCzJNKBf8oTyc17Dd7hc=/fit-in/600x598/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5531872-1395785020-6839.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/v9Kwt4lXCzJNKBf8oTyc17Dd7hc=/fit-in/600x598/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5531872-1395785020-6839.jpeg.jpg",
+          "uri150": "https://img.discogs.com/P6dfzc-EG49B5B4pB2HEkO_7aQU=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5531872-1395785020-6839.jpeg.jpg",
+          "width": 600,
+          "height": 598
+        }
+      ],
+      "thumb": "https://img.discogs.com/P6dfzc-EG49B5B4pB2HEkO_7aQU=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5531872-1395785020-6839.jpeg.jpg",
+      "estimated_weight": 60
+    },
+    {
+      "id": 5294219,
+      "status": "Accepted",
+      "year": 1992,
+      "resource_url": "https://api.discogs.com/releases/5294219",
+      "uri": "https://www.discogs.com/Nat-King-Cole-Nat-King-Cole-At-The-Movies/release/5294219",
+      "artists": [
+        {
+          "name": "Nat King Cole",
+          "anv": "",
+          "join": "",
+          "role": "",
+          "tracks": "",
+          "id": 145288,
+          "resource_url": "https://api.discogs.com/artists/145288"
+        }
+      ],
+      "artists_sort": "Nat King Cole",
+      "labels": [
+        {
+          "name": "Capitol Records",
+          "catno": "C2-99373",
+          "entity_type": "1",
+          "entity_type_name": "Label",
+          "id": 654,
+          "resource_url": "https://api.discogs.com/labels/654"
+        }
+      ],
+      "series": [],
+      "companies": [],
+      "formats": [
+        {
+          "name": "CD",
+          "qty": "1",
+          "descriptions": [
+            "Compilation"
+          ]
+        }
+      ],
+      "data_quality": "Needs Vote",
+      "community": {
+        "have": 3,
+        "want": 2,
+        "rating": {
+          "count": 0,
+          "average": 0.0
+        },
+        "submitter": {
+          "username": "rodneyfool",
+          "resource_url": "https://api.discogs.com/users/rodneyfool"
+        },
+        "contributors": [
+          {
+            "username": "rodneyfool",
+            "resource_url": "https://api.discogs.com/users/rodneyfool"
+          },
+          {
+            "username": "kiki67",
+            "resource_url": "https://api.discogs.com/users/kiki67"
+          },
+          {
+            "username": "RGJones",
+            "resource_url": "https://api.discogs.com/users/RGJones"
+          }
+        ],
+        "data_quality": "Needs Vote",
+        "status": "Accepted"
+      },
+      "format_quantity": 1,
+      "date_added": "2014-01-15T13:33:44-08:00",
+      "date_changed": "2019-02-16T10:35:23-08:00",
+      "num_for_sale": 0,
+      "lowest_price": null,
+      "master_id": 1157664,
+      "master_url": "https://api.discogs.com/masters/1157664",
+      "title": "Nat King Cole At The Movies",
+      "country": "US",
+      "released": "1992",
+      "released_formatted": "1992",
+      "identifiers": [],
+      "genres": [
+        "Jazz",
+        "Pop"
+      ],
+      "styles": [
+        "Vocal"
+      ],
+      "images": [
+        {
+          "type": "primary",
+          "uri": "https://img.discogs.com/_9Aa_HBVvXiVT8fXsnPnlbodZ7s=/fit-in/500x500/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5294219-1389816431-7161.jpeg.jpg",
+          "resource_url": "https://img.discogs.com/_9Aa_HBVvXiVT8fXsnPnlbodZ7s=/fit-in/500x500/filters:strip_icc():format(jpeg):mode_rgb():quality(90)/discogs-images/R-5294219-1389816431-7161.jpeg.jpg",
+          "uri150": "https://img.discogs.com/V3F3wLfHcZqyyqtiw9TmwUL5ivo=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5294219-1389816431-7161.jpeg.jpg",
+          "width": 500,
+          "height": 500
+        }
+      ],
+      "thumb": "https://img.discogs.com/V3F3wLfHcZqyyqtiw9TmwUL5ivo=/fit-in/150x150/filters:strip_icc():format(jpeg):mode_rgb():quality(40)/discogs-images/R-5294219-1389816431-7161.jpeg.jpg",
+      "estimated_weight": 85
+    }
+  ]
+}

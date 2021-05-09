@@ -1,131 +1,75 @@
 package io.bartholomews.discogs4s.api
 
+import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
-import io.bartholomews.discogs4s.DiscogsWireWordSpec
 import io.bartholomews.discogs4s.client.DiscogsClientData
 import io.bartholomews.discogs4s.entities._
+import io.bartholomews.discogs4s.entities.requests.UpdateUserRequest
+import io.bartholomews.discogs4s.{DiscogsServerBehaviours, DiscogsWireWordSpec}
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 import io.bartholomews.fsclient.core.oauth.ClientCredentials
-import io.bartholomews.scalatestudo.ServerBehaviours
-import org.apache.http.entity.ContentType
-import sttp.client3.{DeserializationException, HttpError, Response, UriContext}
-import sttp.model.StatusCode
+import sttp.client3.UriContext
 
-abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with ServerBehaviours[E, D, DE, J] {
+//noinspection MutatorLikeMethodIsParameterless
+abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with DiscogsServerBehaviours[E, D, DE, J] {
 
   import DiscogsClientData._
 
-  implicit def simpleUserDecoder: D[SimpleUser]
+  implicit def updateUserRequestEncoder: E[UpdateUserRequest]
+  implicit def userProfileDecoder: D[UserProfile]
   implicit def userIdentityDecoder: D[UserIdentity]
-  implicit def discogsErrorEncoder: E[DiscogsError]
-  implicit def discogsErrorDecoder: D[DiscogsError]
+  implicit def userSubmissionResponseDecoder: D[UserSubmissionResponse]
+  implicit def userContributionsDecoder: D[UserContributions]
 
-  "getSimpleUserProfile" when {
-
-    def request: SttpResponse[DE, SimpleUser] =
-      sampleOAuthClient.users.getSimpleUserProfile(Username("rodneyfool"))(accessTokenCredentials)
-
-    "the server responds with the response entity" should {
-
-      "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) {
-        case Right(entity) =>
-          entity should matchTo(
-            SimpleUser(
-              profile = "I am a software developer for Discogs.\r\n\r\n[img=http://i.imgur.com/IAk3Ukk.gif]",
-              wantlistUrl = uri"https://api.discogs.com/users/rodneyfool/wants",
-              rank = 149L,
-              numPending = 61L,
-              id = 1578108L,
-              numForSale = 0L,
-              homePage = UserWebsite(""),
-              location = UserLocation("I live in the good ol' Pacific NW"),
-              collectionFoldersUrl = uri"https://api.discogs.com/users/rodneyfool/collection/folders",
-              username = Username("rodneyfool"),
-              collectionFieldsUrl = uri"https://api.discogs.com/users/rodneyfool/collection/fields",
-              releasesContributed = 5L,
-              registered = "2012-08-15T21:13:36-07:00", // FIXME date
-              ratingAvg = 3.47,
-              numCollection = Some(78L),
-              releasesRated = 116L,
-              numLists = 0L,
-              name = UserRealName("Rodney"),
-              numWantlist = Some(160L),
-              inventoryUrl = uri"https://api.discogs.com/users/rodneyfool/inventory",
-              avatarUrl = uri"http://www.gravatar.com/avatar/55502f40dc8b7c769880b10874abc9d0?s=52&r=pg&d=mm",
-              bannerUrl = Some(
-                uri"https://img.discogs.com/dhuJe-pRJmod7hN3cdVi2PugEh4=/1600x400/filters:strip_icc():format(jpeg)/discogs-banners/B-1578108-user-1436314164-9231.jpg.jpg"
-              ),
-              uri = uri"http://www.discogs.com/user/rodneyfool",
-              resourceUrl = uri"https://api.discogs.com/users/rodneyfool",
-              buyerRating = 100.00,
-              buyerRatingStars = 5,
-              buyerNumRatings = 144L,
-              sellerRatingStars = 5,
-              sellerNumRatings = 21L,
-              currAbbr = "USD"
-            )
-          )
-      }
-    }
-
-    "the server responds with an error" should {
-
-      def stub: StubMapping =
-        stubFor(
-          get(urlPathEqualTo("/users/rodneyfool"))
-            .willReturn(
-              aResponse()
-                .withStatus(401)
-                .withBody("Invalid consumer.")
-            )
-        )
-
-      "decode an `Unauthorized` response" in matchIdResponse(stub, request) {
-        case Response(Left(HttpError(body, statusCode)), status, _, _, _, _) =>
-          status shouldBe StatusCode.Unauthorized
-          statusCode shouldBe StatusCode.Unauthorized
-          body shouldBe "Invalid consumer."
-      }
-    }
-  }
+  private val sampleUserProfile = UserProfile(
+    profile = "",
+    wantlistUrl = uri"https://api.discogs.com/users/_.bartholomews/wants",
+    rank = 0,
+    numPending = 0,
+    id = 2820336L,
+    numForSale = 0,
+    homePage = UserWebsite(""),
+    location = UserLocation(""),
+    collectionFoldersUrl = uri"https://api.discogs.com/users/_.bartholomews/collection/folders",
+    username = Username("_.bartholomews"),
+    collectionFieldsUrl = uri"https://api.discogs.com/users/_.bartholomews/collection/fields",
+    releasesContributed = 0,
+    registered = "2015-04-25T23:52:31-07:00", // FIXME date
+    ratingAvg = 0.0,
+    numCollection = Some(48),
+    releasesRated = 0,
+    numLists = 0L,
+    name = UserRealName(""),
+    numWantlist = Some(44),
+    inventoryUrl = uri"https://api.discogs.com/users/_.bartholomews/inventory",
+    avatarUrl = uri"https://secure.gravatar.com/avatar/60ab919f0b77cbd942d37bbdd9003607?s=500&r=pg&d=mm",
+    bannerUrl = None,
+    uri = uri"https://www.discogs.com/user/_.bartholomews",
+    resourceUrl = uri"https://api.discogs.com/users/_.bartholomews",
+    buyerRating = 100.00,
+    buyerRatingStars = 5,
+    buyerNumRatings = 7,
+    sellerRatingStars = 0,
+    sellerNumRatings = 0,
+    currAbbr = "EUR",
+    numUnread = Some(45),
+    email = Some(UserEmail("discogs@bartholomews.io"))
+  )
 
   "me" when {
-    implicit val signer: ClientCredentials = clientCredentials
+    implicit val signer: ClientCredentials      = clientCredentials
+    def endpointRequest: MappingBuilder         = get(urlPathEqualTo("/oauth/identity"))
     def request: SttpResponse[DE, UserIdentity] = sampleOAuthClient.users.me(signer)
-    // TODO: Shouldn't only be enforce an `AccessTokenCredentials` as `SignerV1` ?
-    //      RequestTokenCredentials(sampleToken, verifier = "TOKEN_VERIFIER", sampleConsumer)
 
-    "the server responds with an error" should {
-
-      def stub: StubMapping =
-        stubFor(
-          get(urlMatching("/oauth/identity"))
-            .willReturn(
-              aResponse()
-                .withStatus(401)
-                .withContentType(ContentType.APPLICATION_JSON)
-                .withBodyFile("unauthenticated.json")
-            )
-        )
-
-      "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(HttpError(body, _)), status, _, _, _, _) =>
-          status shouldBe StatusCode.Unauthorized
-          val ec = entityCodecs[DiscogsError]
-          ec.parse(body).flatMap(ec.decode) shouldBe Right(
-            DiscogsError(
-              "You must authenticate to access this resource."
-            )
-          )
-      }
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
     }
 
-    "the server responds with the expected string message" should {
-
+    "the server returns with the expected response entity" should {
       def stub: StubMapping =
         stubFor(
-          get(urlMatching("/oauth/identity"))
+          endpointRequest
             .willReturn(
               aResponse()
                 .withStatus(200)
@@ -133,34 +77,150 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
             )
         )
 
-      "return a Right with the `UserIdentity` response" in matchResponseBody(stub, request) {
-
-        case Right(response) =>
-          response shouldBe UserIdentity(
-            id = 1L,
-            username = "example",
-            resourceUrl = uri"https://api.discogs.com/users/example",
-            consumerName = "Your Application Name"
-          )
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(response) =>
+        response shouldBe UserIdentity(
+          id = 1L,
+          username = "example",
+          resourceUrl = uri"https://api.discogs.com/users/example",
+          consumerName = "Your Application Name"
+        )
       }
     }
+  }
 
-    "the server response is unexpected" should {
+  "getUserProfile" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/users/_.bartholomews"))
+    def request: SttpResponse[DE, UserProfile] =
+      sampleOAuthClient.users.getUserProfile(Username("_.bartholomews"))(accessTokenCredentials)
 
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
+    }
+
+    "the server returns with the response entity" should {
       def stub: StubMapping =
         stubFor(
-          get(urlMatching("/oauth/identity"))
+          endpointRequest
             .willReturn(
               aResponse()
                 .withStatus(200)
-                .withBody("WAT")
+                .withBodyFile("users/_.bartholomews.json")
             )
         )
 
-      "return a Left with appropriate message" in matchIdResponse(stub, request) {
-        case Response(Left(DeserializationException(body, _)), status, _, _, _, _) =>
-          status shouldBe StatusCode.Ok
-          body shouldBe "WAT"
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity should matchTo(sampleUserProfile)
+      }
+    }
+  }
+
+  "updateUserProfile" when {
+    def endpointRequest: MappingBuilder = post(urlPathEqualTo("/users/_.bartholomews"))
+
+    val updateUserRequest = UpdateUserRequest(
+      name = Some(UserRealName("bartholomews")),
+      homePage = Some(UserWebsite("https://bartholomews.io")),
+      location = Some(UserLocation("London")),
+      profile = Some(UserProfileInfo("")),
+      currAbbr = Some(MarketplaceCurrency.GBP)
+    )
+
+    def request: SttpResponse[DE, UserProfile] =
+      sampleOAuthClient.users
+        .updateUserProfile(Username("_.bartholomews"), updateUserRequest)(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
+    }
+
+    "the server returns with the response entity" should {
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .withRequestBody(equalToJson("""
+                                           |{
+                                           |	"name": "bartholomews",
+                                           |	"home_page": "https://bartholomews.io",
+                                           |	"location": "London",
+                                           |	"profile": "",
+                                           |	"curr_abbr": "GBP"
+                                           |}
+                                           |""".stripMargin))
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("users/_.bartholomews-updated.json")
+            )
+        )
+
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity should matchTo(
+          sampleUserProfile.copy(
+            name = UserRealName("bartholomews"),
+            homePage = UserWebsite("https://bartholomews.io"),
+            location = UserLocation("London"),
+            currAbbr = "GBP",
+            email = Some(UserEmail("discogs@bartholomews.io"))
+          )
+        )
+      }
+    }
+  }
+
+  "getUserSubmissions" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/users/rodneyfool/submissions"))
+      .withQueryParam("page", equalTo("1"))
+      .withQueryParam("per_page", equalTo("50"))
+
+    def request: SttpResponse[DE, UserSubmissionResponse] =
+      sampleOAuthClient.users.getUserSubmissions(Username("rodneyfool"))(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
+    }
+
+    "the server returns with the response entity" should {
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("users/rodneyfool-submissions.json")
+            )
+        )
+
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity.submissions.releases.size shouldBe 48
+      }
+    }
+  }
+
+  "getUserContributions" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/users/rodneyfool/contributions"))
+      .withQueryParam("page", equalTo("1"))
+      .withQueryParam("per_page", equalTo("50"))
+
+    def request: SttpResponse[DE, UserContributions] =
+      sampleOAuthClient.users.getUserContributions(Username("rodneyfool"))(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
+    }
+
+    "the server returns with the response entity" should {
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("users/rodneyfool-contributions.json")
+            )
+        )
+
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity.contributions.size shouldBe 20
       }
     }
   }

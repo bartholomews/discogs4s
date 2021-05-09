@@ -1,7 +1,7 @@
 package samples
 
 object AuthDisabledReadme extends App {
-  import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
+  import io.bartholomews.discogs4s.entities.{UserProfile, Username}
   import io.bartholomews.discogs4s.{DiscogsClient, DiscogsSimpleClient}
   import io.bartholomews.fsclient.core.config.UserAgent
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
@@ -37,6 +37,6 @@ object AuthDisabledReadme extends App {
   )(backend)
 
   // run a request with your client
-  val response: F[SttpResponse[circe.Error, SimpleUser]] =
-    client.users.getSimpleUserProfile(Username("_.bartholomews"))
+  val response: F[SttpResponse[circe.Error, UserProfile]] =
+    client.users.getUserProfile(Username("_.bartholomews"))
 }

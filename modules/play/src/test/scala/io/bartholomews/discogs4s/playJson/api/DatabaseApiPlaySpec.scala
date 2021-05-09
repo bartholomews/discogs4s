@@ -9,5 +9,5 @@ class DatabaseApiPlaySpec
     extends DatabaseApiSpec[Writes, Reads, JsError, JsValue]
     with PlayServerBehaviours
     with PlayEntityCodecs {
-  implicit override def paginatedReleasesDecoder: Reads[PaginatedReleases] = paginatedReleasesReads
+  implicit override val paginatedReleasesDecoder: Reads[PaginatedReleases] = paginatedReleasesReads
 }
