@@ -288,6 +288,7 @@ This client is for making calls on behalf of any authenticated user which grante
     - 🔐 [`getAccessToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-access-token-url)
     
 - **DatabaseApi**  
+    - 🔓 [`getRelease`](https://www.discogs.com/developers/#page:database,header:database-release)
     - 🔓 [`getArtistReleases`](https://www.discogs.com/developers/#page:database,header:database-artist-releases)
     
 - **UsersApi**  

@@ -1,6 +1,6 @@
 package io.bartholomews.discogs4s.playJson
 
-import ai.x.play.json.{CamelToSnakeNameEncoder, NameEncoder}
+import ai.x.play.json.{CamelToSnakeNameEncoder, Jsonx, NameEncoder}
 import enumeratum.EnumFormats
 import io.bartholomews.discogs4s.entities._
 import io.bartholomews.discogs4s.entities.requests.UpdateUserRequest
@@ -52,14 +52,13 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
         if (str.isEmpty) JsSuccess(None) else jsLookupResult.validate[A].map(Some(_))
       }
 
-  implicit val releaseReads: Reads[Release]                     = Json.reads[Release]
-  implicit val userIdentityReads: Reads[UserIdentity]           = Json.reads[UserIdentity]
-  implicit val userProfileReads: Reads[UserProfile]             = UserProfilePlayJson.reads
-  implicit val paginatedReleasesReads: Reads[PaginatedReleases] = Json.reads[PaginatedReleases]
+  implicit val userIdentityReads: Reads[UserIdentity] = Json.reads[UserIdentity]
+  implicit val userProfileReads: Reads[UserProfile]   = UserProfilePlayJson.reads
 
+  implicit val releaseTrackCodec: Format[ReleaseTrack]           = Json.format
   implicit val releaseVideoCodec: Format[ReleaseVideo]           = Json.format
   implicit val releaseImageCodec: Format[ReleaseImage]           = Json.format
-  implicit val releaseLabelCodec: Format[ReleaseLabel]           = Json.format
+  implicit val entityResourceCodec: Format[EntityResource]       = Json.format
   implicit val formatDescriptionCodec: Format[FormatDescription] = Json.valueFormat
   implicit val releaseFormatCodec: Format[ReleaseFormat] = {
     val writes: Writes[ReleaseFormat] = Json.writes
@@ -68,13 +67,14 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
         descriptions <- (json \ "descriptions").validateOpt[List[FormatDescription]].map(_.getOrElse(Nil))
         name         <- (json \ "name").validate[String]
         qty          <- (json \ "qty").validate[String].flatMap(str => JsResult.fromTry(Try(str.toInt)))
-      } yield ReleaseFormat(descriptions, name, qty)
+      } yield ReleaseFormat(name, qty, descriptions)
     }
     Format(reads, writes)
   }
 
   implicit val styleCodec: Format[Style] = Json.valueFormat
 
+  implicit val artistReleaseCodec: Format[ArtistRelease]                           = Json.format
   implicit val artistSubmissionCodec: Format[ArtistSubmission]                     = Json.format
   implicit val artistReleaseSubmissionCodec: Format[ArtistReleaseSubmission]       = Json.format
   implicit val communityReleaseSubmissionCodec: Format[CommunityReleaseSubmission] = Json.format
@@ -83,6 +83,11 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val userSubmissionResponseCodec: Format[UserSubmissionResponse]         = Json.format
 
   implicit val userContributionsCodec: Format[UserContributions] = Json.format
+
+  implicit val releaseIdentifierCodec: Format[ReleaseIdentifier] = Json.format
+  implicit val releaseCodec: Reads[Release]                      = Jsonx.formatCaseClass[Release]
+
+  implicit val paginatedReleasesReads: Reads[PaginatedReleases] = Json.reads[PaginatedReleases]
 
   implicit val marketplaceCurrencyCodec: Format[MarketplaceCurrency] = EnumFormats.formats(MarketplaceCurrency)
   implicit val updateUserRequestWrites: Writes[UpdateUserRequest]    = Json.writes[UpdateUserRequest]

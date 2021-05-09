@@ -36,7 +36,7 @@ abstract class AuthApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with D
       behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
     }
 
-    "the server returns with the expected response entity" should {
+    "the server returns the expected response entity" should {
       def stub: StubMapping =
         stubFor(
           endpointRequest
@@ -88,7 +88,7 @@ abstract class AuthApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with D
       behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
     }
 
-    "the server returns with the expected response entity" should {
+    "the server returns the expected response entity" should {
       def stub: StubMapping =
         stubFor(
           endpointRequest

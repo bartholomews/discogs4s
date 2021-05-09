@@ -7,11 +7,13 @@ import io.bartholomews.discogs4s.entities._
 import io.bartholomews.discogs4s.{DiscogsServerBehaviours, DiscogsWireWordSpec}
 import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
 
+//noinspection MutatorLikeMethodIsParameterless
 abstract class DatabaseApiSpec[E[_], D[_], DE, J]
     extends DiscogsWireWordSpec
     with DiscogsServerBehaviours[E, D, DE, J] {
 
   implicit def paginatedReleasesDecoder: D[PaginatedReleases]
+  implicit def releaseDecoder: D[Release]
 
   import DiscogsClientData._
 
@@ -49,8 +51,8 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
                 )
               )
             ),
-            releases = Seq(
-              Release(
+            releases = List(
+              ArtistReleaseSubmission(
                 status = Some("Accepted"),
                 mainRelease = None,
                 thumb = "",
@@ -82,6 +84,23 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
         inside(entity.releases.find(_.id == 12526186)) { case Some(release) =>
           release.year shouldBe None
         }
+      }
+    }
+  }
+
+  "getRelease" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/releases/249504"))
+    def request: SttpResponse[DE, Release] =
+      sampleOAuthClient.database.getRelease(releaseId = 249504)(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
+    }
+
+    "the server returns the expected response entity on a request with default curr_abbr" should {
+      "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) { case Right(entity) =>
+        entity.id shouldBe 249504
+        entity.blockedFromSale shouldBe false
       }
     }
   }

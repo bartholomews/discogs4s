@@ -6,7 +6,7 @@ import io.bartholomews.scalatestudo.diff.DiffDerivations
 
 trait DiscogsDiffDerivations extends DiffDerivations {
   implicit val pageUrlsDiff: Diff[PageUrls]                   = Diff.derived[PageUrls]
-  implicit val releaseDiff: Diff[Release]                     = Diff.derived[Release]
+  implicit val releaseDiff: Diff[ArtistReleaseSubmission]                     = Diff.derived[ArtistReleaseSubmission]
   implicit val paginationDiff: Diff[Pagination]               = Diff.derived[Pagination]
   implicit val paginatedReleasesDiff: Diff[PaginatedReleases] = Diff.derived[PaginatedReleases]
   implicit val usernameDiff: Diff[Username]                   = Diff.derived[Username]

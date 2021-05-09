@@ -3,8 +3,9 @@ package io.bartholomews.discogs4s.playJson
 import java.time.LocalDateTime
 
 import ai.x.play.json.Jsonx
+import ai.x.play.json.SingletonEncoder.simpleName
+import ai.x.play.json.implicits.formatSingleton
 import io.bartholomews.discogs4s.entities._
-import io.bartholomews.discogs4s.playJson.codecs.decodeNullableList
 import play.api.libs.json._
 import sttp.model.Uri
 
@@ -13,10 +14,9 @@ object ReleaseSubmissionPlayJson {
   import codecs._
 
   private val writes: Writes[ReleaseSubmission] = Jsonx.formatCaseClass[ReleaseSubmission]
-
   private val reads: Reads[ReleaseSubmission] = { (json: JsValue) =>
     for {
-      artists           <- (json \ "artists").validate[List[ArtistReleaseSubmission]]
+      artists           <- (json \ "artists").validate[List[ArtistRelease]]
       community         <- (json \ "community").validate[CommunityReleaseSubmission]
       country           <- (json \ "country").validateOpt[String]
       dataQuality       <- (json \ "data_quality").validate[String]
@@ -28,7 +28,7 @@ object ReleaseSubmissionPlayJson {
       genres            <- (json \ "genres").validate[List[String]]
       id                <- (json \ "id").validate[Long]
       images            <- (json \ "images").validateOpt[List[ReleaseImage]].map(_.getOrElse(Nil))
-      labels            <- (json \ "labels").validate[List[ReleaseLabel]]
+      labels            <- (json \ "labels").validate[List[EntityResource]]
       masterId          <- (json \ "master_id").validateOpt[Long]
       masterUrl         <- (json \ "master_url").validateOpt[String]
       notes             <- (json \ "notes").validateOpt[String]

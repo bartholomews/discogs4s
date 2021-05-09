@@ -25,11 +25,11 @@ trait DiscogsCirceApi extends FsClientCirceApi {
   implicit val pageUrlsCodec: Codec[PageUrls]     = deriveConfiguredCodec
   implicit val paginationCodec: Codec[Pagination] = deriveConfiguredCodec
 
-  implicit val pageUrlsDecoder: Decoder[PageUrls]                   = deriveConfiguredDecoder[PageUrls]
-  implicit val paginationDecoder: Decoder[Pagination]               = deriveConfiguredDecoder[Pagination]
-  implicit val paginatedReleasesDecoder: Decoder[PaginatedReleases] = deriveConfiguredDecoder[PaginatedReleases]
-  implicit val releaseDecoder: Decoder[Release]                     = deriveConfiguredDecoder[Release]
-  implicit val userProfileDecoder: Decoder[UserProfile]             = deriveConfiguredDecoder[UserProfile]
+  implicit val paginatedReleasesDecoder: Decoder[PaginatedReleases]         = deriveConfiguredDecoder
+  implicit val artistSubmissionCodec: Codec[ArtistSubmission]               = deriveConfiguredCodec
+  implicit val artistReleaseCodec: Codec[ArtistRelease]                     = deriveConfiguredCodec
+  implicit val artistReleaseSubmissionCodec: Codec[ArtistReleaseSubmission] = deriveConfiguredCodec
+  implicit val userProfileCodec: Codec[UserProfile]                         = deriveConfiguredCodec
 
   implicit val userIdentityDecoder: Decoder[UserIdentity] = Decoder.forProduct4(
     "id",
@@ -54,9 +54,10 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     Encoder.encodeString.contramap(_.entryName)
   )
 
+  implicit val releaseTrackCodec: Codec[ReleaseTrack]           = deriveConfiguredCodec
   implicit val releaseVideoCodec: Codec[ReleaseVideo]           = deriveConfiguredCodec
   implicit val releaseImageCodec: Codec[ReleaseImage]           = deriveConfiguredCodec
-  implicit val releaseLabelCodec: Codec[ReleaseLabel]           = deriveConfiguredCodec
+  implicit val entityResourceCodec: Codec[EntityResource]       = deriveConfiguredCodec
   implicit val formatDescriptionCodec: Codec[FormatDescription] = deriveUnwrappedCodec
   implicit val releaseFormatCodec: Codec[ReleaseFormat] = {
     implicit val decodeFormatDescription: Decoder[List[FormatDescription]] = decodeNullableList[FormatDescription]
@@ -64,8 +65,7 @@ trait DiscogsCirceApi extends FsClientCirceApi {
   }
   implicit val styleCodec: Codec[Style] = deriveUnwrappedCodec
 
-  implicit val artistSubmissionCodec: Codec[ArtistSubmission]               = deriveConfiguredCodec
-  implicit val artistReleaseSubmissionCodec: Codec[ArtistReleaseSubmission] = deriveConfiguredCodec
+  implicit val communityReleaseSubmissionCodec: Codec[CommunityReleaseSubmission] = deriveConfiguredCodec
   implicit val releaseSubmissionCodec: Codec[ReleaseSubmission] = {
     implicit val dateTimeOffsetDecoder: Decoder[LocalDateTime] =
       localDateTimeDecoder(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
@@ -74,10 +74,16 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     implicit val decodeVideos: Decoder[List[ReleaseVideo]] = decodeNullableList[ReleaseVideo]
     deriveConfiguredCodec
   }
-  implicit val communityReleaseSubmissionCodec: Codec[CommunityReleaseSubmission] = deriveConfiguredCodec
-  implicit val userSubmissionCodec: Codec[UserSubmissions]                        = deriveConfiguredCodec
-  implicit val userSubmissionResponseCodec: Codec[UserSubmissionResponse]       = deriveConfiguredCodec
+  implicit val userSubmissionCodec: Codec[UserSubmissions]                = deriveConfiguredCodec
+  implicit val userSubmissionResponseCodec: Codec[UserSubmissionResponse] = deriveConfiguredCodec
 
-  implicit val userContributionsCodec: Codec[UserContributions] = deriveConfiguredCodec
+  implicit val releaseIdentifierCodec: Codec[ReleaseIdentifier] = deriveConfiguredCodec
+  implicit val releaseCodec: Codec[Release] = {
+    implicit val dateTimeOffsetDecoder: Decoder[LocalDateTime] =
+      localDateTimeDecoder(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+    deriveConfiguredCodec
+  }
+
+  implicit val userContributionsCodec: Codec[UserContributions]     = deriveConfiguredCodec
   implicit val updateUserRequestEncoder: Encoder[UpdateUserRequest] = deriveConfiguredEncoder
 }
