@@ -7,9 +7,9 @@ import sttp.model.Uri
 // https://www.discogs.com/developers#page:authentication,header:authentication-request-token-url
 sealed trait DiscogsAuthEndpoint
 object DiscogsAuthEndpoint {
-  final val path: String = "oauth"
+  final val path: String  = "oauth"
   final val basePath: Uri = DiscogsEndpoint.apiUri / DiscogsAuthEndpoint.path
-  final val authorizeUri = DiscogsEndpoint.baseUri / path / "authorize"
+  final val authorizeUri  = DiscogsEndpoint.baseUri / path / "authorize"
   /*
     Unfortunately discogs support for stateless apps / repeated authorization is very poor;
     if you don't want to implement your own login,

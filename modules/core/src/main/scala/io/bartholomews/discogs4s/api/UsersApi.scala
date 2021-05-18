@@ -26,8 +26,8 @@ import sttp.model.Uri
 class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
-  private val basePath: Uri                     = DiscogsEndpoint.apiUri / "users"
-  private def userPath(username: Username): Uri = basePath / username.value
+  private val basePath: Uri                            = DiscogsEndpoint.apiUri / "users"
+  private def userPath(username: DiscogsUsername): Uri = basePath / username.value
 
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity
@@ -75,7 +75,7 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    *   `F[SttpResponse[DE, UserProfile]]`
    */
   def getUserProfile[DE](
-      username: Username
+      username: DiscogsUsername
   )(signer: Signer)(implicit responseHandler: ResponseHandler[DE, UserProfile]): F[SttpResponse[DE, UserProfile]] =
     baseRequest(userAgent)
       .get(userPath(username))
@@ -104,7 +104,7 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    *   `F[SttpResponse[DE, AuthenticatedUser]]`
    */
   def updateUserProfile[DE](
-      username: Username,
+      username: DiscogsUsername,
       request: UpdateUserRequest
   )(signer: OAuthSigner)(implicit
       bodySerializer: BodySerializer[UpdateUserRequest],
@@ -137,7 +137,7 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @return
    *   `F[SttpResponse[DE, UserSubmissionResponse]]`
    */
-  def getUserSubmissions[DE](username: Username, page: Int = 1, perPage: Int = 50)(
+  def getUserSubmissions[DE](username: DiscogsUsername, page: Int = 1, perPage: Int = 50)(
       signer: Signer
   )(implicit
       responseHandler: ResponseHandler[DE, UserSubmissionResponse]
@@ -177,11 +177,11 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    *   `F[SttpResponse[DE, ReleaseContributions]]`
    */
   def getUserContributions[DE](
-                                username: Username,
-                                page: Int = 1,
-                                perPage: Int = 50,
-                                sortBy: Option[UserContributions.SortedBy] = None,
-                                sortOrder: Option[SortOrder] = None
+      username: DiscogsUsername,
+      page: Int = 1,
+      perPage: Int = 50,
+      sortBy: Option[UserContributions.SortedBy] = None,
+      sortOrder: Option[SortOrder] = None
   )(
       signer: Signer
   )(implicit

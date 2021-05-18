@@ -29,7 +29,7 @@ class DiscogsClientSpec extends DiscogsWireWordSpec {
       "initialised with an explicit `BasicSignature` configuration" should {
 
         val sampleUserAgent = UserAgent(appName = "mock-app-name", appVersion = Some("1.0"), appUrl = None)
-        val basicSignature = sampleConsumer
+        val basicSignature  = sampleConsumer
 
         "read the consumer values from the injected configuration" in {
           noException should be thrownBy {

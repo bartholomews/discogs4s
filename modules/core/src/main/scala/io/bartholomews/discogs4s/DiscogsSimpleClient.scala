@@ -23,20 +23,20 @@ class DiscogsSimpleClient[F[_], S <: Signer] private[discogs4s] (client: FsClien
     private val api = new UsersApi[F](client.userAgent, client.backend)
 
     def getUserProfile[DE](
-        username: Username
+        username: DiscogsUsername
     )(implicit responseHandler: ResponseHandler[DE, UserProfile]): F[SttpResponse[DE, UserProfile]] =
       api.getUserProfile(username)(client.signer)
 
-    def getUserSubmissions[DE](username: Username, page: Int = 1, perPage: Int = 50)(implicit
+    def getUserSubmissions[DE](username: DiscogsUsername, page: Int = 1, perPage: Int = 50)(implicit
         responseHandler: ResponseHandler[DE, UserSubmissionResponse]
     ): F[SttpResponse[DE, UserSubmissionResponse]] = api.getUserSubmissions(username, page, perPage)(client.signer)
 
     def getUserContributions[DE](
-                                  username: Username,
-                                  page: Int = 1,
-                                  perPage: Int = 50,
-                                  sortBy: Option[UserContributions.SortedBy],
-                                  sortOrder: Option[SortOrder]
+        username: DiscogsUsername,
+        page: Int = 1,
+        perPage: Int = 50,
+        sortBy: Option[UserContributions.SortedBy],
+        sortOrder: Option[SortOrder]
     )(implicit
         responseHandler: ResponseHandler[DE, UserContributions]
     ): F[SttpResponse[DE, UserContributions]] = api.getUserContributions(

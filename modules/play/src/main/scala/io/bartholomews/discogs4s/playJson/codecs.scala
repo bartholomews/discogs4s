@@ -20,14 +20,16 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val pageUrlsCodec: Format[PageUrls]     = Json.format
   implicit val paginationCodec: Format[Pagination] = Json.format
 
-  implicit val usernameCodec: Format[Username]               = Json.valueFormat
-  implicit val userEmailCodec: Format[UserEmail]             = Json.valueFormat
-  implicit val userRealNameCodec: Format[UserRealName]       = Json.valueFormat
-  implicit val userWebsiteCodec: Format[UserWebsite]         = Json.valueFormat
-  implicit val userLocationCodec: Format[UserLocation]       = Json.valueFormat
-  implicit val userProfileInfoCodec: Format[UserProfileInfo] = Json.valueFormat
-  implicit val userResourceCodec: Format[UserResource]       = Json.format
-  implicit val ratingCodec: Format[Rating]                   = Json.format
+  implicit val discogsUserIdCodec: Format[DiscogsUserId]                   = Json.valueFormat
+  implicit val discogsUsernameCodec: Format[DiscogsUsername]               = Json.valueFormat
+  implicit val discogsUserEmailCodec: Format[DiscogsUserEmail]             = Json.valueFormat
+  implicit val discogsUserRealNameCodec: Format[DiscogsUserRealName]       = Json.valueFormat
+  implicit val discogsUserWebsiteCodec: Format[DiscogsUserWebsite]         = Json.valueFormat
+  implicit val discogsUserLocationCodec: Format[DiscogsUserLocation]       = Json.valueFormat
+  implicit val discogsUserProfileInfoCodec: Format[DiscogsUserProfileInfo] = Json.valueFormat
+  implicit val discogsUserResourceCodec: Format[DiscogsUserResource]       = Json.format
+
+  implicit val ratingCodec: Format[Rating] = Json.format
 
   // FIXME: This doesn't seem to work?
   def decodeNullableList[A](implicit rds: Reads[A]): Reads[List[A]] =
@@ -54,6 +56,8 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
 
   implicit val userIdentityReads: Reads[UserIdentity] = Json.reads[UserIdentity]
   implicit val userProfileReads: Reads[UserProfile]   = UserProfilePlayJson.reads
+
+  implicit val discogsReleaseIdCodec: Format[DiscogsReleaseId] = Json.valueFormat
 
   implicit val releaseTrackCodec: Format[ReleaseTrack]           = Json.format
   implicit val releaseVideoCodec: Format[ReleaseVideo]           = Json.format

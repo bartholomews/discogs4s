@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 import sttp.model.Uri
 
 final case class Release(
-    id: Long,
+    id: DiscogsReleaseId,
     status: String,
     year: Int,
     resourceUrl: Uri,
@@ -27,7 +27,9 @@ final case class Release(
     masterUrl: Uri,
     title: String,
     country: String,
-    released: String, // not `LocalDate` as it seems to use invalid format (maybe to signal unknown bits, e.g. "1987-07-00")
+    // TODO: not `LocalDate` as it seems to use invalid format (maybe to signal unknown fragments, e.g. "1987-07-00")
+    //  could create a more complex type with variable precision
+    released: String,
     notes: String,
     releasedFormatted: String,
     identifiers: List[ReleaseIdentifier],
@@ -41,3 +43,5 @@ final case class Release(
     estimatedWeight: Int,
     blockedFromSale: Boolean
 )
+
+final case class DiscogsReleaseId(value: Long) extends AnyVal

@@ -29,7 +29,15 @@ trait DiscogsCirceApi extends FsClientCirceApi {
   implicit val artistSubmissionCodec: Codec[ArtistSubmission]               = deriveConfiguredCodec
   implicit val artistReleaseCodec: Codec[ArtistRelease]                     = deriveConfiguredCodec
   implicit val artistReleaseSubmissionCodec: Codec[ArtistReleaseSubmission] = deriveConfiguredCodec
-  implicit val userProfileCodec: Codec[UserProfile]                         = deriveConfiguredCodec
+
+  implicit val discogsUserIdCodec: Codec[DiscogsUserId]                   = deriveUnwrappedCodec
+  implicit val discogsUsernameCodec: Codec[DiscogsUsername]               = deriveUnwrappedCodec
+  implicit val discogsUserEmailCodec: Codec[DiscogsUserEmail]             = deriveUnwrappedCodec
+  implicit val discogsUserRealNameCodec: Codec[DiscogsUserRealName]       = deriveUnwrappedCodec
+  implicit val discogsUserWebsiteCodec: Codec[DiscogsUserWebsite]         = deriveUnwrappedCodec
+  implicit val discogsUserLocationCodec: Codec[DiscogsUserLocation]       = deriveUnwrappedCodec
+  implicit val discogsUserProfileInfoCodec: Codec[DiscogsUserProfileInfo] = deriveUnwrappedCodec
+  implicit val discogsUserResourceCodec: Codec[DiscogsUserResource]       = deriveConfiguredCodec
 
   implicit val userIdentityDecoder: Decoder[UserIdentity] = Decoder.forProduct4(
     "id",
@@ -38,14 +46,13 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     "consumer_name"
   )(UserIdentity.apply)
 
-  implicit val usernameCodec: Codec[Username]               = deriveUnwrappedCodec
-  implicit val userEmailCodec: Codec[UserEmail]             = deriveUnwrappedCodec
-  implicit val userRealNameCodec: Codec[UserRealName]       = deriveUnwrappedCodec
-  implicit val userWebsiteCodec: Codec[UserWebsite]         = deriveUnwrappedCodec
-  implicit val userLocationCodec: Codec[UserLocation]       = deriveUnwrappedCodec
-  implicit val userProfileInfoCodec: Codec[UserProfileInfo] = deriveUnwrappedCodec
-  implicit val userResourceCodec: Codec[UserResource]       = deriveConfiguredCodec
-  implicit val ratingCodec: Codec[Rating]                   = deriveConfiguredCodec
+  implicit val userProfileCodec: Codec[UserProfile] = {
+    implicit val dateTimeOffsetDecoder: Decoder[LocalDateTime] =
+      localDateTimeDecoder(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+    deriveConfiguredCodec
+  }
+
+  implicit val ratingCodec: Codec[Rating] = deriveConfiguredCodec
 
   implicit val marketCodec: Codec[MarketplaceCurrency] = Codec.from(
     Decoder.decodeString.emap(s =>
@@ -53,6 +60,8 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     ),
     Encoder.encodeString.contramap(_.entryName)
   )
+
+  implicit val discogsReleaseIdCodec: Codec[DiscogsReleaseId] = deriveUnwrappedCodec
 
   implicit val releaseTrackCodec: Codec[ReleaseTrack]           = deriveConfiguredCodec
   implicit val releaseVideoCodec: Codec[ReleaseVideo]           = deriveConfiguredCodec

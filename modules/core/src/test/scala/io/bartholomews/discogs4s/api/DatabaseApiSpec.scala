@@ -99,7 +99,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
 
     "the server returns the expected response entity on a request with default curr_abbr" should {
       "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) { case Right(entity) =>
-        entity.id shouldBe 249504
+        entity.id shouldBe DiscogsReleaseId(249504)
         entity.blockedFromSale shouldBe false
       }
     }

@@ -10,9 +10,9 @@ class UsersApiPlaySpec
     extends UsersApiSpec[Writes, Reads, JsError, JsValue]
     with PlayServerBehaviours
     with PlayEntityCodecs {
-  implicit override val userIdentityDecoder: Reads[UserIdentity] = userIdentityReads
-  implicit override val userProfileDecoder: Reads[UserProfile]   = userProfileReads
-  override implicit val updateUserRequestEncoder: Writes[UpdateUserRequest] = updateUserRequestWrites
-  override implicit val userSubmissionResponseDecoder: Reads[UserSubmissionResponse] = userSubmissionResponseCodec
-  override implicit val userContributionsDecoder: Reads[UserContributions] = userContributionsCodec
+  implicit override val userIdentityDecoder: Reads[UserIdentity]                     = userIdentityReads
+  implicit override val userProfileDecoder: Reads[UserProfile]                       = userProfileReads
+  implicit override val updateUserRequestEncoder: Writes[UpdateUserRequest]          = updateUserRequestWrites
+  implicit override val userSubmissionResponseDecoder: Reads[UserSubmissionResponse] = userSubmissionResponseCodec
+  implicit override val userContributionsDecoder: Reads[UserContributions]           = userContributionsCodec
 }

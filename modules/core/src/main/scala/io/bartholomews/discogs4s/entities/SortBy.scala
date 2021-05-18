@@ -9,7 +9,7 @@ object SortBy extends Enum[SortBy] {
 
   override val values: IndexedSeq[SortBy] = findValues
 
-  case object Year extends SortBy
-  case object Title extends SortBy
+  case object Year   extends SortBy
+  case object Title  extends SortBy
   case object Format extends SortBy
 }

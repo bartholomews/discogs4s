@@ -5,5 +5,5 @@ import sttp.model.Uri
 
 object DiscogsEndpoint {
   final val baseUri: Uri = Configuration.discogs.baseUri
-  final val apiUri: Uri = Configuration.discogs.apiUri
+  final val apiUri: Uri  = Configuration.discogs.apiUri
 }

@@ -74,11 +74,10 @@ object FullOAuthReadme {
      */
     accessToken <- client.auth.fromUri(resourceOwnerAuthorizationUriResponse, temporaryCredentials).body
 
-  } yield {
-    // you need to provide an accessToken to make user-authenticated calls
-    client.users.me(accessToken).body match {
-      case Left(error) => println(error.getMessage)
-      case Right(user) => println(user.username)
-    }
+  } yield
+  // you need to provide an accessToken to make user-authenticated calls
+  client.users.me(accessToken).body match {
+    case Left(error) => println(error.getMessage)
+    case Right(user) => println(user.username)
   }
 }

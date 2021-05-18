@@ -1,5 +1,7 @@
 package io.bartholomews.discogs4s.playJson
 
+import java.time.LocalDateTime
+
 import io.bartholomews.discogs4s.entities._
 import play.api.libs.json._
 import sttp.model.Uri
@@ -10,26 +12,26 @@ object UserProfilePlayJson {
 
   val reads: Reads[UserProfile] = { (json: JsValue) =>
     for {
-      profile              <- (json \ "profile").validate[String]
+      profile              <- (json \ "profile").validate[DiscogsUserProfileInfo]
       wantlistUrl          <- (json \ "wantlist_url").validate[Uri]
       rank                 <- (json \ "rank").validate[Long]
       numPending           <- (json \ "num_pending").validate[Int]
-      numUnread           <- (json \ "num_unread").validateOpt[Int]
-      id                   <- (json \ "id").validate[Long]
+      numUnread            <- (json \ "num_unread").validateOpt[Int]
+      id                   <- (json \ "id").validate[DiscogsUserId]
       numForSale           <- (json \ "num_for_sale").validate[Int]
-      homePage             <- (json \ "home_page").validate[UserWebsite]
-      location             <- (json \ "location").validate[UserLocation]
+      homePage             <- (json \ "home_page").validate[DiscogsUserWebsite]
+      location             <- (json \ "location").validate[DiscogsUserLocation]
       collectionFoldersUrl <- (json \ "collection_folders_url").validate[Uri]
-      username             <- (json \ "username").validate[Username]
+      username             <- (json \ "username").validate[DiscogsUsername]
       collectionFieldsUrl  <- (json \ "collection_fields_url").validate[Uri]
       releasesContributed  <- (json \ "releases_contributed").validate[Long]
-      registered           <- (json \ "registered").validate[String]
+      registered           <- (json \ "registered").validate[LocalDateTime]
       ratingAvg            <- (json \ "rating_avg").validate[Double]
       numCollection        <- (json \ "num_collection").validateOpt[Int]
       releasesRated        <- (json \ "releases_rated").validate[Long]
       numLists             <- (json \ "num_lists").validate[Long]
-      name                 <- (json \ "name").validate[UserRealName]
-      email                <- (json \ "email").validateOpt[UserEmail]
+      name                 <- (json \ "name").validate[DiscogsUserRealName]
+      email                <- (json \ "email").validateOpt[DiscogsUserEmail]
       numWantlist          <- (json \ "num_wantlist").validateOpt[Int]
       inventoryUrl         <- (json \ "inventory_url").validate[Uri]
       avatarUrl            <- (json \ "avatar_url").validate[Uri]
@@ -41,7 +43,7 @@ object UserProfilePlayJson {
       buyerNumRatings      <- (json \ "buyer_num_ratings").validate[Long]
       sellerRatingStars    <- (json \ "seller_rating_stars").validate[Short]
       sellerNumRatings     <- (json \ "seller_num_ratings").validate[Long]
-      currAbbr             <- (json \ "curr_abbr").validate[String]
+      currAbbr             <- (json \ "curr_abbr").validate[MarketplaceCurrency]
     } yield UserProfile(
       id,
       profile,

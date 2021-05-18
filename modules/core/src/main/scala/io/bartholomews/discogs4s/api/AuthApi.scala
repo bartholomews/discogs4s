@@ -13,11 +13,14 @@ import sttp.client3.{Response, SttpBackend}
 import sttp.model.{Method, StatusCode, Uri}
 
 /**
- * https://www.discogs.com/developers/#page:authentication
- * For example on usages, see https://github.com/bartholomews/discogs4s#full-oauth-10a-with-access-tokensecret
- * @param userAgent the application `User-Agent`, which will be added as header in all the requests
- * @param backend the Sttp backend for the requests
- * @tparam F the Effect type
+ * https://www.discogs.com/developers/#page:authentication For example on usages, see
+ * https://github.com/bartholomews/discogs4s#full-oauth-10a-with-access-tokensecret
+ * @param userAgent
+ *   the application `User-Agent`, which will be added as header in all the requests
+ * @param backend
+ *   the Sttp backend for the requests
+ * @tparam F
+ *   the Effect type
  */
 class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
@@ -26,12 +29,13 @@ class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * Generate the request token
    * https://www.discogs.com/developers/#page:authentication,header:authentication-request-token-url
    * ----------------------------------------------------------------------------------------------
-   * @param temporaryCredentialsRequest the consumer credentials and OAuth options
-   *                                    such as redirect uri and signature method
-   * @return an Sttp response with either the request token or an error
+   * @param temporaryCredentialsRequest
+   *   the consumer credentials and OAuth options such as redirect uri and signature method
+   * @return
+   *   an Sttp response with either the request token or an error
    */
   def getRequestToken(
-    temporaryCredentialsRequest: TemporaryCredentialsRequest
+      temporaryCredentialsRequest: TemporaryCredentialsRequest
   ): F[SttpResponse[Exception, TemporaryCredentials]] =
     temporaryCredentialsRequest.send(
       method = Method.GET,
@@ -43,13 +47,14 @@ class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   /**
    * Generate the access token
    * https://www.discogs.com/developers/#page:authentication,header:authentication-access-token-url
-   * ----------------------------------------------------------------------------------------------
-   * This should probably not be used directly unless you want to have a custom error
-   * (e.g. for permissions rejected or some unexpected error).
-   * Otherwise you can simply use `fromUri`, which will parse the uri which the user has been redirected to
+   * ---------------------------------------------------------------------------------------------- This should probably
+   * not be used directly unless you want to have a custom error (e.g. for permissions rejected or some unexpected
+   * error). Otherwise you can simply use `fromUri`, which will parse the uri which the user has been redirected to
    * (after granting or rejecting permissions for the app)
-   * @param signer the request token credentials
-   * @return an sttp response with either the access token or an error
+   * @param signer
+   *   the request token credentials
+   * @return
+   *   an sttp response with either the access token or an error
    */
   def getAccessToken(signer: RequestTokenCredentials): F[SttpResponse[Exception, AccessTokenCredentials]] = {
 
@@ -65,20 +70,26 @@ class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
 
   /**
    * Generate the access token directly from the redirection uri
-   * @param resourceOwnerAuthorizationUriResponse the uri where the user has been redirected to
-   *                                              (after granting or rejecting permissions for the app)
-   * @param temporaryCredentials the request token credentials obtained via `getRequestToken`
-   * @param signatureMethod the OAuth signature, default to SHA1 (see https://tools.ietf.org/html/rfc5849#section-3.4)
-   * @param f the effect type
-   * @return an sttp response with either the access token or an error
+   * @param resourceOwnerAuthorizationUriResponse
+   *   the uri where the user has been redirected to (after granting or rejecting permissions for the app)
+   * @param temporaryCredentials
+   *   the request token credentials obtained via `getRequestToken`
+   * @param signatureMethod
+   *   the OAuth signature, default to SHA1 (see https://tools.ietf.org/html/rfc5849#section-3.4)
+   * @param f
+   *   the effect type
+   * @return
+   *   an sttp response with either the access token or an error
    */
   def fromUri(
-    resourceOwnerAuthorizationUriResponse: Uri,
-    temporaryCredentials: TemporaryCredentials,
-    signatureMethod: SignatureMethod = SignatureMethod.SHA1
+      resourceOwnerAuthorizationUriResponse: Uri,
+      temporaryCredentials: TemporaryCredentials,
+      signatureMethod: SignatureMethod = SignatureMethod.SHA1
   )(implicit f: Applicative[F]): F[SttpResponse[Exception, AccessTokenCredentials]] =
     RequestTokenCredentials
       .fetchRequestTokenCredentials(resourceOwnerAuthorizationUriResponse, temporaryCredentials, signatureMethod)
-      .fold(error => f.pure(Response(code = StatusCode.Unauthorized, body = Left(error))),
-            requestTokenCredentials => getAccessToken(requestTokenCredentials))
+      .fold(
+        error => f.pure(Response(code = StatusCode.Unauthorized, body = Left(error))),
+        requestTokenCredentials => getAccessToken(requestTokenCredentials)
+      )
 }

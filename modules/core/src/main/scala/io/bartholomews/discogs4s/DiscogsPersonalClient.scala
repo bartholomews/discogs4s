@@ -29,25 +29,25 @@ class DiscogsPersonalClient[F[_], S <: OAuthSigner] private[discogs4s] (client: 
     ): F[SttpResponse[DE, UserIdentity]] = api.me(client.signer)
 
     def getUserProfile[DE](
-        username: Username
+        username: DiscogsUsername
     )(implicit responseHandler: ResponseHandler[DE, UserProfile]): F[SttpResponse[DE, UserProfile]] =
       api.getUserProfile(username)(client.signer)
 
-    def updateUserProfile[DE](username: Username, request: UpdateUserRequest)(implicit
+    def updateUserProfile[DE](username: DiscogsUsername, request: UpdateUserRequest)(implicit
         bodySerializer: BodySerializer[UpdateUserRequest],
         responseHandler: ResponseHandler[DE, UserProfile]
     ): F[SttpResponse[DE, UserProfile]] = api.updateUserProfile(username, request)(client.signer)
 
-    def getUserSubmissions[DE](username: Username, page: Int = 1, perPage: Int = 50)(implicit
+    def getUserSubmissions[DE](username: DiscogsUsername, page: Int = 1, perPage: Int = 50)(implicit
         responseHandler: ResponseHandler[DE, UserSubmissionResponse]
     ): F[SttpResponse[DE, UserSubmissionResponse]] = api.getUserSubmissions(username, page, perPage)(client.signer)
 
     def getUserContributions[DE](
-                                  username: Username,
-                                  page: Int = 1,
-                                  perPage: Int = 50,
-                                  sortBy: Option[UserContributions.SortedBy],
-                                  sortOrder: Option[SortOrder]
+        username: DiscogsUsername,
+        page: Int = 1,
+        perPage: Int = 50,
+        sortBy: Option[UserContributions.SortedBy],
+        sortOrder: Option[SortOrder]
     )(implicit
         responseHandler: ResponseHandler[DE, UserContributions]
     ): F[SttpResponse[DE, UserContributions]] = api.getUserContributions(

@@ -1,7 +1,7 @@
 package samples
 
 import cats.implicits._
-import io.bartholomews.discogs4s.entities.Username
+import io.bartholomews.discogs4s.entities.DiscogsUsername
 import io.bartholomews.discogs4s.{DiscogsClient, DiscogsOAuthClient}
 import io.bartholomews.fsclient.core.config.UserAgent
 import io.bartholomews.fsclient.core.oauth._
@@ -38,7 +38,7 @@ object NoAuth extends App {
   import io.bartholomews.discogs4s.circe.codecs._
 
   val client = DiscogsClient.authDisabled(userAgent)(backend)
-  client.users.getUserProfile(Username("_.bartholomews")).body.fold(println, println)
+  client.users.getUserProfile(DiscogsUsername("_.bartholomews")).body.fold(println, println)
 
   // $COVERAGE-ON$
 }
@@ -75,7 +75,7 @@ object ClientCredentialsFlow extends App {
   val client = DiscogsClient.clientCredentials(userAgent, consumer)(backend)
 
   client.users
-    .getUserProfile(Username("_.bartholomews"))
+    .getUserProfile(DiscogsUsername("_.bartholomews"))
     .headers
     .foreach(println)
 

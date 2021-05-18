@@ -9,6 +9,6 @@ object SortOrder extends Enum[SortOrder] {
 
   override val values: IndexedSeq[SortOrder] = findValues
 
-  case object Asc extends SortOrder
+  case object Asc  extends SortOrder
   case object Desc extends SortOrder
 }

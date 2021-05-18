@@ -1,7 +1,7 @@
 package samples
 
 object ClientCredentialsReadme extends App {
-  import io.bartholomews.discogs4s.entities.{UserProfile, Username}
+  import io.bartholomews.discogs4s.entities.{DiscogsUsername, UserProfile}
   import io.bartholomews.discogs4s.{DiscogsClient, DiscogsSimpleClient}
   import io.bartholomews.fsclient.core.config.UserAgent
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
@@ -33,7 +33,7 @@ object ClientCredentialsReadme extends App {
       secret: "<YOUR_CONSUMER_SECRET>"
     }
   }
-  */
+   */
   private val client = DiscogsClient.clientCredentials.unsafeFromConfig(backend)
   // you can also create a safe client from config
   private val safeClient: Result[DiscogsSimpleClient[F, SignerV1]] = DiscogsClient.clientCredentials.fromConfig(backend)
@@ -44,5 +44,5 @@ object ClientCredentialsReadme extends App {
   )(backend)
 
   val response: F[SttpResponse[circe.Error, UserProfile]] =
-    client.users.getUserProfile(Username("_.bartholomews"))
+    client.users.getUserProfile(DiscogsUsername("_.bartholomews"))
 }

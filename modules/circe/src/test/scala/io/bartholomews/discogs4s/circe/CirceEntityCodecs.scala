@@ -14,14 +14,14 @@ trait CirceEntityCodecs {
   implicit def discogsErrorDecoder: Decoder[DiscogsClientData.DiscogsError] =
     semiauto.deriveDecoder[DiscogsClientData.DiscogsError]
 
-  implicit def entityCodecs[Entity](
-    implicit encoder: Encoder[Entity],
-    decoder: Decoder[Entity]
+  implicit def entityCodecs[Entity](implicit
+      encoder: Encoder[Entity],
+      decoder: Decoder[Entity]
   ): JsonCodecs[Entity, Encoder, Decoder, Json] =
     new JsonCodecs[Entity, Encoder, Decoder, Json] {
-      implicit override def entityEncoder: Encoder[Entity] = encoder
-      implicit override def entityDecoder: Decoder[Entity] = decoder
-      override def encode(entity: Entity): Json = entity.asJson(encoder)
+      implicit override def entityEncoder: Encoder[Entity]    = encoder
+      implicit override def entityDecoder: Decoder[Entity]    = decoder
+      override def encode(entity: Entity): Json               = entity.asJson(encoder)
       override def decode(json: Json): Either[String, Entity] = json.as[Entity](decoder).left.map(_.message)
       override def parse(rawJson: String): Either[String, Json] =
         io.circe.parser.parse(rawJson).left.map(_.message)

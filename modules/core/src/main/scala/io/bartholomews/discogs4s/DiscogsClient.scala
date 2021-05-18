@@ -15,13 +15,10 @@ object DiscogsClient {
   import pureconfig.generic.auto._
 
   private val userAgentConfig = ConfigSource.default.at("user-agent")
-  private val discogsConfig = ConfigSource.default.at("discogs")
+  private val discogsConfig   = ConfigSource.default.at("discogs")
 
   /**
-   * Credentials in request ? None
-   * Rate limiting          ? 🐢 Low tier
-   * Image URLs             ? ❌ No
-   * Authenticated as user  ? ❌ No
+   * Credentials in request ? None Rate limiting ? 🐢 Low tier Image URLs ? ❌ No Authenticated as user ? ❌ No
    */
   object authDisabled {
     def apply[F[_]](userAgent: UserAgent)(backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, AuthDisabled.type] =
@@ -37,10 +34,8 @@ object DiscogsClient {
   }
 
   /**
-   * Credentials in request ? Only Consumer key/secret
-   * Rate limiting          ? 🐰 High tier
-   * Image URLs             ? ✔ Yes
-   * Authenticated as user  ? ❌ No
+   * Credentials in request ? Only Consumer key/secret Rate limiting ? 🐰 High tier Image URLs ? ✔ Yes Authenticated as
+   * user ? ❌ No
    */
   object clientCredentials {
     def apply[F[_]](userAgent: UserAgent, consumer: Consumer)(backend: SttpBackend[F, Any]) =
@@ -51,7 +46,7 @@ object DiscogsClient {
     def fromConfig[F[_]](backend: SttpBackend[F, Any]): Result[DiscogsSimpleClient[F, SignerV1]] =
       for {
         userAgent <- userAgentConfig.load[UserAgent]
-        consumer <- discogsConfig.at("consumer").load[Consumer]
+        consumer  <- discogsConfig.at("consumer").load[Consumer]
       } yield clientCredentials(userAgent, consumer)(backend)
 
     def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsSimpleClient[F, SignerV1] =
@@ -62,23 +57,21 @@ object DiscogsClient {
   }
 
   /**
-   * Credentials in request ? Personal access token
-   * Rate limiting          ? 🐰 High tier
-   * Image URLs             ? ✔ Yes
-   * Authenticated as user  ? ✔ Yes, for token holder only 👩
+   * Credentials in request ? Personal access token Rate limiting ? 🐰 High tier Image URLs ? ✔ Yes Authenticated as
+   * user ? ✔ Yes, for token holder only 👩
    */
   object personal {
     private def personalToken(accessToken: AccessToken): CustomAuthorizationHeader =
       CustomAuthorizationHeader(s"Discogs token=${accessToken.value}")
 
     def apply[F[_]](userAgent: UserAgent, accessToken: AccessToken)(
-      backend: SttpBackend[F, Any]
+        backend: SttpBackend[F, Any]
     ): DiscogsPersonalClient[F, OAuthSigner] =
       new DiscogsPersonalClient[F, OAuthSigner](FsClient(userAgent, personalToken(accessToken), backend))
 
     def fromConfig[F[_]](backend: SttpBackend[F, Any]): Result[DiscogsPersonalClient[F, OAuthSigner]] =
       for {
-        userAgent <- userAgentConfig.load[UserAgent]
+        userAgent   <- userAgentConfig.load[UserAgent]
         accessToken <- discogsConfig.at("access-token").load[AccessToken]
       } yield personal(userAgent, accessToken)(backend)
 
@@ -90,10 +83,8 @@ object DiscogsClient {
   }
 
   /**
-   * Credentials in request ? Full OAuth 1.0a with access token/secret
-   * Rate limiting          ? 🐰 High tier
-   * Image URLs             ? ✔ Yes
-   * Authenticated as user  ? ✔ Yes, on behalf of any user 🌍
+   * Credentials in request ? Full OAuth 1.0a with access token/secret Rate limiting ? 🐰 High tier Image URLs ? ✔ Yes
+   * Authenticated as user ? ✔ Yes, on behalf of any user 🌍
    */
   object oAuth {
     def apply[F[_]](userAgent: UserAgent, consumer: Consumer)(backend: SttpBackend[F, Any]) =
@@ -102,7 +93,7 @@ object DiscogsClient {
     def fromConfig[F[_]](backend: SttpBackend[F, Any]): Result[DiscogsOAuthClient[F]] =
       for {
         userAgent <- userAgentConfig.load[UserAgent]
-        consumer <- discogsConfig.at("consumer").load[Consumer]
+        consumer  <- discogsConfig.at("consumer").load[Consumer]
       } yield oAuth(userAgent, consumer)(backend)
 
     def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsOAuthClient[F] =

@@ -1,11 +1,11 @@
 package io.bartholomews.discogs4s.entities
 
 final case class CommunityReleaseSubmission(
-    contributors: List[UserResource],
+    contributors: List[DiscogsUserResource],
     dataQuality: String,
     have: Int,
     rating: Rating,
     status: String,
-    submitter: UserResource,
+    submitter: DiscogsUserResource,
     want: Int
 )

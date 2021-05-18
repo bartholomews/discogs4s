@@ -15,14 +15,14 @@ trait PlayEntityCodecs {
   implicit def discogsErrorDecoder: Reads[DiscogsClientData.DiscogsError] =
     Json.reads
 
-  implicit def entityCodecs[Entity](
-    implicit writes: Writes[Entity],
-    reads: Reads[Entity]
+  implicit def entityCodecs[Entity](implicit
+      writes: Writes[Entity],
+      reads: Reads[Entity]
   ): JsonCodecs[Entity, Writes, Reads, JsValue] =
     new JsonCodecs[Entity, Writes, Reads, JsValue] {
-      implicit override def entityEncoder: Writes[Entity] = writes
-      implicit override def entityDecoder: Reads[Entity] = reads
-      override def encode(entity: Entity): JsValue = Json.toJson(entity)(writes)
+      implicit override def entityEncoder: Writes[Entity]        = writes
+      implicit override def entityDecoder: Reads[Entity]         = reads
+      override def encode(entity: Entity): JsValue               = Json.toJson(entity)(writes)
       override def decode(json: JsValue): Either[String, Entity] = toEitherString(Try(json.as[Entity](reads)))
       override def parse(rawJson: String): Either[String, JsValue] =
         toEitherString(Try(Json.parse(rawJson)))

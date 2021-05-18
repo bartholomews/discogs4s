@@ -1,5 +1,7 @@
 package io.bartholomews.discogs4s.api
 
+import java.time.{LocalDateTime, Month}
+
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
@@ -23,24 +25,24 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
   implicit def userContributionsDecoder: D[UserContributions]
 
   private val sampleUserProfile = UserProfile(
-    profile = "",
+    profile = DiscogsUserProfileInfo(""),
     wantlistUrl = uri"https://api.discogs.com/users/_.bartholomews/wants",
     rank = 0,
     numPending = 0,
-    id = 2820336L,
+    id = DiscogsUserId(2820336L),
     numForSale = 0,
-    homePage = UserWebsite(""),
-    location = UserLocation(""),
+    homePage = DiscogsUserWebsite(""),
+    location = DiscogsUserLocation(""),
     collectionFoldersUrl = uri"https://api.discogs.com/users/_.bartholomews/collection/folders",
-    username = Username("_.bartholomews"),
+    username = DiscogsUsername("_.bartholomews"),
     collectionFieldsUrl = uri"https://api.discogs.com/users/_.bartholomews/collection/fields",
     releasesContributed = 0,
-    registered = "2015-04-25T23:52:31-07:00", // FIXME date
+    registered = LocalDateTime.of(2015, Month.APRIL, 25, 23, 52, 31), // "2015-04-25T23:52:31-07:00", // FIXME date
     ratingAvg = 0.0,
     numCollection = Some(48),
     releasesRated = 0,
     numLists = 0L,
-    name = UserRealName(""),
+    name = DiscogsUserRealName(""),
     numWantlist = Some(44),
     inventoryUrl = uri"https://api.discogs.com/users/_.bartholomews/inventory",
     avatarUrl = uri"https://secure.gravatar.com/avatar/60ab919f0b77cbd942d37bbdd9003607?s=500&r=pg&d=mm",
@@ -52,9 +54,9 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
     buyerNumRatings = 7,
     sellerRatingStars = 0,
     sellerNumRatings = 0,
-    currAbbr = "EUR",
+    currAbbr = MarketplaceCurrency.EUR,
     numUnread = Some(45),
-    email = Some(UserEmail("discogs@bartholomews.io"))
+    email = Some(DiscogsUserEmail("discogs@bartholomews.io"))
   )
 
   "me" when {
@@ -80,7 +82,7 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
       "decode the response correctly" in matchResponseBody(stub, request) { case Right(response) =>
         response shouldBe UserIdentity(
           id = 1L,
-          username = "example",
+          username = DiscogsUsername("example"),
           resourceUrl = uri"https://api.discogs.com/users/example",
           consumerName = "Your Application Name"
         )
@@ -91,7 +93,7 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
   "getUserProfile" when {
     def endpointRequest: MappingBuilder = get(urlPathEqualTo("/users/_.bartholomews"))
     def request: SttpResponse[DE, UserProfile] =
-      sampleOAuthClient.users.getUserProfile(Username("_.bartholomews"))(accessTokenCredentials)
+      sampleOAuthClient.users.getUserProfile(DiscogsUsername("_.bartholomews"))(accessTokenCredentials)
 
     "something went wrong" should {
       behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
@@ -118,16 +120,16 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
     def endpointRequest: MappingBuilder = post(urlPathEqualTo("/users/_.bartholomews"))
 
     val updateUserRequest = UpdateUserRequest(
-      name = Some(UserRealName("bartholomews")),
-      homePage = Some(UserWebsite("https://bartholomews.io")),
-      location = Some(UserLocation("London")),
-      profile = Some(UserProfileInfo("")),
+      name = Some(DiscogsUserRealName("bartholomews")),
+      homePage = Some(DiscogsUserWebsite("https://bartholomews.io")),
+      location = Some(DiscogsUserLocation("London")),
+      profile = Some(DiscogsUserProfileInfo("")),
       currAbbr = Some(MarketplaceCurrency.GBP)
     )
 
     def request: SttpResponse[DE, UserProfile] =
       sampleOAuthClient.users
-        .updateUserProfile(Username("_.bartholomews"), updateUserRequest)(accessTokenCredentials)
+        .updateUserProfile(DiscogsUsername("_.bartholomews"), updateUserRequest)(accessTokenCredentials)
 
     "something went wrong" should {
       behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
@@ -156,11 +158,11 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
       "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
         entity should matchTo(
           sampleUserProfile.copy(
-            name = UserRealName("bartholomews"),
-            homePage = UserWebsite("https://bartholomews.io"),
-            location = UserLocation("London"),
-            currAbbr = "GBP",
-            email = Some(UserEmail("discogs@bartholomews.io"))
+            name = DiscogsUserRealName("bartholomews"),
+            homePage = DiscogsUserWebsite("https://bartholomews.io"),
+            location = DiscogsUserLocation("London"),
+            currAbbr = MarketplaceCurrency.GBP,
+            email = Some(DiscogsUserEmail("discogs@bartholomews.io"))
           )
         )
       }
@@ -173,7 +175,7 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
       .withQueryParam("per_page", equalTo("50"))
 
     def request: SttpResponse[DE, UserSubmissionResponse] =
-      sampleOAuthClient.users.getUserSubmissions(Username("rodneyfool"))(accessTokenCredentials)
+      sampleOAuthClient.users.getUserSubmissions(DiscogsUsername("rodneyfool"))(accessTokenCredentials)
 
     "something went wrong" should {
       behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
@@ -202,7 +204,7 @@ abstract class UsersApiSpec[E[_], D[_], DE, J] extends DiscogsWireWordSpec with 
       .withQueryParam("per_page", equalTo("50"))
 
     def request: SttpResponse[DE, UserContributions] =
-      sampleOAuthClient.users.getUserContributions(Username("rodneyfool"))(accessTokenCredentials)
+      sampleOAuthClient.users.getUserContributions(DiscogsUsername("rodneyfool"))(accessTokenCredentials)
 
     "something went wrong" should {
       behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
