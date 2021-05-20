@@ -13,7 +13,7 @@ import io.circe.generic.extras.semiauto.{
   deriveConfiguredEncoder,
   deriveUnwrappedCodec
 }
-import io.circe.{Codec, Decoder, Encoder}
+import io.circe._
 import sttp.model.Uri
 
 object codecs extends DiscogsCirceApi
@@ -52,7 +52,7 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     deriveConfiguredCodec
   }
 
-  implicit val ratingCodec: Codec[Rating] = deriveConfiguredCodec
+  implicit val ratingAverageCodec: Codec[RatingAverage] = deriveConfiguredCodec
 
   implicit val marketCodec: Codec[MarketplaceCurrency] = Codec.from(
     Decoder.decodeString.emap(s =>
@@ -93,6 +93,22 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     deriveConfiguredCodec
   }
 
+  implicit val ratingCodec: Codec[Rating] = Codec.from(
+    (c: HCursor) =>
+      c.as[Int]
+        .flatMap({
+          case 0     => Right(Rating.NoRating)
+          case 1     => Right(Rating.One)
+          case 2     => Right(Rating.Two)
+          case 3     => Right(Rating.Three)
+          case 4     => Right(Rating.Four)
+          case 5     => Right(Rating.Five)
+          case other => Left(DecodingFailure(s"[$other: unexpected `Rating`]", c.history))
+        }),
+    Encoder.encodeInt.contramap[Rating](_.value)
+  )
+
+  implicit val releaseRatingCodec: Codec[ReleaseRating]             = deriveConfiguredCodec
   implicit val userContributionsCodec: Codec[UserContributions]     = deriveConfiguredCodec
   implicit val updateUserRequestEncoder: Encoder[UpdateUserRequest] = deriveConfiguredEncoder
 }

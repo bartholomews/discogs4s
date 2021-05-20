@@ -29,7 +29,7 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val discogsUserProfileInfoCodec: Format[DiscogsUserProfileInfo] = Json.valueFormat
   implicit val discogsUserResourceCodec: Format[DiscogsUserResource]       = Json.format
 
-  implicit val ratingCodec: Format[Rating] = Json.format
+  implicit val ratingAverageCodec: Format[RatingAverage] = Json.format
 
   // FIXME: This doesn't seem to work?
   def decodeNullableList[A](implicit rds: Reads[A]): Reads[List[A]] =
@@ -91,7 +91,24 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val releaseIdentifierCodec: Format[ReleaseIdentifier] = Json.format
   implicit val releaseCodec: Reads[Release]                      = Jsonx.formatCaseClass[Release]
 
+  implicit val ratingCodec: Format[Rating] = Format(
+    (json: JsValue) =>
+      json
+        .validate[Int]
+        .flatMap({
+          case 0     => JsSuccess(Rating.NoRating)
+          case 1     => JsSuccess(Rating.One)
+          case 2     => JsSuccess(Rating.Two)
+          case 3     => JsSuccess(Rating.Three)
+          case 4     => JsSuccess(Rating.Four)
+          case 5     => JsSuccess(Rating.Five)
+          case other => JsError(s"[$other: unexpected `Rating`]")
+        }),
+    (o: Rating) => JsNumber(o.value)
+  )
+
   implicit val paginatedReleasesReads: Reads[PaginatedReleases] = Json.reads[PaginatedReleases]
+  implicit val releaseRatingCodec: Format[ReleaseRating]        = Json.format
 
   implicit val marketplaceCurrencyCodec: Format[MarketplaceCurrency] = EnumFormats.formats(MarketplaceCurrency)
   implicit val updateUserRequestWrites: Writes[UpdateUserRequest]    = Json.writes[UpdateUserRequest]

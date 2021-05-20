@@ -23,11 +23,31 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   final val artistsPath  = DiscogsEndpoint.apiUri / "artists"
   final val releasesPath = DiscogsEndpoint.apiUri / "releases"
 
-  def getRelease[DE](releaseId: Long, marketplaceCurrency: Option[MarketplaceCurrency] = None)(signer: Signer)(implicit
+  /**
+   * https://www.discogs.com/developers/#page:database,header:database-release
+   *
+   * The Release resource represents a particular physical or digital object released by one or more Artists.
+   *
+   * @param releaseId
+   *   The Release ID
+   * @param marketplaceCurrency
+   *   Currency for marketplace data. Defaults to the authenticated users currency.
+   * @param signer
+   *   the request Signer
+   * @param responseHandler
+   *   the response decoder
+   * @tparam DE
+   *   the Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, Release]]`
+   */
+  def getRelease[DE](releaseId: DiscogsReleaseId, marketplaceCurrency: Option[MarketplaceCurrency] = None)(
+      signer: Signer
+  )(implicit
       responseHandler: ResponseHandler[DE, Release]
   ): F[SttpResponse[DE, Release]] = {
     val uri: Uri =
-      (releasesPath / releaseId.toString)
+      (releasesPath / releaseId.value.toString)
         .withOptionQueryParam("curr_abbr", marketplaceCurrency.map(_.entryName))
 
     baseRequest(userAgent)
@@ -38,18 +58,48 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   }
 
   /**
+   * https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-get Retrieves the
+   * release’s rating for a given user.
+   *
+   * @param releaseId
+   *   The Release ID
+   * @param username
+   *   The username of the rating you are trying to request.
+   * @param signer
+   *   the request Signer
+   * @param responseHandler
+   *   the response decoder
+   * @tparam DE
+   *   the Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, ReleaseRating]]`
+   */
+  def getReleaseRating[DE](releaseId: DiscogsReleaseId, username: DiscogsUsername)(
+      signer: Signer
+  )(implicit responseHandler: ResponseHandler[DE, ReleaseRating]): F[SttpResponse[DE, ReleaseRating]] =
+    baseRequest(userAgent)
+      .get(releasesPath / releaseId.value.toString / "rating" / username.value)
+      .sign(signer)
+      .response(responseHandler)
+      .send(backend)
+
+  /**
    * https://www.discogs.com/developers/#page:database,header:database-artist-releases
    *
    * Get an artist’s releases
    *
    * @param artistId
    *   The Artist ID
-   *
    * @param sortBy
    *   Sort items by this field: year (i.e. year of the release) title (i.e. title of the release) format
-   *
    * @param sortOrder
    *   Sort items in a particular order (one of asc, desc)
+   * @param signer
+   *   the request Signer
+   * @param responseHandler
+   *   the response decoder
+   * @tparam DE
+   *   the Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, PaginatedReleases]]`
    */

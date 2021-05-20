@@ -13,6 +13,16 @@ class DiscogsSimpleClient[F[_], S <: Signer] private[discogs4s] (client: FsClien
   final object database {
     private val api = new DatabaseApi[F](client.userAgent, client.backend)
 
+    def getRelease[DE](releaseId: DiscogsReleaseId, marketplaceCurrency: Option[MarketplaceCurrency] = None)(implicit
+        responseHandler: ResponseHandler[DE, Release]
+    ): F[SttpResponse[DE, Release]] =
+      api.getRelease(releaseId, marketplaceCurrency)(client.signer)
+
+    def getReleaseRating[DE](releaseId: DiscogsReleaseId, username: DiscogsUsername)(implicit
+        responseHandler: ResponseHandler[DE, ReleaseRating]
+    ): F[SttpResponse[DE, ReleaseRating]] =
+      api.getReleaseRating(releaseId, username)(client.signer)
+
     def getArtistsReleases[DE](artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(implicit
         responseHandler: ResponseHandler[DE, PaginatedReleases]
     ): F[SttpResponse[DE, PaginatedReleases]] =
