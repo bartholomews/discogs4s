@@ -6,17 +6,17 @@
 Early stage *Discogs* client wrapping [sttp](https://sttp.softwaremill.com/en/latest)
 
 The client is using the library [fsclient](https://github.com/bartholomews/fsclient)
-which is a wrapper around sttp with circe and OAuth handling.
+which is a wrapper around sttp with circe/play-json support and OAuth handling.
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.bartholomews/discogs4s_2.13)
 
 ```
 // circe codecs
-libraryDependencies += "io.bartholomews" %% "discogs4s-circe" % "<LATEST_VERSION>"
+libraryDependencies += "io.bartholomews" %% "discogs4s-circe" % "0.0.0+1-596b6899-SNAPSHOT"
 // play codecs
-libraryDependencies += "io.bartholomews" %% "discogs4s-play" % "<LATEST_VERSION>"
+libraryDependencies += "io.bartholomews" %% "discogs4s-play" % "0.0.0+1-596b6899-SNAPSHOT"
 // no codecs (you need to provide your own)
-libraryDependencies += "io.bartholomews" %% "discogs4s-core" % "<LATEST_VERSION>"
+libraryDependencies += "io.bartholomews" %% "discogs4s-core" % "0.0.0+1-596b6899-SNAPSHOT"
 ```
 
 *Please note that the following docs are based on the latest snapshot version*  
@@ -80,9 +80,9 @@ This is the most basic client with no credentials and low rate limits.
 ```
 
 ### Client Credentials
-This client has higher rate limits, but still cannot call user-authenticated endpoints.
-You need to provide consumer key/secret in (developer settings)[https://www.discogs.com/settings/developers]
-(at least in theory, currently any dummy consumer key/secret is getting the higher rate limit x--(ツ)--x)
+This client has higher rate limits, but still cannot call user-authenticated endpoints.  
+You need to provide consumer key/secret in [developer settings](https://www.discogs.com/settings/developers)
+(at least in theory, currently any dummy consumer key/secret seems to get the higher rate limit x--(ツ)--x)
 
 * Credentials in request ? *Only Consumer key/secret*
 * Rate limiting          ? 🐰 *High tier*
@@ -137,7 +137,7 @@ You need to provide consumer key/secret in (developer settings)[https://www.disc
 ```
 
 ### Personal access token
-This client has higher rate limits and can also make user-authenticated calls (for your user only).
+This client has higher rate limits and can also make user-authenticated calls (for your user only).  
 You need to provide your personal access token from [developer settings](https://www.discogs.com/settings/developers)
 
 * Credentials in request ? *Personal access token*
