@@ -54,7 +54,8 @@ object Auth1 extends App {
 
   val discogsClient = DiscogsClient.personal(
     userAgent,
-    AccessToken("???")
+    AccessToken("???"),
+    DiscogsUsername("test_user")
   )(backend)
 
   discogsClient.users.me.body

@@ -9,8 +9,11 @@ import io.bartholomews.fsclient.core.oauth.OAuthSigner
 import sttp.client3.BodySerializer
 
 // Client for `personal` option;
-// The api should be the same as `oAuth` option, but with internal signer.
-class DiscogsPersonalClient[F[_], S <: OAuthSigner] private[discogs4s] (client: FsClient[F, S]) {
+// The api is the same as `oAuth` option, but with fixed username and internal signer.
+class DiscogsPersonalClient[F[_], S <: OAuthSigner] private[discogs4s] (
+    username: DiscogsUsername,
+    client: FsClient[F, S]
+) {
 
   final object database {
     private val api = new DatabaseApi[F](client.userAgent, client.backend)
@@ -20,10 +23,19 @@ class DiscogsPersonalClient[F[_], S <: OAuthSigner] private[discogs4s] (client: 
     ): F[SttpResponse[DE, Release]] =
       api.getRelease(releaseId, marketplaceCurrency)(client.signer)
 
-    def getReleaseRating[DE](releaseId: DiscogsReleaseId, username: DiscogsUsername)(implicit
+    def getReleaseRating[DE](username: DiscogsUsername, releaseId: DiscogsReleaseId)(implicit
         responseHandler: ResponseHandler[DE, ReleaseRating]
     ): F[SttpResponse[DE, ReleaseRating]] =
-      api.getReleaseRating(releaseId, username)(client.signer)
+      api.getReleaseRating(username, releaseId)(client.signer)
+
+    def updateReleaseRating[DE](releaseId: DiscogsReleaseId, rating: RatingUpdate)(implicit
+        bodySerializer: BodySerializer[ReleaseRatingUpdateRequest],
+        responseHandler: ResponseHandler[DE, ReleaseRating]
+    ): F[SttpResponse[DE, ReleaseRating]] =
+      api.updateReleaseRating(ReleaseRatingUpdateRequest(username, releaseId, rating))(client.signer)
+
+    def deleteReleaseRating(releaseId: DiscogsReleaseId): F[SttpResponse[Nothing, Unit]] =
+      api.deleteReleaseRating(username, releaseId)(client.signer)
 
     def getArtistsReleases[DE](artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(implicit
         responseHandler: ResponseHandler[DE, PaginatedReleases]
@@ -43,7 +55,7 @@ class DiscogsPersonalClient[F[_], S <: OAuthSigner] private[discogs4s] (client: 
     )(implicit responseHandler: ResponseHandler[DE, UserProfile]): F[SttpResponse[DE, UserProfile]] =
       api.getUserProfile(username)(client.signer)
 
-    def updateUserProfile[DE](username: DiscogsUsername, request: UpdateUserRequest)(implicit
+    def updateUserProfile[DE](request: UpdateUserRequest)(implicit
         bodySerializer: BodySerializer[UpdateUserRequest],
         responseHandler: ResponseHandler[DE, UserProfile]
     ): F[SttpResponse[DE, UserProfile]] = api.updateUserProfile(username, request)(client.signer)

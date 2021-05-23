@@ -107,9 +107,26 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
     (o: Rating) => JsNumber(o.value)
   )
 
-  implicit val paginatedReleasesReads: Reads[PaginatedReleases] = Json.reads[PaginatedReleases]
+  implicit val ratingUpdateCodec: Format[RatingUpdate] = Format(
+    (json: JsValue) =>
+      json
+        .validate[Int]
+        .flatMap({
+          case 1     => JsSuccess(Rating.One)
+          case 2     => JsSuccess(Rating.Two)
+          case 3     => JsSuccess(Rating.Three)
+          case 4     => JsSuccess(Rating.Four)
+          case 5     => JsSuccess(Rating.Five)
+          case other => JsError(s"[$other: unexpected `RatingUpdate`]")
+        }),
+    (o: RatingUpdate) => JsNumber(o.value)
+  )
+
+  implicit val paginatedReleasesReads: Reads[PaginatedReleases] = Json.reads
   implicit val releaseRatingCodec: Format[ReleaseRating]        = Json.format
 
   implicit val marketplaceCurrencyCodec: Format[MarketplaceCurrency] = EnumFormats.formats(MarketplaceCurrency)
-  implicit val updateUserRequestWrites: Writes[UpdateUserRequest]    = Json.writes[UpdateUserRequest]
+
+  implicit val releaseRatingUpdateRequestEncoder: Writes[ReleaseRatingUpdateRequest] = Json.writes
+  implicit val updateUserRequestEncoder: Writes[UpdateUserRequest]                   = Json.writes
 }

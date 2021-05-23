@@ -24,10 +24,11 @@ trait DiscogsServerBehaviours[E[_], D[_], DE, J] extends ServerBehaviours[E, D, 
 
   def clientReceivingUnexpectedResponse[E2, A](
       expectedEndpoint: MappingBuilder,
-      request: => SttpResponse[E2, A]
+      request: => SttpResponse[E2, A],
+      decodingBody: Boolean = true
   ): Unit = {
     behave.like(clientReceivingUnauthenticatedResponse(expectedEndpoint, request))
-    behave.like(clientReceivingSuccessfulUnexpectedResponseBody(expectedEndpoint, request))
+    if(decodingBody) behave.like(clientReceivingSuccessfulUnexpectedResponseBody(expectedEndpoint, request))
   }
 
   private def clientReceivingUnauthenticatedResponse[E2, A](

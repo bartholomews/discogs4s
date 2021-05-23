@@ -18,10 +18,10 @@ class DiscogsSimpleClient[F[_], S <: Signer] private[discogs4s] (client: FsClien
     ): F[SttpResponse[DE, Release]] =
       api.getRelease(releaseId, marketplaceCurrency)(client.signer)
 
-    def getReleaseRating[DE](releaseId: DiscogsReleaseId, username: DiscogsUsername)(implicit
+    def getReleaseRating[DE](username: DiscogsUsername, releaseId: DiscogsReleaseId)(implicit
         responseHandler: ResponseHandler[DE, ReleaseRating]
     ): F[SttpResponse[DE, ReleaseRating]] =
-      api.getReleaseRating(releaseId, username)(client.signer)
+      api.getReleaseRating(username, releaseId)(client.signer)
 
     def getArtistsReleases[DE](artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(implicit
         responseHandler: ResponseHandler[DE, PaginatedReleases]

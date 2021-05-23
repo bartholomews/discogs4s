@@ -16,6 +16,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
   implicit def paginatedReleasesDecoder: D[PaginatedReleases]
   implicit def releaseDecoder: D[Release]
   implicit def releaseRatingDecoder: D[ReleaseRating]
+  implicit def releaseRatingUpdateRequestEncoder: E[ReleaseRatingUpdateRequest]
 
   import DiscogsClientData._
 
@@ -63,6 +64,72 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
         entity.releaseId shouldBe DiscogsReleaseId(249504)
         entity.username shouldBe DiscogsUsername("_.bartholomews")
         entity.rating shouldBe Rating.NoRating
+      }
+    }
+  }
+
+  "updateReleaseRating" when {
+    def endpointRequest: MappingBuilder = put(urlPathEqualTo("/releases/249504/rating/_.bartholomews"))
+    def request: SttpResponse[DE, ReleaseRating] =
+      sampleOAuthClient.database.updateReleaseRating(
+        ReleaseRatingUpdateRequest(
+          username = DiscogsUsername("_.bartholomews"),
+          releaseId = DiscogsReleaseId(249504),
+          Rating.Five
+        )
+      )(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
+    }
+
+    "the server returns the expected response entity on a request with default curr_abbr" should {
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .withRequestBody(equalToJson("""
+                                           |{
+                                           |	"username": "_.bartholomews",
+                                           |	"release_id": 249504,
+                                           |	"rating": 5
+                                           |}
+                                           |""".stripMargin))
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("releases/get-rating.json")
+            )
+        )
+
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity.releaseId shouldBe DiscogsReleaseId(249504)
+        entity.username shouldBe DiscogsUsername("_.bartholomews")
+        entity.rating shouldBe Rating.NoRating
+      }
+    }
+  }
+
+  "deleteReleaseRating" when {
+    def endpointRequest: MappingBuilder = delete(urlPathEqualTo("/releases/249504/rating/_.bartholomews"))
+    def request: SttpResponse[Nothing, Unit] =
+      sampleOAuthClient.database.deleteReleaseRating(
+        username = DiscogsUsername("_.bartholomews"),
+        releaseId = DiscogsReleaseId(249504)
+      )(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request, decodingBody = false))
+    }
+
+    "the server returns the expected response entity on a request with default curr_abbr" should {
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(aResponse().withStatus(204))
+        )
+
+      "decode the response correctly" in matchResponseBody(stub, request) { case response =>
+        response shouldBe Right(())
       }
     }
   }
