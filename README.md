@@ -288,19 +288,22 @@ This client is for making calls on behalf of any authenticated user which grante
 ## Implemented endpoints:
 
 - **AuthApi** 
-    - 🔐 [`getRequestToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-request-token-url)  
-    - 🔐 [`getAccessToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-access-token-url)
+    - 🔐 [`getRequestToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-request-token-url-get)  
+    - 🔐 [`getAccessToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-access-token-url-post)
     
 - **DatabaseApi**  
-    - 🔓 [`getRelease`](https://www.discogs.com/developers/#page:database,header:database-release)
-    - 🔓 [`getArtistReleases`](https://www.discogs.com/developers/#page:database,header:database-artist-releases)
+    - 🔓 [`getRelease`](https://www.discogs.com/developers/#page:database,header:database-release-get)
+    - 🔓 [`getReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-get)
+    - 🔐 [`updateReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-put)  
+    - 🔐 [`deleteReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-delete)  
+    - 🔓 [`getArtistReleases`](https://www.discogs.com/developers/#page:database,header:database-artist-releases-get)
     
 - **UsersApi**  
-    - 🔐 [`me`](https://www.discogs.com/developers/#page:user-identity)  
+    - 🔐 [`me`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity-get)  
     - 🔓 [`getUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)  
     - 🔐 [`updateUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post)    
-    - 🔓 [`getUserSubmissions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions)       
-    - 🔓 [`getUserContributions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions)   
+    - 🔓 [`getUserSubmissions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions-get)       
+    - 🔓 [`getUserContributions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions-get)   
     
 ## Contributing
 
