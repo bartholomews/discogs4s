@@ -77,7 +77,7 @@ object DiscogsClient {
       for {
         userAgent   <- userAgentConfig.load[UserAgent]
         accessToken <- discogsConfig.at("access-token").load[AccessToken]
-        username <- discogsConfig.at("username").load[String]
+        username    <- discogsConfig.at("username").load[String]
       } yield personal(userAgent, accessToken, DiscogsUsername(username))(backend)
 
     def unsafeFromConfig[F[_]](backend: SttpBackend[F, Any]): DiscogsPersonalClient[F, OAuthSigner] =

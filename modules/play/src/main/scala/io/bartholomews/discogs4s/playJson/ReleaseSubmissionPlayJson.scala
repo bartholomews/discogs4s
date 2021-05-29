@@ -9,7 +9,7 @@ import io.bartholomews.discogs4s.entities._
 import play.api.libs.json._
 import sttp.model.Uri
 
-object ReleaseSubmissionPlayJson {
+private[playJson] object ReleaseSubmissionPlayJson {
 
   import codecs._
 
@@ -25,7 +25,7 @@ object ReleaseSubmissionPlayJson {
       estimatedWeight   <- (json \ "estimated_weight").validateOpt[Int]
       formatQuantity    <- (json \ "format_quantity").validate[Int]
       formats           <- (json \ "formats").validate[List[ReleaseFormat]]
-      genres            <- (json \ "genres").validate[List[String]]
+      genres            <- (json \ "genres").validate[List[Genre]]
       id                <- (json \ "id").validate[Long]
       images            <- (json \ "images").validateOpt[List[ReleaseImage]].map(_.getOrElse(Nil))
       labels            <- (json \ "labels").validate[List[EntityResource]]
@@ -35,7 +35,7 @@ object ReleaseSubmissionPlayJson {
       released          <- (json \ "released").validateOpt[String]
       releasedFormatted <- (json \ "released_formatted").validateOpt[String]
       resourceUrl       <- (json \ "resource_url").validate[Uri]
-      status            <- (json \ "status").validate[String]
+      status            <- (json \ "status").validate[ReleaseStatus]
       styles            <- (json \ "styles").validateOpt[List[Style]].map(_.getOrElse(Nil))
       thumb             <- (json \ "thumb").validate[Uri]
       title             <- (json \ "title").validate[String]

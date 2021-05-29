@@ -17,11 +17,11 @@ import sttp.model.Uri
  * detailed information, make another request for the user’s Profile.
  *
  * @param userAgent
- *   the application `User-Agent`, which will be added as header in all the requests
+ *   The application `User-Agent`, which will be added as header in all the requests
  * @param backend
- *   the Sttp backend for the requests
+ *   The Sttp backend for the requests
  * @tparam F
- *   the Effect type
+ *   The Effect type
  */
 class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
@@ -30,18 +30,18 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   private def userPath(username: DiscogsUsername): Uri = basePath / username.value
 
   /**
-   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity
+   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity-get
    *
    * Retrieve basic information about the authenticated user. You can use this resource to find out who you’re
    * authenticated as, and it also doubles as a good sanity check to ensure that you’re using OAuth correctly. For more
    * detailed information, make another request for the user’s Profile.
    *
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @param responseHandler
-   *   the response decoder
+   *   The response decoder
    * @tparam DE
-   *   the Deserialization Error type
+   *   The Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, UserIdentity]]`
    */
@@ -66,11 +66,11 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param username
    *   The username of whose profile you are requesting.
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @param responseHandler
-   *   the response decoder
+   *   The response decoder
    * @tparam DE
-   *   the Deserialization Error type
+   *   The Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, UserProfile]]`
    */
@@ -95,11 +95,11 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    *   about the user. Currency for marketplace data. Must be one of the following: USD GBP EUR CAD AUD JPY CHF MXN BRL
    *   NZD SEK ZAR
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @param responseHandler
-   *   the response decoder
+   *   The response decoder
    * @tparam DE
-   *   the Deserialization Error type
+   *   The Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, AuthenticatedUser]]`
    */
@@ -118,7 +118,7 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
       .send(backend)
 
   /**
-   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions
+   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions-get
    *
    * Retrieve a user’s submissions by username. Accepts Pagination parameters.
    *
@@ -129,11 +129,11 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param perPage
    *   Items per page to fetch (default to 50, max 100)
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @param responseHandler
-   *   the response decoder
+   *   The response decoder
    * @tparam DE
-   *   the Deserialization Error type
+   *   The Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, UserSubmissionResponse]]`
    */
@@ -153,7 +153,7 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
       .send(backend)
 
   /**
-   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions
+   * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions-get
    *
    * Retrieve a user’s contributions by username. Accepts Pagination parameters.
    *
@@ -168,11 +168,11 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param sortOrder
    *   Valid sort_order keys are: asc desc
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @param responseHandler
-   *   the response decoder
+   *   The response decoder
    * @tparam DE
-   *   the Deserialization Error type
+   *   The Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, ReleaseContributions]]`
    */

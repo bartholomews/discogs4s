@@ -16,6 +16,10 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
   implicit def paginatedReleasesDecoder: D[PaginatedReleases]
   implicit def releaseDecoder: D[Release]
   implicit def releaseRatingDecoder: D[ReleaseRating]
+  implicit def communityReleaseDecoder: D[CommunityRelease]
+  implicit def communityReleaseStatsDecoder: D[CommunityReleaseStats]
+  implicit def masterReleaseDecoder: D[MasterRelease]
+  implicit def masterReleaseVersionsDecoder: D[MasterReleaseVersions]
   implicit def releaseRatingUpdateRequestEncoder: E[ReleaseRatingUpdateRequest]
 
   import DiscogsClientData._
@@ -29,8 +33,18 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
       behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
     }
 
+    def stub: StubMapping =
+      stubFor(
+        endpointRequest
+          .willReturn(
+            aResponse()
+              .withStatus(200)
+              .withBodyFile("releases/get-release.json")
+          )
+      )
+
     "the server returns the expected response entity on a request with default curr_abbr" should {
-      "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) { case Right(entity) =>
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
         entity.id shouldBe DiscogsReleaseId(249504)
         entity.blockedFromSale shouldBe false
       }
@@ -134,6 +148,128 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
     }
   }
 
+  "getCommunityReleaseRating" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/releases/249504/rating"))
+    def request: SttpResponse[DE, CommunityRelease] =
+      sampleOAuthClient.database.getCommunityReleaseRating(
+        releaseId = DiscogsReleaseId(249504)
+      )(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request, decodingBody = false))
+    }
+
+    "the server returns the expected response entity on a request with default curr_abbr" should {
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("releases/get-community-release-rating.json")
+            )
+        )
+
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity should matchTo {
+          CommunityRelease(
+            releaseId = DiscogsReleaseId(249504),
+            rating = RatingAverage(
+              count = 150,
+              average = 3.65
+            )
+          )
+        }
+      }
+    }
+  }
+
+  "getReleaseStats" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/releases/249504/stats"))
+    def request: SttpResponse[DE, CommunityReleaseStats] =
+      sampleOAuthClient.database.getReleaseStats(
+        releaseId = DiscogsReleaseId(249504)
+      )(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request, decodingBody = false))
+    }
+
+    "the server returns the expected response entity on a request with default curr_abbr" should {
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("releases/get-release-stats.json")
+            )
+        )
+
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity should matchTo {
+          CommunityReleaseStats(
+            numHave = None,
+            numWant = None,
+            isOffensive = Some(false)
+          )
+        }
+      }
+    }
+  }
+
+  "getMasterRelease" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/masters/666"))
+    def request: SttpResponse[DE, MasterRelease] =
+      sampleOAuthClient.database.getMasterRelease(masterId = MasterId(666))(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request, decodingBody = false))
+    }
+
+    "the server returns the expected response entity on a request with default curr_abbr" should {
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("releases/get-master-release.json")
+            )
+        )
+
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity.id should matchTo(MasterId(666))
+      }
+    }
+  }
+
+  "getMasterReleaseVersions" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/masters/666/versions"))
+    def request: SttpResponse[DE, MasterReleaseVersions] =
+      sampleOAuthClient.database.getMasterReleaseVersions(masterId = MasterId(666))(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request, decodingBody = false))
+    }
+
+    "the server returns the expected response entity on a request with default curr_abbr" should {
+      def stub: StubMapping =
+        stubFor(
+          endpointRequest
+            .willReturn(
+              aResponse()
+                .withStatus(200)
+                .withBodyFile("releases/get-master-release-versions.json")
+            )
+        )
+
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity.filters.applied.format shouldBe List.empty
+      }
+    }
+  }
+
   "getArtistReleases" when {
     def endpointRequest: MappingBuilder = get(urlPathEqualTo("/artists/1/releases"))
       .withQueryParam("sort", equalTo("title"))
@@ -158,7 +294,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
               page = 1,
               pages = 103,
               items = 103,
-              per_page = 1,
+              perPage = 1,
               urls = Some(
                 PageUrls(
                   first = None,
@@ -170,7 +306,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
             ),
             releases = List(
               ArtistReleaseSubmission(
-                status = Some("Accepted"),
+                status = Some(ReleaseStatus("Accepted")),
                 mainRelease = None,
                 thumb = "",
                 title = "Kaos",
@@ -197,7 +333,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
 
       "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) { case Right(entity) =>
         entity.pagination.items shouldBe 110
-        entity.pagination.per_page shouldBe 50
+        entity.pagination.perPage shouldBe 50
         inside(entity.releases.find(_.id == 12526186)) { case Some(release) =>
           release.year shouldBe None
         }

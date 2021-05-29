@@ -31,7 +31,6 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
 
   implicit val ratingAverageCodec: Format[RatingAverage] = Json.format
 
-  // FIXME: This doesn't seem to work?
   def decodeNullableList[A](implicit rds: Reads[A]): Reads[List[A]] =
     (json: JsValue) =>
       json
@@ -58,8 +57,13 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val userProfileReads: Reads[UserProfile]   = UserProfilePlayJson.reads
 
   implicit val discogsReleaseIdCodec: Format[DiscogsReleaseId] = Json.valueFormat
+  implicit val masterIdCodec: Format[MasterId]                 = Json.valueFormat
+  implicit val releaseStatusCodec: Format[ReleaseStatus]       = Json.valueFormat
 
-  implicit val releaseTrackCodec: Format[ReleaseTrack]           = Json.format
+  implicit val communityReleaseCodec: Format[CommunityRelease]           = Json.format
+  implicit val communityReleaseStatsCodec: Format[CommunityReleaseStats] = Json.format
+  implicit val releaseStatsCodec: Format[ReleaseStats]                   = Json.format
+
   implicit val releaseVideoCodec: Format[ReleaseVideo]           = Json.format
   implicit val releaseImageCodec: Format[ReleaseImage]           = Json.format
   implicit val entityResourceCodec: Format[EntityResource]       = Json.format
@@ -77,6 +81,7 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   }
 
   implicit val styleCodec: Format[Style] = Json.valueFormat
+  implicit val genreCodec: Format[Genre] = Json.valueFormat
 
   implicit val artistReleaseCodec: Format[ArtistRelease]                           = Json.format
   implicit val artistSubmissionCodec: Format[ArtistSubmission]                     = Json.format
@@ -85,6 +90,8 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val releaseSubmissionCodec: Format[ReleaseSubmission]                   = ReleaseSubmissionPlayJson.codec
   implicit val userSubmissionCodec: Format[UserSubmissions]                        = Json.format
   implicit val userSubmissionResponseCodec: Format[UserSubmissionResponse]         = Json.format
+
+  implicit val releaseTrackCodec: Format[ReleaseTrack] = ReleaseTrackPlayJson.codec
 
   implicit val userContributionsCodec: Format[UserContributions] = Json.format
 
@@ -126,6 +133,21 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val releaseRatingCodec: Format[ReleaseRating]        = Json.format
 
   implicit val marketplaceCurrencyCodec: Format[MarketplaceCurrency] = EnumFormats.formats(MarketplaceCurrency)
+
+  implicit val releaseFilterLabel: Format[ReleaseFilter.Label]                = Json.valueFormat
+  implicit val releaseFilterCountryCodec: Format[ReleaseFilter.Country]       = Json.valueFormat
+  implicit val releaseFilterFormatCodec: Format[ReleaseFilter.Format]         = Json.valueFormat
+  implicit val releaseFilterReleasedCodec: Format[ReleaseFilter.ReleasedYear] = Json.valueFormat
+
+  implicit val availableFiltersCodec: Format[AvailableFilters] = Json.format
+  implicit val appliedFiltersCodec: Format[AppliedFilters]     = AppliedFiltersPlayJson.codec
+  implicit val filtersInfoCodec: Format[FiltersInfo]           = Json.format
+
+  implicit val filterFacetValueCodec: Format[FilterFacetValue]           = Json.format
+  implicit val filterFacetCodec: Format[FilterFacet]                     = Json.format
+  implicit val masterReleaseCodec: Format[MasterRelease]                 = Json.format
+  implicit val releaseVersionCodec: Format[ReleaseVersion]               = Json.format
+  implicit val masterReleaseVersionsCodec: Format[MasterReleaseVersions] = Json.format
 
   implicit val releaseRatingUpdateRequestEncoder: Writes[ReleaseRatingUpdateRequest] = Json.writes
   implicit val updateUserRequestEncoder: Writes[UpdateUserRequest]                   = Json.writes

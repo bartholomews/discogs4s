@@ -6,7 +6,7 @@ import io.bartholomews.discogs4s.entities._
 import play.api.libs.json._
 import sttp.model.Uri
 
-object UserProfilePlayJson {
+private[playJson] object UserProfilePlayJson {
 
   import codecs._
 

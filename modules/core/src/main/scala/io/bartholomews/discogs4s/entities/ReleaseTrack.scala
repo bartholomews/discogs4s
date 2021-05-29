@@ -4,5 +4,6 @@ final case class ReleaseTrack(
     position: String,
     `type_`: String,
     title: String,
-    duration: String
+    duration: String,
+    extraartists: List[ArtistRelease] // TODO: empty if not found
 )

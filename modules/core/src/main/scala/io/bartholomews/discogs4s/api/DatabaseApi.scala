@@ -11,20 +11,21 @@ import sttp.model.Uri
 /**
  * https://www.discogs.com/developers/#page:database
  * @param userAgent
- *   the application `User-Agent`, which will be added as header in all the requests
+ *   The application `User-Agent`, which will be added as header in all the requests
  * @param backend
- *   the Sttp backend for the requests
+ *   The Sttp backend for the requests
  * @tparam F
- *   the Effect type
+ *   The Effect type
  */
 class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
 
   final val artistsPath  = DiscogsEndpoint.apiUri / "artists"
+  final val mastersPath  = DiscogsEndpoint.apiUri / "masters"
   final val releasesPath = DiscogsEndpoint.apiUri / "releases"
 
   /**
-   * https://www.discogs.com/developers/#page:database,header:database-release
+   * https://www.discogs.com/developers/#page:database,header:database-release-get
    *
    * The Release resource represents a particular physical or digital object released by one or more Artists.
    *
@@ -33,11 +34,11 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param marketplaceCurrency
    *   Currency for marketplace data. Defaults to the authenticated users currency.
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @param responseHandler
-   *   the response decoder
+   *   The response decoder
    * @tparam DE
-   *   the Deserialization Error type
+   *   The Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, Release]]`
    */
@@ -67,11 +68,11 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param releaseId
    *   The Release ID
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @param responseHandler
-   *   the response decoder
+   *   The response decoder
    * @tparam DE
-   *   the Deserialization Error type
+   *   The Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, ReleaseRating]]`
    */
@@ -92,11 +93,11 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param request
    *   The username of the rating you are trying to request The Release ID The new rating for a release between 1 and 5
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @param responseHandler
-   *   the response decoder
+   *   The response decoder
    * @tparam DE
-   *   the Deserialization Error type
+   *   The Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, ReleaseRating]]`
    */
@@ -123,7 +124,7 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param releaseId
    *   The Release ID
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @return
    *   `F[SttpResponse[DE, Unit]]`
    */
@@ -137,7 +138,107 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
       .send(backend)
 
   /**
-   * https://www.discogs.com/developers/#page:database,header:database-artist-releases
+   * https://www.discogs.com/developers/#page:database,header:database-community-release-rating-get
+   *
+   * Retrieves the community release rating average and count.
+   *
+   * @param releaseId
+   *   The Release ID
+   * @param signer
+   *   The request Signer
+   * @param responseHandler
+   *   The response decoder
+   * @tparam DE
+   *   The Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, CommunityRelease]]`
+   */
+  def getCommunityReleaseRating[DE](releaseId: DiscogsReleaseId)(
+      signer: Signer
+  )(implicit responseHandler: ResponseHandler[DE, CommunityRelease]): F[SttpResponse[DE, CommunityRelease]] =
+    baseRequest(userAgent)
+      .get(releasesPath / releaseId.value.toString / "rating")
+      .sign(signer)
+      .response(responseHandler)
+      .send(backend)
+
+  /**
+   * https://www.discogs.com/developers/#page:database,header:database-release-stats-get
+   *
+   * Retrieves the release’s “have” and “want” counts.
+   *
+   * @param releaseId
+   *   The Release ID
+   * @param signer
+   *   The request Signer
+   * @param responseHandler
+   *   The response decoder
+   * @tparam DE
+   *   The Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, ReleaseStats]]`
+   */
+  def getReleaseStats[DE](releaseId: DiscogsReleaseId)(
+      signer: Signer
+  )(implicit responseHandler: ResponseHandler[DE, CommunityReleaseStats]): F[SttpResponse[DE, CommunityReleaseStats]] =
+    baseRequest(userAgent)
+      .get(releasesPath / releaseId.value.toString / "stats")
+      .sign(signer)
+      .response(responseHandler)
+      .send(backend)
+
+  /**
+   * https://www.discogs.com/developers/#page:database,header:database-master-release-get
+   *
+   * Get a master release
+   *
+   * @param masterId
+   *   The Master ID
+   * @param signer
+   *   The request Signer
+   * @param responseHandler
+   *   The response decoder
+   * @tparam DE
+   *   The Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, MasterRelease]]`
+   */
+  def getMasterRelease[DE](masterId: MasterId)(
+      signer: Signer
+  )(implicit responseHandler: ResponseHandler[DE, MasterRelease]): F[SttpResponse[DE, MasterRelease]] =
+    baseRequest(userAgent)
+      .get(mastersPath / masterId.value.toString)
+      .sign(signer)
+      .response(responseHandler)
+      .send(backend)
+
+  /**
+   * https://www.discogs.com/developers/#page:database,header:database-master-release-versions-get
+   *
+   * Retrieves a list of all Releases that are versions of this master.
+   *
+   * @param masterId
+   *   The Master ID
+   * @param signer
+   *   The request Signer
+   * @param responseHandler
+   *   The response decoder
+   * @tparam DE
+   *   The Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, MasterReleaseVersions]]`
+   */
+  def getMasterReleaseVersions[DE](masterId: MasterId)(
+      signer: Signer
+  )(implicit responseHandler: ResponseHandler[DE, MasterReleaseVersions]): F[SttpResponse[DE, MasterReleaseVersions]] =
+    baseRequest(userAgent)
+      .get(mastersPath / masterId.value.toString / "versions")
+      .sign(signer)
+      .response(responseHandler)
+      .send(backend)
+
+  /**
+   * https://www.discogs.com/developers/#page:database,header:database-artist-releases-get
    *
    * Get an artist’s releases
    *
@@ -148,11 +249,11 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param sortOrder
    *   Sort items in a particular order (one of asc, desc)
    * @param signer
-   *   the request Signer
+   *   The request Signer
    * @param responseHandler
-   *   the response decoder
+   *   The response decoder
    * @tparam DE
-   *   the Deserialization Error type
+   *   The Deserialization Error type
    * @return
    *   `F[SttpResponse[DE, PaginatedReleases]]`
    */

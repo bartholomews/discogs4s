@@ -1,7 +1,7 @@
 package io.bartholomews.discogs4s.entities
 
 final case class ArtistReleaseSubmission(
-    status: Option[String],
+    status: Option[ReleaseStatus],
     mainRelease: Option[Int],
     thumb: String,
     title: String,

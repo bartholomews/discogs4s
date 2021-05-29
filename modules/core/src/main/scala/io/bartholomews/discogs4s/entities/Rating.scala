@@ -9,7 +9,7 @@ sealed trait RatingUpdate {
 }
 
 object Rating {
-  case object NoRating    extends Rating { override private[discogs4s] val value: Int = 0 }
+  case object NoRating    extends Rating                   { override private[discogs4s] val value: Int = 0 }
   final case object One   extends Rating with RatingUpdate { override private[discogs4s] val value: Int = 1 }
   final case object Two   extends Rating with RatingUpdate { override private[discogs4s] val value: Int = 2 }
   final case object Three extends Rating with RatingUpdate { override private[discogs4s] val value: Int = 3 }

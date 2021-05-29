@@ -23,6 +23,26 @@ class DiscogsSimpleClient[F[_], S <: Signer] private[discogs4s] (client: FsClien
     ): F[SttpResponse[DE, ReleaseRating]] =
       api.getReleaseRating(username, releaseId)(client.signer)
 
+    def getCommunityReleaseRating[DE](releaseId: DiscogsReleaseId)(implicit
+        responseHandler: ResponseHandler[DE, CommunityRelease]
+    ): F[SttpResponse[DE, CommunityRelease]] =
+      api.getCommunityReleaseRating(releaseId)(client.signer)
+
+    def getReleaseStats[DE](releaseId: DiscogsReleaseId)(implicit
+        responseHandler: ResponseHandler[DE, CommunityReleaseStats]
+    ): F[SttpResponse[DE, CommunityReleaseStats]] =
+      api.getReleaseStats(releaseId)(client.signer)
+
+    def getMasterRelease[DE](masterId: MasterId)(implicit
+        responseHandler: ResponseHandler[DE, MasterRelease]
+    ): F[SttpResponse[DE, MasterRelease]] =
+      api.getMasterRelease(masterId)(client.signer)
+
+    def getMasterReleaseVersions[DE](masterId: MasterId)(implicit
+        responseHandler: ResponseHandler[DE, MasterReleaseVersions]
+    ): F[SttpResponse[DE, MasterReleaseVersions]] =
+      api.getMasterReleaseVersions(masterId)(client.signer)
+
     def getArtistsReleases[DE](artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(implicit
         responseHandler: ResponseHandler[DE, PaginatedReleases]
     ): F[SttpResponse[DE, PaginatedReleases]] =

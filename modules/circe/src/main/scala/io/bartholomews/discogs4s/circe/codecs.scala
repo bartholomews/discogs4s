@@ -1,11 +1,9 @@
 package io.bartholomews.discogs4s.circe
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 import io.bartholomews.discogs4s.entities._
 import io.bartholomews.discogs4s.entities.requests.UpdateUserRequest
 import io.bartholomews.fsclient.circe.FsClientCirceApi
+import io.circe._
 import io.circe.generic.extras.Configuration
 import io.circe.generic.extras.semiauto.{
   deriveConfiguredCodec,
@@ -13,12 +11,21 @@ import io.circe.generic.extras.semiauto.{
   deriveConfiguredEncoder,
   deriveUnwrappedCodec
 }
-import io.circe._
 import sttp.model.Uri
+
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 object codecs extends DiscogsCirceApi
 
 trait DiscogsCirceApi extends FsClientCirceApi {
+  // TODO: move to fsclient?
+  def decodeNullableMap[K, V](implicit
+      decodeK: KeyDecoder[K],
+      decodeV: Decoder[V]
+  ): Decoder[Map[K, V]] =
+    Decoder.decodeOption[Map[K, V]](Decoder.decodeMap[K, V]).map(_.getOrElse(Map.empty))
+
   implicit val config: Configuration                 = Configuration.default.withSnakeCaseMemberNames
   implicit val emptyUriDecoder: Decoder[Option[Uri]] = decodeEmptyStringAsOption[Uri]
 
@@ -62,8 +69,17 @@ trait DiscogsCirceApi extends FsClientCirceApi {
   )
 
   implicit val discogsReleaseIdCodec: Codec[DiscogsReleaseId] = deriveUnwrappedCodec
+  implicit val masterIdCodec: Codec[MasterId]                 = deriveUnwrappedCodec
+  implicit val releaseStatusCodec: Codec[ReleaseStatus]       = deriveUnwrappedCodec
 
-  implicit val releaseTrackCodec: Codec[ReleaseTrack]           = deriveConfiguredCodec
+  implicit val communityReleaseCodec: Codec[CommunityRelease]           = deriveConfiguredCodec
+  implicit val communityReleaseStatsCodec: Codec[CommunityReleaseStats] = deriveConfiguredCodec
+  implicit val releaseStatsCodec: Codec[ReleaseStats]                   = deriveConfiguredCodec
+
+  implicit val releaseTrackCodec: Codec[ReleaseTrack] = {
+    implicit val decodeExtraArtists: Decoder[List[ArtistRelease]] = decodeNullableList[ArtistRelease]
+    deriveConfiguredCodec
+  }
   implicit val releaseVideoCodec: Codec[ReleaseVideo]           = deriveConfiguredCodec
   implicit val releaseImageCodec: Codec[ReleaseImage]           = deriveConfiguredCodec
   implicit val entityResourceCodec: Codec[EntityResource]       = deriveConfiguredCodec
@@ -73,6 +89,7 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     deriveConfiguredCodec
   }
   implicit val styleCodec: Codec[Style] = deriveUnwrappedCodec
+  implicit val genreCodec: Codec[Genre] = deriveUnwrappedCodec
 
   implicit val communityReleaseSubmissionCodec: Codec[CommunityReleaseSubmission] = deriveConfiguredCodec
   implicit val releaseSubmissionCodec: Codec[ReleaseSubmission] = {
@@ -124,6 +141,28 @@ trait DiscogsCirceApi extends FsClientCirceApi {
 
   implicit val releaseRatingCodec: Codec[ReleaseRating]         = deriveConfiguredCodec
   implicit val userContributionsCodec: Codec[UserContributions] = deriveConfiguredCodec
+
+  implicit val releaseFilterLabel: Codec[ReleaseFilter.Label]                = deriveUnwrappedCodec
+  implicit val releaseFilterCountryCodec: Codec[ReleaseFilter.Country]       = deriveUnwrappedCodec
+  implicit val releaseFilterFormatCodec: Codec[ReleaseFilter.Format]         = deriveUnwrappedCodec
+  implicit val releaseFilterReleasedCodec: Codec[ReleaseFilter.ReleasedYear] = deriveUnwrappedCodec
+
+  implicit val availableFiltersCodec: Codec[AvailableFilters] = {
+    implicit def decodeFilter: Decoder[Map[String, Int]] = decodeNullableMap
+    deriveConfiguredCodec
+  }
+
+  implicit val appliedFiltersCodec: Codec[AppliedFilters] = {
+    implicit def decodeFilter[R <: ReleaseFilter](implicit d: Decoder[R]): Decoder[List[R]] = decodeNullableList[R]
+    deriveConfiguredCodec
+  }
+
+  implicit val filtersInfoCodec: Codec[FiltersInfo]                     = deriveConfiguredCodec
+  implicit val filterFacetCodec: Codec[FilterFacet]                     = deriveConfiguredCodec
+  implicit val filterFacetValueCodec: Codec[FilterFacetValue]           = deriveConfiguredCodec
+  implicit val releaseVersionCodec: Codec[ReleaseVersion]               = deriveConfiguredCodec
+  implicit val masterReleaseCodec: Codec[MasterRelease]                 = deriveConfiguredCodec
+  implicit val masterReleaseVersionsCodec: Codec[MasterReleaseVersions] = deriveConfiguredCodec
 
   implicit val releaseRatingUpdateRequestEncoder: Encoder[ReleaseRatingUpdateRequest] = deriveConfiguredEncoder
   implicit val updateUserRequestEncoder: Encoder[UpdateUserRequest]                   = deriveConfiguredEncoder

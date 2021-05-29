@@ -1,0 +1,342 @@
+{
+  "pagination": {
+    "page": 1,
+    "pages": 15,
+    "per_page": 1,
+    "items": 15,
+    "urls": {
+      "last": "https://api.discogs.com/masters/666/versions?page=15&per_page=1",
+      "next": "https://api.discogs.com/masters/666/versions?page=2&per_page=1"
+    }
+  },
+  "filters": {
+    "applied": {},
+    "available": {
+      "format": {
+        "Album": 15,
+        "CD": 10,
+        "LP": 4,
+        "Vinyl": 4,
+        "Promo": 2,
+        "Reissue": 2,
+        "CDr": 1,
+        "Enhanced": 1,
+        "Repress": 1,
+        "Test Pressing": 1,
+        "White Label": 1
+      },
+      "label": {
+        "Candlelight Records": 9,
+        "Strype Audio": 7,
+        "Tanglade Ltd": 7,
+        "Abstract Sounds": 6,
+        "Studio Studio": 6,
+        "Tanglade Music": 5,
+        "Phd": 3,
+        "Studiostudio Nyhagen": 3,
+        "Back On Black": 2,
+        "Candlelight Records Usa": 2,
+        "Spinefarm Records": 2,
+        "Deluxe": 1,
+        "Icarus Music": 1,
+        "Irond": 1,
+        "Mcom": 1,
+        "Megadisc": 1,
+        "Plastic Head": 1,
+        "Somber Music": 1,
+        "Sonopress": 1,
+        "Three D System": 1
+      },
+      "country": {
+        "UK": 6,
+        "US": 3,
+        "Argentina": 1,
+        "Brazil": 1,
+        "Europe": 1,
+        "Japan": 1,
+        "Russia": 1,
+        "UK & US": 1
+      },
+      "released": {
+        "2005": 7,
+        "2006": 3,
+        "2008": 2,
+        "2019": 2,
+        "2016": 1
+      }
+    }
+  },
+  "filter_facets": [
+    {
+      "title": "Format",
+      "id": "format",
+      "values": [
+        {
+          "title": "Album",
+          "value": "Album",
+          "count": 15
+        },
+        {
+          "title": "CD",
+          "value": "CD",
+          "count": 10
+        },
+        {
+          "title": "LP",
+          "value": "LP",
+          "count": 4
+        },
+        {
+          "title": "Vinyl",
+          "value": "Vinyl",
+          "count": 4
+        },
+        {
+          "title": "Promo",
+          "value": "Promo",
+          "count": 2
+        },
+        {
+          "title": "Reissue",
+          "value": "Reissue",
+          "count": 2
+        },
+        {
+          "title": "CDr",
+          "value": "CDr",
+          "count": 1
+        },
+        {
+          "title": "Enhanced",
+          "value": "Enhanced",
+          "count": 1
+        },
+        {
+          "title": "Repress",
+          "value": "Repress",
+          "count": 1
+        },
+        {
+          "title": "Test Pressing",
+          "value": "Test+Pressing",
+          "count": 1
+        },
+        {
+          "title": "White Label",
+          "value": "White+Label",
+          "count": 1
+        }
+      ],
+      "allows_multiple_values": true
+    },
+    {
+      "title": "Label",
+      "id": "label",
+      "values": [
+        {
+          "title": "Candlelight Records",
+          "value": "Candlelight+Records",
+          "count": 9
+        },
+        {
+          "title": "Strype Audio",
+          "value": "Strype+Audio",
+          "count": 7
+        },
+        {
+          "title": "Tanglade Ltd",
+          "value": "Tanglade+Ltd",
+          "count": 7
+        },
+        {
+          "title": "Abstract Sounds",
+          "value": "Abstract+Sounds",
+          "count": 6
+        },
+        {
+          "title": "Studio Studio",
+          "value": "Studio+Studio",
+          "count": 6
+        },
+        {
+          "title": "Tanglade Music",
+          "value": "Tanglade+Music",
+          "count": 5
+        },
+        {
+          "title": "Phd",
+          "value": "Phd",
+          "count": 3
+        },
+        {
+          "title": "Studiostudio Nyhagen",
+          "value": "Studiostudio+Nyhagen",
+          "count": 3
+        },
+        {
+          "title": "Back On Black",
+          "value": "Back+On+Black",
+          "count": 2
+        },
+        {
+          "title": "Candlelight Records Usa",
+          "value": "Candlelight+Records+Usa",
+          "count": 2
+        },
+        {
+          "title": "Spinefarm Records",
+          "value": "Spinefarm+Records",
+          "count": 2
+        },
+        {
+          "title": "Deluxe",
+          "value": "Deluxe",
+          "count": 1
+        },
+        {
+          "title": "Icarus Music",
+          "value": "Icarus+Music",
+          "count": 1
+        },
+        {
+          "title": "Irond",
+          "value": "Irond",
+          "count": 1
+        },
+        {
+          "title": "Mcom",
+          "value": "Mcom",
+          "count": 1
+        },
+        {
+          "title": "Megadisc",
+          "value": "Megadisc",
+          "count": 1
+        },
+        {
+          "title": "Plastic Head",
+          "value": "Plastic+Head",
+          "count": 1
+        },
+        {
+          "title": "Somber Music",
+          "value": "Somber+Music",
+          "count": 1
+        },
+        {
+          "title": "Sonopress",
+          "value": "Sonopress",
+          "count": 1
+        },
+        {
+          "title": "Three D System",
+          "value": "Three+D+System",
+          "count": 1
+        }
+      ],
+      "allows_multiple_values": true
+    },
+    {
+      "title": "Country",
+      "id": "country",
+      "values": [
+        {
+          "title": "UK",
+          "value": "UK",
+          "count": 6
+        },
+        {
+          "title": "US",
+          "value": "US",
+          "count": 3
+        },
+        {
+          "title": "Argentina",
+          "value": "Argentina",
+          "count": 1
+        },
+        {
+          "title": "Brazil",
+          "value": "Brazil",
+          "count": 1
+        },
+        {
+          "title": "Europe",
+          "value": "Europe",
+          "count": 1
+        },
+        {
+          "title": "Japan",
+          "value": "Japan",
+          "count": 1
+        },
+        {
+          "title": "Russia",
+          "value": "Russia",
+          "count": 1
+        },
+        {
+          "title": "UK & US",
+          "value": "UK+%26+US",
+          "count": 1
+        }
+      ],
+      "allows_multiple_values": true
+    },
+    {
+      "title": "Released",
+      "id": "released",
+      "values": [
+        {
+          "title": "2005",
+          "value": "2005",
+          "count": 7
+        },
+        {
+          "title": "2006",
+          "value": "2006",
+          "count": 3
+        },
+        {
+          "title": "2008",
+          "value": "2008",
+          "count": 2
+        },
+        {
+          "title": "2019",
+          "value": "2019",
+          "count": 2
+        },
+        {
+          "title": "2016",
+          "value": "2016",
+          "count": 1
+        }
+      ],
+      "allows_multiple_values": false
+    }
+  ],
+  "versions": [
+    {
+      "id": 1884844,
+      "label": "Irond",
+      "country": "Russia",
+      "title": "Hellfire",
+      "major_formats": [
+        "CD"
+      ],
+      "format": "Album",
+      "catno": "CD 06-1164",
+      "released": "2005",
+      "status": "Accepted",
+      "resource_url": "https://api.discogs.com/releases/1884844",
+      "thumb": "",
+      "stats": {
+        "community": {
+          "in_wantlist": 23,
+          "in_collection": 35
+        }
+      }
+    }
+  ]
+}

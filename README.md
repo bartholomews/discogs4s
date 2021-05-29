@@ -296,6 +296,10 @@ This client is for making calls on behalf of any authenticated user which grante
     - 🔓 [`getReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-get)
     - 🔐 [`updateReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-put)  
     - 🔐 [`deleteReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-delete)  
+    - 🔓 [`getCommunityReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-community-release-rating-get)  
+    - 🔓 [`getReleaseStats`](https://www.discogs.com/developers/#page:database,header:database-release-stats-get)  
+    - 🔓 [`getMasterRelease`](https://www.discogs.com/developers/#page:database,header:database-master-release-get)  
+    - 🔓 [`getMasterReleaseVersions`](https://www.discogs.com/developers/#page:database,header:database-master-release-versions-get)  
     - 🔓 [`getArtistReleases`](https://www.discogs.com/developers/#page:database,header:database-artist-releases-get)
     
 - **UsersApi**  

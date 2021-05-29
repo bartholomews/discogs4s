@@ -1,0 +1,406 @@
+{
+  "id": 666,
+  "main_release": 580058,
+  "most_recent_release": 14250171,
+  "resource_url": "https://api.discogs.com/masters/666",
+  "uri": "https://www.discogs.com/1349-Hellfire/master/666",
+  "versions_url": "https://api.discogs.com/masters/666/versions",
+  "main_release_url": "https://api.discogs.com/releases/580058",
+  "most_recent_release_url": "https://api.discogs.com/releases/14250171",
+  "num_for_sale": 91,
+  "lowest_price": 4.88,
+  "images": [
+    {
+      "type": "primary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 300,
+      "height": 300
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 593,
+      "height": 289
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 595,
+      "height": 289
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 593,
+      "height": 289
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 594,
+      "height": 293
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 591,
+      "height": 289
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 592,
+      "height": 592
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 594,
+      "height": 470
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 594,
+      "height": 467
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 588,
+      "height": 596
+    }
+  ],
+  "genres": [
+    "Rock"
+  ],
+  "styles": [
+    "Black Metal"
+  ],
+  "year": 2005,
+  "tracklist": [
+    {
+      "position": "11",
+      "type_": "track",
+      "title": "I Am Abomination",
+      "extraartists": [
+        {
+          "name": "S.A. Destroyer",
+          "anv": "Destroyer",
+          "join": "",
+          "role": "Lyrics By",
+          "tracks": "",
+          "id": 854414,
+          "resource_url": "https://api.discogs.com/artists/854414"
+        },
+        {
+          "name": "Tjalve",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 407476,
+          "resource_url": "https://api.discogs.com/artists/407476"
+        }
+      ],
+      "duration": "4:10"
+    },
+    {
+      "position": "12",
+      "type_": "track",
+      "title": "Nathicana",
+      "extraartists": [
+        {
+          "name": "Seidemann (2)",
+          "anv": "",
+          "join": "",
+          "role": "Lyrics By",
+          "tracks": "",
+          "id": 407475,
+          "resource_url": "https://api.discogs.com/artists/407475"
+        },
+        {
+          "name": "Archaon",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 407477,
+          "resource_url": "https://api.discogs.com/artists/407477"
+        }
+      ],
+      "duration": "4:39"
+    },
+    {
+      "position": "13",
+      "type_": "track",
+      "title": "Sculptor Of Flesh",
+      "extraartists": [
+        {
+          "name": "Seidemann (2)",
+          "anv": "",
+          "join": "",
+          "role": "Lyrics By",
+          "tracks": "",
+          "id": 407475,
+          "resource_url": "https://api.discogs.com/artists/407475"
+        },
+        {
+          "name": "Archaon",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 407477,
+          "resource_url": "https://api.discogs.com/artists/407477"
+        },
+        {
+          "name": "Frost (11)",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 299360,
+          "resource_url": "https://api.discogs.com/artists/299360"
+        },
+        {
+          "name": "Seidemann (2)",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 407475,
+          "resource_url": "https://api.discogs.com/artists/407475"
+        }
+      ],
+      "duration": "3:18"
+    },
+    {
+      "position": "14",
+      "type_": "track",
+      "title": "Celestial Deconstruction",
+      "extraartists": [
+        {
+          "name": "Archaon",
+          "anv": "",
+          "join": "",
+          "role": "Music By, Lyrics By",
+          "tracks": "",
+          "id": 407477,
+          "resource_url": "https://api.discogs.com/artists/407477"
+        }
+      ],
+      "duration": "7:45"
+    },
+    {
+      "position": "15",
+      "type_": "track",
+      "title": "To Rottendom",
+      "extraartists": [
+        {
+          "name": "S.A. Destroyer",
+          "anv": "Destroyer",
+          "join": "",
+          "role": "Lyrics By",
+          "tracks": "",
+          "id": 854414,
+          "resource_url": "https://api.discogs.com/artists/854414"
+        },
+        {
+          "name": "Archaon",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 407477,
+          "resource_url": "https://api.discogs.com/artists/407477"
+        },
+        {
+          "name": "Frost (11)",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 299360,
+          "resource_url": "https://api.discogs.com/artists/299360"
+        }
+      ],
+      "duration": "5:52"
+    },
+    {
+      "position": "16",
+      "type_": "track",
+      "title": "From The Deeps",
+      "extraartists": [
+        {
+          "name": "Seidemann (2)",
+          "anv": "",
+          "join": "",
+          "role": "Lyrics By",
+          "tracks": "",
+          "id": 407475,
+          "resource_url": "https://api.discogs.com/artists/407475"
+        },
+        {
+          "name": "Archaon",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 407477,
+          "resource_url": "https://api.discogs.com/artists/407477"
+        }
+      ],
+      "duration": "6:25"
+    },
+    {
+      "position": "17",
+      "type_": "track",
+      "title": "Slaves To Slaughter",
+      "extraartists": [
+        {
+          "name": "S.A. Destroyer",
+          "anv": "Destroyer",
+          "join": "",
+          "role": "Lyrics By",
+          "tracks": "",
+          "id": 854414,
+          "resource_url": "https://api.discogs.com/artists/854414"
+        },
+        {
+          "name": "Tjalve",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 407476,
+          "resource_url": "https://api.discogs.com/artists/407476"
+        }
+      ],
+      "duration": "6:11"
+    },
+    {
+      "position": "18",
+      "type_": "track",
+      "title": "Hellfire",
+      "extraartists": [
+        {
+          "name": "Jonna Fyr Minion",
+          "anv": "",
+          "join": "",
+          "role": "Keyboards [Additional Keys On Intro], Effects [Additional Fx On Intro]",
+          "tracks": "",
+          "id": 463066,
+          "resource_url": "https://api.discogs.com/artists/463066"
+        },
+        {
+          "name": "Frost (11)",
+          "anv": "",
+          "join": "",
+          "role": "Lyrics By",
+          "tracks": "",
+          "id": 299360,
+          "resource_url": "https://api.discogs.com/artists/299360"
+        },
+        {
+          "name": "Frost (11)",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 299360,
+          "resource_url": "https://api.discogs.com/artists/299360"
+        },
+        {
+          "name": "Seidemann (2)",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 407475,
+          "resource_url": "https://api.discogs.com/artists/407475"
+        },
+        {
+          "name": "Tjalve",
+          "anv": "",
+          "join": "",
+          "role": "Music By",
+          "tracks": "",
+          "id": 407476,
+          "resource_url": "https://api.discogs.com/artists/407476"
+        }
+      ],
+      "duration": "13:49"
+    }
+  ],
+  "artists": [
+    {
+      "name": "1349",
+      "anv": "",
+      "join": "",
+      "role": "",
+      "tracks": "",
+      "id": 269156,
+      "resource_url": "https://api.discogs.com/artists/269156"
+    }
+  ],
+  "title": "Hellfire",
+  "data_quality": "Correct",
+  "videos": [
+    {
+      "uri": "https://www.youtube.com/watch?v=pyzXcSmw8U0",
+      "title": "Hellfire",
+      "description": "Provided to YouTube by Universal Music Group\n\nHellfire · 1349\n\nHellfire\n\n℗ 2005 Tanglade Ltd t/a Candlelight Records\n\nReleased on: 2005-10-24\n\nAssociated  Performer, Vocals, Drums, Guitar, Bass  Guitar, Producer: Ravn\nAssociated  Performer, Guitar: Arc",
+      "duration": 830,
+      "embed": true
+    },
+    {
+      "uri": "https://www.youtube.com/watch?v=6iG1MmcN3r8",
+      "title": "1349 - Hellvetia Fire [Concert Video]",
+      "description": "HELLVETIA FIRE - THE OFFICIAL 1349 BOOTLEG\n\nFilmed Live at Bikini Test La chaux De Fonds Switzerland 2005 \n1. Hellfire (prologue) \n2. Riders of the Apocalypse \n3. Nathicana \n4. Nekronatalenheten \n5. Chasing Dragons \n6. Satanic Propaganda \n7. I am Abominat",
+      "duration": 2088,
+      "embed": true
+    },
+    {
+      "uri": "https://www.youtube.com/watch?v=29ft8HMrEzU",
+      "title": "1349 - Hellfire",
+      "description": "",
+      "duration": 2643,
+      "embed": true
+    },
+    {
+      "uri": "https://www.youtube.com/watch?v=qcnH-vs-8x4",
+      "title": "1349 - Hellfire [Full Album]",
+      "description": "",
+      "duration": 3131,
+      "embed": true
+    },
+    {
+      "uri": "https://www.youtube.com/watch?v=VwBpz9-vsFs",
+      "title": "1349 - Hellfire [Full Album]",
+      "description": "Download the Album [MF]: http://bit.ly/10Yn5Bh\n\nTracklist:\n\n0:00 - 01 I Am Abomination\n4:11 - 02 Nathicana\n8:50 - 03 Sculptor Of Flesh\n12:09 - 04 Celestial Deconstruction\n19:54 - 05 To Rottendom\n25:47 - 06 From The Deeps\n32:13 - 07 Slaves To Slaughter\n38:",
+      "duration": 3136,
+      "embed": true
+    }
+  ]
+}

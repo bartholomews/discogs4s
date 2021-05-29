@@ -16,11 +16,11 @@ import sttp.model.{Method, StatusCode, Uri}
  * https://www.discogs.com/developers/#page:authentication For example on usages, see
  * https://github.com/bartholomews/discogs4s#full-oauth-10a-with-access-tokensecret
  * @param userAgent
- *   the application `User-Agent`, which will be added as header in all the requests
+ *   The application `User-Agent`, which will be added as header in all the requests
  * @param backend
- *   the Sttp backend for the requests
+ *   The Sttp backend for the requests
  * @tparam F
- *   the Effect type
+ *   The Effect type
  */
 class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
@@ -30,9 +30,9 @@ class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * https://www.discogs.com/developers/#page:authentication,header:authentication-request-token-url
    * ----------------------------------------------------------------------------------------------
    * @param temporaryCredentialsRequest
-   *   the consumer credentials and OAuth options such as redirect uri and signature method
+   *   The consumer credentials and OAuth options such as redirect uri and signature method
    * @return
-   *   an Sttp response with either the request token or an error
+   *   An Sttp response with either the request token or an error
    */
   def getRequestToken(
       temporaryCredentialsRequest: TemporaryCredentialsRequest
@@ -47,14 +47,15 @@ class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   /**
    * Generate the access token
    * https://www.discogs.com/developers/#page:authentication,header:authentication-access-token-url
-   * ---------------------------------------------------------------------------------------------- This should probably
-   * not be used directly unless you want to have a custom error (e.g. for permissions rejected or some unexpected
-   * error). Otherwise you can simply use `fromUri`, which will parse the uri which the user has been redirected to
-   * (after granting or rejecting permissions for the app)
+   * ----------------------------------------------------------------------------------------------
+   *
+   * This should probably not be used directly unless you want to have a custom error (e.g. for permissions rejected or
+   * some unexpected error). Otherwise you can simply use `fromUri`, which will parse the uri which the user has been
+   * redirected to (after granting or rejecting permissions for the app)
    * @param signer
-   *   the request token credentials
+   *   The request token credentials
    * @return
-   *   an sttp response with either the access token or an error
+   *   An sttp response with either the access token or an error
    */
   def getAccessToken(signer: RequestTokenCredentials): F[SttpResponse[Exception, AccessTokenCredentials]] = {
 
@@ -71,15 +72,15 @@ class AuthApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   /**
    * Generate the access token directly from the redirection uri
    * @param resourceOwnerAuthorizationUriResponse
-   *   the uri where the user has been redirected to (after granting or rejecting permissions for the app)
+   *   The uri where the user has been redirected to (after granting or rejecting permissions for the app)
    * @param temporaryCredentials
-   *   the request token credentials obtained via `getRequestToken`
+   *   The request token credentials obtained via `getRequestToken`
    * @param signatureMethod
-   *   the OAuth signature, default to SHA1 (see https://tools.ietf.org/html/rfc5849#section-3.4)
+   *   The OAuth signature, default to SHA1 (see https://tools.ietf.org/html/rfc5849#section-3.4)
    * @param f
-   *   the effect type
+   *   The effect type
    * @return
-   *   an sttp response with either the access token or an error
+   *   An sttp response with either the access token or an error
    */
   def fromUri(
       resourceOwnerAuthorizationUriResponse: Uri,

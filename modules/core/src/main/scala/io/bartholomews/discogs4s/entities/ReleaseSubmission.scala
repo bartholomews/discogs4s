@@ -14,7 +14,7 @@ final case class ReleaseSubmission(
     estimatedWeight: Option[Int],
     formatQuantity: Int,
     formats: List[ReleaseFormat],
-    genres: List[String],
+    genres: List[Genre],
     id: Long,
     images: List[ReleaseImage],
     labels: List[EntityResource],
@@ -24,7 +24,7 @@ final case class ReleaseSubmission(
     released: Option[String],
     releasedFormatted: Option[String],
     resourceUrl: Uri,
-    status: String,
+    status: ReleaseStatus,
     styles: List[Style],
     thumb: Uri,
     title: String,
@@ -34,3 +34,4 @@ final case class ReleaseSubmission(
 )
 
 final case class Style(value: String) extends AnyVal
+final case class Genre(value: String) extends AnyVal

@@ -6,7 +6,7 @@ import sttp.model.Uri
 
 final case class Release(
     id: DiscogsReleaseId,
-    status: String,
+    status: ReleaseStatus,
     year: Int,
     resourceUrl: Uri,
     uri: Uri,
@@ -34,7 +34,7 @@ final case class Release(
     releasedFormatted: String,
     identifiers: List[ReleaseIdentifier],
     videos: List[ReleaseVideo],
-    genres: List[String],
+    genres: List[Genre],
     styles: List[Style],
     tracklist: List[ReleaseTrack],
     extraartists: List[ArtistRelease],
@@ -45,3 +45,4 @@ final case class Release(
 )
 
 final case class DiscogsReleaseId(value: Long) extends AnyVal
+final case class ReleaseStatus(value: String)  extends AnyVal

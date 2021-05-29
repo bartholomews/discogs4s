@@ -28,7 +28,7 @@ trait DiscogsServerBehaviours[E[_], D[_], DE, J] extends ServerBehaviours[E, D, 
       decodingBody: Boolean = true
   ): Unit = {
     behave.like(clientReceivingUnauthenticatedResponse(expectedEndpoint, request))
-    if(decodingBody) behave.like(clientReceivingSuccessfulUnexpectedResponseBody(expectedEndpoint, request))
+    if (decodingBody) behave.like(clientReceivingSuccessfulUnexpectedResponseBody(expectedEndpoint, request))
   }
 
   private def clientReceivingUnauthenticatedResponse[E2, A](
