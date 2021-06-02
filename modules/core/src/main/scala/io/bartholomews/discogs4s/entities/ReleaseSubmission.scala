@@ -16,7 +16,7 @@ final case class ReleaseSubmission(
     formats: List[ReleaseFormat],
     genres: List[Genre],
     id: Long,
-    images: List[ReleaseImage],
+    images: List[DiscogsImage],
     labels: List[EntityResource],
     masterId: Option[Long],
     masterUrl: Option[String],

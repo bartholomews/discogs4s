@@ -1,5 +1,8 @@
 package io.bartholomews.discogs4s.circe
 
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 import io.bartholomews.discogs4s.entities._
 import io.bartholomews.discogs4s.entities.requests.UpdateUserRequest
 import io.bartholomews.fsclient.circe.FsClientCirceApi
@@ -13,13 +16,11 @@ import io.circe.generic.extras.semiauto.{
 }
 import sttp.model.Uri
 
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 object codecs extends DiscogsCirceApi
 
+//noinspection DuplicatedCode
 trait DiscogsCirceApi extends FsClientCirceApi {
-  // TODO: move to fsclient?
+  // TODO: move to fsclient
   def decodeNullableMap[K, V](implicit
       decodeK: KeyDecoder[K],
       decodeV: Decoder[V]
@@ -27,7 +28,22 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     Decoder.decodeOption[Map[K, V]](Decoder.decodeMap[K, V]).map(_.getOrElse(Map.empty))
 
   implicit val config: Configuration                 = Configuration.default.withSnakeCaseMemberNames
-  implicit val emptyUriDecoder: Decoder[Option[Uri]] = decodeEmptyStringAsOption[Uri]
+
+  // TODO: replace in fsclient, or maybe remove it: double check in test with explicit assert on empty Uri
+  def decodeEmptyStringAsNone[A](implicit decoder: Decoder[A]): Decoder[Option[A]] = { (c: HCursor) =>
+    (c: ACursor) match {
+      case cursor: FailedCursor =>
+        if (!cursor.incorrectFocus) Right(None) else Left(DecodingFailure("[A]Option[A]", c.history))
+
+      case cursor: HCursor =>
+        cursor.focus match {
+          case None => Right(None)
+          case Some(jValue) =>
+            if (jValue.asString.contains("")) Right(None)
+            else decoder(c).map(Some(_))
+        }
+    }
+  }
 
   implicit val pageUrlsCodec: Codec[PageUrls]     = deriveConfiguredCodec
   implicit val paginationCodec: Codec[Pagination] = deriveConfiguredCodec
@@ -54,6 +70,7 @@ trait DiscogsCirceApi extends FsClientCirceApi {
   )(UserIdentity.apply)
 
   implicit val userProfileCodec: Codec[UserProfile] = {
+    implicit val uriDecoder: Decoder[Option[Uri]] = decodeEmptyStringAsNone[Uri]
     implicit val dateTimeOffsetDecoder: Decoder[LocalDateTime] =
       localDateTimeDecoder(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
     deriveConfiguredCodec
@@ -81,7 +98,7 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     deriveConfiguredCodec
   }
   implicit val releaseVideoCodec: Codec[ReleaseVideo]           = deriveConfiguredCodec
-  implicit val releaseImageCodec: Codec[ReleaseImage]           = deriveConfiguredCodec
+  implicit val discogsImageCodec: Codec[DiscogsImage]           = deriveConfiguredCodec
   implicit val entityResourceCodec: Codec[EntityResource]       = deriveConfiguredCodec
   implicit val formatDescriptionCodec: Codec[FormatDescription] = deriveUnwrappedCodec
   implicit val releaseFormatCodec: Codec[ReleaseFormat] = {
@@ -95,7 +112,7 @@ trait DiscogsCirceApi extends FsClientCirceApi {
   implicit val releaseSubmissionCodec: Codec[ReleaseSubmission] = {
     implicit val dateTimeOffsetDecoder: Decoder[LocalDateTime] =
       localDateTimeDecoder(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-    implicit val decodeImages: Decoder[List[ReleaseImage]] = decodeNullableList[ReleaseImage]
+    implicit val decodeImages: Decoder[List[DiscogsImage]] = decodeNullableList[DiscogsImage]
     implicit val decodeStyles: Decoder[List[Style]]        = decodeNullableList[Style]
     implicit val decodeVideos: Decoder[List[ReleaseVideo]] = decodeNullableList[ReleaseVideo]
     deriveConfiguredCodec
@@ -105,6 +122,7 @@ trait DiscogsCirceApi extends FsClientCirceApi {
 
   implicit val releaseIdentifierCodec: Codec[ReleaseIdentifier] = deriveConfiguredCodec
   implicit val releaseCodec: Codec[Release] = {
+    implicit val uriDecoder: Decoder[Option[Uri]] = decodeEmptyStringAsNone[Uri]
     implicit val dateTimeOffsetDecoder: Decoder[LocalDateTime] =
       localDateTimeDecoder(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
     deriveConfiguredCodec
@@ -156,6 +174,11 @@ trait DiscogsCirceApi extends FsClientCirceApi {
     implicit def decodeFilter[R <: ReleaseFilter](implicit d: Decoder[R]): Decoder[List[R]] = decodeNullableList[R]
     deriveConfiguredCodec
   }
+
+  implicit val aliasCodec: Codec[Alias]       = deriveConfiguredCodec
+  implicit val groupCodec: Codec[Group]       = deriveConfiguredCodec
+  implicit val artistIdCodec: Codec[ArtistId] = deriveUnwrappedCodec
+  implicit val artistCodec: Codec[Artist]     = deriveConfiguredCodec
 
   implicit val filtersInfoCodec: Codec[FiltersInfo]                     = deriveConfiguredCodec
   implicit val filterFacetCodec: Codec[FilterFacet]                     = deriveConfiguredCodec

@@ -57,7 +57,12 @@ class DiscogsPersonalClient[F[_], S <: OAuthSigner] private[discogs4s] (
     ): F[SttpResponse[DE, MasterReleaseVersions]] =
       api.getMasterReleaseVersions(masterId)(client.signer)
 
-    def getArtistsReleases[DE](artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(implicit
+    def getArtist[DE](artistId: ArtistId)(implicit
+        responseHandler: ResponseHandler[DE, Artist]
+    ): F[SttpResponse[DE, Artist]] =
+      api.getArtist(artistId)(client.signer)
+
+    def getArtistsReleases[DE](artistId: ArtistId, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(implicit
         responseHandler: ResponseHandler[DE, PaginatedReleases]
     ): F[SttpResponse[DE, PaginatedReleases]] =
       api.getArtistReleases(artistId, sortBy, sortOrder)(client.signer)

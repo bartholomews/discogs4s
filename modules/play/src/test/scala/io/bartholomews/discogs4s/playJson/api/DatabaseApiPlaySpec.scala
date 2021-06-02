@@ -16,4 +16,5 @@ class DatabaseApiPlaySpec
   implicit override val communityReleaseStatsDecoder: Reads[CommunityReleaseStats] = communityReleaseStatsCodec
   implicit override val masterReleaseDecoder: Reads[MasterRelease]                 = masterReleaseCodec
   implicit override val masterReleaseVersionsDecoder: Reads[MasterReleaseVersions] = masterReleaseVersionsCodec
+  implicit override val artistDecoder: Reads[Artist]                               = artistCodec
 }

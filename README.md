@@ -39,7 +39,7 @@ This is the most basic client with no credentials and low rate limits.
 * Authenticated as user  ? ❌ *No*
 
 ```scala
-  import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
+  import io.bartholomews.discogs4s.entities.{DiscogsUsername, UserProfile}
   import io.bartholomews.discogs4s.{DiscogsClient, DiscogsSimpleClient}
   import io.bartholomews.fsclient.core.config.UserAgent
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
@@ -75,8 +75,8 @@ This is the most basic client with no credentials and low rate limits.
   )(backend)
 
   // run a request with your client
-  val response: F[SttpResponse[circe.Error, SimpleUser]] =
-    client.users.getSimpleUserProfile(Username("_.bartholomews"))
+  val response: F[SttpResponse[circe.Error, UserProfile]] =
+    client.users.getUserProfile(DiscogsUsername("_.bartholomews"))
 ```
 
 ### Client Credentials
@@ -90,7 +90,7 @@ You need to provide consumer key/secret in [developer settings](https://www.disc
 * Authenticated as user  ? ❌ *No*
 
 ```scala
-  import io.bartholomews.discogs4s.entities.{SimpleUser, Username}
+  import io.bartholomews.discogs4s.entities.{DiscogsUsername, UserProfile}
   import io.bartholomews.discogs4s.{DiscogsClient, DiscogsSimpleClient}
   import io.bartholomews.fsclient.core.config.UserAgent
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
@@ -122,7 +122,7 @@ You need to provide consumer key/secret in [developer settings](https://www.disc
       secret: "<YOUR_CONSUMER_SECRET>"
     }
   }
-  */
+   */
   private val client = DiscogsClient.clientCredentials.unsafeFromConfig(backend)
   // you can also create a safe client from config
   private val safeClient: Result[DiscogsSimpleClient[F, SignerV1]] = DiscogsClient.clientCredentials.fromConfig(backend)
@@ -132,8 +132,8 @@ You need to provide consumer key/secret in [developer settings](https://www.disc
     Consumer(key = "<YOUR_CONSUMER_KEY>", secret = "<YOUR_CONSUMER_SECRET>")
   )(backend)
 
-  val response: F[SttpResponse[circe.Error, SimpleUser]] =
-    client.users.getSimpleUserProfile(Username("_.bartholomews"))
+  val response: F[SttpResponse[circe.Error, UserProfile]] =
+    client.users.getUserProfile(DiscogsUsername("_.bartholomews"))
 ```
 
 ### Personal access token
@@ -146,13 +146,12 @@ You need to provide your personal access token from [developer settings](https:/
 * Authenticated as user  ? ✔ *Yes, for token holder only* 👩
 
 ```scala
-  import io.bartholomews.discogs4s.entities.UserIdentity
+  import io.bartholomews.discogs4s.entities.{DiscogsUsername, UserIdentity}
   import io.bartholomews.discogs4s.{DiscogsClient, DiscogsPersonalClient}
   import io.bartholomews.fsclient.core.config.UserAgent
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
   import io.bartholomews.fsclient.core.oauth.OAuthSigner
   import io.bartholomews.fsclient.core.oauth.v2.OAuthV2.AccessToken
-  import io.bartholomews.discogs4s.entities.DiscogsUsername
   import io.circe
   import pureconfig.ConfigReader.Result
   import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}
@@ -276,12 +275,11 @@ This client is for making calls on behalf of any authenticated user which grante
      */
     accessToken <- client.auth.fromUri(resourceOwnerAuthorizationUriResponse, temporaryCredentials).body
 
-  } yield {
-    // you need to provide an accessToken to make user-authenticated calls
-    client.users.me(accessToken).body match {
-      case Left(error) => println(error.getMessage)
-      case Right(user) => println(user.username)
-    }
+  } yield
+  // you need to provide an accessToken to make user-authenticated calls
+  client.users.me(accessToken).body match {
+    case Left(error) => println(error.getMessage)
+    case Right(user) => println(user.username)
   }
 ```
 
@@ -300,6 +298,7 @@ This client is for making calls on behalf of any authenticated user which grante
     - 🔓 [`getReleaseStats`](https://www.discogs.com/developers/#page:database,header:database-release-stats-get)  
     - 🔓 [`getMasterRelease`](https://www.discogs.com/developers/#page:database,header:database-master-release-get)  
     - 🔓 [`getMasterReleaseVersions`](https://www.discogs.com/developers/#page:database,header:database-master-release-versions-get)  
+    - 🔓 [`getArtist`](https://www.discogs.com/developers/#page:database,header:database-artist-get)
     - 🔓 [`getArtistReleases`](https://www.discogs.com/developers/#page:database,header:database-artist-releases-get)
     
 - **UsersApi**  

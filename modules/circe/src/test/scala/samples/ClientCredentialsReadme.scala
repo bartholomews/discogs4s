@@ -1,8 +1,8 @@
 package samples
 
 object ClientCredentialsReadme extends App {
-  import io.bartholomews.discogs4s.entities.{DiscogsUsername, UserProfile}
-  import io.bartholomews.discogs4s.{DiscogsClient, DiscogsSimpleClient}
+  import _root_.io.bartholomews.discogs4s.entities.{DiscogsUsername, UserProfile}
+  import _root_.io.bartholomews.discogs4s.{DiscogsClient, DiscogsSimpleClient}
   import io.bartholomews.fsclient.core.config.UserAgent
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
   import io.bartholomews.fsclient.core.oauth.SignerV1

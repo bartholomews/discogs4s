@@ -1,11 +1,11 @@
 package samples
 
 object AuthDisabledReadme extends App {
-  import io.bartholomews.discogs4s.entities.{DiscogsUsername, UserProfile}
-  import io.bartholomews.discogs4s.{DiscogsClient, DiscogsSimpleClient}
-  import io.bartholomews.fsclient.core.config.UserAgent
-  import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
-  import io.bartholomews.fsclient.core.oauth.AuthDisabled
+  import _root_.io.bartholomews.discogs4s.entities.{DiscogsUsername, UserProfile}
+  import _root_.io.bartholomews.discogs4s.{DiscogsClient, DiscogsSimpleClient}
+  import _root_.io.bartholomews.fsclient.core.config.UserAgent
+  import _root_.io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
+  import _root_.io.bartholomews.fsclient.core.oauth.AuthDisabled
   import io.circe
   import pureconfig.ConfigReader.Result
   import sttp.client3.{HttpURLConnectionBackend, Identity, SttpBackend}

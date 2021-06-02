@@ -1,7 +1,7 @@
 package samples
 
 object FullOAuthReadme {
-  import io.bartholomews.discogs4s.{DiscogsClient, DiscogsOAuthClient}
+  import _root_.io.bartholomews.discogs4s.{DiscogsClient, DiscogsOAuthClient}
   import io.bartholomews.fsclient.core.config.UserAgent
   import io.bartholomews.fsclient.core.oauth.v1.OAuthV1.Consumer
   import io.bartholomews.fsclient.core.oauth.{RedirectUri, TemporaryCredentialsRequest}

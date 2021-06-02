@@ -73,5 +73,5 @@ addCommandAlias("test-fast", "testOnly * -- -l org.scalatest.tags.Slow")
 
 libraryDependencies ++= dependencies ++ testDependencies
 
-coverageMinimum := 77 // FIXME
+coverageMinimum := 76 // FIXME
 coverageFailOnMinimum := true

@@ -140,7 +140,8 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   /**
    * https://www.discogs.com/developers/#page:database,header:database-community-release-rating-get
    *
-   * Retrieves the community release rating average and count.
+   * The Community Release Rating endpoint retrieves the average rating and the total number of user ratings for a given
+   * release.
    *
    * @param releaseId
    *   The Release ID
@@ -165,7 +166,8 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   /**
    * https://www.discogs.com/developers/#page:database,header:database-release-stats-get
    *
-   * Retrieves the release’s “have” and “want” counts.
+   * The Release Stats endpoint retrieves the total number of “haves” (in the community’s collections) and “wants” (in
+   * the community’s wantlists) for a given release.
    *
    * @param releaseId
    *   The Release ID
@@ -190,7 +192,8 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   /**
    * https://www.discogs.com/developers/#page:database,header:database-master-release-get
    *
-   * Get a master release
+   * The Master resource represents a set of similar Releases. Masters (also known as “master releases”) have a “main
+   * release” which is often the chronologically earliest.
    *
    * @param masterId
    *   The Master ID
@@ -238,9 +241,34 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
       .send(backend)
 
   /**
+   * https://www.discogs.com/developers/#page:database,header:database-artist-get
+   *
+   * The Artist resource represents a person in the Discogs database who contributed to a Release in some capacity.
+   *
+   * @param artistId
+   *   The Artist ID
+   * @param signer
+   *   The request Signer
+   * @param responseHandler
+   *   The response decoder
+   * @tparam DE
+   *   The Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, Artist]]`
+   */
+  def getArtist[DE](artistId: ArtistId)(signer: Signer)(implicit
+      responseHandler: ResponseHandler[DE, Artist]
+  ): F[SttpResponse[DE, Artist]] =
+    baseRequest(userAgent)
+      .get(artistsPath / artistId.value.toString)
+      .sign(signer)
+      .response(responseHandler)
+      .send(backend)
+
+  /**
    * https://www.discogs.com/developers/#page:database,header:database-artist-releases-get
    *
-   * Get an artist’s releases
+   * Returns a list of Releases and Masters associated with the Artist.
    *
    * @param artistId
    *   The Artist ID
@@ -257,12 +285,12 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @return
    *   `F[SttpResponse[DE, PaginatedReleases]]`
    */
-  def getArtistReleases[DE](artistId: Int, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(signer: Signer)(
+  def getArtistReleases[DE](artistId: ArtistId, sortBy: Option[SortBy], sortOrder: Option[SortOrder])(signer: Signer)(
       implicit responseHandler: ResponseHandler[DE, PaginatedReleases]
   ): F[SttpResponse[DE, PaginatedReleases]] = {
 
     val uri: Uri =
-      (artistsPath / artistId.toString / "releases")
+      (artistsPath / artistId.value.toString / "releases")
         .withOptionQueryParam("sort", sortBy.map(_.entryName))
         .withOptionQueryParam("sort_order", sortOrder.map(_.entryName))
 

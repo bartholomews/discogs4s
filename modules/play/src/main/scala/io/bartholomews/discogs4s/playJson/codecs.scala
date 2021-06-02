@@ -37,6 +37,7 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
         .validateOpt[List[A]](Reads.list(rds))
         .map(_.getOrElse(Nil))
 
+  // TODO - double check this with specific assertion in test (e.g. empty Uri in Release, Artist[Group/Alias])
   def decodeOptionAsEmptyString[A](implicit read: Reads[A]): Reads[Option[A]] = { (json: JsValue) =>
     json
       .validateOpt[String]
@@ -65,7 +66,7 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val releaseStatsCodec: Format[ReleaseStats]                   = Json.format
 
   implicit val releaseVideoCodec: Format[ReleaseVideo]           = Json.format
-  implicit val releaseImageCodec: Format[ReleaseImage]           = Json.format
+  implicit val discogsImageCodec: Format[DiscogsImage]           = Json.format
   implicit val entityResourceCodec: Format[EntityResource]       = Json.format
   implicit val formatDescriptionCodec: Format[FormatDescription] = Json.valueFormat
   implicit val releaseFormatCodec: Format[ReleaseFormat] = {
@@ -148,6 +149,11 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val masterReleaseCodec: Format[MasterRelease]                 = Json.format
   implicit val releaseVersionCodec: Format[ReleaseVersion]               = Json.format
   implicit val masterReleaseVersionsCodec: Format[MasterReleaseVersions] = Json.format
+
+  implicit val aliasCodec: Format[Alias]       = Json.format
+  implicit val groupCodec: Format[Group]       = Json.format
+  implicit val artistIdCodec: Format[ArtistId] = Json.valueFormat
+  implicit val artistCodec: Format[Artist]     = Json.format
 
   implicit val releaseRatingUpdateRequestEncoder: Writes[ReleaseRatingUpdateRequest] = Json.writes
   implicit val updateUserRequestEncoder: Writes[UpdateUserRequest]                   = Json.writes

@@ -20,6 +20,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
   implicit def communityReleaseStatsDecoder: D[CommunityReleaseStats]
   implicit def masterReleaseDecoder: D[MasterRelease]
   implicit def masterReleaseVersionsDecoder: D[MasterReleaseVersions]
+  implicit def artistDecoder: D[Artist]
   implicit def releaseRatingUpdateRequestEncoder: E[ReleaseRatingUpdateRequest]
 
   import DiscogsClientData._
@@ -270,6 +271,37 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
     }
   }
 
+  "getArtist" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/artists/23755"))
+    def request: SttpResponse[DE, Artist] =
+      sampleOAuthClient.database.getArtist(artistId = ArtistId(23755))(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
+    }
+
+    "the server returns the expected response entity on a request with sortBy and sortOrder" should {
+      "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) { case Right(entity) =>
+        entity.id shouldBe ArtistId(23755)
+      }
+    }
+
+    "the server returns multiple entities on a request with default sortBy and sortOrder" should {
+      def request: SttpResponse[DE, PaginatedReleases] =
+        sampleOAuthClient.database.getArtistReleases(artistId = ArtistId(1), sortBy = None, sortOrder = None)(
+          accessTokenCredentials
+        )
+
+      "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) { case Right(entity) =>
+        entity.pagination.items shouldBe 110
+        entity.pagination.perPage shouldBe 50
+        inside(entity.releases.find(_.id == 12526186)) { case Some(release) =>
+          release.year shouldBe None
+        }
+      }
+    }
+  }
+
   "getArtistReleases" when {
     def endpointRequest: MappingBuilder = get(urlPathEqualTo("/artists/1/releases"))
       .withQueryParam("sort", equalTo("title"))
@@ -277,7 +309,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
 
     def request: SttpResponse[DE, PaginatedReleases] =
       sampleOAuthClient.database.getArtistReleases(
-        artistId = 1,
+        artistId = ArtistId(1),
         sortBy = Some(SortBy.Title),
         sortOrder = Some(SortOrder.Asc)
       )(accessTokenCredentials)
@@ -327,7 +359,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
 
     "the server returns multiple entities on a request with default sortBy and sortOrder" should {
       def request: SttpResponse[DE, PaginatedReleases] =
-        sampleOAuthClient.database.getArtistReleases(artistId = 1, sortBy = None, sortOrder = None)(
+        sampleOAuthClient.database.getArtistReleases(artistId = ArtistId(1), sortBy = None, sortOrder = None)(
           accessTokenCredentials
         )
 

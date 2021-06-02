@@ -57,7 +57,7 @@ trait DiscogsDiffDerivations extends DiffDerivations {
   implicit val filtersInfoDiff: Diff[FiltersInfo]                     = Diff.derived[FiltersInfo]
   implicit val filterFacetValueDiff: Diff[FilterFacetValue]           = Diff.derived[FilterFacetValue]
   implicit val filterFacetDiff: Diff[FilterFacet]                     = Diff.derived[FilterFacet]
-  implicit val releaseImageDiff: Diff[ReleaseImage]                   = Diff.derived[ReleaseImage]
+  implicit val releaseImageDiff: Diff[DiscogsImage]                   = Diff.derived[DiscogsImage]
   implicit val masterReleaseDiff: Diff[MasterRelease]                 = Diff.derived[MasterRelease]
   implicit val masterReleaseVersionsDiff: Diff[MasterReleaseVersions] = Diff.derived[MasterReleaseVersions]
 }

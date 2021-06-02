@@ -27,7 +27,7 @@ private[playJson] object ReleaseSubmissionPlayJson {
       formats           <- (json \ "formats").validate[List[ReleaseFormat]]
       genres            <- (json \ "genres").validate[List[Genre]]
       id                <- (json \ "id").validate[Long]
-      images            <- (json \ "images").validateOpt[List[ReleaseImage]].map(_.getOrElse(Nil))
+      images            <- (json \ "images").validateOpt[List[DiscogsImage]].map(_.getOrElse(Nil))
       labels            <- (json \ "labels").validate[List[EntityResource]]
       masterId          <- (json \ "master_id").validateOpt[Long]
       masterUrl         <- (json \ "master_url").validateOpt[String]

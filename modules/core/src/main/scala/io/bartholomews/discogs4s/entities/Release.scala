@@ -38,7 +38,7 @@ final case class Release(
     styles: List[Style],
     tracklist: List[ReleaseTrack],
     extraartists: List[ArtistRelease],
-    images: List[ReleaseImage],
+    images: List[DiscogsImage],
     thumb: Option[Uri],
     estimatedWeight: Int,
     blockedFromSale: Boolean

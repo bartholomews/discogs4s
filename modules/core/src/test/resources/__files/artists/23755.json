@@ -1,0 +1,452 @@
+{
+  "name": "Miles Davis",
+  "id": 23755,
+  "resource_url": "https://api.discogs.com/artists/23755",
+  "uri": "https://www.discogs.com/artist/23755-Miles-Davis",
+  "releases_url": "https://api.discogs.com/artists/23755/releases",
+  "images": [
+    {
+      "type": "primary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 342,
+      "height": 512
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 304,
+      "height": 304
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 600,
+      "height": 811
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 560,
+      "height": 853
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 600,
+      "height": 600
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 389,
+      "height": 500
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 600,
+      "height": 910
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 421,
+      "height": 500
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 330,
+      "height": 543
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 225,
+      "height": 335
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 384,
+      "height": 298
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 405,
+      "height": 500
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 500,
+      "height": 499
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 529,
+      "height": 360
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 397,
+      "height": 600
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 281,
+      "height": 500
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 392,
+      "height": 600
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 314,
+      "height": 450
+    },
+    {
+      "type": "secondary",
+      "uri": "",
+      "resource_url": "",
+      "uri150": "",
+      "width": 359,
+      "height": 507
+    }
+  ],
+  "realname": "Miles Dewey Davis III",
+  "profile": "Trumpeter, bandleader, composer, and one of the most important figures in jazz music history, and music history in general. Davis adopted a variety of musical directions in a five-decade career that kept him at the forefront of many major stylistic developments in jazz. Winner of eight Grammy awards.\r\n\r\nBorn: 26 May 1926 in Alton, Illinois, USA.\r\nDied: 28 September 1991 in Santa Monica, California, USA (aged 65).\r\n\r\nBest known for his seminal modern jazz album \"[m=5460]\" (1959), the highest selling jazz album of all time with six million copies sold.\r\n\r\nMiles went to NYC to study at the academic school for musicians, where he met [a=Charlie Parker]. They started playing together from 1945. In 1948 Miles Davis started to make his own ensembles, at that time he met [a=Gil Evans], The Miles Davis Nonet was born. From the few recordings they made in 1949 to 1950 came the album \"[m=62308]\" (1957), with Davis and Evans going on to work more together in the future.\r\n\r\nMiles Davis was one of the musicians who introduced the 'Hard Bop' in the mid 1950s. In the late 1960s he started to experiment with electronic instruments and rock and funk rhythms. In the mid 1970s he stopped playing because of health problems, though in 1980 he made an 'electronical' comeback.\r\n\r\nInducted into Rock And Roll Hall of Fame in 2006 (Performer). Winner of Eight Grammy Awards.\r\n\r\nHe married dancer/actress [a=Frances Taylor Davis] on December 12, 1959; they divorced in 1968. He then married singer [a=Betty Mabry] in September 1968; they divorced in 1970. He then married actress [a=Cicely Tyson] on November 26, 1981; they divorced in 1989. Father of [a=Cheryl Davis] & [a=Erin Davis]. Uncle of [a=Vince Wilburn, Jr.]",
+  "urls": [
+    "https://www.milesdavis.com/",
+    "https://myspace.com/milesdavis",
+    "https://www.facebook.com/MilesDavis",
+    "https://twitter.com/milesdavis",
+    "https://www.youtube.com/user/MilesDavisVEVO",
+    "https://soundcloud.com/milesdavisofficial",
+    "https://www.setlist.fm/setlists/miles-davis-3d6b58b.html",
+    "https://genius.com/artists/Miles-davis",
+    "https://miles-beyond.com/",
+    "http://www.themusicofmiles.com/",
+    "http://www.kind-of-blue.de/",
+    "http://www.plosin.com/milesahead/",
+    "https://www.thelastmiles.com/",
+    "https://en.wikipedia.org/wiki/Miles_Davis",
+    "https://www.jazzdisco.org/miles-davis/",
+    "https://www.whosampled.com/Miles-Davis/",
+    "https://musicianbio.org/miles-davis/",
+    "https://www.biography.com/musician/miles-davis",
+    "https://www.musicianguide.com/biographies/1608001102/Miles-Davis.html",
+    "https://www.famousbirthdays.com/people/miles-davis.html",
+    "https://www.notablebiographies.com/Co-Da/Davis-Miles.html",
+    "https://www.geni.com/people/Miles-Davis/6000000042514521966",
+    "https://www.astro.com/astro-databank/Davis,_Miles",
+    "https://whatgear.com/artist/miles-davis",
+    "https://www.grammy.com/grammys/artists/miles-davis/11305",
+    "https://www.imdb.com/name/nm0002537/"
+  ],
+  "namevariations": [
+    "David",
+    "David Miles",
+    "Davies",
+    "Davis",
+    "Davis & Miles",
+    "M Davis",
+    "M. David",
+    "M. Davies",
+    "M. Davis",
+    "M.D.",
+    "M.David",
+    "M.Davis",
+    "Mile Davis",
+    "Miles",
+    "Miles Ahead",
+    "Miles D.",
+    "Miles D. Davis",
+    "Miles Daves",
+    "Miles Davies",
+    "Miles Dewey Davis III",
+    "Miles Dewey Davis, III",
+    "Miles Savis",
+    "Milesdavis",
+    "М. Девис",
+    "М. Дэвис",
+    "М. Дэйвис",
+    "Майлз Дейвис",
+    "Майлз Дэвис",
+    "Майлз Дэйвис",
+    "Майлс Дейвис",
+    "Майлс Дэвис",
+    "מיילס דייויס",
+    "マイルス・デイヴィス",
+    "マイルス・ディビス　",
+    "マイルス・デイビス",
+    "マイルス・デヴィス",
+    "マイルス・デビス"
+  ],
+  "aliases": [
+    {
+      "id": 1028079,
+      "name": "Cleo Henry",
+      "resource_url": "https://api.discogs.com/artists/1028079"
+    },
+    {
+      "id": 1109974,
+      "name": "W. Process",
+      "resource_url": "https://api.discogs.com/artists/1109974"
+    },
+    {
+      "id": 5935194,
+      "name": "The Birth Of The Kool",
+      "resource_url": "https://api.discogs.com/artists/5935194"
+    },
+    {
+      "id": 5935195,
+      "name": "From Bitches",
+      "resource_url": "https://api.discogs.com/artists/5935195"
+    },
+    {
+      "id": 5935198,
+      "name": "Jam-1949",
+      "resource_url": "https://api.discogs.com/artists/5935198"
+    }
+  ],
+  "groups": [
+    {
+      "id": 143887,
+      "name": "Artists United Against Apartheid",
+      "resource_url": "https://api.discogs.com/artists/143887",
+      "active": true
+    },
+    {
+      "id": 260757,
+      "name": "The Miles Davis Sextet",
+      "resource_url": "https://api.discogs.com/artists/260757",
+      "active": true
+    },
+    {
+      "id": 262152,
+      "name": "The Miles Davis Quintet",
+      "resource_url": "https://api.discogs.com/artists/262152",
+      "active": true
+    },
+    {
+      "id": 262586,
+      "name": "Miles Davis All Stars",
+      "resource_url": "https://api.discogs.com/artists/262586",
+      "active": true
+    },
+    {
+      "id": 272020,
+      "name": "The Charlie Parker Septet",
+      "resource_url": "https://api.discogs.com/artists/272020",
+      "active": true
+    },
+    {
+      "id": 272024,
+      "name": "The Charlie Parker All-Stars",
+      "resource_url": "https://api.discogs.com/artists/272024",
+      "active": true
+    },
+    {
+      "id": 272027,
+      "name": "The Charlie Parker Sextet",
+      "resource_url": "https://api.discogs.com/artists/272027",
+      "active": true
+    },
+    {
+      "id": 272028,
+      "name": "The Charlie Parker Quintet",
+      "resource_url": "https://api.discogs.com/artists/272028",
+      "active": true
+    },
+    {
+      "id": 284743,
+      "name": "Miles Davis And His Orchestra",
+      "resource_url": "https://api.discogs.com/artists/284743",
+      "active": true
+    },
+    {
+      "id": 311056,
+      "name": "Metronome All Stars",
+      "resource_url": "https://api.discogs.com/artists/311056",
+      "active": true
+    },
+    {
+      "id": 311725,
+      "name": "Coleman Hawkins All Star Band",
+      "resource_url": "https://api.discogs.com/artists/311725",
+      "active": true
+    },
+    {
+      "id": 317873,
+      "name": "Charlie Parker's Re-Boppers",
+      "resource_url": "https://api.discogs.com/artists/317873",
+      "active": true
+    },
+    {
+      "id": 320609,
+      "name": "Billy Eckstine And His Orchestra",
+      "resource_url": "https://api.discogs.com/artists/320609",
+      "active": true
+    },
+    {
+      "id": 340586,
+      "name": "Charlie Parker And His Orchestra",
+      "resource_url": "https://api.discogs.com/artists/340586",
+      "active": true
+    },
+    {
+      "id": 344335,
+      "name": "Tadd Dameron And His Orchestra",
+      "resource_url": "https://api.discogs.com/artists/344335",
+      "active": true
+    },
+    {
+      "id": 368184,
+      "name": "Benny Carter And His Orchestra",
+      "resource_url": "https://api.discogs.com/artists/368184",
+      "active": true
+    },
+    {
+      "id": 375439,
+      "name": "Lee Konitz Sextet",
+      "resource_url": "https://api.discogs.com/artists/375439",
+      "active": true
+    },
+    {
+      "id": 497768,
+      "name": "The Miles Davis Nonet",
+      "resource_url": "https://api.discogs.com/artists/497768",
+      "active": true
+    },
+    {
+      "id": 549499,
+      "name": "Sonny Rollins Quartet",
+      "resource_url": "https://api.discogs.com/artists/549499",
+      "active": false
+    },
+    {
+      "id": 634013,
+      "name": "The Miles Davis Quartet",
+      "resource_url": "https://api.discogs.com/artists/634013",
+      "active": true
+    },
+    {
+      "id": 840892,
+      "name": "Miles Davis And His Band",
+      "resource_url": "https://api.discogs.com/artists/840892",
+      "active": true
+    },
+    {
+      "id": 840893,
+      "name": "Miles Davis-Tadd Dameron Quintet",
+      "resource_url": "https://api.discogs.com/artists/840893",
+      "active": true
+    },
+    {
+      "id": 1514279,
+      "name": "Coleman Hawkins All Stars",
+      "resource_url": "https://api.discogs.com/artists/1514279",
+      "active": true
+    },
+    {
+      "id": 1566346,
+      "name": "Miles Davis + 19",
+      "resource_url": "https://api.discogs.com/artists/1566346",
+      "active": true
+    },
+    {
+      "id": 1739676,
+      "name": "Miles Davis & His Tuba Band",
+      "resource_url": "https://api.discogs.com/artists/1739676",
+      "active": true
+    },
+    {
+      "id": 1810335,
+      "name": "Miles And Coltrane Quintet",
+      "resource_url": "https://api.discogs.com/artists/1810335",
+      "active": true
+    },
+    {
+      "id": 1900148,
+      "name": "Miles Davis Septet",
+      "resource_url": "https://api.discogs.com/artists/1900148",
+      "active": true
+    },
+    {
+      "id": 3265665,
+      "name": "Miles Davis Group",
+      "resource_url": "https://api.discogs.com/artists/3265665",
+      "active": true
+    },
+    {
+      "id": 3581056,
+      "name": "Miles Davis Octet",
+      "resource_url": "https://api.discogs.com/artists/3581056",
+      "active": true
+    },
+    {
+      "id": 4700108,
+      "name": "The Miles Davis Ensemble",
+      "resource_url": "https://api.discogs.com/artists/4700108",
+      "active": true
+    },
+    {
+      "id": 5188532,
+      "name": "Birdland All-Stars",
+      "resource_url": "https://api.discogs.com/artists/5188532",
+      "active": true
+    },
+    {
+      "id": 5827783,
+      "name": "Miles Davis And His Cool Wailers",
+      "resource_url": "https://api.discogs.com/artists/5827783",
+      "active": true
+    }
+  ],
+  "data_quality": "Needs Vote"
+}
