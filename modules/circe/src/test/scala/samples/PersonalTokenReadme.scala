@@ -1,8 +1,8 @@
 package samples
 
 object PersonalTokenReadme extends App {
-  import _root_.io.bartholomews.discogs4s.entities.{DiscogsUsername, UserIdentity}
-  import _root_.io.bartholomews.discogs4s.{DiscogsClient, DiscogsPersonalClient}
+  import io.bartholomews.discogs4s.entities.{DiscogsUsername, UserIdentity}
+  import io.bartholomews.discogs4s.{DiscogsClient, DiscogsPersonalClient}
   import io.bartholomews.fsclient.core.config.UserAgent
   import io.bartholomews.fsclient.core.http.SttpResponses.SttpResponse
   import io.bartholomews.fsclient.core.oauth.OAuthSigner
