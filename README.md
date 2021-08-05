@@ -12,18 +12,11 @@ which is a wrapper around sttp with circe/play-json support and OAuth handling.
 
 ```
 // circe codecs
-libraryDependencies += "io.bartholomews" %% "discogs4s-circe" % "0.0.0+1-596b6899-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "discogs4s-circe" % "0.1.2"
 // play codecs
-libraryDependencies += "io.bartholomews" %% "discogs4s-play" % "0.0.0+1-596b6899-SNAPSHOT"
+libraryDependencies += "io.bartholomews" %% "discogs4s-play" % "0.1.2"
 // no codecs (you need to provide your own)
-libraryDependencies += "io.bartholomews" %% "discogs4s-core" % "0.0.0+1-596b6899-SNAPSHOT"
-```
-
-*Please note that the following docs are based on the latest snapshot version*  
-(you need to have the following in your `build.sbt` in case):
-```
-resolvers +=
-  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+libraryDependencies += "io.bartholomews" %% "discogs4s-core" % "0.1.2"
 ```
 
 ## Discogs clients
