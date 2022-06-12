@@ -80,11 +80,9 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param username
    *   The username of the user.
    * @param request
-   *   name: The real name of the user.
-   *   homePage: The user’s website.
-   *   location: The geographical location of the user.
-   *   profile: Biographical information about the user.
-   *   currAbbr: Currency for marketplace data. Must be one of: USD GBP EUR CAD AUD JPY CHF MXN BRL NZD SEK ZAR
+   *   name: The real name of the user. homePage: The user’s website. location: The geographical location of the user.
+   *   profile: Biographical information about the user. currAbbr: Currency for marketplace data. Must be one of: USD
+   *   GBP EUR CAD AUD JPY CHF MXN BRL NZD SEK ZAR
    *
    * @param signer
    *   The request Signer
@@ -112,8 +110,8 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions-get
    *
-   * Retrieve a user’s submissions by username. Accepts Pagination parameters.
-   * The Submissions resource represents all edits that a user makes to releases, labels, and artist.
+   * Retrieve a user’s submissions by username. Accepts Pagination parameters. The Submissions resource represents all
+   * edits that a user makes to releases, labels, and artist.
    *
    * @param username
    *   The username of the submissions you are trying to fetch.
@@ -148,8 +146,8 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   /**
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions-get
    *
-   * Retrieve a user’s contributions by username. Accepts Pagination parameters.
-   * The Contributions resource represents releases, labels, and artists submitted by a user.
+   * Retrieve a user’s contributions by username. Accepts Pagination parameters. The Contributions resource represents
+   * releases, labels, and artists submitted by a user.
    *
    * @param username
    *   The username of the submissions you are trying to fetch.
