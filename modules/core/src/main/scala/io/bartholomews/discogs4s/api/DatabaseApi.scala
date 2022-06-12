@@ -10,12 +10,6 @@ import sttp.model.Uri
 
 /**
  * https://www.discogs.com/developers/#page:database
- * @param userAgent
- *   The application `User-Agent`, which will be added as header in all the requests
- * @param backend
- *   The Sttp backend for the requests
- * @tparam F
- *   The Effect type
  */
 class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
@@ -222,6 +216,10 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    *
    * @param masterId
    *   The Master ID
+   * @param page
+   *   Page to fetch (default to 1)
+   * @param perPage
+   *   Items per page to fetch (default to 50, max 100)
    * @param signer
    *   The request Signer
    * @param responseHandler
@@ -231,11 +229,15 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @return
    *   `F[SttpResponse[DE, MasterReleaseVersions]]`
    */
-  def getMasterReleaseVersions[DE](masterId: MasterId)(
+  def getMasterReleaseVersions[DE](masterId: MasterId, page: Int = 1, perPage: Int = 50)(
       signer: Signer
   )(implicit responseHandler: ResponseHandler[DE, MasterReleaseVersions]): F[SttpResponse[DE, MasterReleaseVersions]] =
     baseRequest(userAgent)
-      .get(mastersPath / masterId.value.toString / "versions")
+      .get(
+        (mastersPath / masterId.value.toString / "versions")
+          .withQueryParam("page", page.toString)
+          .withQueryParam("per_page", perPage.toString)
+      )
       .sign(signer)
       .response(responseHandler)
       .send(backend)
@@ -293,6 +295,68 @@ class DatabaseApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
       (artistsPath / artistId.value.toString / "releases")
         .withOptionQueryParam("sort", sortBy.map(_.entryName))
         .withOptionQueryParam("sort_order", sortOrder.map(_.entryName))
+
+    baseRequest(userAgent)
+      .get(uri)
+      .sign(signer)
+      .response(responseHandler)
+      .send(backend)
+  }
+
+  /**
+   * https://www.discogs.com/developers/#page:database,header:database-label
+   *
+   * The Label resource represents a label, company, recording studio, location, or other entity involved with Artists
+   * and Releases. Labels were recently expanded in scope to include things that aren’t labels – the name is an artifact
+   * of this history.
+   *
+   * @param labelId
+   *   The Label ID
+   * @param signer
+   *   The request Signer
+   * @param responseHandler
+   *   The response decoder
+   * @tparam DE
+   *   The Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, Label]]`
+   */
+  def getLabel[DE](
+      labelId: Label.Id
+  )(signer: Signer)(implicit responseHandler: ResponseHandler[DE, Label]): F[SttpResponse[DE, Label]] =
+    baseRequest(userAgent)
+      .get(DiscogsEndpoint.apiUri / "labels" / labelId.value.toString)
+      .sign(signer)
+      .response(responseHandler)
+      .send(backend)
+
+  /**
+   * https://www.discogs.com/developers/#page:database,header:database-all-label-releases
+   *
+   * Returns a list of Releases associated with the label. Accepts Pagination parameters.
+   *
+   * @param labelId
+   *   The Label ID
+   * @param page
+   *   Page to fetch (default to 1)
+   * @param perPage
+   *   Items per page to fetch (default to 50, max 100)
+   * @param signer
+   *   The request Signer
+   * @param responseHandler
+   *   The response decoder
+   * @tparam DE
+   *   The Deserialization Error type
+   * @return
+   *   `F[SttpResponse[DE, Release]]`
+   */
+  def getLabelReleases[DE](labelId: Label.Id, page: Int = 1, perPage: Int = 50)(
+      signer: Signer
+  )(implicit responseHandler: ResponseHandler[DE, Release]): F[SttpResponse[DE, Release]] = {
+    val uri: Uri =
+      (DiscogsEndpoint.apiUri / "labels" / labelId.value.toString / "releases")
+        .withQueryParam("page", page.toString)
+        .withQueryParam("per_page", perPage.toString)
 
     baseRequest(userAgent)
       .get(uri)

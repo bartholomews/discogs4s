@@ -73,7 +73,7 @@ This is the most basic client with no credentials and low rate limits.
 ```
 
 ### Client Credentials
-This client has higher rate limits, but still cannot call user-authenticated endpoints.  
+This client has higher rate limits, but still cannot call user-authenticated endpoints.
 You need to provide consumer key/secret in [developer settings](https://www.discogs.com/settings/developers)
 (at least in theory, currently any dummy consumer key/secret seems to get the higher rate limit x--(ツ)--x)
 
@@ -130,7 +130,7 @@ You need to provide consumer key/secret in [developer settings](https://www.disc
 ```
 
 ### Personal access token
-This client has higher rate limits and can also make user-authenticated calls (for your user only).  
+This client has higher rate limits and can also make user-authenticated calls (for your user only).
 You need to provide your personal access token from [developer settings](https://www.discogs.com/settings/developers)
 
 * Credentials in request ? *Personal access token*
@@ -278,29 +278,31 @@ This client is for making calls on behalf of any authenticated user which grante
 
 ## Implemented endpoints:
 
-- **AuthApi** 
-    - 🔐 [`getRequestToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-request-token-url-get)  
+- **AuthApi**
+    - 🔐 [`getRequestToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-request-token-url-get)
     - 🔐 [`getAccessToken`](https://www.discogs.com/developers/#page:authentication,header:authentication-access-token-url-post)
-    
-- **DatabaseApi**  
+
+- **DatabaseApi**
     - 🔓 [`getRelease`](https://www.discogs.com/developers/#page:database,header:database-release-get)
     - 🔓 [`getReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-get)
-    - 🔐 [`updateReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-put)  
-    - 🔐 [`deleteReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-delete)  
-    - 🔓 [`getCommunityReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-community-release-rating-get)  
-    - 🔓 [`getReleaseStats`](https://www.discogs.com/developers/#page:database,header:database-release-stats-get)  
-    - 🔓 [`getMasterRelease`](https://www.discogs.com/developers/#page:database,header:database-master-release-get)  
-    - 🔓 [`getMasterReleaseVersions`](https://www.discogs.com/developers/#page:database,header:database-master-release-versions-get)  
+    - 🔐 [`updateReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-put)
+    - 🔐 [`deleteReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-release-rating-by-user-delete)
+    - 🔓 [`getCommunityReleaseRating`](https://www.discogs.com/developers/#page:database,header:database-community-release-rating-get)
+    - 🔓 [`getReleaseStats`](https://www.discogs.com/developers/#page:database,header:database-release-stats-get)
+    - 🔓 [`getMasterRelease`](https://www.discogs.com/developers/#page:database,header:database-master-release-get)
+    - 🔓 [`getMasterReleaseVersions`](https://www.discogs.com/developers/#page:database,header:database-master-release-versions-get)
     - 🔓 [`getArtist`](https://www.discogs.com/developers/#page:database,header:database-artist-get)
     - 🔓 [`getArtistReleases`](https://www.discogs.com/developers/#page:database,header:database-artist-releases-get)
-    
-- **UsersApi**  
-    - 🔐 [`me`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity-get)  
-    - 🔓 [`getUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)  
-    - 🔐 [`updateUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post)    
-    - 🔓 [`getUserSubmissions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions-get)       
-    - 🔓 [`getUserContributions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions-get)   
-    
+    - 🔓 [`getLabel`](https://www.discogs.com/developers/#page:database,header:database-label-get)
+    - 🔓 [`getLabelReleases`](https://www.discogs.com/developers/#page:database,header:database-all-label-releases-get)
+
+- **UsersApi**
+    - 🔐 [`me`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-identity-get)
+    - 🔓 [`getUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-get)
+    - 🔐 [`updateUserProfile`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-profile-post)
+    - 🔓 [`getUserSubmissions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions-get)
+    - 🔓 [`getUserContributions`](https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions-get)
+
 ## Contributing
 
 Any request / issue / help / PR is most welcome.
@@ -308,15 +310,15 @@ Any request / issue / help / PR is most welcome.
 ### CI/CD Pipeline
 
 This project is using [sbt-ci-release](https://github.com/olafurpg/sbt-ci-release) plugin:
- - Every push to master will trigger a snapshot release.  
+ - Every push to master will trigger a snapshot release.
  - In order to trigger a regular release you need to push a tag:
- 
+
     ```bash
     ./scripts/release.sh v1.0.0
     ```
- 
+
  - If for some reason you need to replace an older version (e.g. the release stage failed):
- 
+
     ```bash
     TAG=v1.0.0
     git push --delete origin ${TAG} && git tag --delete ${TAG} \

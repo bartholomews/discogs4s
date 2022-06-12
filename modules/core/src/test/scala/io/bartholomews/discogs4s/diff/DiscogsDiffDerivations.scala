@@ -7,11 +7,14 @@ import io.bartholomews.scalatestudo.diff.DiffDerivations
 import java.time.LocalDateTime
 
 trait DiscogsDiffDerivations extends DiffDerivations {
-  //
   implicit val localDateTimeDiff: Diff[LocalDateTime] = Diff.useEquals
 
   implicit val marketplaceCurrencyDiff: Diff[MarketplaceCurrency] =
     Diff.diffForString.contramap[MarketplaceCurrency](_.entryName)
+
+  implicit val labelIdDiff: Diff[Label.Id]     = Diff.derived[Label.Id]
+  implicit val labelNameDiff: Diff[Label.Name] = Diff.derived[Label.Name]
+  implicit val labelDiff: Diff[Label]          = Diff.derived[Label]
 
   implicit val pageUrlsDiff: Diff[PageUrls]                             = Diff.derived[PageUrls]
   implicit val releaseStatusDiff: Diff[ReleaseStatus]                   = Diff.derived[ReleaseStatus]

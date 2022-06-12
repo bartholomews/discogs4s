@@ -16,4 +16,5 @@ class DatabaseApiCirceSpec
   implicit override val masterReleaseDecoder: Decoder[MasterRelease]                 = masterReleaseCodec
   implicit override val masterReleaseVersionsDecoder: Decoder[MasterReleaseVersions] = masterReleaseVersionsCodec
   implicit override val artistDecoder: Decoder[Artist]                               = artistCodec
+  implicit override val labelDecoder: Decoder[Label]                                 = labelCodec
 }

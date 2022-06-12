@@ -16,7 +16,8 @@ import io.circe.generic.extras.semiauto.{
 }
 import sttp.model.Uri
 
-object codecs extends DiscogsCirceApi
+object codecs
+    extends DiscogsCirceApi
 
 //noinspection DuplicatedCode
 trait DiscogsCirceApi extends FsClientCirceApi {
@@ -27,7 +28,7 @@ trait DiscogsCirceApi extends FsClientCirceApi {
   ): Decoder[Map[K, V]] =
     Decoder.decodeOption[Map[K, V]](Decoder.decodeMap[K, V]).map(_.getOrElse(Map.empty))
 
-  implicit val config: Configuration                 = Configuration.default.withSnakeCaseMemberNames
+  implicit val config: Configuration = Configuration.default.withSnakeCaseMemberNames
 
   // TODO: replace in fsclient, or maybe remove it: double check in test with explicit assert on empty Uri
   def decodeEmptyStringAsNone[A](implicit decoder: Decoder[A]): Decoder[Option[A]] = { (c: HCursor) =>
@@ -189,4 +190,8 @@ trait DiscogsCirceApi extends FsClientCirceApi {
 
   implicit val releaseRatingUpdateRequestEncoder: Encoder[ReleaseRatingUpdateRequest] = deriveConfiguredEncoder
   implicit val updateUserRequestEncoder: Encoder[UpdateUserRequest]                   = deriveConfiguredEncoder
+
+  implicit val labelIdCodec: Codec[Label.Id]     = deriveUnwrappedCodec
+  implicit val labelNameCodec: Codec[Label.Name] = deriveUnwrappedCodec
+  implicit val labelCodec: Codec[Label]          = deriveConfiguredCodec
 }

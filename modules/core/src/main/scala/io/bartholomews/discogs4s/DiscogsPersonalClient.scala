@@ -66,6 +66,16 @@ class DiscogsPersonalClient[F[_], S <: OAuthSigner] private[discogs4s] (
         responseHandler: ResponseHandler[DE, PaginatedReleases]
     ): F[SttpResponse[DE, PaginatedReleases]] =
       api.getArtistReleases(artistId, sortBy, sortOrder)(client.signer)
+
+    def getLabel[DE](labelId: Label.Id)(implicit
+        responseHandler: ResponseHandler[DE, Label]
+    ): F[SttpResponse[DE, Label]] =
+      api.getLabel(labelId)(client.signer)
+
+    def getLabelReleases[DE](labelId: Label.Id, page: Int = 1, perPage: Int = 50)(implicit
+        responseHandler: ResponseHandler[DE, Release]
+    ): F[SttpResponse[DE, Release]] =
+      api.getLabelReleases(labelId, page, perPage)(client.signer)
   }
 
   final object users {

@@ -11,17 +11,6 @@ import sttp.model.Uri
 
 /**
  * https://www.discogs.com/developers/#page:user-identity
- *
- * Retrieve basic information about the authenticated user. You can use this resource to find out who you’re
- * authenticated as, and it also doubles as a good sanity check to ensure that you’re using OAuth correctly. For more
- * detailed information, make another request for the user’s Profile.
- *
- * @param userAgent
- *   The application `User-Agent`, which will be added as header in all the requests
- * @param backend
- *   The Sttp backend for the requests
- * @tparam F
- *   The Effect type
  */
 class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
   import io.bartholomews.fsclient.core.http.FsClientSttpExtensions._
@@ -91,9 +80,12 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * @param username
    *   The username of the user.
    * @param request
-   *   The real name of the user. The user’s website. The geographical location of the user. Biographical information
-   *   about the user. Currency for marketplace data. Must be one of the following: USD GBP EUR CAD AUD JPY CHF MXN BRL
-   *   NZD SEK ZAR
+   *   name: The real name of the user.
+   *   homePage: The user’s website.
+   *   location: The geographical location of the user.
+   *   profile: Biographical information about the user.
+   *   currAbbr: Currency for marketplace data. Must be one of: USD GBP EUR CAD AUD JPY CHF MXN BRL NZD SEK ZAR
+   *
    * @param signer
    *   The request Signer
    * @param responseHandler
@@ -121,6 +113,7 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-submissions-get
    *
    * Retrieve a user’s submissions by username. Accepts Pagination parameters.
+   * The Submissions resource represents all edits that a user makes to releases, labels, and artist.
    *
    * @param username
    *   The username of the submissions you are trying to fetch.
@@ -156,6 +149,7 @@ class UsersApi[F[_]](userAgent: UserAgent, backend: SttpBackend[F, Any]) {
    * https://www.discogs.com/developers/#page:user-identity,header:user-identity-user-contributions-get
    *
    * Retrieve a user’s contributions by username. Accepts Pagination parameters.
+   * The Contributions resource represents releases, labels, and artists submitted by a user.
    *
    * @param username
    *   The username of the submissions you are trying to fetch.

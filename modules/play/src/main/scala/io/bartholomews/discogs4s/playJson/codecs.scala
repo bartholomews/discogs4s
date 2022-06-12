@@ -29,6 +29,10 @@ trait DiscogsPlayJsonApi extends FsClientPlayApi {
   implicit val discogsUserProfileInfoCodec: Format[DiscogsUserProfileInfo] = Json.valueFormat
   implicit val discogsUserResourceCodec: Format[DiscogsUserResource]       = Json.format
 
+  implicit val labelIdCodec: Format[Label.Id]     = Json.valueFormat
+  implicit val labelNameCodec: Format[Label.Name] = Json.valueFormat
+  implicit val labelCodec: Format[Label]          = Json.format
+
   implicit val ratingAverageCodec: Format[RatingAverage] = Json.format
 
   def decodeNullableList[A](implicit rds: Reads[A]): Reads[List[A]] =

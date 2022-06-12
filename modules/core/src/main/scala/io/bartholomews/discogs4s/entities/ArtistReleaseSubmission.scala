@@ -6,7 +6,7 @@ final case class ArtistReleaseSubmission(
     thumb: String,
     title: String,
     format: Option[String],
-    label: Option[String],
+    label: Option[Label.Name],
     role: String,
     year: Option[Int],
     resourceUrl: String,

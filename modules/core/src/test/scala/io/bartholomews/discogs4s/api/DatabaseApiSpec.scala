@@ -22,6 +22,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
   implicit def masterReleaseVersionsDecoder: D[MasterReleaseVersions]
   implicit def artistDecoder: D[Artist]
   implicit def releaseRatingUpdateRequestEncoder: E[ReleaseRatingUpdateRequest]
+  implicit def labelDecoder: D[Label]
 
   import DiscogsClientData._
 
@@ -343,7 +344,7 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
                 thumb = "",
                 title = "Kaos",
                 format = Some("10\""),
-                label = Some("Svek"),
+                label = Some(Label.Name("Svek")),
                 role = "Main",
                 year = Some(1997),
                 resourceUrl = "https://api.discogs.com/releases/20209",
@@ -369,6 +370,48 @@ abstract class DatabaseApiSpec[E[_], D[_], DE, J]
         inside(entity.releases.find(_.id == 12526186)) { case Some(release) =>
           release.year shouldBe None
         }
+      }
+    }
+  }
+
+  "getLabel" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/labels/1"))
+    def request: SttpResponse[DE, Label] =
+      sampleOAuthClient.database.getLabel(labelId = Label.Id(1))(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
+    }
+
+    "the server returns the expected response entity" should {
+      "decode the response correctly" in matchResponseBody(stubWithResourceFile, request) { case Right(entity) =>
+        entity.id shouldBe Label.Id(1)
+      }
+    }
+  }
+
+  "getLabelReleases" when {
+    def endpointRequest: MappingBuilder = get(urlPathEqualTo("/labels/1/releases"))
+    def request: SttpResponse[DE, Release] =
+      sampleOAuthClient.database.getLabelReleases(labelId = Label.Id(1))(accessTokenCredentials)
+
+    "something went wrong" should {
+      behave.like(clientReceivingUnexpectedResponse(endpointRequest, request))
+    }
+
+    def stub: StubMapping =
+      stubFor(
+        endpointRequest
+          .willReturn(
+            aResponse()
+              .withStatus(200)
+              .withBodyFile("releases/get-release.json")
+          )
+      )
+
+    "the server returns the expected response entity" should {
+      "decode the response correctly" in matchResponseBody(stub, request) { case Right(entity) =>
+        entity.id shouldBe DiscogsReleaseId(249504)
       }
     }
   }

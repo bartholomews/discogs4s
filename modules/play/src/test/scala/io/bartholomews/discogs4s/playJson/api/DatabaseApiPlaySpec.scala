@@ -17,4 +17,5 @@ class DatabaseApiPlaySpec
   implicit override val masterReleaseDecoder: Reads[MasterRelease]                 = masterReleaseCodec
   implicit override val masterReleaseVersionsDecoder: Reads[MasterReleaseVersions] = masterReleaseVersionsCodec
   implicit override val artistDecoder: Reads[Artist]                               = artistCodec
+  implicit override val labelDecoder: Reads[Label]                                 = labelCodec
 }
